@@ -12,20 +12,20 @@ class RolePage < BasePage
   element(:name) { |b| b.frm.text_field(name: 'document.roleName') }
 
   element(:add_permission_id) { |b| b.frm.text_field(name: 'permission.permissionId') }
-  action(:add_permission) { |b| b.frm.button(name: 'methodToCall.addPermission.anchorPermissions').click; b.loading }
+  action(:add_permission) { |b| b.frm.button(name: 'methodToCall.addPermission.anchorPermissions').click }
   
   element(:add_responsibility_id) { |b| b.frm.text_field(name: 'responsibility.responsibilityId') }
-  action(:add_responsibility) { |b| b.frm.button(name: 'methodToCall.addResponsibility.anchorResponsibilities').click; b.loading }
+  action(:add_responsibility) { |b| b.frm.button(name: 'methodToCall.addResponsibility.anchorResponsibilities').click }
   
   element(:assignee_type_code) { |b| b.frm.select(name: 'member.memberTypeCode') }
   element(:assignee_id) { |b| b.frm.text_field(name: 'member.memberId') }
   element(:assignee_unit_number) { |b| b.frm.text_field(id: /^member/, title: '* Unit Number') }
-  action(:add_assignee) { |b| b.frm.button(name: 'methodToCall.addMember.anchorAssignees').click; b.loading }
+  action(:add_assignee) { |b| b.frm.button(name: 'methodToCall.addMember.anchorAssignees').click }
 
   element(:delegation_type_code) { |b| b.frm.select(name: 'delegationMember.memberTypeCode') }
   element(:delegation_id) { |b| b.frm.text_field(name: 'delegationMember.memberId') }
   element(:delegation_unit_number) { |b| b.frm.text_field(id: /^delegationMember/, title: '* Unit Number') }
-  action(:add_delegation) { |b| b.frm.button(name: 'methodToCall.addDelegationMember.anchorDelegations').click; b.loading }
+  action(:add_delegation) { |b| b.frm.button(name: 'methodToCall.addDelegationMember.anchorDelegations').click }
   
   # ===========
   private

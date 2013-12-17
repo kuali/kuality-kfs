@@ -20,7 +20,7 @@ class PersonPage < BasePage
   element(:primary_employment) { |b| b.frm.checkbox(id: 'document.affiliations[0].newEmpInfo.primary') }
   element(:base_salary) { |b| b.frm.text_field(id: 'document.affiliations[0].newEmpInfo.baseSalaryAmount') }
   element(:primary_department_code) { |b| b.frm.text_field(name: 'document.affiliations[0].newEmpInfo.primaryDepartmentCode') }
-  action(:add_employment_information) { |b| b.frm.button(name: 'methodToCall.addEmpInfo.line0.anchor').click; b.loading }
+  action(:add_employment_information) { |b| b.frm.button(name: 'methodToCall.addEmpInfo.line0.anchor').click }
   action(:add_name) { |b| b.frm.button(name: 'methodToCall.addName.anchor').click }
   element(:address_type) { |b| b.frm.select(id: 'newAddress.addressTypeCode') }
   element(:line_1) { |b| b.frm.text_field(id: 'newAddress.line1') }
@@ -31,25 +31,25 @@ class PersonPage < BasePage
   element(:zip) { |b| b.frm.text_field(id: 'newAddress.postalCode') }
   element(:country) { |b| b.frm.select(id: 'newAddress.countryCode') }
   element(:address_default) { |b| b.frm.checkbox(id: 'newAddress.dflt') }
-  action(:add_address) { |b| b.frm.button(name: 'methodToCall.addAddress.anchor').click; b.loading }
+  action(:add_address) { |b| b.frm.button(name: 'methodToCall.addAddress.anchor').click }
   element(:phone_type) { |b| b.frm.select(id: 'newPhone.phoneTypeCode') }
   element(:phone_number) { |b| b.frm.text_field(id: 'newPhone.phoneNumber') }
   element(:phone_default) { |b| b.frm.checkbox(id: 'newPhone.dflt') }
-  action(:add_phone) { |b| b.frm.button(name: 'methodToCall.addPhone.anchor').click; b.loading }
+  action(:add_phone) { |b| b.frm.button(name: 'methodToCall.addPhone.anchor').click }
   element(:email) { |b| b.frm.text_field(name: 'newEmail.emailAddress') }
   element(:email_type) { |b| b.frm.select(name: 'newEmail.emailTypeCode') }
   element(:email_default) { |b| b.frm.checkbox(name: 'newEmail.dflt') }
-  action(:add_email) { |b| b.frm.button(name: 'methodToCall.addEmail.anchor').click; b.loading }
+  action(:add_email) { |b| b.frm.button(name: 'methodToCall.addEmail.anchor').click }
 
   element(:role_id) { |b| b.frm.text_field(id: 'newRole.roleId') }
-  action(:add_role) { |b| b.frm.button(name: 'methodToCall.addRole.anchor').click; b.loading }
+  action(:add_role) { |b| b.frm.button(name: 'methodToCall.addRole.anchor').click }
 
   element(:group_id) { |b| b.frm.text_field(id: 'newGroup.groupId') }
-  action(:add_group) { |b| b.frm.button(name: 'methodToCall.addGroup.anchor').click; b.loading }
+  action(:add_group) { |b| b.frm.button(name: 'methodToCall.addGroup.anchor').click }
 
   action(:unit_number) { |role, b| b.target_row(role).text_field(title: '* Unit Number') }
   action(:descends_hierarchy) { |role, b| b.target_row(role).checkbox(title: 'Descends Hierarchy') }
-  action(:add_role_qualifier) { |role, b| b.target_row(role).button(name: /methodToCall.addRoleQualifier.line\d+.anchor/).click; b.loading }
+  action(:add_role_qualifier) { |role, b| b.target_row(role).button(name: /methodToCall.addRoleQualifier.line\d+.anchor/).click }
 
   # =========
   private

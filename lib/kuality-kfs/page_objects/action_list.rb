@@ -19,12 +19,12 @@ class ActionList < BasePage
 
   action(:action_requested) { |item_id, b| b.item_row(item_id).tds[ACTION_REQUESTED].text }
   action(:route_status) { |item_id, b| b.item_row(item_id).tds[ROUTE_STATUS].text }
-  action(:filter) { |b| b.frm.button(name: 'methodToCall.viewFilter').click; b.loading }
-  action(:take_actions) { |b| b.frm.link(id: 'takeMassActions').click; b.loading }
+  action(:filter) { |b| b.frm.button(name: 'methodToCall.viewFilter').click }
+  action(:take_actions) { |b| b.frm.link(id: 'takeMassActions').click }
   action(:action) { |item_id, b| b.item_row(item_id).select(name: /actionTakenCd/) }
   action(:outbox) { |b| b.frm.link(href: /viewOutbox/).click }
   action(:last) { |b| b.frm.link(text: 'Last').click }
-  action(:refresh) { |b| b.frm.button(name: 'methodToCall.refresh').click; b.loading }
+  action(:refresh) { |b| b.frm.button(name: 'methodToCall.refresh').click }
 
   #Default action select list for FYIs
   action(:default_action) { |b| b.frm.select(name: 'defaultActionToTake') }

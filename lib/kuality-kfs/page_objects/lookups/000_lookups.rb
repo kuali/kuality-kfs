@@ -12,6 +12,6 @@ class Lookups < BasePage
   alias_method :create, :create_new
 
   action(:check_item) { |name, b| b.item_row(name).checkbox(name: /selectedObjId/).set }
-  action(:return_selected) { |b| b.frm.button(title: 'Return selected results').click; b.loading }
+  action(:return_selected) { |b| b.frm.button(title: 'Return selected results').click }
 
 end

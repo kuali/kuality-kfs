@@ -8,39 +8,8 @@ class RoleObject < DataObject
 
   ROLES = {
       # Add roles here as needed for testing...
-      'Aggregator'                      => '110',
-      'approver'                        => '103',
-      'Award Budget Aggregator'         => '113',
-      'Award Budget Approver'           => '112',
-      'Award Budget Modifier'           => '102',
-      'Award Budget Viewer'             => '101',
-      'Award Viewer'                    => '123',
-      'Award Modifier'                  => '126',
-      'Budget Creator'                  => '108',
-      'Create Proposal Log'             => '140',
-      'Departments Awards Viewer'       => '121',
-      'Institutional Proposal Viewer'   => '118',
-      'IRB Administrator'               => '128',
-      'IRB Approver'                    => '99',
-      'IRB Reviewer'                    => '127',
-      'KC Super User'                   => '177',
-      'Maintain IRB Questionnaire'      => '161',
-      'Maintain Proposal Questionnaire' => '162',
-      'Manager'                         =>  '98',
-      'Narrative Writer'                => '109',
-      'Negotiation Creator'             => '1399',
-      'OSP Administrator'               => '131',
-      'OSPApprover'                     => '100',
-      'Proposal Creator'                => '111',
-      'Protocol Aggregator'             => '105',
-      'Protocol Approver'               => '149',
-      'Protocol Creator'                => '129',
-      'Protocol Viewer'                 => '104',
-      'System User'                     => '90',
-      'Unassigned'                      => '106',
-      'Viewer'                          => '107',
-      'View Subaward'                   => '1426',
-      'View Proposal Log'               => '142'
+      'Financial Processing Manager'    => '96',
+      'Financial System User'           => '54'
   }
 
   def initialize(browser, opts={})

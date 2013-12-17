@@ -101,8 +101,8 @@ class UserObject
     defaults={
         user_name:        random_letters(16),
         description:      random_alphanums,
-        affiliation_type: 'Student',
-        campus_code:      'UN - UNIVERSITY',
+        affiliation_type: 'Faculty',
+        campus_code:      'BL - BLOOMINGTON',
         first_name:       random_alphanums,
         last_name:        random_alphanums,
         addresses:        [{type:   'Work',
@@ -115,7 +115,7 @@ class UserObject
         phones:           [{type:   'Work',
                             number:  '602-840-7300',
                             default: :set }],
-        rolez:            [{id: '106', qualifiers: [{:unit=>'000001'}]}],
+        rolez:            [{id: '96'}],
         groups:           collection('UserGroups')
     }
     defaults.merge!(opts)

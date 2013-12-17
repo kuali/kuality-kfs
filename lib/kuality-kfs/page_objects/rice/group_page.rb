@@ -17,9 +17,9 @@ class GroupPage < BasePage
   element(:type_code) { |b| b.frm.select(name: 'member.memberTypeCode') }
   element(:member_identifier) { |b| b.frm.text_field(name: 'member.memberId') }
   element(:member_name) { |b| b.frm.text_field(name: 'member.memberName') }
-  action(:add_member) { |b| b.frm.button(name: 'methodToCall.addMember.anchorAssignees').click; b.loading }
+  action(:add_member) { |b| b.frm.button(name: 'methodToCall.addMember.anchorAssignees').click }
 
-  action(:inactivate_member) { |member, b| b.assignees_table.row(text: /#{member}/).button(name: /methodToCall.deleteMember/).click; b.loading }
+  action(:inactivate_member) { |member, b| b.assignees_table.row(text: /#{member}/).button(name: /methodToCall.deleteMember/).click }
 
   # =========
   private

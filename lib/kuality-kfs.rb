@@ -1,5 +1,5 @@
 require 'test-factory'
-require 'jeweler'
+#require 'jeweler'
 
 Dir["#{File.dirname(__FILE__)}/kuality-kfs/*.rb"].alphabetize.each {|f| require f }
 Dir["#{File.dirname(__FILE__)}/kuality-kfs/page_objects/*.rb"].alphabetize.each {|f| require f }

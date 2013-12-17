@@ -3,9 +3,9 @@ admin:
   :last_name:  admin
 unassigneduser: # AKA: "Principal Name
   :user_name:        unassigneduser
-  :description:      creating user with 'unassigned' role
-  :affiliation_type: Student
-  :campus_code:      'UN - UNIVERSITY'
+  :description:      creating user with no roles
+  :affiliation_type: Faculty
+  :campus_code:      'BL - BLOOMINGTON'
   :first_name:       PleaseDoNot
   :last_name:        AddOrEditRoles
   :addresses:
@@ -30,8 +30,3 @@ unassigneduser: # AKA: "Principal Name
     - :type:    Facsimile
       :number:  602-597-5350
       :default: :clear
-  :rolez:
-    - :id:   '106'
-      :name: Unassigned
-      :qualifiers:
-        - :unit: '000001'

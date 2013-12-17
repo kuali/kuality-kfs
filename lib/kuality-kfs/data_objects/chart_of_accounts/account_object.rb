@@ -63,11 +63,19 @@ class AccountObject < DataObject
     end
   end
 
+  def save
+    on(AccountPage).save
+  end
+
   def submit
     on(AccountPage).submit
   end
 
   def view
     @browser.goto "#{$base_url}kew/DocHandler.do?command=displayDocSearchView&docId=#{@document_id}"
+  end
+
+  def copy
+    on(AccountPage).copy
   end
 end

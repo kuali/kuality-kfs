@@ -9,9 +9,8 @@ class UserRoleObject < DataObject
     @browser = browser
 
     defaults = {
-        id:         '106',
-        name:       'unassigned',
-        qualifiers: [{:unit=>'000001'}]
+        id:         '54',
+        name:       'Financial System User'
     }
     set_options defaults.merge(opts)
     requires :user_name
