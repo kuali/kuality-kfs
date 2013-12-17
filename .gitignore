@@ -1,0 +1,13 @@
+config.yml
+directory.yml
+/test.rb
+*test.rb
+test.feature
+.ruby-version
+.DS_Store
+.idea/
+*.gem
+*.log
+*test_spec.rb
+*.png
+Gemfile.lock
