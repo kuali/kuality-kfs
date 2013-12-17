@@ -1,11 +1,12 @@
 require 'test-factory'
 #require 'jeweler'
 
-Dir["#{File.dirname(__FILE__)}/kuality-kfs/*.rb"].alphabetize.each {|f| require f }
-Dir["#{File.dirname(__FILE__)}/kuality-kfs/page_objects/*.rb"].alphabetize.each {|f| require f }
-Dir["#{File.dirname(__FILE__)}/kuality-kfs/page_objects/*/*.rb"].alphabetize.each {|f| require f }
-Dir["#{File.dirname(__FILE__)}/kuality-kfs/data_objects/*.rb"].alphabetize.each {|f| require f }
-Dir["#{File.dirname(__FILE__)}/kuality-kfs/data_objects/*/*.rb"].alphabetize.each {|f| require f }
+cwd = File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__)
+Dir["#{cwd}/kuality-kfs/*.rb"].alphabetize.each {|f| require f }
+Dir["#{cwd}/kuality-kfs/page_objects/*.rb"].alphabetize.each {|f| require f }
+Dir["#{cwd}/kuality-kfs/page_objects/*/*.rb"].alphabetize.each {|f| require f }
+Dir["#{cwd}/kuality-kfs/data_objects/*.rb"].alphabetize.each {|f| require f }
+Dir["#{cwd}/kuality-kfs/data_objects/*/*.rb"].alphabetize.each {|f| require f }
 
 # Initialize this class at the start of your test cases to
 # open the specified test browser at the specified welcome page URL.
