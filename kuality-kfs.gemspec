@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name = 'kuality-kfs'
-    s.version = '0.0.1'
+    s.version = '0.0.2'
     s.summary = %q{Kuali Financial System Community framework for testing}
     s.description = %q{This gem provides the core data and page objects for building KFS tests}
     s.files = Dir.glob("**/**/**")
