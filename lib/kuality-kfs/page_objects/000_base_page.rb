@@ -1,5 +1,17 @@
 class BasePage < PageFactory
 
+  # These constants can be used with switches to add modularity to object create methods.
+  SAVE = 'save'
+  SUBMIT = 'submit'
+  BLANKET_APPROVE = 'blanket approve'
+  CLOSE = 'close'
+  CANCEL = 'cancel'
+  RELOAD = 'reload'
+  COPY = 'copy'
+  APPROVE = 'approve'
+  DISAPPROVE = 'disapprove'
+  SEND_NOTIFICATION = 'send notification'
+
   action(:return_to_portal) { |b| b.portal_window.use }
   action(:close_extra_windows) { |b| b.close_children if b.windows.length > 1 }
   action(:close_children) { |b| b.windows[0].use; b.windows[1..-1].each{ |w| w.close} }

@@ -1,6 +1,6 @@
 class AccountObject < DataObject
 
-#  include Navigation
+  include Navigation
 #  include DateFactory
   include StringFactory
 
@@ -10,7 +10,8 @@ class AccountObject < DataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_cd, :sufficient_funds_cd,
                 :expense_guideline_text, :income_guideline_txt, :purpose_text,
-                :income_stream_financial_cost_cd, :income_stream_account_number, :labor_benefit_rate_cat_code
+                :income_stream_financial_cost_cd, :income_stream_account_number, :labor_benefit_rate_cat_code,
+                :press
 
   def initialize(browser, opts={})
     @browser = browser
@@ -59,7 +60,16 @@ class AccountObject < DataObject
                :higher_ed_funct_cd, :restricted_status_cd, :fo_principal_name, :supervisor_principal_name,
                :manager_principal_name, :budget_record_level_cd, :sufficient_funds_cd, :expense_guideline_text,
                :income_guideline_txt, :purpose_text, :income_stream_financial_cost_cd, :income_stream_account_number
-      page.save
+      case press
+        when AccountPage::SAVE
+          page.save
+        when AccountPage::SUBMIT
+          page.submit
+        when AccountPage::BLANKET_APPROVE
+          page.blanket_approve
+        else
+          page.save
+      end
       @document_id = page.document_id
     end
   end
