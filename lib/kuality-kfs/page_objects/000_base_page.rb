@@ -117,6 +117,7 @@ class BasePage < PageFactory
       end
       element(:left_errmsg_tabs) { |b| b.frm.divs(class: 'left-errmsg-tab') }
       element(:left_errmsg) { |b| b.frm.divs(class: 'left-errmsg') }
+      value(:left_errmsg_text) { |b| b.left_errmsg.collect {|m| m.text.split("\n")}.flatten }
       element(:error_messages_div) { |b| b.frm.div(class: 'error') }
     end
 
