@@ -1,6 +1,6 @@
 class AccountObject < DataObject
 
-  include Navigation
+#  include Navigation
 #  include DateFactory
   include StringFactory
 
