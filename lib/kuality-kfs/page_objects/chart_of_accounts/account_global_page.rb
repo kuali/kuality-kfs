@@ -31,4 +31,6 @@ class AccountGlobalPage < BasePage
   element(:trans_processing_sufficient_funds_code) { |b| b.frm.select(name: 'document.newMaintainableObject.pendingAcctSufficientFundsIndicator') }
   element(:labor_benefit_rate_category_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.laborBenefitRateCategoryCode') }
 
+
+
 end
