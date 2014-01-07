@@ -6,5 +6,7 @@ class MainPage < BasePage
 
   action(:account) { |b| b.frm.link(text: 'Account').click }
   action(:account_global) { |b| b.frm.link(text: 'Account Global').click }
+  action(:advance_deposit) { |b| b.frm.link(text: 'Advance Deposit').click }
+  action(:schedule) { |b| b.frm.link(text: 'Schedule').click }
 
 end
