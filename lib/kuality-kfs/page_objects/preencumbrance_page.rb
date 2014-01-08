@@ -24,4 +24,6 @@ class PreEncumbrancePage < BasePage
   element(:count) { |b| b.accounting_lines.text_field(name: 'newSourceLine.partialTransactionCount') }
   element(:partial_amount) { |b| b.accounting_lines.text_field(name: 'newSourceLine.partialAmount') }
 
+  action(:add_encumbrance) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+
 end
