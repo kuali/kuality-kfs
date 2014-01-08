@@ -9,8 +9,6 @@ class MainPage < BasePage
 
   links 'Account', 'Account Global'
 
-
-
   #action(:account) { |b| b.frm.link(text: 'Account').click }
   #action(:account_global) { |b| b.frm.link(text: 'Account Global').click }
 
