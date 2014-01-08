@@ -14,4 +14,9 @@ class Lookups < BasePage
   action(:check_item) { |name, b| b.item_row(name).checkbox(name: /selectedObjId/).set }
   action(:return_selected) { |b| b.frm.button(title: 'Return selected results').click }
 
+  action(:edit_random) { |b| b.edit_value_links[rand(b.edit_value_links.length)].click }
+  element(:edit_value_links) { |b| b.results_table.links(text: 'edit') }
+  action(:copy_random) { |b| b.copy_value_links[rand(b.copy_value_links.length)].click }
+  element(:copy_value_links) { |b| b.results_table.links(text: 'copy') }
+
 end

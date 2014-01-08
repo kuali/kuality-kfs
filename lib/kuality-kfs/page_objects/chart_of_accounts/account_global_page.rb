@@ -31,4 +31,16 @@ class AccountGlobalPage < BasePage
   element(:trans_processing_sufficient_funds_code) { |b| b.frm.select(name: 'document.newMaintainableObject.pendingAcctSufficientFundsIndicator') }
   element(:labor_benefit_rate_category_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.laborBenefitRateCategoryCode') }
 
+
+
+
+  action(:add_multiple_accounting_lines) { |b| b.frm.button(title: 'Multiple Value Search on Account').click }
+  action(:search_organization_code) { |b| b.frm.button(title: 'Search Organization Code').click }
+  element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
+  element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
+
+  action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').when_present.click }
+  action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
+
+
 end
