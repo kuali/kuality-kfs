@@ -1,4 +1,5 @@
 class PreEncumbrancePage < BasePage
+  page_url "#{$base_url}portal.do?channelTitle=Pre-Encumbrance&channelUrl=financialPreEncumbrance.do?methodToCall=docHandler&command=initiate&docTypeName=PE"
 
   document_header_elements
   description_field
