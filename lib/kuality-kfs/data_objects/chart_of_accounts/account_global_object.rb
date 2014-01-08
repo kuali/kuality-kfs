@@ -10,7 +10,10 @@ class AccountGlobalObject < DataObject
                 :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
                 :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
-                :new_chart_code, :new_number
+                :new_chart_code, :new_number,
+
+                :organization_code, :add_multiple_accounting_lines, :search_account_number
+
 
   def initialize(browser, opts={})
     @browser = browser
@@ -37,6 +40,9 @@ class AccountGlobalObject < DataObject
         sufficient_funds_cd:    'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code: ''
+
+        #organization_code: '00*'
+
     }
     set_options(defaults.merge(opts))
   end
@@ -48,6 +54,9 @@ class AccountGlobalObject < DataObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :new_chart_code, :new_number
       page.add_account_detail
+
+      add_multiple_accounting_lines
+
       page.save
       @document_id = page.document_id
     end
@@ -61,4 +70,15 @@ class AccountGlobalObject < DataObject
     on(AccountGlobalPage).submit
   end
 
+  def add_multiple_accounting_lines
+    if !@add_multiple_accounting_lines.nil?
+      on AccountGlobalPage do |page|
+        page.add_multiple_accounting_lines
+        page.account_number.fit search_account_number
+        page.search
+        page.select_all_rows_from_this_page
+        page.return_selected_results
+      end
+    end
+  end
 end
