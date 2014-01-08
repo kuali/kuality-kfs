@@ -19,7 +19,7 @@ module BatchUtilities
       if wait_for_completion == true
         x = 0
         while x < 2
-          break if (page.job_status =~ /Succeeded/) == 0
+          break if !(page.job_status =~ /Succeeded/).nil?
           sleep 5
           page.refresh
           x += 1
