@@ -9,4 +9,8 @@ class AccountLookupPage < Lookups
   element(:fo_principal_name) { |b| b.frm.text_field(name: 'accountFiscalOfficerUser.principalName') }
   element(:closed) { |b| b.frm.text_field(name: 'closed') }
 
+
+  action(:select_all_from_this_page) { |b| b.frm.link(title: 'Select all rows from this page').click }
+  action(:return_selected) { |b| b.frm.button(alt: 'Return selected results').click }
+
 end
