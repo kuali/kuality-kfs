@@ -1,4 +1,4 @@
-class AccountGlobalObject < DataObject
+class AccountGlobalObject < AccountGlobalModObject
 
 #  include Navigation
 #  include DateFactory
@@ -10,7 +10,7 @@ class AccountGlobalObject < DataObject
                 :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
                 :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
-                :new_chart_code, :new_number, :major_reporting_category_code
+                :new_chart_code, :new_number
 
   def initialize(browser, opts={})
     @browser = browser
@@ -55,10 +55,11 @@ class AccountGlobalObject < DataObject
                :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
-               :new_chart_code, :new_number, :major_reporting_category_code
+               :new_chart_code, :new_number
       page.add_account_detail
 
-      add_multiple_accounting_lines
+      #This super is for MODED account global will do the create method on the account_glopbal_mod_object
+      super
 
       page.save
       @document_id = page.document_id
