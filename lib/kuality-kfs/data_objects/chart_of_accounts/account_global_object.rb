@@ -75,9 +75,9 @@ class AccountGlobalObject < DataObject
 
   def add_multiple_accounting_lines
     if !@add_multiple_accounting_lines.nil?
-      on AccountGlobalPage do |page|
-        page.add_multiple_accounting_lines
-        page.account_number.fit search_account_number
+      on(AccountGlobalPage).add_multiple_accounting_lines
+      on AccountGlobalLookupPage do |page|
+        page.account_number.fit @search_account_number
         page.search
         page.select_all_rows_from_this_page
         page.return_selected_results
