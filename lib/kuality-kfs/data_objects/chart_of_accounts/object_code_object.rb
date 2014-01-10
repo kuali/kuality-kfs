@@ -5,13 +5,7 @@ class AccountGlobalObject < DataObject
   include StringFactory
 
 
-  attr_accessor :description, :fo_principal_name, :supervisor_principal_name,
-                :org_cd, :sub_fnd_group_code, :acct_expire_date,
-                :postal_cd, :city, :state, :address,
-                :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
-                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
-                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
-                :new_chart_code, :new_number
+  attr_accessor :description,
 
   def initialize(browser, opts={})
     @browser = browser
@@ -45,32 +39,16 @@ class AccountGlobalObject < DataObject
   end
 
   def create
-    visit(MainPage).account_global
-    on AccountGlobalPage do |page|
-      page.description.focus
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :new_chart_code, :new_number
-      page.add_account_detail
+    visit(MainPage).object_code
+    on ObjectCodePage do |page|
+      #page.description.focus
+      #page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      fill_out page, :description
 
-      createCornellAccountGlobalObject  if cornell_university == 'yes'
+      #page.add_account_detail
+      #createCornellAccountGlobalObject  if cornell_university == 'yes'
 
       page.save
       @document_id = page.document_id
     end
   end
-
-  def save
-    on(AccountGlobalPage).save
-  end
-
-  def submit
-    on(AccountGlobalPage).submit
-  end
-
-  #TODO:: Move this to CU file and edit create.
-  def createCornellAccountGlobalObject
-      on AccountGlobalPage do |page|
-        fill_out page, :major_reporting_category_code
-      end
-  end
-end
