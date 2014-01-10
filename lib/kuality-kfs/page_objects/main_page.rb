@@ -8,6 +8,7 @@ class MainPage < BasePage
   action(:account_delegate) { |b| b.frm.link(text: 'Account Delegate').click }
   action(:account_global) { |b| b.frm.link(text: 'Account Global').click }
   action(:organization) { |b| b.frm.link(text: 'Organization').click }
+  action(:sub_account) { |b| b.frm.link(text: 'Sub-Account').click }
 
   action(:advance_deposit) { |b| b.frm.link(text: 'Advance Deposit').click }
 
