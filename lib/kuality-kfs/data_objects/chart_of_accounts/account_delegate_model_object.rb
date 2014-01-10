@@ -6,7 +6,7 @@ class AccountDelegateModelObject < DataObject
 
   attr_accessor :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
                 :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
-                :approval_to_this_account, :account_delegate_principal_name, :active
+                :approval_to_this_account, :account_delegate_principal_name, :active, :press
 
   def initialize(browser, opts={})
     @browser = browser
@@ -15,7 +15,7 @@ class AccountDelegateModelObject < DataObject
         description:                          random_alphanums(40, 'AFT'),
         chart_code:                           'IT', #TODO grab this from config file
         org_code:                             '01G0',
-        account_delegate_model_name:          '', #FIXME Find default value for Account Delegate Model Name
+        account_delegate_model_name:          random_alphanums(40, 'AFT'),
         document_type_name:                   '', #FIXME Find default value for Document Type Name
         account_delegate_start_date:          '01/01/2010',
         account_delegate_principal_name:      '' #FIXME Find default value for Account Delegate Principle Name
@@ -24,17 +24,26 @@ class AccountDelegateModelObject < DataObject
   end
 
   def create
-    visit(MainPage).account
+    visit(MainPage).account_delegate_model
     on(AccountDelegateModelLookupPage).create
     on AccountDelegateModelPage do |page|
       @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
+      fill_out page, :description, :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
                      :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
                      :approval_to_this_account, :account_delegate_principal_name, :active
-      page.save
+      case press
+        when AccountDelegateModelPage::SAVE
+          page.save
+        when AccountDelegateModelPage::SUBMIT
+          page.submit
+        when AccountDelegateModelPage::BLANKET_APPROVE
+          page.blanket_approve
+        else
+          page.save
+      end
     end
   end
 
