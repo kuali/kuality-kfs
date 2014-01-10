@@ -27,6 +27,7 @@ class AccountDelegateModelObject < DataObject
     visit(MainPage).account
     on(AccountDelegateModelLookupPage).create
     on AccountDelegateModelPage do |page|
+      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -34,7 +35,6 @@ class AccountDelegateModelObject < DataObject
                      :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
                      :approval_to_this_account, :account_delegate_principal_name, :active
       page.save
-      @document_id = page.document_id
     end
   end
 
