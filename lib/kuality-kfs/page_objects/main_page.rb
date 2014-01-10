@@ -2,16 +2,29 @@ class MainPage < BasePage
 
   page_url "#{$base_url}portal.jsp"
 
-  #TODO abe to talk about links and button helper!
+  links 'Advance Deposit', 'Schedule'
 
-  action(:account) { |b| b.frm.link(text: 'Account').click }
-  action(:account_delegate) { |b| b.frm.link(text: 'Account Delegate').click }
-  action(:account_global) { |b| b.frm.link(text: 'Account Global').click }
-  action(:organization) { |b| b.frm.link(text: 'Organization').click }
-  action(:sub_account) { |b| b.frm.link(text: 'Sub-Account').click }
+  #Capital Asset Builder
+  links 'Pre-Asseet Tagging',
+  #Capital Asset Management
+  'Asset', 'Asset Fabication', 'Asset Location Global', 'Asset Payment', 'Asset Retirement Global'
 
-  action(:advance_deposit) { |b| b.frm.link(text: 'Advance Deposit').click }
+  action(:asset_global_add) { |b| b.link(text: 'Asset Global (Add)').click }
 
-  action(:schedule) { |b| b.frm.link(text: 'Schedule').click }
+  #Chart of Acconts
+  links 'Account', 'Account Global', 'Account Delegate', 'Account Delegate Global', 'Account Delegate Model',
+        'Account Delegate Global From Model', 'Object Code', 'Object Code Global', 'Organization', 'Organization Review',
+        'Project Code', 'Sub-Account', 'Sub-Object Code', 'Sub-Object Code Global',
+  # FYI: for links, special characters like '-' will be changed to underscore '_' just like spaces, so Sub-Account becomes :sub_account
+
+  #Contracts and Grants
+  'Award', 'Proposal',
+  #Financial Processing
+  'Disbursement Voucher Travel Company',
+  #Global Favorites
+  'User Favorite Accounts',
+  #Vender
+  'Vendor', 'Vendor Contracts'
+
 
 end
