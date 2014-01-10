@@ -6,8 +6,7 @@ class AccountObject < KFSDataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_cd, :sufficient_funds_cd,
                 :expense_guideline_text, :income_guideline_txt, :purpose_text,
-                :income_stream_financial_cost_cd, :income_stream_account_number, :labor_benefit_rate_cat_code #,
-                #:press
+                :income_stream_financial_cost_cd, :income_stream_account_number, :labor_benefit_rate_cat_code
 
   def initialize(browser, opts={})
     @browser = browser
