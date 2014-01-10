@@ -1,5 +1,17 @@
 class BasePage < PageFactory
 
+  # These constants can be used with switches to add modularity to object create methods.
+  SAVE = 'save'
+  SUBMIT = 'submit'
+  BLANKET_APPROVE = 'blanket approve'
+  CLOSE = 'close'
+  CANCEL = 'cancel'
+  RELOAD = 'reload'
+  COPY = 'copy'
+  APPROVE = 'approve'
+  DISAPPROVE = 'disapprove'
+  SEND_NOTIFICATION = 'send notification'
+
   action(:return_to_portal) { |b| b.portal_window.use }
   action(:close_extra_windows) { |b| b.close_children if b.windows.length > 1 }
   action(:close_children) { |b| b.windows[0].use; b.windows[1..-1].each{ |w| w.close} }
@@ -61,6 +73,8 @@ class BasePage < PageFactory
       action(:yes) { |b| b.frm.button(name: 'methodToCall.rejectYes').click }
       action(:no) {|b| b.frm.button(name: 'methodToCall.rejectNo').click }
       action(:add) { |b| b.frm.button(name: 'methodToCall.addNotificationRecipient.anchor').click }
+
+      action(:add_multiple_accounting_lines) { |b| b.frm.button(title: 'Multiple Value Search on Account').click }
     end
 
     def search_results_table
@@ -82,6 +96,10 @@ class BasePage < PageFactory
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
       action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
+
+      action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
+      action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
+
     end
 
     def route_log
