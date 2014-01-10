@@ -7,8 +7,6 @@ class SubObjectCodeGlobalPage < BasePage
   tab_buttons
   error_messages
 
-
-  #element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
   element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
   element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
 
@@ -32,5 +30,6 @@ class SubObjectCodeGlobalPage < BasePage
   action(:na_add_account) { |b| b.frm.button(name: 'methodToCall.addLine.accountGlobalDetails.(!!org.kuali.kfs.coa.businessobject.AccountGlobalDetail!!)').click }
 
   action(:add_multiple_account_lines) { |b| b.frm.button(title: 'Multiple Value Search on Account').click }
-
+  #Using this to verify account numbers were added when user adds multiple account lines
+  element(:verify_account_number) { |chart_code='IT', account_number, b| b.frm.link(title: "show inquiry for Account Chart Code=#{chart_code} Account Number=#{account_number} ") }
 end
