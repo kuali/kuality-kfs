@@ -1,4 +1,10 @@
-class AccountGlobalObject < AccountGlobalModObject
+class AccountGlobalExtendedAttributesObject < DataObject
+  # This super-class provides an overridable target for institutions to
+  # inject extended attributes into an AccountGlobalObject. Please provide the
+  # overrides in your institution's project.
+end
+
+class AccountGlobalObject < AccountGlobalExtendedAttributesObject
 
 #  include Navigation
 #  include DateFactory
@@ -56,11 +62,9 @@ class AccountGlobalObject < AccountGlobalModObject
                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                :new_chart_code, :new_number
+      super # For now, overriding the super#create should only do what is required to fill out extended attributes
+
       page.add_account_detail
-
-      #This super is for MODED account global will do the create method on the account_glopbal_mod_object
-      super
-
       page.save
       @document_id = page.document_id
     end
