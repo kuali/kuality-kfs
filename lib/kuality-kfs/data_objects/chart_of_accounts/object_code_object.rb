@@ -39,7 +39,6 @@ class ObjectCodeObject < DataObject
         object_type_code: 'ES',
         level_code:    'BADJ',
         object_sub_type_code: 'BI',
-        #suny_object_code: 'TEST',
         financial_object_code_description: random_alphanums(30, 'AFT'),
         cg_reporting_code:      '06SM',
         budget_aggregation_code: 'L',
@@ -60,19 +59,11 @@ class ObjectCodeObject < DataObject
               :fiscal_year, :new_chart_code, :object_code, :object_code_name,
               :object_code_short_name, :reports_to_object_code, :object_type_code,
               :level_code, :object_sub_type_code, :financial_object_code_description,
-              :cg_reporting_code, :historical_financial_object_code,
-              :active_indicator, :budget_aggregation_code, :mandatory_transfer,
-              :federal_funded_code, :next_year_object_code
+              :cg_reporting_code, :historical_financial_object_code, :budget_aggregation_code,
+              :mandatory_transfer, :federal_funded_code, :next_year_object_code
 
       #Cornell
-      fill_out page,           :suny_object_code
-
-
-
-
-
-               #page.add_account_detail
-      #createCornellAccountGlobalObject  if cornell_university == 'yes'
+      fill_out page, :suny_object_code
 
       page.save
       @document_id = page.document_id

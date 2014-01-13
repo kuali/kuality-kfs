@@ -7,17 +7,12 @@ class ObjectCodePage < BasePage
   tab_buttons
   error_messages
 
-
-
   element(:fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
 
   element(:object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCode') }
   element(:object_code_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeName') }
   element(:object_code_short_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeShortName') }
-
-  #field missing but listed
-  # element(:reports_to_chart_code) { |b| b.frm.text_field(name: '') }
 
   element(:reports_to_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.reportsToFinancialObjectCode') }
   element(:object_type_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectTypeCode') }
@@ -26,7 +21,6 @@ class ObjectCodePage < BasePage
 
   #CU item
   element(:suny_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.sunyObjectCode') }
-
 
   element(:financial_object_code_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.financialObjectCodeDescr') }
   element(:cg_reporting_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.cgReportingCode') }
@@ -38,11 +32,5 @@ class ObjectCodePage < BasePage
 
   element(:federal_funded_code) { |b| b.frm.select(name: 'document.newMaintainableObject.financialFederalFundedCode') }
   element(:next_year_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.nextYearFinancialObjectCode') }
-
-
-
-
-
-
 
 end
