@@ -55,7 +55,7 @@ class SubObjectCodeGlobalObject < DataObject
     on(SubObjectCodeGlobalPage).add_multiple_account_lines
 
       on AccountLookupPage do |page|
-        page.org_cd.fit "#{search_code}"
+        page.organization_code.fit "#{search_code}"
         page.search
         page.select_all_from_this_page
         page.return_selected

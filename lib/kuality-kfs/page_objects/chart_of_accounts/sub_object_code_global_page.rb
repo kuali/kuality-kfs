@@ -7,9 +7,6 @@ class SubObjectCodeGlobalPage < BasePage
   tab_buttons
   error_messages
 
-  element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-  element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
-
   #New section
   element(:new_fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
