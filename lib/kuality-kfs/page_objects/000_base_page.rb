@@ -52,7 +52,7 @@ class BasePage < PageFactory
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', #'reload', 'copy',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
@@ -60,6 +60,9 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
+
+      action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click }
+
     end
 
     def tab_buttons
@@ -80,7 +83,9 @@ class BasePage < PageFactory
     def search_results_table
       element(:results_table) { |b| b.frm.table(id: 'row') }
 
-      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
+      element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
+
+      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click }  #; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }

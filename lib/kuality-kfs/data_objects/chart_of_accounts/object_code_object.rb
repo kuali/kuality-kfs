@@ -1,4 +1,4 @@
-class AccountGlobalObject < DataObject
+class ObjectCodeObject < DataObject
 
 #  include Navigation
 #  include DateFactory
@@ -6,49 +6,79 @@ class AccountGlobalObject < DataObject
 
 
   attr_accessor :description,
+      :fiscal_year,
+      :new_chart_code,
+      :object_code,
+      :object_code_name,
+      :object_code_short_name,
+      :reports_to_object_code,
+      :object_type_code,
+      :level_code,
+      :object_sub_type_code,
+      :suny_object_code,
+      :financial_object_code_description,
+      :cg_reporting_code,
+      :historical_financial_object_code,
+      :active_indicator,
+      :budget_aggregation_code,
+      :mandatory_transfer,
+      :federal_funded_code,
+      :next_year_object_code
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        cornell_university: 'yes',
+        description: random_alphanums(20, ' AFT'),
+        fiscal_year:   '2014',
+        new_chart_code: 'IT - Ithaca Campus', #TODO grab this from config file
+        object_code: random_alphanums(4), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
+        object_code_name: random_alphanums(10, 'AFT'),
+        object_code_short_name: random_alphanums(5, 'AFT'),
+        reports_to_object_code: 'A000',
+        object_type_code: 'ES',
+        level_code:    'BADJ',
+        object_sub_type_code: 'BI',
+        #suny_object_code: 'TEST',
+        financial_object_code_description: random_alphanums(30, 'AFT'),
+        cg_reporting_code:      '06SM',
+        budget_aggregation_code: 'L',
+        mandatory_transfer: '::random::',
+        federal_funded_code: '::random::'
 
-        description:          random_alphanums(20, 'AFT'),
-        new_chart_code:           'IT - Ithaca Campus', #TODO grab this from config file
-        new_number:               '1000710', #TODO get from config
-        supervisor_principal_name:  'jaraujo',
-        manager_principal_name: 'warriaga',
-        org_cd:               'BI',
-        sub_fnd_group_code:   '',
-        acct_expire_date:     '',
-        postal_cd:            '14853',
-        city:                 'Ithaca',
-        state:                'NY',
-        address:              'Cornell University',
-        contintuation_coa_code: '',
-        contintuation_acct_number: '',
-        income_stream_financial_cost_cd:  'IT - Ithaca Campus',
-        income_stream_account_number:     '0142900',
-        cfda_number:          '',
-        higher_ed_funct_cd:   '',
-        sufficient_funds_cd:    'C - Consolidation',
-        trans_processing_sufficient_funds_code: '',
-        labor_benefit_rate_category_code: ''
     }
     set_options(defaults.merge(opts))
   end
 
   def create
     visit(MainPage).object_code
+    on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
       #page.description.focus
       #page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description
+      fill_out page, :description,
+              :fiscal_year, :new_chart_code, :object_code, :object_code_name,
+              :object_code_short_name, :reports_to_object_code, :object_type_code,
+              :level_code, :object_sub_type_code, :financial_object_code_description,
+              :cg_reporting_code, :historical_financial_object_code,
+              :active_indicator, :budget_aggregation_code, :mandatory_transfer,
+              :federal_funded_code, :next_year_object_code
 
-      #page.add_account_detail
+      #Cornell
+      fill_out page,           :suny_object_code
+
+
+
+
+
+               #page.add_account_detail
       #createCornellAccountGlobalObject  if cornell_university == 'yes'
 
       page.save
       @document_id = page.document_id
     end
   end
+
+
+
+end #class
