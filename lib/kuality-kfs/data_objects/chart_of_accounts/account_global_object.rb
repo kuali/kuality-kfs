@@ -1,4 +1,10 @@
-class AccountGlobalObject < DataObject
+class AccountGlobalExtendedAttributesObject < DataObject
+  # This super-class provides an overridable target for institutions to
+  # inject extended attributes into an AccountGlobalObject. Please provide the
+  # overrides in your institution's project.
+end
+
+class AccountGlobalObject < AccountGlobalExtendedAttributesObject
 
 #  include Navigation
 #  include DateFactory
@@ -6,14 +12,11 @@ class AccountGlobalObject < DataObject
 
   attr_accessor :description, :fo_principal_name, :supervisor_principal_name,
                 :org_cd, :sub_fnd_group_code, :acct_expire_date,
-                :postal_cd, :city, :state, :address,
+                :postal_code, :city, :state, :address,
                 :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
                 :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
-                :new_chart_code, :new_number,
-
-                :organization_code, :add_multiple_accounting_lines, :search_account_number
-
+                :new_chart_code, :new_number
 
   def initialize(browser, opts={})
     @browser = browser
@@ -27,7 +30,7 @@ class AccountGlobalObject < DataObject
         org_cd:               'BI',
         sub_fnd_group_code:   '',
         acct_expire_date:     '',
-        postal_cd:            '14853',
+        postal_code:            '14853',
         city:                 'Ithaca',
         state:                'NY',
         address:              'Cornell University',
@@ -52,11 +55,16 @@ class AccountGlobalObject < DataObject
     on AccountGlobalPage do |page|
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :new_chart_code, :new_number
+      fill_out page, :description, :fo_principal_name, :supervisor_principal_name,
+               :org_cd, :sub_fnd_group_code, :acct_expire_date,
+               :postal_code, :city, :state, :address,
+               :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
+               :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
+               :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
+               :new_chart_code, :new_number
+      super # For now, overriding the super#create should only do what is required to fill out extended attributes
+
       page.add_account_detail
-
-      add_multiple_accounting_lines
-
       page.save
       @document_id = page.document_id
     end
@@ -72,9 +80,9 @@ class AccountGlobalObject < DataObject
 
   def add_multiple_accounting_lines
     if !@add_multiple_accounting_lines.nil?
-      on AccountGlobalPage do |page|
-        page.add_multiple_accounting_lines
-        page.account_number.fit search_account_number
+      on(AccountGlobalPage).add_multiple_accounting_lines
+      on AccountGlobalLookupPage do |page|
+        page.account_number.fit @search_account_number
         page.search
         page.select_all_rows_from_this_page
         page.return_selected_results

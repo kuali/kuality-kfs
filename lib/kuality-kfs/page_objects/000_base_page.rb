@@ -73,6 +73,8 @@ class BasePage < PageFactory
       action(:yes) { |b| b.frm.button(name: 'methodToCall.rejectYes').click }
       action(:no) {|b| b.frm.button(name: 'methodToCall.rejectNo').click }
       action(:add) { |b| b.frm.button(name: 'methodToCall.addNotificationRecipient.anchor').click }
+
+      action(:add_multiple_accounting_lines) { |b| b.frm.button(title: 'Multiple Value Search on Account').click }
     end
 
     def search_results_table
@@ -94,6 +96,10 @@ class BasePage < PageFactory
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
       action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
+
+      action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
+      action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
+
     end
 
     def route_log
@@ -129,6 +135,7 @@ class BasePage < PageFactory
       end
       element(:left_errmsg_tabs) { |b| b.frm.divs(class: 'left-errmsg-tab') }
       element(:left_errmsg) { |b| b.frm.divs(class: 'left-errmsg') }
+      value(:left_errmsg_text) { |b| b.left_errmsg.collect {|m| m.text.split("\n")}.flatten }
       element(:error_messages_div) { |b| b.frm.div(class: 'error') }
     end
 
