@@ -1,7 +1,7 @@
 class ObjectCodeGlobalObject < DataObject
 
 #  include Navigation
-#  include DateFactory
+  include DateFactory
   include StringFactory
 
 
@@ -29,30 +29,30 @@ class ObjectCodeGlobalObject < DataObject
     @browser = browser
 
     defaults = {
-        description: random_alphanums(20, ' AFT'),
-        object_code: random_alphanums(4), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
-        object_code_name: random_alphanums(10, 'AFT'),
-        object_code_short_name: random_alphanums(5, 'AFT'),
-        reports_to_object_code: 'A000',
-        object_type_code: 'ES',
-        level_code:    'BADJ',
-        cg_reporting_code:      '06SM',
+        description:             'ATF Test 594/639 Expense Object Code ' + random_alphanums(5, ' AFT'),
+        object_code:             random_alphanums(2, '65'), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
+        object_code_name:        'Supplies - Classroom ' + random_alphanums(10, 'AFT'),
+        object_code_short_name:  'Classroom',
+        reports_to_object_code:  'E370',
+        object_type_code:        'EX',
+        level_code:              'SMAT',
+        cg_reporting_code:       '06SM',
 
-        object_sub_type_code: 'BI',
+        object_sub_type_code:    'OE',
 
         financial_object_code_description: random_alphanums(30, 'AFT'),
-        budget_aggregation_code: 'L',
-        mandatory_transfer: '::random::',
-        federal_funded_code: '::random::'
+        budget_aggregation_code: 'O',
+        mandatory_transfer: 'N - NOT APPLICABLE', # ::random::',
+        federal_funded_code: 'N - Attribute Not Used at Cornell' #'::random::'
 
     }
     set_options(defaults.merge(opts))
   end
 
   def create
-    visit(MainPage).object_code
-    on(ObjectCodeLookupPage).create_new
-    on ObjectCodePage do |page|
+    visit(MainPage).object_code_global
+    #on(ObjectCodeLookupPage).create_new
+    on ObjectCodeGlobalPage do |page|
       #page.description.focus
       #page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description,
