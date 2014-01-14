@@ -23,8 +23,13 @@ class MainPage < BasePage
   'Disbursement Voucher Travel Company',
   #Global Favorites
   'User Favorite Accounts',
-  #Vender
-  'Vendor', 'Vendor Contracts'
+  #Vendor
+  'Vendor', 'Vendor Contracts',
 
+  #General Ledger
+  'General Ledger Entry',
+
+  #Financial Processing
+  'Pre-Encumbrance'
 
 end

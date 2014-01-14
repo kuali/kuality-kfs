@@ -52,12 +52,16 @@ class Lookups < BasePage
     def organization_facets
       element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
       element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'organizationDocumentNumber') }
+      element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
     def financial_object_facets
       element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
       element(:subobject_code) { |b| b.frm.text_field(name: 'financialSubObjectCode') }
       element(:object_type_code) { |b| b.frm.text_field(name: 'financialObjectTypeCode') }
+      element(:balance_type_code) { |b| b.frm.text_field(name: 'financialBalanceTypeCode') }
+      element(:origin_code) { |b| b.frm.text_field(name: 'financialSystemOriginationCode') }
     end
 
     def selection_actions
@@ -69,13 +73,14 @@ class Lookups < BasePage
 
     def fiscal_year_facets
       element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
+      element(:fiscal_period) { |b| b.frm.text_field(name: 'universityFiscalPeriodCode') }
     end
 
     def encumbrance_object_facets
-      element(:object_code) { |b| b.frm.text_field(name: 'objectCode') }
-      element(:subobject_code) { |b| b.frm.text_field(name: 'subObjectCode') }
-      element(:balance_type) { |b| b.frm.text_field(name: 'balanceTypeCode') }
-      element(:origin_code) { |b| b.frm.text_field(name: 'originCode') }
+      element(:encumbrance_object_code) { |b| b.frm.text_field(name: 'objectCode') }
+      element(:encumbrance_subobject_code) { |b| b.frm.text_field(name: 'subObjectCode') }
+      element(:encumbrance_balance_type) { |b| b.frm.text_field(name: 'balanceTypeCode') }
+      element(:encumbrance_origin_code) { |b| b.frm.text_field(name: 'originCode') }
       element(:include_pending_ledger_entry) { |b| b.frm.radio(name: 'dummyBusinessObject.pendingEntryOption') }
       element(:include_zeroed_out_encumbrances) { |b| b.frm.radio(name: 'dummyBusinessObject.zeroEncumbranceOption') }
     end
@@ -85,6 +90,16 @@ class Lookups < BasePage
       element(:closed_yes) { |b| b.closed.radio(id: 'closedYes') }
       element(:closed_no) { |b| b.closed.radio(id: 'closedNo') }
       element(:closed_both) { |b| b.closed.radio(id: 'closedBoth') }
+    end
+
+    def reference_document_facets
+      element(:reference_document_number) { |b| b.frm.text_field(name: 'referenceFinancialDocumentNumber') }
+      element(:reference_document_type_code) { |b| b.frm.text_field(name: 'referenceFinancialDocumentTypeCode') }
+      element(:reference_origin_code) { |b| b.frm.text_field(name: 'referenceFinancialSystemOriginationCode') }
+    end
+
+    def project_facets
+      element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
     end
 
     def account_global_cornell_university_extensions
