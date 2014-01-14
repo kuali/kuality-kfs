@@ -31,8 +31,7 @@ class ObjectCodeGlobalPage < BasePage
   element(:new_year_fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.objectCodeGlobalDetails.universityFiscalYear') }
   element(:new_year_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.objectCodeGlobalDetails.chartOfAccountsCode') }
 
-
   action(:add_multiple_chart_lines) { |b| b.frm.button(title: 'Multiple Value Search on Chart') }
 
-  #action(:doc_search) { |b| b.img(alt: 'doc search').click }
+  action(:add_chart_code) { |b| b.frm.button(name: 'methodToCall.addLine.objectCodeGlobalDetails.(!!org.kuali.kfs.coa.businessobject.ObjectCodeGlobalDetail!!).(:::;18;:::).anchor18').click }
 end

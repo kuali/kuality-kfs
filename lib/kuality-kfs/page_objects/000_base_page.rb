@@ -12,6 +12,7 @@ class BasePage < PageFactory
   DISAPPROVE = 'disapprove'
   SEND_NOTIFICATION = 'send notification'
 
+  action(:use_new_tab) { |b| b.windows.last.use }
   action(:return_to_portal) { |b| b.portal_window.use }
   action(:close_extra_windows) { |b| b.close_children if b.windows.length > 1 }
   action(:close_children) { |b| b.windows[0].use; b.windows[1..-1].each{ |w| w.close} }
@@ -23,6 +24,8 @@ class BasePage < PageFactory
 
   action(:form_tab) { |name, b| b.frm.h2(text: /#{name}/) }
   action(:form_status) { |name, b| b.form_tab(name).text[/(?<=\()\w+/] }
+
+  action(:doc_search) { |b| b.img(alt: 'doc search').click }
 
   class << self
 
