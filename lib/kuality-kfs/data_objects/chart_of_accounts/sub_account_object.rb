@@ -1,8 +1,6 @@
-class SubAccountObject < DataObject
+class SubAccountObject < KFSDataObject
 
-  include StringFactory
-
-  attr_accessor :description, :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier, :press
+  attr_accessor :description, :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier
 #add if needed                :fin_reporting_chart_code, :fin_reporting_org_code, :fin_reporting_code,
 
 
@@ -23,21 +21,13 @@ class SubAccountObject < DataObject
     visit(MainPage).sub_account
     on(SubAccountLookupPage).create
     on SubAccountPage do |page|
+      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :chart_code, :account_number, :sub_account_number, :name
-      case press
-        when SubAccountPage::SAVE
-          page.save
-        when SubAccountPage::SUBMIT
-          page.submit
-        when SubAccountPage::BLANKET_APPROVE
-          page.blanket_approve
-        else
-          page.save
-      end
-      @document_id = page.document_id
+
+      press_form_button page
     end
   end
 

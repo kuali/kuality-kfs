@@ -37,6 +37,7 @@ class OrganizationObject < KFSDataObject
     visit(MainPage).organization
     on(OrganizationLookupPage).create
     on OrganizationPage do |page|
+      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -44,17 +45,8 @@ class OrganizationObject < KFSDataObject
                      :physcal_campus_code, :type_code,
                      :address_line_1, :address_line_2, :postal_code, :country_code,
                      :begin_date, :reports_to_chart_code, :reports_to_org_code
-      case press
-        when OrganizationPage::SAVE
-          page.save
-        when OrganizationPage::SUBMIT
-          page.submit
-        when OrganizationPage::BLANKET_APPROVE
-          page.blanket_approve
-        else
-          page.save
-      end
-      @document_id = page.document_id
+
+      press_form_button page
     end
   end
 
