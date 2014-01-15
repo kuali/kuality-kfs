@@ -27,7 +27,7 @@ class MainPage < BasePage
   'Vendor', 'Vendor Contracts',
 
   #General Ledger
-  'General Ledger Entry',
+  'General Ledger Entry', 'Open Encumbrances',
 
   #Financial Processing
   'Pre-Encumbrance'
