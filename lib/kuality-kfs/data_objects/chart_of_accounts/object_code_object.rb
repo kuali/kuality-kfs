@@ -1,4 +1,4 @@
-class ObjectCodeObject < DataObject
+class ObjectCodeObject < KFSDataObject
 
 #  include Navigation
 #  include DateFactory
@@ -70,6 +70,25 @@ class ObjectCodeObject < DataObject
     end
   end
 
+  def save
+    on(ObjectCodePage).save
+  end
+
+  def submit
+    on(ObjectCodePage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodePage).blanket_approve
+  end
+
+  def view
+    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
+  def copy
+    on(ObjectCodePage).copy
+  end
 
 
 end #class
