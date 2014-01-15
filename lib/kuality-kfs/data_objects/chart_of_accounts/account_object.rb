@@ -1,8 +1,4 @@
-class AccountObject < DataObject
-
-#  include Navigation
-#  include DateFactory
-  include StringFactory
+class AccountObject < KFSDataObject
 
   attr_accessor :description, :chart_code, :number, :name, :org_cd, :campus_cd, :effective_date,
                 :postal_cd, :city, :state, :address,
@@ -50,6 +46,7 @@ class AccountObject < DataObject
     visit(MainPage).account
     on(AccountLookupPage).create
     on AccountPage do |page|
+      @document_id = page.document_id
       page.expand_all
       page.type_cd.fit @type_cd
       page.description.focus
@@ -59,8 +56,8 @@ class AccountObject < DataObject
                :higher_ed_funct_cd, :restricted_status_cd, :fo_principal_name, :supervisor_principal_name,
                :manager_principal_name, :budget_record_level_cd, :sufficient_funds_cd, :expense_guideline_text,
                :income_guideline_txt, :purpose_text, :income_stream_financial_cost_cd, :income_stream_account_number
-      page.save
-      @document_id = page.document_id
+
+      press_form_button page
     end
   end
 
