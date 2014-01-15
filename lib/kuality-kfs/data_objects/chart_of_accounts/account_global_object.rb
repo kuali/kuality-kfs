@@ -10,6 +10,7 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
 #  include DateFactory
   include StringFactory
 
+
   attr_accessor :description, :fo_principal_name, :supervisor_principal_name,
                 :org_cd, :sub_fnd_group_code, :acct_expire_date,
                 :postal_code, :city, :state, :address,

@@ -37,9 +37,8 @@ class SubObjectCodeGlobalObject < DataObject
     visit(MainPage).sub_object_code_global
     on SubObjectCodeGlobalPage do |page|
 
-      #page.description.focus
-      #page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      #
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
        fill_out page,  :description, :new_chart_code,
                 :organization_document_number,
                 :new_fiscal_year, :new_chart_code, :new_sub_object_code, :new_sub_object_code_name, :new_sub_object_code_short_name,
