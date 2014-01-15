@@ -29,6 +29,10 @@ class AccountPage < BasePage
   element(:expense_guideline_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountExpenseGuidelineText') }
   element(:income_guideline_txt) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountIncomeGuidelineText') }
   element(:purpose_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountPurposeText') }
+  element(:closed) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.closed') }
+  element(:expiration_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountExpirationDate') }
+  element(:continuation_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.continuationFinChrtOfAcctCd') }
+  element(:continuation_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.continuationAccountNumber') }
 
   element(:income_stream_financial_cost_cd) { |b| b.frm.select(name: 'document.newMaintainableObject.incomeStreamFinancialCoaCode') }
   element(:income_stream_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.incomeStreamAccountNumber') }

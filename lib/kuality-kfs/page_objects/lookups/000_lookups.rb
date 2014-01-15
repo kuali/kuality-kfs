@@ -87,9 +87,9 @@ class Lookups < BasePage
 
     def closed_radios
       element(:closed) { |b| b.frm.radios(name: 'closed') }
-      element(:closed_yes) { |b| b.closed.radio(id: 'closedYes') }
-      element(:closed_no) { |b| b.closed.radio(id: 'closedNo') }
-      element(:closed_both) { |b| b.closed.radio(id: 'closedBoth') }
+      element(:closed_yes) { |b| b.frm.radio(id: 'closedYes') }
+      element(:closed_no) { |b| b.frm.radio(id: 'closedNo') }
+      element(:closed_both) { |b| b.frm.radio(id: 'closedBoth') }
     end
 
     def reference_document_facets
