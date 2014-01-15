@@ -49,6 +49,8 @@ class ObjectCodeGlobalObject < DataObject
   def create
     visit(MainPage).object_code_global
     on ObjectCodeGlobalPage do |page|
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description,
                :object_code, :object_code_name, :object_code_short_name,
                :reports_to_object_code, :object_type_code,
