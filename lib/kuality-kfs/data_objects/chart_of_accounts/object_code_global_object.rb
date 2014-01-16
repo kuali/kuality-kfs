@@ -49,11 +49,6 @@ class ObjectCodeGlobalObject < KFSDataObject
 
   def create
     visit(MainPage).object_code_global
-    #on MainPage do |page|
-    #  page.description.focus
-    #  page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-    #  page.object_code_global
-    #end
 
     on ObjectCodeGlobalPage do |page|
       page.description.focus

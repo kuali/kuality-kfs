@@ -53,8 +53,11 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
 
   def create
     visit(MainPage).account_global
-    page.description.focus
-    page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+    on MainPage do |page|
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+    end
+
     on AccountGlobalPage do |page|
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
