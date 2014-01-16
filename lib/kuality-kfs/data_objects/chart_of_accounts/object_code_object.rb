@@ -50,7 +50,6 @@ class ObjectCodeObject < KFSDataObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).object_code
 
     on(ObjectCodeLookupPage).create_new

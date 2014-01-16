@@ -34,7 +34,6 @@ class SubObjectCodeGlobalObject < DataObject
 
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).sub_object_code_global
     on SubObjectCodeGlobalPage do |page|
 

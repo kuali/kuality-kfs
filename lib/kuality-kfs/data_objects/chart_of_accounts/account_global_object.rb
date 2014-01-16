@@ -52,7 +52,6 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).account_global
 
     on AccountGlobalPage do |page|

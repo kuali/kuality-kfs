@@ -48,7 +48,6 @@ class ObjectCodeGlobalObject < KFSDataObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).object_code_global
 
     on ObjectCodeGlobalPage do |page|

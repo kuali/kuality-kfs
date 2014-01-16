@@ -1,9 +1,8 @@
 class MainPage < BasePage
 
-  page_url "#{$base_url}portal.jsp"
+  page_url "#{$base_url}portal.do?selectedTab=main"
 
   description_field
-  tab_buttons
 
   action(:asset_global_add) { |b| b.link(text: 'Asset Global (Add)').click }
   action(:outstanding_certifications_by_chart_org_report) { |b| b.frm.link(text: 'Outstanding Certifications by Chart/Org/Report').click }

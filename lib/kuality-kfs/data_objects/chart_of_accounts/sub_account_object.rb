@@ -18,7 +18,6 @@ class SubAccountObject < KFSDataObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).sub_account
     on(SubAccountLookupPage).create
     on SubAccountPage do |page|

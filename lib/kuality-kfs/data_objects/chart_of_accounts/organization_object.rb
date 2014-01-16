@@ -34,7 +34,6 @@ class OrganizationObject < KFSDataObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).organization
     on(OrganizationLookupPage).create
     on OrganizationPage do |page|

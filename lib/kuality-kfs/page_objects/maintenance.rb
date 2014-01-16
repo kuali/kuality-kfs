@@ -1,4 +1,5 @@
 class MaintenancePage < BasePage
+  page_url "#{$base_url}portal.do?selectedTab=maintenance"
 
   tab_buttons
 

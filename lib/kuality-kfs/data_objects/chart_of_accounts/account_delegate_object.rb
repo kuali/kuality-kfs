@@ -22,7 +22,6 @@ class AccountDelegateObject < DataObject
   end
 
   def create
-    on(MainPage).main_menu_tab
     visit(MainPage).account_delegate
     on(AccountDelegateLookupPage).create
     on AccountDelegatePage do |page|
