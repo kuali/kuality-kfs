@@ -1,4 +1,5 @@
 class MainPage < BasePage
+  description_field
 
   page_url "#{$base_url}portal.jsp"
 
