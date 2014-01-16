@@ -52,11 +52,8 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
   end
 
   def create
+    on(MainPage).main_menu_tab
     visit(MainPage).account_global
-    on MainPage do |page|
-      page.description.focus
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-    end
 
     on AccountGlobalPage do |page|
       page.description.focus

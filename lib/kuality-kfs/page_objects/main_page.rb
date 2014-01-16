@@ -1,8 +1,9 @@
 class MainPage < BasePage
-  description_field
 
   page_url "#{$base_url}portal.jsp"
 
+  description_field
+  tab_buttons
 
   action(:asset_global_add) { |b| b.link(text: 'Asset Global (Add)').click }
   action(:outstanding_certifications_by_chart_org_report) { |b| b.frm.link(text: 'Outstanding Certifications by Chart/Org/Report').click }
@@ -10,10 +11,10 @@ class MainPage < BasePage
   action(:account_status_base_funds) { |b| b.link(text: 'Account Status (Base Funds)').click }
   action(:account_status_current_funds) { |b| b.link(text: 'Account Status (Current Funds)').click }
 
-
-
+  # method used to get text links from page
   # browser.links.collect(&:text)
-  links 'Cash Control', 'Customer Credit Memo', 'Customer Invoice', 'Customer Invoice Writeoff',
+  links 'Cash Control',
+      'Customer Credit Memo', 'Customer Invoice', 'Customer Invoice Writeoff',
       'Customer Invoice Writeoff Lookup', 'Payment Application',
 
       'Budget Construction Selection',
@@ -62,9 +63,9 @@ class MainPage < BasePage
       #Lookup and Maintence
       'Pre-Asset Tagging',
 
-      'Asset', 'Asset Fabrication'
+      'Asset', 'Asset Fabrication',
       ##link created above because of special characters 'Asset Global (Add)',
-      links 'Asset Location Global', 'Asset Payment', 'Asset Retirement Global',
+      'Asset Location Global', 'Asset Payment', 'Asset Retirement Global',
 
       'Account', 'Account Global', 'Account Delegate', 'Account Delegate Global',
       'Account Delegate Model', 'Account Delegate Global From Model', 'Object Code', 'Object Code Global',
@@ -76,10 +77,10 @@ class MainPage < BasePage
 
       'User Favorite Accounts',
 
-      'Vendor', 'Vendor Contracts'
+      'Vendor', 'Vendor Contracts',
 
       #Balance Inquiries
-      links 'Available Balances', 'Balances by Consolidation', 'Cash Balances', 'Current Fund Balance',
+      'Available Balances', 'Balances by Consolidation', 'Cash Balances', 'Current Fund Balance',
       'General Ledger Balance', 'General Ledger Entry', 'General Ledger Pending Entry', 'Open Encumbrances',
 
       #links created above because of special characters 'Account Status (Base Funds)', 'Account Status (Current Funds)',

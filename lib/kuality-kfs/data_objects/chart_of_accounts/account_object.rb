@@ -43,6 +43,7 @@ class AccountObject < KFSDataObject
   end
 
   def create
+    on(MainPage).main_menu_tab
     visit(MainPage).account
     on(AccountLookupPage).create
     on AccountPage do |page|
