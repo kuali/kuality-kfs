@@ -8,8 +8,11 @@ class PreEncumbrancePage < BasePage
   tab_buttons
   error_messages
 
+
   element(:accounting_lines) { |b| b.frm.div(id: 'tab-AccountingLines-div').table(class: 'datatable') }
 
+
+  #writeable_elements
   element(:encumbrance_reversal_date) { |b| b.frm.text_field(name: 'document.reversalDate') }
   element(:encumbrance_chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
   element(:encumbrance_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
@@ -38,5 +41,9 @@ class PreEncumbrancePage < BasePage
 
   action(:add_encumbrance) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
   action(:add_disencumbrance) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
+
+  #readonly_elements
+  action(:encumbrance_reference_number) { |offset, b| b.accounting_lines.span(id: "document.sourceAccountingLine[#{offset}].referenceNumber.div").text }
+  element(:first_encumbrance_reference_number) { |b| b.encumbrance_reference_number(0) }
 
 end
