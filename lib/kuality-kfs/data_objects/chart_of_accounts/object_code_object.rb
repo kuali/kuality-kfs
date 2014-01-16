@@ -5,7 +5,7 @@ class ObjectCodeObject < KFSDataObject
   include StringFactory
 
 
-  attr_accessor :description,
+  attr_accessor :description, :document_id,
       :fiscal_year,
       :new_chart_code,
       :object_code,
@@ -23,7 +23,7 @@ class ObjectCodeObject < KFSDataObject
       :budget_aggregation_code,
       :mandatory_transfer,
       :federal_funded_code,
-      :next_year_object_code, :document_id
+      :next_year_object_code
 
   def initialize(browser, opts={})
     @browser = browser
@@ -50,7 +50,9 @@ class ObjectCodeObject < KFSDataObject
   end
 
   def create
+    on(MainPage).main_menu_tab
     visit(MainPage).object_code
+
     on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
       page.description.focus
@@ -66,13 +68,29 @@ class ObjectCodeObject < KFSDataObject
       fill_out page, :suny_object_code
 
       page.save
-      @the_document_id = page.document_id
-      @document_id.inspect
-
-
+      @document_id = page.document_id
     end
   end
 
+  def save
+    on(ObjectCodePage).save
+  end
+
+  def submit
+    on(ObjectCodePage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodePage).blanket_approve
+  end
+
+  def view
+    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
+  def copy
+    on(ObjectCodePage).copy
+  end
 
 
 end #class
