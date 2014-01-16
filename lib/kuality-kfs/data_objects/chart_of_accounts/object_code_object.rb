@@ -1,4 +1,4 @@
-class ObjectCodeObject < DataObject
+class ObjectCodeObject < KFSDataObject
 
 #  include Navigation
 #  include DateFactory
@@ -23,7 +23,7 @@ class ObjectCodeObject < DataObject
       :budget_aggregation_code,
       :mandatory_transfer,
       :federal_funded_code,
-      :next_year_object_code
+      :next_year_object_code, :document_id
 
   def initialize(browser, opts={})
     @browser = browser
@@ -66,7 +66,10 @@ class ObjectCodeObject < DataObject
       fill_out page, :suny_object_code
 
       page.save
-      @document_id = page.document_id
+      @the_document_id = page.document_id
+      @document_id.inspect
+
+
     end
   end
 
