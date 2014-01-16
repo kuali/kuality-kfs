@@ -51,6 +51,12 @@ class ObjectCodeObject < DataObject
 
   def create
     visit(MainPage).object_code
+    on MainPage do |page|
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+    end
+    on(MainPage).object_code
+
     on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
       page.description.focus
