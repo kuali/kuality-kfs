@@ -29,9 +29,16 @@ class AccountPage < BasePage
   element(:expense_guideline_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountExpenseGuidelineText') }
   element(:income_guideline_txt) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountIncomeGuidelineText') }
   element(:purpose_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountPurposeText') }
+  element(:closed) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.closed') }
+  element(:continuation_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.continuationFinChrtOfAcctCd') }
+  element(:continuation_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.continuationAccountNumber') }
+  element(:account_expiration_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountExpirationDate') }
 
   element(:income_stream_financial_cost_cd) { |b| b.frm.select(name: 'document.newMaintainableObject.incomeStreamFinancialCoaCode') }
   element(:income_stream_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.incomeStreamAccountNumber') }
+
+  value(:original_chart_code) { |b| b.frm.span(id: 'document.oldMaintainableObject.chartOfAccountsCode.div').text.strip }
+  value(:original_account_number) { |b| b.frm.span(id: 'document.oldMaintainableObject.accountNumber.div').text.strip }
 
   value(:account_maintenance_errors) { |b| b.frm.div(id: 'tab-AccountMaintenance-div').div(class: 'left-errmsg-tab').div.divs.collect{ |div| div.text }  }
 
