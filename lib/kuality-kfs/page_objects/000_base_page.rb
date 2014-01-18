@@ -1,16 +1,22 @@
 class BasePage < PageFactory
 
   # These constants can be used with switches to add modularity to object create methods.
-  SAVE = 'save'
-  SUBMIT = 'submit'
-  BLANKET_APPROVE = 'blanket approve'
-  CLOSE = 'close'
-  CANCEL = 'cancel'
-  RELOAD = 'reload'
-  COPY = 'copy'
-  APPROVE = 'approve'
-  DISAPPROVE = 'disapprove'
-  SEND_NOTIFICATION = 'send notification'
+  KNOWN_BUTTONS = {
+    save:              'save',
+    submit:            'submit',
+    blanket_approve:   'blanket approve',
+    close:             'close',
+    cancel:            'cancel',
+    reload:            'reload',
+    copy:              'copy',
+    approve:           'approve',
+    disapprove:        'disapprove',
+    send_notification: 'send notification'
+  }
+
+  def self.available_buttons
+    KNOWN_BUTTONS.values.join('|')
+  end
 
   action(:use_new_tab) { |b| b.windows.last.use }
   action(:return_to_portal) { |b| b.portal_window.use }
