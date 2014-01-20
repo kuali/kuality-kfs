@@ -1,6 +1,7 @@
 class SubAccountObject < KFSDataObject
 
-  attr_accessor :description, :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier
+  attr_accessor :description, :document_id, :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier,
+                :cost_sharing_account_number, :cost_sharing_chart_of_accounts_code
 #add if needed                :fin_reporting_chart_code, :fin_reporting_org_code, :fin_reporting_code,
 
 
@@ -25,7 +26,8 @@ class SubAccountObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :chart_code, :account_number, :sub_account_number, :name
+      fill_out page, :description, :chart_code, :account_number, :sub_account_number, :name,
+               :cost_sharing_account_number, :cost_sharing_chart_of_accounts_code
 
       press_form_button page
     end
