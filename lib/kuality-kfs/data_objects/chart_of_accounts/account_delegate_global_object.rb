@@ -1,17 +1,7 @@
-class AccountDelegateGlobalExtendedAttributesObject < DataObject
-  # This super-class provides an overridable target for institutions to
-  # inject extended attributes into an AccountGlobalObject. Please provide the
-  # overrides in your institution's project.
-end
+class AccountDelegateGlobalObject < KFSDataObject
 
-class AccountDelegateGlobalObject < AccountDelegateGlobalExtendedAttributesObject
-
-#  include Navigation
-#  include DateFactory
-  include StringFactory
-
-
-  attr_accessor :description, :doc_type, :primary_route, :start_date, :principal_name, :chart_code, :account_number
+  attr_accessor :doc_type, :primary_route, :start_date,
+                :principal_name, :chart_code, :account_number
 
   def initialize(browser, opts={})
     @browser = browser
@@ -27,21 +17,27 @@ class AccountDelegateGlobalObject < AccountDelegateGlobalExtendedAttributesObjec
   end
 
   def create
+    pre_create
+
     visit(MainPage).account_delegate_global
 
     on AccountDelegateGlobalPage do |page|
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :doc_type, :principal_name
-#      super # For now, overriding the super#create should only do what is required to fill out extended attributes
+      fill_out_extended_attributes(:delegate)
       page.add_delegate
 
       fill_out page, :chart_code, :account_number
+      fill_out_extended_attributes(:account)
+
       page.add_account
 
       page.save
       @document_id = page.document_id
     end
+
+    post_create
   end
 
   def save

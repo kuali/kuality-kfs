@@ -12,7 +12,7 @@ class KFSDataObject < DataObject
   def post_create
   end
 
-  def fill_out_extended_attributes
+  def fill_out_extended_attributes(attribute_group=nil)
   end
 
 
