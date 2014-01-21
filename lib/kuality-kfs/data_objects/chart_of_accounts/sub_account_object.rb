@@ -3,7 +3,6 @@ class SubAccountObject < KFSDataObject
   attr_accessor :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier
 #add if needed                :fin_reporting_chart_code, :fin_reporting_org_code, :fin_reporting_code,
 
-
   def initialize(browser, opts={})
     @browser = browser
 

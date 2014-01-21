@@ -86,4 +86,5 @@ class AccountGlobalObject < KFSDataObject
       end
     end
   end
+
 end

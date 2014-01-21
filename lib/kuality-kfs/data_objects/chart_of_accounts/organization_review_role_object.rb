@@ -52,4 +52,5 @@ class OrganizationReviewRoleObject < KFSDataObject
   def copy
     on(OrganizationReviewRolePage).copy
   end
+
 end

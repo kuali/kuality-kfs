@@ -76,4 +76,5 @@ class OrganizationObject < KFSDataObject
   def copy
     on(OrganizationPage).copy
   end
+
 end

@@ -6,7 +6,6 @@ class SubObjectCodeGlobalObject < KFSDataObject
                  :noc_fiscal_year, :noc_chart_code, :noc_object_code,
                  :na_chart_code, :na_account_number
 
-
   def initialize(browser, opts={})
     @browser = browser
 

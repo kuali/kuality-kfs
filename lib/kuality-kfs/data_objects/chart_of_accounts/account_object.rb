@@ -87,4 +87,5 @@ class AccountObject < KFSDataObject
   def copy
     on(AccountPage).copy
   end
+
 end
