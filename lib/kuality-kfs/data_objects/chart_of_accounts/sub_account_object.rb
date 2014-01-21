@@ -10,7 +10,7 @@ class SubAccountObject < KFSDataObject
     defaults = {
         description:          random_alphanums(40, 'AFT'),
         chart_code:           'IT', #TODO grab this from config file
-        account_number:       '0142900', #TODO need to look this up
+        account_number:       '1000710', #TODO need to look this up
         sub_account_number:   random_alphanums(7),
         name:                 random_alphanums(10)
     }
@@ -49,5 +49,9 @@ class SubAccountObject < KFSDataObject
 
   def copy
     on(SubAccountPage).copy
+  end
+
+  def approve
+    on(SubAccountPage).approve
   end
 end
