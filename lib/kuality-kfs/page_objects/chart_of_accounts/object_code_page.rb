@@ -33,7 +33,8 @@ class ObjectCodePage < BasePage
   element(:federal_funded_code) { |b| b.frm.select(name: 'document.newMaintainableObject.financialFederalFundedCode') }
   element(:next_year_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.nextYearFinancialObjectCode') }
 
-
-  #LOOKUP DOCUMENT
+  #DOCUMENT
   action(:search_reports_to_object_code) { |b| b.frm.button(alt: 'Search Reports To Object Code').click }
+
+
 end
