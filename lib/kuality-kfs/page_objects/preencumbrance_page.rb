@@ -8,9 +8,7 @@ class PreEncumbrancePage < BasePage
   tab_buttons
   error_messages
 
-
   element(:accounting_lines) { |b| b.frm.div(id: 'tab-AccountingLines-div').table(class: 'datatable') }
-
 
   #writeable_elements
   element(:encumbrance_reversal_date) { |b| b.frm.text_field(name: 'document.reversalDate') }

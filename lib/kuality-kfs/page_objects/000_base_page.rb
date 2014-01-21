@@ -71,7 +71,7 @@ class BasePage < PageFactory
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
 
-      action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click }
+      #action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click } # This is already set up
 
     end
 
