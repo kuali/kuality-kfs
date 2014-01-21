@@ -1,10 +1,10 @@
 class AccountGlobalObject < KFSDataObject
 
   attr_accessor :fo_principal_name, :supervisor_principal_name,
-                :org_cd, :sub_fnd_group_code, :acct_expire_date,
+                :org_code, :sub_fnd_group_code, :acct_expire_date,
                 :postal_code, :city, :state, :address,
-                :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
-                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
+                :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
+                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_code,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                 :new_chart_code, :new_number
 
@@ -17,20 +17,20 @@ class AccountGlobalObject < KFSDataObject
         new_number:                             '1000710', #TODO get from config
         supervisor_principal_name:              'jaraujo',
         manager_principal_name:                 'warriaga',
-        org_cd:                                 'BI',
+        org_code:                               'BI',
         sub_fnd_group_code:                     '',
         acct_expire_date:                       '',
         postal_code:                            '14853',
         city:                                   'Ithaca',
         state:                                  'NY',
         address:                                'Cornell University',
-        contintuation_coa_code:                 '',
-        contintuation_acct_number:              '',
-        income_stream_financial_cost_cd:        'IT - Ithaca Campus',
+        continuation_coa_code:                  '',
+        continuation_acct_number:               '',
+        income_stream_financial_cost_code:      'IT - Ithaca Campus',
         income_stream_account_number:           '0142900',
         cfda_number:                            '',
         higher_ed_funct_cd:                     '',
-        sufficient_funds_cd:                    'C - Consolidation',
+        sufficient_funds_code:                  'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code:       '',
         press:                                  :save
@@ -50,10 +50,10 @@ class AccountGlobalObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :fo_principal_name, :supervisor_principal_name,
-               :org_cd, :sub_fnd_group_code, :acct_expire_date,
+               :org_code, :sub_fnd_group_code, :acct_expire_date,
                :postal_code, :city, :state, :address,
-               :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
-               :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
+               :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
+               :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_code,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                :new_chart_code, :new_number
       fill_out_extended_attributes
