@@ -61,7 +61,7 @@ class BasePage < PageFactory
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', #'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
@@ -69,9 +69,6 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
-
-      action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click }
-
     end
 
     def tab_buttons
