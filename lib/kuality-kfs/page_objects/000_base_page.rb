@@ -1,16 +1,22 @@
 class BasePage < PageFactory
 
   # These constants can be used with switches to add modularity to object create methods.
-  SAVE = 'save'
-  SUBMIT = 'submit'
-  BLANKET_APPROVE = 'blanket approve'
-  CLOSE = 'close'
-  CANCEL = 'cancel'
-  RELOAD = 'reload'
-  COPY = 'copy'
-  APPROVE = 'approve'
-  DISAPPROVE = 'disapprove'
-  SEND_NOTIFICATION = 'send notification'
+  KNOWN_BUTTONS = {
+    save:              'save',
+    submit:            'submit',
+    blanket_approve:   'blanket approve',
+    close:             'close',
+    cancel:            'cancel',
+    reload:            'reload',
+    copy:              'copy',
+    approve:           'approve',
+    disapprove:        'disapprove',
+    send_notification: 'send notification'
+  }
+
+  def self.available_buttons
+    KNOWN_BUTTONS.values.join('|')
+  end
 
   action(:use_new_tab) { |b| b.windows.last.use }
   action(:return_to_portal) { |b| b.portal_window.use }
@@ -49,13 +55,13 @@ class BasePage < PageFactory
 
     # Included here because this is such a common field in KC
     def description_field
-      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription').when_present }
 #      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
 #      element(:org_doc_num) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', #'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
@@ -63,12 +69,13 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
-
-      action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click }
-
     end
 
     def tab_buttons
+      action(:main_menu_tab) { |b| b.link(title: 'Main Menu').click }
+      action(:maintenance_tab) { |b| b.link(title: 'Maintenance').click }
+      action(:administration_tab) { |b| b.link(title: 'Administration').click }
+
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
     end
 
