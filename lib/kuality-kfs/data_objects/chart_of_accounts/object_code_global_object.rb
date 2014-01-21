@@ -14,7 +14,8 @@ class ObjectCodeGlobalObject < KFSDataObject
                 :budget_aggregation_code,
                 :mandatory_transfer,
                 :federal_funded_code,
-                :next_year_object_code
+                :next_year_object_code,
+                :document_id
 
   def initialize(browser, opts={})
     @browser = browser
@@ -45,6 +46,7 @@ class ObjectCodeGlobalObject < KFSDataObject
     pre_create
 
     visit(MainPage).object_code_global
+
     on ObjectCodeGlobalPage do |page|
       @document_id = page.document_id
       page.description.focus
@@ -67,4 +69,19 @@ class ObjectCodeGlobalObject < KFSDataObject
     post_create
   end
 
+  def save
+    on(ObjectCodeGlobalPage).save
+  end
+
+  def submit
+    on(ObjectCodeGlobalPage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodeGlobalPage).blanket_approve
+  end
+
+  def copy
+    on(ObjectCodeGlobalPage).copy
+  end
 end #class

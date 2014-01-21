@@ -44,6 +44,7 @@ class AccountGlobalObject < KFSDataObject
     pre_create
 
     visit(MainPage).account_global
+
     on AccountGlobalPage do |page|
       @document_id = page.document_id
       page.description.focus

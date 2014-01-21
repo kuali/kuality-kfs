@@ -48,6 +48,7 @@ class ObjectCodeObject < KFSDataObject
     pre_create
 
     visit(MainPage).object_code
+
     on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
       @document_id = page.document_id
@@ -71,6 +72,25 @@ class ObjectCodeObject < KFSDataObject
     post_create
   end
 
+  def save
+    on(ObjectCodePage).save
+  end
+
+  def submit
+    on(ObjectCodePage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodePage).blanket_approve
+  end
+
+  def view
+    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
+  def copy
+    on(ObjectCodePage).copy
+  end
 
 
 end #class

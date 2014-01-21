@@ -55,7 +55,7 @@ class BasePage < PageFactory
 
     # Included here because this is such a common field in KC
     def description_field
-      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription').when_present }
 #      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
 #      element(:org_doc_num) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
@@ -75,6 +75,10 @@ class BasePage < PageFactory
     end
 
     def tab_buttons
+      action(:main_menu_tab) { |b| b.link(title: 'Main Menu').click }
+      action(:maintenance_tab) { |b| b.link(title: 'Maintenance').click }
+      action(:administration_tab) { |b| b.link(title: 'Administration').click }
+
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
     end
 
