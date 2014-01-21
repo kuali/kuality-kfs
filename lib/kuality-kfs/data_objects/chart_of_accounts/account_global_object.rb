@@ -4,7 +4,7 @@ class AccountGlobalObject < KFSDataObject
                 :org_code, :sub_fnd_group_code, :acct_expire_date,
                 :postal_code, :city, :state, :address,
                 :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
-                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_code,
+                :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                 :new_chart_code, :new_number
 
@@ -29,7 +29,7 @@ class AccountGlobalObject < KFSDataObject
         income_stream_financial_cost_code:      'IT - Ithaca Campus',
         income_stream_account_number:           '0142900',
         cfda_number:                            '',
-        higher_ed_funct_cd:                     '',
+        higher_ed_funct_code:                     '',
         sufficient_funds_code:                  'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code:       '',
@@ -53,7 +53,7 @@ class AccountGlobalObject < KFSDataObject
                :org_code, :sub_fnd_group_code, :acct_expire_date,
                :postal_code, :city, :state, :address,
                :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
-               :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_code,
+               :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                :new_chart_code, :new_number
       fill_out_extended_attributes
