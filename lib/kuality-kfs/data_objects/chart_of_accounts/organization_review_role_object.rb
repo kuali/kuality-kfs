@@ -14,7 +14,6 @@ class OrganizationReviewRoleObject < KFSDataObject
         org_code:               '017D', #TODO grab this from config file
         doc_type:               'KFST',
         review_types:           'B',
-        principal_name:         'dh273', #TODO grab this from config file
         action_type_code:       'FYI',
         action_policy_code:     'FIRST'
     }
@@ -29,7 +28,14 @@ class OrganizationReviewRoleObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :chart_code, :org_code, :review_types, :principal_name, :action_type_code, :action_policy_code
+      fill_out page, :description, :chart_code, :org_code, :review_types, :action_type_code, :action_policy_code
+
+      page.principal_search
+      on PersonLookup do |search|
+        search.principal_name.set random_letters(1) + '*'
+        search.search
+        search.return_random
+      end
 
       page.document_type_search
       on DocumentTypeLookupPage do |search|

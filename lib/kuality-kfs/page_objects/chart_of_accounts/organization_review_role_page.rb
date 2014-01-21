@@ -27,5 +27,6 @@ class OrganizationReviewRolePage < BasePage
   element(:action_to_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.activeToDate') }
 
   action(:document_type_search) { |b| b.frm.button(title: 'Search Document Type').click }
+  action(:principal_search) { |b| b.frm.button(title: 'Search Principal Name').click }
 
 end
