@@ -42,4 +42,6 @@ class AccountPage < BasePage
 
   value(:account_maintenance_errors) { |b| b.frm.div(id: 'tab-AccountMaintenance-div').div(class: 'left-errmsg-tab').div.divs.collect{ |div| div.text }  }
 
+  element(:error_icon) { |b| b.frm.image(alt: 'error') }
+
 end
