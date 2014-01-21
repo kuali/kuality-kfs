@@ -68,4 +68,19 @@ class ObjectCodeGlobalObject < KFSDataObject
     end
   end
 
+  def save
+    on(ObjectCodeGlobalPage).save
+  end
+
+  def submit
+    on(ObjectCodeGlobalPage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodeGlobalPage).blanket_approve
+  end
+
+  def copy
+    on(ObjectCodeGlobalPage).copy
+  end
 end #class
