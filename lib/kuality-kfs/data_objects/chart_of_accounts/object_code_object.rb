@@ -1,12 +1,6 @@
 class ObjectCodeObject < KFSDataObject
 
-#  include Navigation
-#  include DateFactory
-  include StringFactory
-
-
-  attr_accessor :description, :document_id,
-      :fiscal_year,
+  attr_accessor :fiscal_year,
       :new_chart_code,
       :object_code,
       :object_code_name,
@@ -43,17 +37,21 @@ class ObjectCodeObject < KFSDataObject
         cg_reporting_code:      '06SM',
         budget_aggregation_code: 'L',
         mandatory_transfer: '::random::',
-        federal_funded_code: '::random::'
+        federal_funded_code: '::random::',
+        press: :save
 
     }
     set_options(defaults.merge(opts))
   end
 
   def create
+    pre_create
+
     visit(MainPage).object_code
 
     on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
+      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description,
@@ -65,10 +63,13 @@ class ObjectCodeObject < KFSDataObject
 
       #Cornell
       fill_out page, :suny_object_code
+      fill_out_extended_attributes
 
-      page.save
-      @document_id = page.document_id
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
+
+    post_create
   end
 
   def save

@@ -1,12 +1,6 @@
 class ObjectCodeGlobalObject < KFSDataObject
 
-#  include Navigation
-  include DateFactory
-  include StringFactory
-
-
-  attr_accessor :description,
-                :object_code,
+  attr_accessor :object_code,
                 :object_code_name,
                 :object_code_short_name,
                 :reports_to_object_code,
@@ -42,15 +36,19 @@ class ObjectCodeGlobalObject < KFSDataObject
         budget_aggregation_code: 'O',
         mandatory_transfer: 'N - NOT APPLICABLE',
         federal_funded_code: 'N - Attribute Not Used at Cornell',
-        new_year_chart_code: 'IT - Ithaca Campus'
+        new_year_chart_code: 'IT - Ithaca Campus',
+        press: :save
     }
     set_options(defaults.merge(opts))
   end
 
   def create
+    pre_create
+
     visit(MainPage).object_code_global
 
     on ObjectCodeGlobalPage do |page|
+      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description,
@@ -62,10 +60,28 @@ class ObjectCodeGlobalObject < KFSDataObject
       page.add_chart_code
       #Cornell
       fill_out page, :suny_object_code
+      fill_out_extended_attributes
 
-      page.save
-      @document_id = page.document_id
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
+
+    post_create
   end
 
+  def save
+    on(ObjectCodeGlobalPage).save
+  end
+
+  def submit
+    on(ObjectCodeGlobalPage).submit
+  end
+
+  def blanket_approve
+    on(ObjectCodeGlobalPage).blanket_approve
+  end
+
+  def copy
+    on(ObjectCodeGlobalPage).copy
+  end
 end #class
