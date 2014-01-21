@@ -1,10 +1,7 @@
-class AdvanceDepositObject < DataObject
+class AdvanceDepositObject < KFSDataObject
 
-#  include Navigation
-#  include DateFactory
-  include StringFactory
 
-  attr_accessor :description, :advance_deposits, :accounting_lines,
+  attr_accessor :advance_deposits, :accounting_lines,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
   def initialize(browser, opts={})
@@ -27,13 +24,17 @@ class AdvanceDepositObject < DataObject
               new_account_amount: '100'
             }
         ],
+        press: :save
     }
     set_options(defaults.merge(opts))
   end
 
   def create
+    pre_create
+
     visit(MainPage).advance_deposit
     on AdvanceDepositPage do |page|
+      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -53,9 +54,12 @@ class AdvanceDepositObject < DataObject
       end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
-      page.save
-      @document_id = page.document_id
+      fill_out_extended_attributes
+
+      page.send(@press)
     end
+
+    post_create
   end
 
   def save

@@ -28,12 +28,15 @@ class OrganizationObject < KFSDataObject
         plant_chart:            'IT', #TODO grab this from config file
         plant_account_number:   '1000710', #TODO grab this from config file
         campus_plant_chart_code:'IT', #TODO grab this from config file
-        campus_plant_account_number: '1000710' #TODO grab this from config file
+        campus_plant_account_number: '1000710', #TODO grab this from config file
+        press:                       :save
     }
     set_options(defaults.merge(opts))
   end
 
   def create
+    pre_create
+
     visit(MainPage).organization
     on(OrganizationLookupPage).create
     on OrganizationPage do |page|
@@ -45,9 +48,13 @@ class OrganizationObject < KFSDataObject
                      :physcal_campus_code, :type_code,
                      :address_line_1, :address_line_2, :postal_code, :country_code,
                      :begin_date, :reports_to_chart_code, :reports_to_org_code
+      fill_out_extended_attributes
 
-      press_form_button page
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
+
+    post_create
   end
 
   def save
