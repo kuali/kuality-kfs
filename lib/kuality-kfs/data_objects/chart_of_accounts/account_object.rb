@@ -51,7 +51,7 @@ class AccountObject < KFSDataObject
     on AccountPage do |page|
       @document_id = page.document_id
       page.expand_all
-      page.type_cd.fit @type_code
+      page.type_code.fit @type_code
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :chart_code, :number, :name, :org_code, :campus_code,
