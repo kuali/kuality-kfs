@@ -1,6 +1,5 @@
 class AdvanceDepositObject < KFSDataObject
 
-
   attr_accessor :advance_deposits, :accounting_lines,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
