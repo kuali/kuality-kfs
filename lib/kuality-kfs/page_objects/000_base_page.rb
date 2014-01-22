@@ -8,7 +8,7 @@ class BasePage < PageFactory
     close:             'close',
     cancel:            'cancel',
     reload:            'reload',
-    copy:              'copy',
+    copy:              'Copy current document',
     approve:           'approve',
     disapprove:        'disapprove',
     send_notification: 'send notification'
@@ -61,7 +61,7 @@ class BasePage < PageFactory
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
