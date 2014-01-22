@@ -1,6 +1,10 @@
 class ActionList < BasePage
 
-  page_url "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_url[/^.+com/]}kew/ActionList.do"
+  page_url "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_rice_url}kew/ActionList.do"
+
+  def viewAsUser(username)
+      @browser.goto "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_rice_url}kew/ActionList.do?backdoorId=#{username}"
+  end
 
   search_results_table
 
@@ -23,8 +27,10 @@ class ActionList < BasePage
   action(:take_actions) { |b| b.frm.link(id: 'takeMassActions').click }
   action(:action) { |item_id, b| b.item_row(item_id).select(name: /actionTakenCd/) }
   action(:outbox) { |b| b.frm.link(href: /viewOutbox/).click }
-  action(:last) { |b| b.frm.link(text: 'Last').click }
+  action(:last) { |b| b.last_link.click }
   action(:refresh) { |b| b.frm.button(name: 'methodToCall.refresh').click }
+
+  element(:last_link) { |b| b.frm.link(text: 'Last') }
 
   #Default action select list for FYIs
   action(:default_action) { |b| b.frm.select(name: 'defaultActionToTake') }

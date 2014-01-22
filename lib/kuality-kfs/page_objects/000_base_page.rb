@@ -1,17 +1,24 @@
 class BasePage < PageFactory
 
   # These constants can be used with switches to add modularity to object create methods.
-  SAVE = 'save'
-  SUBMIT = 'submit'
-  BLANKET_APPROVE = 'blanket approve'
-  CLOSE = 'close'
-  CANCEL = 'cancel'
-  RELOAD = 'reload'
-  COPY = 'copy'
-  APPROVE = 'approve'
-  DISAPPROVE = 'disapprove'
-  SEND_NOTIFICATION = 'send notification'
+  KNOWN_BUTTONS = {
+    save:              'save',
+    submit:            'submit',
+    blanket_approve:   'blanket approve',
+    close:             'close',
+    cancel:            'cancel',
+    reload:            'reload',
+    copy:              'copy',
+    approve:           'approve',
+    disapprove:        'disapprove',
+    send_notification: 'send notification'
+  }
 
+  def self.available_buttons
+    KNOWN_BUTTONS.values.join('|')
+  end
+
+  action(:use_new_tab) { |b| b.windows.last.use }
   action(:return_to_portal) { |b| b.portal_window.use }
   action(:close_extra_windows) { |b| b.close_children if b.windows.length > 1 }
   action(:close_children) { |b| b.windows[0].use; b.windows[1..-1].each{ |w| w.close} }
@@ -23,6 +30,8 @@ class BasePage < PageFactory
 
   action(:form_tab) { |name, b| b.frm.h2(text: /#{name}/) }
   action(:form_status) { |name, b| b.form_tab(name).text[/(?<=\()\w+/] }
+
+  action(:doc_search) { |b| b.img(alt: 'doc search').click }
 
   class << self
 
@@ -46,7 +55,7 @@ class BasePage < PageFactory
 
     # Included here because this is such a common field in KC
     def description_field
-      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription').when_present }
 #      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
 #      element(:org_doc_num) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
@@ -63,6 +72,10 @@ class BasePage < PageFactory
     end
 
     def tab_buttons
+      action(:main_menu_tab) { |b| b.link(title: 'Main Menu').click }
+      action(:maintenance_tab) { |b| b.link(title: 'Maintenance').click }
+      action(:administration_tab) { |b| b.link(title: 'Administration').click }
+
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
     end
 
@@ -80,7 +93,9 @@ class BasePage < PageFactory
     def search_results_table
       element(:results_table) { |b| b.frm.table(id: 'row') }
 
-      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
+      element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
+
+      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click }  #; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
@@ -137,6 +152,7 @@ class BasePage < PageFactory
       element(:left_errmsg) { |b| b.frm.divs(class: 'left-errmsg') }
       value(:left_errmsg_text) { |b| b.left_errmsg.collect {|m| m.text.split("\n")}.flatten }
       element(:error_messages_div) { |b| b.frm.div(class: 'error') }
+      element(:error_message_of) { |error_message, b| b.frm.div(text: 'Errors found in this Section:').div(text: error_message) }
     end
 
     def validation_elements
