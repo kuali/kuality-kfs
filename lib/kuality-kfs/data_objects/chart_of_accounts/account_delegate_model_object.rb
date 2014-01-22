@@ -1,8 +1,4 @@
-class AccountDelegateModelObject < DataObject
-
-#  include Navigation
-#  include DateFactory
-  include StringFactory
+class AccountDelegateModelObject < KFSDataObject
 
   attr_accessor :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
                 :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
@@ -24,6 +20,8 @@ class AccountDelegateModelObject < DataObject
   end
 
   def create
+    pre_create
+
     visit(MainPage).account_delegate_model
     on(AccountDelegateModelLookupPage).create
     on AccountDelegateModelPage do |page|
@@ -34,17 +32,13 @@ class AccountDelegateModelObject < DataObject
       fill_out page, :description, :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
                      :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
                      :approval_to_this_account, :account_delegate_principal_name, :active
-      case press
-        when AccountDelegateModelPage::SAVE
-          page.save
-        when AccountDelegateModelPage::SUBMIT
-          page.submit
-        when AccountDelegateModelPage::BLANKET_APPROVE
-          page.blanket_approve
-        else
-          page.save
-      end
+      fill_out_extended_attributes
+
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
+
+    post_create
   end
 
   def save

@@ -21,5 +21,4 @@ class AccountDelegateModelPage < BasePage
   element(:account_delegate_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.accountDelegateModelDetails.accountDelegate.principalName') }
   element(:active) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.accountDelegateModelDetails.active') }
 
-
 end

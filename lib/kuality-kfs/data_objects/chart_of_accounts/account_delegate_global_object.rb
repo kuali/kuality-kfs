@@ -22,6 +22,7 @@ class AccountDelegateGlobalObject < KFSDataObject
     visit(MainPage).account_delegate_global
 
     on AccountDelegateGlobalPage do |page|
+      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :doc_type, :principal_name
@@ -33,8 +34,8 @@ class AccountDelegateGlobalObject < KFSDataObject
 
       page.add_account
 
-      page.save
-      @document_id = page.document_id
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
 
     post_create
