@@ -84,4 +84,5 @@ class ObjectCodeGlobalObject < KFSDataObject
   def copy
     on(ObjectCodeGlobalPage).copy
   end
+
 end #class

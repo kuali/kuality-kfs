@@ -92,5 +92,4 @@ class ObjectCodeObject < KFSDataObject
     on(ObjectCodePage).copy
   end
 
-
 end #class

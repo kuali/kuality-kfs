@@ -70,9 +70,6 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
-
-      #action(:reload) { |b| b.frm.button(name: 'methodToCall.reload').click } # This is already set up
-
     end
 
     def tab_buttons
@@ -157,6 +154,7 @@ class BasePage < PageFactory
       element(:left_errmsg) { |b| b.frm.divs(class: 'left-errmsg') }
       value(:left_errmsg_text) { |b| b.left_errmsg.collect {|m| m.text.split("\n")}.flatten }
       element(:error_messages_div) { |b| b.frm.div(class: 'error') }
+      element(:error_message_of) { |error_message, b| b.frm.div(text: 'Errors found in this Section:').div(text: error_message) }
     end
 
     def validation_elements
