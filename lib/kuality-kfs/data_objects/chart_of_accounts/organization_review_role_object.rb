@@ -21,6 +21,8 @@ class OrganizationReviewRoleObject < KFSDataObject
   end
 
   def create
+    pre_create
+
     visit(MainPage).organization_review
     on(OrganizationReviewLookupPage).create
     on OrganizationReviewRolePage do |page|
@@ -44,7 +46,7 @@ class OrganizationReviewRoleObject < KFSDataObject
         search.return_random
       end
 
-      press_form_button page
+      page.send(@press)
     end
   end
 
