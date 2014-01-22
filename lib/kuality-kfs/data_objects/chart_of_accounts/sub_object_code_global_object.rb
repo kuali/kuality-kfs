@@ -1,10 +1,10 @@
-class SubObjectCodeGlobalObject < DataObject
+class SubObjectCodeGlobalObject < KFSDataObject
 
 #  include Navigation
 #  include DateFactory
   include StringFactory
 
-  attr_accessor  :description, :new_chart_code,
+  attr_accessor  :new_chart_code,
                  :organization_document_number,
                  :new_fiscal_year, :new_chart_code, :new_sub_object_code, :new_sub_object_code_name, :new_sub_object_code_short_name,
                  :noc_fiscal_year, :noc_chart_code, :noc_object_code,

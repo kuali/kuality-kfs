@@ -1,6 +1,6 @@
 class SubAccountObject < KFSDataObject
 
-  attr_accessor :description, :document_id, :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier,
+  attr_accessor :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier,
                 :cost_sharing_account_number, :cost_sharing_chart_of_accounts_code
 #add if needed                :fin_reporting_chart_code, :fin_reporting_org_code, :fin_reporting_code,
 
