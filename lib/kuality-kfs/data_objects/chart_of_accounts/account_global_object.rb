@@ -1,21 +1,10 @@
-class AccountGlobalExtendedAttributesObject < DataObject
-  # This super-class provides an overridable target for institutions to
-  # inject extended attributes into an AccountGlobalObject. Please provide the
-  # overrides in your institution's project.
-end
+class AccountGlobalObject < KFSDataObject
 
-class AccountGlobalObject < AccountGlobalExtendedAttributesObject
-
-#  include Navigation
-#  include DateFactory
-  include StringFactory
-
-
-  attr_accessor :description, :fo_principal_name, :supervisor_principal_name,
-                :org_cd, :sub_fnd_group_code, :acct_expire_date,
+  attr_accessor :fo_principal_name, :supervisor_principal_name,
+                :org_code, :sub_fnd_group_code, :acct_expire_date,
                 :postal_code, :city, :state, :address,
-                :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
-                :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
+                :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
+                :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
                 :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                 :new_chart_code, :new_number
 
@@ -23,28 +12,28 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
     @browser = browser
 
     defaults = {
-        description:          random_alphanums(20, 'AFT'),
-        new_chart_code:           'IT - Ithaca Campus', #TODO grab this from config file
-        new_number:               '1000710', #TODO get from config
-        supervisor_principal_name:  'dh273', #'jaraujo',
-        manager_principal_name: 'warriaga',
-        org_cd:              '01F9',# 'BI',
-        sub_fnd_group_code:   '',
-        acct_expire_date:     '',
-        postal_code:            '14853',
-        city:                 'Ithaca',
-        state:                'NY',
-        address:              'Cornell University',
-        contintuation_coa_code: '',
-        contintuation_acct_number: '',
-        income_stream_financial_cost_cd:  'IT - Ithaca Campus',
-        income_stream_account_number:    '1400831',# '0142900',
-        cfda_number:          '',
-        higher_ed_funct_cd:   '',
-        sufficient_funds_cd:    'C - Consolidation',
+        description:                            random_alphanums(20, 'AFT'),
+        new_chart_code:                         'IT - Ithaca Campus', #TODO grab this from config file
+        new_number:                             '1000710', #TODO get from config
+        supervisor_principal_name:              'jaraujo',
+        manager_principal_name:                 'warriaga',
+        org_code:                               'BI',
+        sub_fnd_group_code:                     '',
+        acct_expire_date:                       '',
+        postal_code:                            '14853',
+        city:                                   'Ithaca',
+        state:                                  'NY',
+        address:                                'Cornell University',
+        continuation_coa_code:                  '',
+        continuation_acct_number:               '',
+        income_stream_financial_cost_code:      'IT - Ithaca Campus',
+        income_stream_account_number:           '0142900',
+        cfda_number:                            '',
+        higher_ed_funct_code:                     '',
+        sufficient_funds_code:                  'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
-        labor_benefit_rate_category_code: ''
-
+        labor_benefit_rate_category_code:       '',
+        press:                                  :save
         #organization_code: '00*'
 
     }
@@ -52,24 +41,30 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
   end
 
   def create
+    pre_create
+
     visit(MainPage).account_global
 
     on AccountGlobalPage do |page|
+      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :fo_principal_name, :supervisor_principal_name,
-               :org_cd, :sub_fnd_group_code, :acct_expire_date,
+               :org_code, :sub_fnd_group_code, :acct_expire_date,
                :postal_code, :city, :state, :address,
-               :contintuation_coa_code, :contintuation_acct_number, :income_stream_financial_cost_cd, :income_stream_account_number,
-               :cfda_number,  :higher_ed_funct_cd, :sufficient_funds_cd,
+               :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
+               :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                :new_chart_code, :new_number
-      super # For now, overriding the super#create should only do what is required to fill out extended attributes
+      fill_out_extended_attributes
 
       page.add_account_detail
-      page.save
-      @document_id = page.document_id
+
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press)
     end
+
+    post_create
   end
 
   def save
@@ -91,4 +86,5 @@ class AccountGlobalObject < AccountGlobalExtendedAttributesObject
       end
     end
   end
+
 end
