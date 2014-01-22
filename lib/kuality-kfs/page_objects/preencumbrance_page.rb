@@ -41,7 +41,7 @@ class PreEncumbrancePage < BasePage
   action(:add_disencumbrance) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
 
   #readonly_elements
-  action(:encumbrance_reference_number) { |offset, b| b.accounting_lines.span(id: "document.sourceAccountingLine[#{offset}].referenceNumber.div").text }
+  action(:encumbrance_reference_number) { |offset, b| b.frm.span(:id, "document.sourceAccountingLine[#{offset}].referenceNumber.div").text }
   element(:first_encumbrance_reference_number) { |b| b.encumbrance_reference_number(0) }
 
 end
