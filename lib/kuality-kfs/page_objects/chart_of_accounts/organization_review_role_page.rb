@@ -10,7 +10,7 @@ class OrganizationReviewRolePage < BasePage
   element(:chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:org_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
   element(:doc_type) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialSystemDocumentTypeCode') }
-  element(:review_types) { |b| b.frm.text_field(name: 'document.newMaintainableObject.reviewRolesIndicator') }
+  element(:review_types) { |b| b.frm.radio(name: 'document.newMaintainableObject.reviewRolesIndicator') }
   element(:from_amount) { |b| b.frm.text_field(name: 'document.newMaintainableObject.fromAmount') }
   element(:to_amount) { |b| b.frm.text_field(name: 'document.newMaintainableObject.toAmount') }
   element(:accounting_line_override_code) { |b| b.frm.select(name: 'document.newMaintainableObject.overrideCode') }
@@ -25,5 +25,8 @@ class OrganizationReviewRolePage < BasePage
   element(:force_action) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.forceAction') }
   element(:action_from_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.activeFromDate') }
   element(:action_to_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.activeToDate') }
+
+  action(:document_type_search) { |b| b.frm.button(title: 'Search Document Type').click }
+  action(:principal_search) { |b| b.frm.button(title: 'Search Principal Name').click }
 
 end
