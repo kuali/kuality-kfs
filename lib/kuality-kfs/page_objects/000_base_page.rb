@@ -37,7 +37,7 @@ class BasePage < PageFactory
 
     def glbl(*titles)
       titles.each do |title|
-        action(damballa(title)) { |b| b.frm.button(class: 'globalbuttons', title: title).click }
+        action(damballa(title)) { |b| b.frm.button(class: 'globalbuttons', title: title).when_present.click }
       end
     end
 
