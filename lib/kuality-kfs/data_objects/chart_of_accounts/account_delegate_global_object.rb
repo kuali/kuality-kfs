@@ -31,7 +31,6 @@ class AccountDelegateGlobalObject < KFSDataObject
 
       fill_out page, :chart_code, :account_number
       fill_out_extended_attributes(:account)
-
       page.add_account
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
