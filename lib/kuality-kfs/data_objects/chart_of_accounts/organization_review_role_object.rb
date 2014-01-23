@@ -20,13 +20,10 @@ class OrganizationReviewRoleObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).organization_review
     on(OrganizationReviewLookupPage).create
     on OrganizationReviewRolePage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -45,8 +42,6 @@ class OrganizationReviewRoleObject < KFSDataObject
         search.search
         search.return_random
       end
-
-      page.send(@press) unless @press.nil?
     end
   end
 

@@ -20,13 +20,10 @@ class SubAccountObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).sub_account
     on(SubAccountLookupPage).create
     on SubAccountPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -36,15 +33,7 @@ class SubAccountObject < KFSDataObject
                :sub_account_type_code, :cost_sharing_account_number
 
       add_adhoc_approver(page) unless @adhoc_approver_userid.nil?
-
-
-      fill_out_extended_attributes
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
   end
 
   def add_adhoc_approver(page)

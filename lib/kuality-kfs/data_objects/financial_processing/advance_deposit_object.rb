@@ -28,12 +28,9 @@ class AdvanceDepositObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).advance_deposit
     on AdvanceDepositPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -53,12 +50,7 @@ class AdvanceDepositObject < KFSDataObject
       end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
-      fill_out_extended_attributes
-
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
   end
 
   def save

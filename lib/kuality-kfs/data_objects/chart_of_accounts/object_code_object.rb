@@ -44,14 +44,10 @@ class ObjectCodeObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).object_code
-
     on(ObjectCodeLookupPage).create_new
     on ObjectCodePage do |page|
-      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description,
@@ -61,15 +57,9 @@ class ObjectCodeObject < KFSDataObject
               :cg_reporting_code, :historical_financial_object_code, :budget_aggregation_code,
               :mandatory_transfer, :federal_funded_code, :next_year_object_code
 
-      #Cornell
+      #TODO Cornell - use ext attr hook!
       fill_out page, :suny_object_code
-      fill_out_extended_attributes
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
   end
 
   def save
