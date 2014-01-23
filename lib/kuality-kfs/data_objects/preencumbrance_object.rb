@@ -14,20 +14,22 @@ class PreEncumbranceObject < KFSDataObject
     @browser = browser
 
     defaults = {
-        description:          random_alphanums(40, 'AFT'),
-        press:                :save
+        description:                       random_alphanums(40, 'AFT'),
+        press:                             :save
     }
 
     defaults.merge!({
-        encumbrance_chart_code:           'IT', #TODO grab this from config file
-        encumbrance_account_number:       random_alphanums(7),
-        encumbrance_object:               '6100',
-        encumbrance_amount:               '0.01'
+        encumbrance_chart_code:            'IT', #TODO grab this from config file
+        encumbrance_object:                '6100',
+        #encumbrance_auto_disencumber_type: 'One Time',
+        #encumbrance_start_date:            right_now[:date_w_slashes],
+        #encumbrance_partial_amount:        '0.01',
+        #encumbrance_count:                 '1',
+        encumbrance_amount:                '0.01'
     }) unless opts[:encumbrance_account_number].nil?
 
     defaults.merge!({
       disencumbrance_chart_code:           'IT', #TODO grab this from config file
-      disencumbrance_account_number:       random_alphanums(7),
       disencumbrance_object:               '6100',
       disencumbrance_amount:               '0.01'
     }) unless opts[:disencumbrance_account_number].nil?
