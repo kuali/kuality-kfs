@@ -46,7 +46,7 @@ class OrganizationReviewRoleObject < KFSDataObject
         search.return_random
       end
 
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
   end
 
