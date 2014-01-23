@@ -55,7 +55,7 @@ class AdvanceDepositObject < KFSDataObject
 #      page.modify_asset
       fill_out_extended_attributes
 
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create

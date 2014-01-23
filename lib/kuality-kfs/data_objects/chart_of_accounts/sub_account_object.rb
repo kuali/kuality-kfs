@@ -1,6 +1,9 @@
 class SubAccountObject < KFSDataObject
 
-  attr_accessor :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier
+  attr_accessor :chart_code, :account_number, :sub_account_number, :name, :active, :type_code, :icr_identifier,
+                :cost_sharing_account_number, :cost_sharing_chart_of_accounts_code,
+                :adhoc_approver_userid, :sub_account_type_code, :cost_sharing_account_number
+
 #add if needed                :fin_reporting_chart_code, :fin_reporting_org_code, :fin_reporting_code,
 
   def initialize(browser, opts={})
@@ -27,14 +30,27 @@ class SubAccountObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :chart_code, :account_number, :sub_account_number, :name
+
+      fill_out page, :description, :chart_code, :account_number, :sub_account_number, :name,
+               :cost_sharing_account_number, :cost_sharing_chart_of_accounts_code,
+               :sub_account_type_code, :cost_sharing_account_number
+
+      add_adhoc_approver(page) unless @adhoc_approver_userid.nil?
+
+
       fill_out_extended_attributes
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create
+  end
+
+  def add_adhoc_approver(page)
+    page.expand_all
+    page.ad_hoc_person.fit @adhoc_approver_userid
+    page.ad_hoc_person_add
   end
 
   def save

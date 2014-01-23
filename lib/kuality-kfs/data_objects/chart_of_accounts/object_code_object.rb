@@ -66,7 +66,7 @@ class ObjectCodeObject < KFSDataObject
       fill_out_extended_attributes
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create

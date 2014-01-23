@@ -12,33 +12,33 @@ class AccountObject < KFSDataObject
     @browser = browser
 
     defaults = {
-        description:                      random_alphanums(40, 'AFT'),
-        chart_code:                       'IT', #TODO grab this from config file
-        number:                           random_alphanums(7),
-        name:                             random_alphanums(10),
-        org_code:                           '01G0',
-        campus_code:                        'IT - Ithaca', #TODO grab this from config file
-        effective_date:                   '01/01/2010',
-        postal_code:                        '14853', #TODO grab this from config file
-        city:                             'Ithaca', #TODO grab this from config file
-        state:                            'NY', #TODO grab this from config file
-        address:                          'Cornell University', #TODO grab this from config file
-        type_code:                          'CC - Contract College', #TODO grab this from config file
-        sub_fnd_group_code:                 'ADMSYS',
-        higher_ed_funct_code:               '4000',
-        restricted_status_code:             'U - Unrestricted',
-        fo_principal_name:                'dh273',
-        supervisor_principal_name:        'ccs1',
-        manager_principal_name:           'aap98',
-        budget_record_level_code:           'C - Consolidation',
-        sufficient_funds_code:              'C - Consolidation',
-        expense_guideline_text:           'expense guideline text',
-        income_guideline_txt:             'incomde guideline text',
-        purpose_text:                     'purpose text',
-        income_stream_financial_cost_code:  'IT - Ithaca Campus',
-        income_stream_account_number:     '1000710',
-        labor_benefit_rate_cat_code:      'CC',
-        press:                            :save
+        description:                       random_alphanums(40, 'AFT'),
+        chart_code:                        'IT', #TODO grab this from config file
+        number:                            random_alphanums(7),
+        name:                              random_alphanums(10),
+        org_code:                          '01G0',
+        campus_code:                       'IT - Ithaca', #TODO grab this from config file
+        effective_date:                    '01/01/2010',
+        postal_code:                       '14853', #TODO grab this from config file
+        city:                              'Ithaca', #TODO grab this from config file
+        state:                             'NY', #TODO grab this from config file
+        address:                           'Cornell University', #TODO grab this from config file
+        type_code:                         'CC - Contract College', #TODO grab this from config file
+        sub_fnd_group_code:                'ADMSYS',
+        higher_ed_funct_code:              '4000',
+        restricted_status_code:            'U - Unrestricted',
+        fo_principal_name:                 'dh273',
+        supervisor_principal_name:         'ccs1',
+        manager_principal_name:            'aap98',
+        budget_record_level_code:          'C - Consolidation',
+        sufficient_funds_code:             'C - Consolidation',
+        expense_guideline_text:            'expense guideline text',
+        income_guideline_txt:              'incomde guideline text',
+        purpose_text:                      'purpose text',
+        income_stream_financial_cost_code: 'IT - Ithaca Campus',
+        income_stream_account_number:      '1000710',
+        labor_benefit_rate_cat_code:       'CC',
+        press:                             :save
     }
     set_options(defaults.merge(opts))
   end
@@ -62,7 +62,7 @@ class AccountObject < KFSDataObject
       fill_out_extended_attributes
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create
