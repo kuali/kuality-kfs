@@ -10,11 +10,13 @@ class AccountDelegateModelObject < KFSDataObject
     defaults = {
       description:                          random_alphanums(40, 'AFT'),
       chart_of_accounts_code:               'IT', #TODO grab this from config file
-      organization_code:                    '01G0',
+      organization_code:                    '0100',
       account_delegate_model_name:          random_alphanums(40, 'AFT'),
-      document_type_name:                   '', #FIXME Find default value for Document Type Name
+      document_type_name:                   'IB',
       account_delegate_start_date:          '01/01/2010',
-      account_delegate_principal_name:      '' #FIXME Find default value for Account Delegate Principle Name
+      account_delegate_principal_name:      'JMD11',
+      active_indicator:                     :set,
+      active:                               :set
     }
     set_options(defaults.merge(opts))
   end

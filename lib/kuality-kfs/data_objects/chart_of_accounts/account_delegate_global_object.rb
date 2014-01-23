@@ -35,7 +35,7 @@ class AccountDelegateGlobalObject < KFSDataObject
       page.add_account
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create
