@@ -29,4 +29,6 @@ class OrganizationPage < BasePage
   element(:campus_plant_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.campusPlantChartCode') }
   element(:campus_plant_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.campusPlantAccountNumber') }
 
+  value(:ro_chart_code) { |b| b.frm.span(id: 'document.newMaintainableObject.chartOfAccountsCode.div').text }
+  value(:ro_org_code) { |b| b.frm.span(id: 'document.newMaintainableObject.organizationCode.div').text }
 end

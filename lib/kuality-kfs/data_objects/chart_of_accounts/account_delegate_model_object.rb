@@ -1,8 +1,15 @@
 class AccountDelegateModelObject < KFSDataObject
 
-  attr_accessor :chart_code, :org_code, :account_delegate_model_name, :active_indicator, :document_type_name,
+  attr_accessor :chart_of_accounts_code, :organization_code, :account_delegate_model_name, :active_indicator, :document_type_name,
                 :account_delegate_primary_route, :account_delegate_start_date, :approval_from_this_account,
                 :approval_to_this_account, :account_delegate_principal_name, :active, :press
+
+#  include Navigation
+#  include DateFactory
+  include StringFactory
+
+  attr_accessor   :chart_of_accounts_code, :organization_code, :adm_name,
+                  :active_indicator_yes, :active_indicator_no, :active_indicator_both
 
   def initialize(browser, opts={})
     @browser = browser
@@ -62,3 +69,12 @@ class AccountDelegateModelObject < KFSDataObject
     on(AccountDelegateModelPage).copy
   end
 end
+=======
+    visit(MainPage).account_delegate_model
+    on AccountDelegateModelPage do |create|
+       fill_out create,  :chart_of_accounts_code, :organization_code, :adm_name
+    end
+  end
+
+end #class
+>>>>>>> master
