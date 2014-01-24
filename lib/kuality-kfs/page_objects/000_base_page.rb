@@ -53,11 +53,10 @@ class BasePage < PageFactory
       alias_method :created, :last_updated
     end
 
-    # Included here because this is such a common field in KC
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
-#      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-#      element(:org_doc_num) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
 
     def global_buttons
@@ -157,6 +156,44 @@ class BasePage < PageFactory
       action(:turn_on_validation) { |b| b.validation_button.click; b.special_review_button.wait_until_present }
       element(:validation_errors_and_warnings) { |b| errs = []; b.validation_err_war_fields.each { |field| errs << field.html[/(?<=>).*(?=<)/] }; errs }
       element(:validation_err_war_fields) { |b| b.frm.tds(width: '94%') }
+    end
+
+    def accounting_lines
+      element(:account_expired_override) { |b| b.frm.select(name: 'document.newMaintainableObject.override') }
+      accounting_lines_to
+      accounting_lines_from
+    end
+
+    def accounting_lines_to
+      element(:to_chart_code) { |b| b.frm.text_field(name: 'newTargetLine.chartOfAccountsCode') }
+      element(:to_account_number) { |b| b.frm.text_field(name: 'newTargetLine.accountNumber') }
+      element(:to_sub_account) { |b| b.frm.text_field(name: 'newTargetLine.subAccountNumber') }
+      element(:to_object) { |b| b.frm.text_field(name: 'newTargetLine.financialObjectCode') }
+      element(:to_sub_object) { |b| b.frm.text_field(name: 'newTargetLine.financialSubObjectCode') }
+      element(:to_project) { |b| b.frm.text_field(name: 'newTargetLine.projectCode') }
+      element(:to_org_ref_id) { |b| b.frm.text_field(name: 'newTargetLine.organizationReferenceId') }
+      element(:to_reference_origin_code) { |b| b.frm.text_field(name: 'newTargetLine.referenceOriginCode') }
+      element(:to_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
+      element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
+      element(:to_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
+      action(:import_lines_to_line) { |b| b.frm.button(id: 'document.sourceAccountingLinesShowLink').click }
+      action(:add_to_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingSourceAnchor').click }
+    end
+
+    def accounting_lines_from
+      element(:from_chart_code) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
+      element(:from_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+      element(:from_sub_account) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
+      element(:from_object) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+      element(:from_sub_object) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
+      element(:from_project) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
+      element(:from_org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
+      element(:from_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
+      element(:from_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
+      element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+      element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      action(:import_lines_from_line) { |b| b.frm.button(id: 'document.targetAccountingLinesShowLink').click }
+      action(:add_from_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
     end
 
     # ========
