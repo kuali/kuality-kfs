@@ -75,6 +75,10 @@ class AccountGlobalObject < KFSDataObject
     on(AccountGlobalPage).submit
   end
 
+  def view
+    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
   def add_multiple_accounting_lines
     if !@add_multiple_accounting_lines.nil?
       on(AccountGlobalPage).add_multiple_accounting_lines
