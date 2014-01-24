@@ -63,4 +63,9 @@ class AccountDelegateModelObject < KFSDataObject
   def copy
     on(AccountDelegateModelPage).copy
   end
+
+  def cancel
+    on(AccountDelegateModelPage).cancel
+  end
+
 end
