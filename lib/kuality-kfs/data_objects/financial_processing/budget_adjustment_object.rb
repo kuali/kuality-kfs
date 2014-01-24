@@ -12,6 +12,7 @@ class BudgetAdjustmentObject < KFSDataObject
         from_account_number: ['1258322'],
         from_object_code: '4480',
         from_current_amount: '10000'
+
     }
     set_options(defaults.merge(opts))
   end
@@ -28,7 +29,7 @@ class BudgetAdjustmentObject < KFSDataObject
 
       fill_out page, :description, :fdd_year,
                :from_chart_code, :from_account_number, :from_object_code, :from_current_amount
-      page.add_from_accounting_line
+      page.add_from_accounting_line unless @from_account_number.nil?
 
       fill_out page, :to_chart_code, :to_account_number, :to_object_code, :to_current_amount
       page.add_to_accounting_line unless @to_account_number.nil?
