@@ -75,4 +75,8 @@ class ObjectCodeGlobalObject < KFSDataObject
     on(ObjectCodeGlobalPage).copy
   end
 
+  def view
+    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
 end #class

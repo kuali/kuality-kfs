@@ -1,5 +1,7 @@
 class AdvanceDepositObject < KFSDataObject
 
+  DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
+
   attr_accessor :advance_deposits, :accounting_lines,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
@@ -72,4 +74,9 @@ class AdvanceDepositObject < KFSDataObject
   def copy
     on(AdvanceDepositPage).copy
   end
+
+  def copy_current_document
+    on(AdvanceDepositPage).copy_current_document
+  end
+
 end
