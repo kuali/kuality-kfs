@@ -59,24 +59,4 @@ class AccountObject < KFSDataObject
     end
   end
 
-  def save
-    on(AccountPage).save
-  end
-
-  def submit
-    on(AccountPage).submit
-  end
-
-  def blanket_approve
-    on(AccountPage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(AccountPage).copy
-  end
-
 end

@@ -48,24 +48,4 @@ class OrganizationObject < KFSDataObject
     end
   end
 
-  def save
-    on(OrganizationPage).save
-  end
-
-  def submit
-    on(OrganizationPage).submit
-  end
-
-  def blanket_approve
-    on(OrganizationPage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(OrganizationPage).copy
-  end
-
 end

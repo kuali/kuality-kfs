@@ -59,24 +59,4 @@ class ObjectCodeGlobalObject < KFSDataObject
     end
   end
 
-  def save
-    on(ObjectCodeGlobalPage).save
-  end
-
-  def submit
-    on(ObjectCodeGlobalPage).submit
-  end
-
-  def blanket_approve
-    on(ObjectCodeGlobalPage).blanket_approve
-  end
-
-  def copy
-    on(ObjectCodeGlobalPage).copy
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
 end #class

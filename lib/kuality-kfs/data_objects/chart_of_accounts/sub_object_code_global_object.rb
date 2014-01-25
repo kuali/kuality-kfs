@@ -28,10 +28,12 @@ class SubObjectCodeGlobalObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
+  def create
+    pre_create
 
-  def build
     visit(MainPage).sub_object_code_global
     on SubObjectCodeGlobalPage do |page|
+      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page,  :description, :new_chart_code,
@@ -39,19 +41,23 @@ class SubObjectCodeGlobalObject < KFSDataObject
               :new_fiscal_year, :new_chart_code, :new_sub_object_code, :new_sub_object_code_name, :new_sub_object_code_short_name,
               :noc_fiscal_year, :noc_chart_code, :noc_object_code,
               :na_chart_code, :na_account_number
+      fill_out_extended_attributes
+
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.send(@press) unless @press.nil?
     end
+
+    post_create
   end
 
   def add_multiple_account_lines(search_code)
     on(SubObjectCodeGlobalPage).add_multiple_account_lines
-
-      on AccountLookupPage do |page|
-        page.org_code.fit "#{search_code}"
-        page.search
-        page.select_all_from_this_page
-        page.return_selected
-      end
+    on AccountLookupPage do |page|
+      page.org_code.fit "#{search_code}"
+      page.search
+      page.select_all_from_this_page
+      page.return_selected
     end
-
+  end
 
 end #class

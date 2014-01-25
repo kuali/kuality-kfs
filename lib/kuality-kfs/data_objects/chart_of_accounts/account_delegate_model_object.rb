@@ -34,29 +34,4 @@ class AccountDelegateModelObject < KFSDataObject
     end
   end
 
-  def save
-    on(AccountDelegateModelPage).save
-  end
-
-  def submit
-    on(AccountDelegateModelPage).submit
-  end
-
-  def blanket_approve
-    on(AccountDelegateModelPage).blanket_approve
-  end
-
-  def view
-    # TODO: AccountDelegateModelObject#view
-    #@browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(AccountDelegateModelPage).copy
-  end
-
-  def cancel
-    on(AccountDelegateModelPage).cancel
-  end
-
 end

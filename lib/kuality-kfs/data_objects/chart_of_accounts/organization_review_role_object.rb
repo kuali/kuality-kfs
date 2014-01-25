@@ -45,24 +45,4 @@ class OrganizationReviewRoleObject < KFSDataObject
     end
   end
 
-  def save
-    on(OrganizationReviewRolePage).save
-  end
-
-  def submit
-    on(OrganizationReviewRolePage).submit
-  end
-
-  def blanket_approve
-    on(OrganizationReviewRolePage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(OrganizationReviewRolePage).copy
-  end
-
 end

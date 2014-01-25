@@ -55,28 +55,9 @@ class AdvanceDepositObject < KFSDataObject
     end
   end
 
-  def save
-    on(AdvanceDepositPage).save
-  end
-
-  def submit
-    on(AdvanceDepositPage).submit
-  end
-
-  def blanket_approve
-    on(AdvanceDepositPage).blanket_approve
-  end
-
   def view
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(AdvanceDepositPage).copy
-  end
-
-  def copy_current_document
-    on(AdvanceDepositPage).copy_current_document
+    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 
 end

@@ -42,27 +42,4 @@ class SubAccountObject < KFSDataObject
     page.ad_hoc_person_add
   end
 
-  def save
-    on(SubAccountPage).save
-  end
-
-  def submit
-    on(SubAccountPage).submit
-  end
-
-  def blanket_approve
-    on(SubAccountPage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(SubAccountPage).copy
-  end
-
-  def approve
-    on(SubAccountPage).approve
-  end
 end
