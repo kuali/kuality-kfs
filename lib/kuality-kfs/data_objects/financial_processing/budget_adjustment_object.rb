@@ -36,9 +36,14 @@ class BudgetAdjustmentObject < KFSDataObject
     end
   end
 
-  def viewAsUse
-    #TODO:: Fix this url
+  def viewAsUser(username)
+    @browser.goto "#{base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{username}"
+  end
+
+  def view
+    #TODO:: Fix this view url for Budget Adjustment
     @browser.goto "#{base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{$users.current_user}"
   end
+
 
 end #class
