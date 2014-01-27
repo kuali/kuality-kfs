@@ -72,19 +72,6 @@ class BudgetAdjustmentPage < BasePage
 
   action(:add_to_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
 
-  #Notes and Attachments
-  element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
-  action(:add_a_note) { |b| b.frm.button(title: 'Add a Note').click }
-
-  #AD HOC
-  element(:ad_hoc_person) { |b| b.frm.text_field(name: 'newAdHocRoutePerson.id') }
-  element(:ad_hoc_person_action_requested) { |b| b.frm.select(name: 'newAdHocRoutePerson.actionRequested') }
-  action(:add_ad_hoc_person) { |b| b.frm.button(title: 'Insert Additional Ad Hoc Person').click }
-
-  element(:ad_hoc_namespace_code) { |b| b.frm.text_field(name: 'newAdHocRouteWorkgroup.recipientNamespaceCode') }
-  element(:ad_hoc_name) { |b| b.frm.text_field(name: 'newAdHocRouteWorkgroup.recipientName') }
-  element(:ad_hoc_group_action_requested) { |b| b.frm.select(name: 'newAdHocRouteWorkgroup.actionRequested') }
-  action(:add_ad_hoc_group) { |b| b.frm.button(title: 'Insert Additional Ad Hoc Workgroup').click }
 
 
 

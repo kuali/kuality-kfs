@@ -1,7 +1,4 @@
-class CashReceiptPage < BasePage
-
-  element(:explaination) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-  element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+class CashReceiptPage < FinancialProcessingPage
 
 #CURRENCY AND COIN DETAIL
   element(:hundred_dollar_count) { |b| b.frm.text_field(name: 'document.currencyDetail.hundredDollarCount') }
@@ -28,23 +25,10 @@ class CashReceiptPage < BasePage
   action(:add_check_detail) { |b| b.frm.button(name: 'methodToCall.addCheck').click }
 
 
-#ACCOUNTING LINES
-  element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-  element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-  element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-  element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-  element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-  element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-  element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-
-  action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
 #NOTES
-  element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+ #on FPpage
 #AD HOC RECIPIENTS
-  element(:ad_hoc_person) { |b| b.frm.text_field(name: 'newAdHocRoutePerson.id') }
-  element(:ad_hoc_name_space_code) { |b| b.frm.text_field(name: 'newAdHocRouteWorkgroup.recipientNamespaceCode') }
-  element(:ad_hoc_group_name) { |b| b.frm.text_field(name: 'newAdHocRouteWorkgroup.recipientName') }
-
+# on FPPAge
 
 
 end
