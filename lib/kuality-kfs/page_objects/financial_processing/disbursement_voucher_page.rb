@@ -1,34 +1,49 @@
 class DisbursementVoucherPage < FinancialProcessingPage
 
-  #element(:) { |b| b.frm.select(name: 'document.disbVchrPaymentMethodCode') }
-  #element(:) { |b| b.frm.select(name: 'document.disbursementVoucherDocumentationLocationCode') }
-  #element(:) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvPayeeDetail.disbVchrSpecialHandlingCountryCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvWireTransfer.disbVchrCurrencyTypeCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvWireTransfer.disbVchrBankCountryCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrTravelFromStateCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.dvTravelFromCountryCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrTravelToStateCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrTravelToCountryCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrPerdiemCategoryName') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrAutoFromStateCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvNonEmployeeTravel.disbVchrAutoToStateCode') }
-  #element(:) { |b| b.frm.select(name: 'newNonEmployeeExpenseLine.disbVchrExpenseCode') }
-  #element(:) { |b| b.frm.select(name: 'newPrePaidNonEmployeeExpenseLine.disbVchrPrePaidExpenseCode') }
-  #element(:) { |b| b.frm.select(name: 'document.dvPreConferenceDetail.disbVchrExpenseCode') }
-  #element(:) { |b| b.frm.select(name: 'newAdHocRoutePerson.actionRequested') }
-  #element(:) { |b| b.frm.select(name: 'newAdHocRouteWorkgroup.actionRequested') }
+
+  document_overview
+  financial_document_detail
+  accounting_lines
+
+  notes_and_attachments
+  ad_hoc_recipients
 
 
-  action(:calculate_per_diem) { |b| b.frm.button(title: 'Calculate Per Diem').click }
 
-  action(:calculate_total_mileage) { |b| b.frm.button(title: 'Calculate Total Mileage').click }
+#financial_document_detail
+  value(:bank_code_full)b.frame(id: /easyXDM_default\d+_provider/).frame(id: 'iframeportlet').table(summary: 'KFS Detail Section').td(class: 'datacell-nowrap').text
+        #returns  "DISB\nMellon Controlled Disbursement Account "
+  value(:bank_code_bank_text){ |b| b.frm.table(summary: 'KFS Detail Section').div(id: 'document.bank.div').text }
+        #returns "Mellon Controlled Disbursement Account "
 
-  action(:add_expense_line) { |b| b.frm.button(title: 'Add Expense Line').click }
+  #payment_information
 
-  action(:add_pre_conference_registrant_line) { |b| b.frm.button(title: 'Add Pre-Conference Registrant Line').click }
 
-  action(:cancel_attachment) { |b| b.frm.button(title: 'Cancel Attachment').click }
+
+  #contact_information
+  #special_handling
+  #nonresident_alien_tax
+  #wire_transfer
+  #foreign_draft
+  #non_employee_travel_expense
+  #pre_paid_travel_expense
+  #pre_disbursement_processor_status
+
+  #general_ledger_pending_entries
+
+
+
+
+
+  #action(:calculate_per_diem) { |b| b.frm.button(title: 'Calculate Per Diem').click }
+  #
+  #action(:calculate_total_mileage) { |b| b.frm.button(title: 'Calculate Total Mileage').click }
+  #
+  #action(:add_expense_line) { |b| b.frm.button(title: 'Add Expense Line').click }
+  #
+  #action(:add_pre_conference_registrant_line) { |b| b.frm.button(title: 'Add Pre-Conference Registrant Line').click }
+  #
+  #action(:cancel_attachment) { |b| b.frm.button(title: 'Cancel Attachment').click }
 
 
 
