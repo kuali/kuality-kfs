@@ -38,7 +38,8 @@ class PreEncumbrancePage < FinancialProcessingPage
   element(:disencumbrance_sub_object) { |b| b.frm.text_field(name: 'newTargetLine.financialSubObjectCode') }
   element(:disencumbrance_project) { |b| b.frm.text_field(name: 'newTargetLine.projectCode') }
   element(:disencumbrance_org_ref_id) { |b| b.frm.text_field(name: 'newTargetLine.organizationReferenceId') }
-  alias_method :disencumbrance_organization_reference_id, :org_ref_id
+  alias_method :disencumbrance_organization_reference_id, :disencumbrance_org_ref_id
+
   element(:disencumbrance_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
   element(:disencumbrance_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
   element(:disencumbrance_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }

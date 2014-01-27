@@ -25,15 +25,6 @@ class InternalBillingPage < FinancialProcessingPage
   element(:income_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
   element(:income_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
-  element(:income_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-  element(:income_sub_account) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-  element(:income_object) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-  element(:income_sub_object) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-  element(:income_project) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-  element(:income_org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-  element(:income_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-  element(:income_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-
   action(:add_income_accounting_line) { |b| b.frm.button(alt: 'Add Income Accounting Line').click }
   #EXPENSE
   element(:expense_chart) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }

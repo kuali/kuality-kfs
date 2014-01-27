@@ -1,4 +1,4 @@
-class AdvanceDepositPage < KFSBasePage
+class AdvanceDepositPage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
