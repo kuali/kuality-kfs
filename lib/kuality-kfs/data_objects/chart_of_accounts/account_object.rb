@@ -43,13 +43,10 @@ class AccountObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).account
     on(AccountLookupPage).create
     on AccountPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.type_code.fit @type_code
       page.description.focus
@@ -59,13 +56,7 @@ class AccountObject < KFSDataObject
                :higher_ed_funct_code, :restricted_status_code, :fo_principal_name, :supervisor_principal_name,
                :manager_principal_name, :budget_record_level_code, :sufficient_funds_code, :expense_guideline_text,
                :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number
-      fill_out_extended_attributes
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
   end
 
   def save
