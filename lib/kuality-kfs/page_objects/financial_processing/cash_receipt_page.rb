@@ -1,6 +1,18 @@
 class CashReceiptPage < FinancialProcessingPage
 
-#CURRENCY AND COIN DETAIL
+
+  document_overview
+  financial_document_detail
+  accounting_lines
+
+  notes_and_attachments
+  ad_hoc_recipients
+
+#cash_reconciliation
+  element(:total_check_amount) {|b| b.frm.select(name: 'document.checkEntryMode') }
+  action(:recalculate) { |b| b.frm.button(title: 'recalculate total').click }
+
+#currency_and_coin_detail
   element(:hundred_dollar_count) { |b| b.frm.text_field(name: 'document.currencyDetail.hundredDollarCount') }
   element(:hundred_cent_count) { |b| b.frm.text_field(name: 'document.coinDetail.hundredCentCount') }
   element(:fifty_dollar_count) { |b| b.frm.text_field(name: 'document.currencyDetail.fiftyDollarCount') }
@@ -17,18 +29,16 @@ class CashReceiptPage < FinancialProcessingPage
   element(:other_cent_amount) { |b| b.frm.text_field(name: 'document.coinDetail.financialDocumentOtherCentAmount') }
   element(:other_dollar_amount) { |b| b.frm.text_field(name: 'document.currencyDetail.financialDocumentOtherDollarAmount') }
 
-#CHECK DETAIL
+#check_detaiil
   element(:check_number) { |b| b.frm.text_field(name: 'newCheck.checkNumber') }
   element(:check_date) { |b| b.frm.text_field(name: 'newCheck.checkDate') }
   element(:check_description) { |b| b.frm.text_field(name: 'newCheck.description') }
   element(:check_amount) { |b| b.frm.text_field(name: 'newCheck.amount') }
   action(:add_check_detail) { |b| b.frm.button(name: 'methodToCall.addCheck').click }
 
+#accounting_lines_for_capitalization
 
-#NOTES
- #on FPpage
-#AD HOC RECIPIENTS
-# on FPPAge
+#modify_capital_assets
 
-
+#general_ledger_pending_entries
 end
