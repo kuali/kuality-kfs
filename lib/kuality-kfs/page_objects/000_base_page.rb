@@ -8,7 +8,7 @@ class BasePage < PageFactory
     close:             'close',
     cancel:            'cancel',
     reload:            'reload',
-    copy:              'copy',
+    copy:              'Copy current document',
     approve:           'approve',
     disapprove:        'disapprove',
     send_notification: 'send notification'
@@ -32,12 +32,12 @@ class BasePage < PageFactory
   action(:form_status) { |name, b| b.form_tab(name).text[/(?<=\()\w+/] }
 
   action(:doc_search) { |b| b.img(alt: 'doc search').click }
-
+  action(:action_list) { |b| b.img(alt: 'action list').click }
   class << self
 
     def glbl(*titles)
       titles.each do |title|
-        action(damballa(title)) { |b| b.frm.button(class: 'globalbuttons', title: title).click }
+        action(damballa(title)) { |b| b.frm.button(class: 'globalbuttons', title: title).when_present.click }
       end
     end
 
@@ -62,7 +62,7 @@ class BasePage < PageFactory
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
@@ -93,10 +93,9 @@ class BasePage < PageFactory
 
     def search_results_table
       element(:results_table) { |b| b.frm.table(id: 'row') }
-
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
-      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
+      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
@@ -117,6 +116,7 @@ class BasePage < PageFactory
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 
+      p_value(:docs_with_status) { |status, b| array = []; (b.results_table.rows.find_all{|row| row[1].text==status}).each { |row| array << row[0].text }; array }
     end
 
     def route_log

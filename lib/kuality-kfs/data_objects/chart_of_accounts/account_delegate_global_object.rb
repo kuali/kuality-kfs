@@ -16,11 +16,8 @@ class AccountDelegateGlobalObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).account_delegate_global
-
     on AccountDelegateGlobalPage do |page|
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -30,26 +27,8 @@ class AccountDelegateGlobalObject < KFSDataObject
 
       fill_out page, :chart_code, :account_number
       fill_out_extended_attributes(:account)
-
       page.add_account
-
-      page.save
-      @document_id = page.document_id
     end
-
-    post_create
-  end
-
-  def save
-    on(AccountDelegateGlobalPage).save
-  end
-
-  def submit
-    on(AccountDelegateGlobalPage).submit
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
   end
 
   #def add_multiple_accounting_lines

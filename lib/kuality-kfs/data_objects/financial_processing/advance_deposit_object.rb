@@ -1,5 +1,7 @@
 class AdvanceDepositObject < KFSDataObject
 
+  DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
+
   attr_accessor :advance_deposits, :accounting_lines,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
@@ -28,12 +30,9 @@ class AdvanceDepositObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).advance_deposit
     on AdvanceDepositPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -53,31 +52,12 @@ class AdvanceDepositObject < KFSDataObject
       end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
-      fill_out_extended_attributes
-
-      page.send(@press)
     end
-
-    post_create
-  end
-
-  def save
-    on(AdvanceDepositPage).save
-  end
-
-  def submit
-    on(AdvanceDepositPage).submit
-  end
-
-  def blanket_approve
-    on(AdvanceDepositPage).blanket_approve
   end
 
   def view
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 
-  def copy
-    on(AdvanceDepositPage).copy
-  end
 end

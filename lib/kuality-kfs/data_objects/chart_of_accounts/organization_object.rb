@@ -34,13 +34,10 @@ class OrganizationObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).organization
     on(OrganizationLookupPage).create
     on OrganizationPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -48,33 +45,7 @@ class OrganizationObject < KFSDataObject
                      :physcal_campus_code, :type_code,
                      :address_line_1, :address_line_2, :postal_code, :country_code,
                      :begin_date, :reports_to_chart_code, :reports_to_org_code
-      fill_out_extended_attributes
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
     end
-
-    post_create
-  end
-
-  def save
-    on(OrganizationPage).save
-  end
-
-  def submit
-    on(OrganizationPage).submit
-  end
-
-  def blanket_approve
-    on(OrganizationPage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(OrganizationPage).copy
   end
 
 end

@@ -28,7 +28,6 @@ class SubObjectCodeGlobalObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-
   def create
     pre_create
 
@@ -45,7 +44,7 @@ class SubObjectCodeGlobalObject < KFSDataObject
       fill_out_extended_attributes
 
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press)
+      page.send(@press) unless @press.nil?
     end
 
     post_create
@@ -53,14 +52,12 @@ class SubObjectCodeGlobalObject < KFSDataObject
 
   def add_multiple_account_lines(search_code)
     on(SubObjectCodeGlobalPage).add_multiple_account_lines
-
-      on AccountLookupPage do |page|
-        page.org_code.fit "#{search_code}"
-        page.search
-        page.select_all_from_this_page
-        page.return_selected
-      end
+    on AccountLookupPage do |page|
+      page.org_code.fit "#{search_code}"
+      page.search
+      page.select_all_from_this_page
+      page.return_selected
     end
-
+  end
 
 end #class

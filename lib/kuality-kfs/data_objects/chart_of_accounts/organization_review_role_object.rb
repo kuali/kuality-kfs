@@ -20,13 +20,10 @@ class OrganizationReviewRoleObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).organization_review
     on(OrganizationReviewLookupPage).create
     on OrganizationReviewRolePage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -45,29 +42,7 @@ class OrganizationReviewRoleObject < KFSDataObject
         search.search
         search.return_random
       end
-
-      page.send(@press)
     end
-  end
-
-  def save
-    on(OrganizationReviewRolePage).save
-  end
-
-  def submit
-    on(OrganizationReviewRolePage).submit
-  end
-
-  def blanket_approve
-    on(OrganizationReviewRolePage).blanket_approve
-  end
-
-  def view
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def copy
-    on(OrganizationReviewRolePage).copy
   end
 
 end
