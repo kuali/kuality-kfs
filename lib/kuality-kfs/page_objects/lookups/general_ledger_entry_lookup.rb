@@ -1,23 +1,15 @@
 class GeneralLedgerEntryLookupPage < Lookups
 
-  element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
+  account_facets
+  document_facets
+  subaccount_facets
+  organization_facets
+  financial_object_facets
+  fiscal_year_facets
+  reference_document_facets
+  project_facets
+
   element(:document_type) { |b| b.frm.text_field(name: 'financialDocumentTypeCode') }
-  element(:chart_code) { |b| b.frm.text_field(name: 'chartOfAccountsCode') }
-  element(:origin_code) { |b| b.frm.text_field(name: 'financialSystemOriginationCode') }
-  element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
-  element(:document_number) { |b| b.frm.text_field(name: 'documentNumber') }
-  element(:sub_account_number) { |b| b.frm.text_field(name: 'subAccountNumber') }
-  element(:organization_document_number) { |b| b.frm.text_field(name: 'organizationDocumentNumber') }
-  element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
-  element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
-  element(:sub_object_code) { |b| b.frm.text_field(name: 'financialSubObjectCode') }
-  element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
-  element(:balance_type_code) { |b| b.frm.text_field(name: 'financialBalanceTypeCode') }
-  element(:reference_document_type_code) { |b| b.frm.text_field(name: 'referenceFinancialDocumentTypeCode') }
-  element(:object_type_code) { |b| b.frm.text_field(name: 'financialObjectTypeCode') }
-  element(:reference_orgin_code) { |b| b.frm.text_field(name: 'referenceFinancialSystemOriginationCode') }
-  element(:fiscal_period) { |b| b.frm.text_field(name: 'universityFiscalPeriodCode') }
-  element(:reference_document_number) { |b| b.frm.text_field(name: 'referenceFinancialDocumentNumber') }
 
   element(:pending_entry_no) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionNo') }
   element(:pending_entry_approved) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionApproved') }
