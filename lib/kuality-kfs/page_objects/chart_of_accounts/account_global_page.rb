@@ -1,11 +1,4 @@
-class AccountGlobalPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class AccountGlobalPage < KFSBasePage
 
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.accountGlobalDetails.chartOfAccountsCode') }
   element(:new_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.accountGlobalDetails.accountNumber') }
@@ -14,8 +7,8 @@ class AccountGlobalPage < BasePage
   element(:fo_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountFiscalOfficerUser.principalName') }
   element(:supervisor_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountSupervisoryUser.principalName') }
   element(:manager_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountManagerUser.principalName') }
-  element(:org_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
-  element(:sub_fnd_group_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.subFundGroupCode') }
+  element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
+  element(:sub_fund_group_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.subFundGroupCode') }
   element(:acct_expire_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountExpirationDate') }
   element(:postal_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountZipCode') }
   element(:city) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountCityName') }

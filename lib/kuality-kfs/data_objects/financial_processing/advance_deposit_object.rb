@@ -38,16 +38,16 @@ class AdvanceDepositObject < KFSDataObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
       advance_deposits.each do |dep|
-        page.new_deposit_date.fit dep[:new_deposit_date]
-        page.new_deposit_ref_number.fit dep[:new_deposit_ref_number]
-        page.new_deposit_description.fit dep[:new_deposit_description]
-        page.new_deposit_amount.fit dep[:new_deposit_amount]
-        page.add_deposit
+        page.advance_deposit_date.fit dep[:new_deposit_date]
+        page.advance_deposit_reference_number.fit dep[:new_deposit_ref_number]
+        page.advance_deposit_description.fit dep[:new_deposit_description]
+        page.advance_deposit_amount.fit dep[:new_deposit_amount]
+        page.add_an_advance_deposit
       end
       accounting_lines.each do |dep|
-        page.new_account_number.fit dep[:new_account_number]
-        page.new_account_object_code.fit dep[:new_account_object_code]
-        page.new_account_amount.fit dep[:new_account_amount]
+        page.account_number.fit dep[:new_account_number]
+        page.object_code.fit dep[:new_account_object_code]
+        page.amount.fit dep[:new_account_amount]
         page.add_accounting_line
       end
 #      page.accounting_lines_for_capitalization_select(0).select

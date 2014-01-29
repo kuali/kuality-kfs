@@ -10,7 +10,7 @@ class AccountPage < BasePage
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountNumber') }
   element(:name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountName') }
-  element(:org_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
+  element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
   element(:campus_code) { |b| b.frm.select(name: 'document.newMaintainableObject.accountPhysicalCampusCode') }
   element(:effective_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountEffectiveDate') }
   element(:postal_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountZipCode') }
@@ -18,7 +18,7 @@ class AccountPage < BasePage
   element(:state) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountStateCode') }
   element(:address) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountStreetAddress') }
   element(:type_code) { |b| b.frm.select(name: 'document.newMaintainableObject.accountTypeCode') }
-  element(:sub_fnd_group_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.subFundGroupCode') }
+  element(:sub_fund_group_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.subFundGroupCode') }
   element(:higher_ed_funct_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialHigherEdFunctionCd') }
   element(:restricted_status_code) { |b| b.frm.select(name: 'document.newMaintainableObject.accountRestrictedStatusCode') }
   element(:fo_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountFiscalOfficerUser.principalName') }

@@ -58,6 +58,13 @@ class BasePage < PageFactory
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
     end
 
+    def organization_facets
+      element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
+      element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+      element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
+    end
+
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
            'approve', 'disapprove', 'submit', 'Send Notification'
@@ -106,7 +113,7 @@ class BasePage < PageFactory
 
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
-      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click }
+      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
       action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length)] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
