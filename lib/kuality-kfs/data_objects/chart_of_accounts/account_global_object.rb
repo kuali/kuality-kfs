@@ -1,7 +1,7 @@
 class AccountGlobalObject < KFSDataObject
 
   attr_accessor :fo_principal_name, :supervisor_principal_name,
-                :org_code, :sub_fnd_group_code, :acct_expire_date,
+                :organization_code, :sub_fund_group_code, :acct_expire_date,
                 :postal_code, :city, :state, :address,
                 :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
                 :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
@@ -17,8 +17,8 @@ class AccountGlobalObject < KFSDataObject
         new_number:                             '1000710', #TODO get from config
         supervisor_principal_name:              'jaraujo',
         manager_principal_name:                 'warriaga',
-        org_code:                               'BI',
-        sub_fnd_group_code:                     '',
+        organization_code:                               'BI',
+        sub_fund_group_code:                     '',
         acct_expire_date:                       '',
         postal_code:                            '14853',
         city:                                   'Ithaca',
@@ -40,39 +40,20 @@ class AccountGlobalObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).account_global
-
     on AccountGlobalPage do |page|
-      @document_id = page.document_id
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :fo_principal_name, :supervisor_principal_name,
-               :org_code, :sub_fnd_group_code, :acct_expire_date,
+               :organization_code, :sub_fund_group_code, :acct_expire_date,
                :postal_code, :city, :state, :address,
                :continuation_coa_code, :continuation_acct_number, :income_stream_financial_cost_code, :income_stream_account_number,
                :cfda_number,  :higher_ed_funct_code, :sufficient_funds_code,
                :trans_processing_sufficient_funds_code, :labor_benefit_rate_category_code,
                :new_chart_code, :new_number
-      fill_out_extended_attributes
-
       page.add_account_detail
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
-  end
-
-  def save
-    on(AccountGlobalPage).save
-  end
-
-  def submit
-    on(AccountGlobalPage).submit
   end
 
   def add_multiple_accounting_lines

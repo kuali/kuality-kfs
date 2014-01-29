@@ -1,5 +1,7 @@
 class AdvanceDepositObject < KFSDataObject
 
+  DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
+
   attr_accessor :advance_deposits, :accounting_lines,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
@@ -28,56 +30,34 @@ class AdvanceDepositObject < KFSDataObject
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).advance_deposit
     on AdvanceDepositPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
       advance_deposits.each do |dep|
-        page.new_deposit_date.fit dep[:new_deposit_date]
-        page.new_deposit_ref_number.fit dep[:new_deposit_ref_number]
-        page.new_deposit_description.fit dep[:new_deposit_description]
-        page.new_deposit_amount.fit dep[:new_deposit_amount]
-        page.add_deposit
+        page.advance_deposit_date.fit dep[:new_deposit_date]
+        page.advance_deposit_reference_number.fit dep[:new_deposit_ref_number]
+        page.advance_deposit_description.fit dep[:new_deposit_description]
+        page.advance_deposit_amount.fit dep[:new_deposit_amount]
+        page.add_an_advance_deposit
       end
       accounting_lines.each do |dep|
-        page.new_account_number.fit dep[:new_account_number]
-        page.new_account_object_code.fit dep[:new_account_object_code]
-        page.new_account_amount.fit dep[:new_account_amount]
+        page.account_number.fit dep[:new_account_number]
+        page.object_code.fit dep[:new_account_object_code]
+        page.amount.fit dep[:new_account_amount]
         page.add_accounting_line
       end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
-      fill_out_extended_attributes
-
-      page.send(@press) unless @press.nil?
     end
-
-    post_create
-  end
-
-  def save
-    on(AdvanceDepositPage).save
-  end
-
-  def submit
-    on(AdvanceDepositPage).submit
-  end
-
-  def blanket_approve
-    on(AdvanceDepositPage).blanket_approve
   end
 
   def view
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 
-  def copy
-    on(AdvanceDepositPage).copy
-  end
 end

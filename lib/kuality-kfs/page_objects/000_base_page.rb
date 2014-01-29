@@ -8,7 +8,7 @@ class BasePage < PageFactory
     close:             'close',
     cancel:            'cancel',
     reload:            'reload',
-    copy:              'copy',
+    copy:              'Copy current document',
     approve:           'approve',
     disapprove:        'disapprove',
     send_notification: 'send notification'
@@ -55,12 +55,17 @@ class BasePage < PageFactory
 
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
-      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
+    end
+
+    def organization_facets
+      element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
+      element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+      element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
     def global_buttons
-      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy',
+      glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
            'approve', 'disapprove', 'submit', 'Send Notification'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
@@ -71,6 +76,10 @@ class BasePage < PageFactory
     end
 
     def tab_buttons
+      action(:main_menu_tab) { |b| b.link(title: 'Main Menu').click }
+      action(:maintenance_tab) { |b| b.link(title: 'Maintenance').click }
+      action(:administration_tab) { |b| b.link(title: 'Administration').click }
+
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
     end
 
@@ -87,10 +96,9 @@ class BasePage < PageFactory
 
     def search_results_table
       element(:results_table) { |b| b.frm.table(id: 'row') }
-
+      action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
-
-      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click }  #; p.use_new_tab; p.close_parents }
+      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
@@ -104,12 +112,14 @@ class BasePage < PageFactory
 
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
-      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click }
+      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
+      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length)] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 
+      p_value(:docs_with_status) { |status, b| array = []; (b.results_table.rows.find_all{|row| row[1].text==status}).each { |row| array << row[0].text }; array }
     end
 
     def route_log
@@ -156,44 +166,6 @@ class BasePage < PageFactory
       action(:turn_on_validation) { |b| b.validation_button.click; b.special_review_button.wait_until_present }
       element(:validation_errors_and_warnings) { |b| errs = []; b.validation_err_war_fields.each { |field| errs << field.html[/(?<=>).*(?=<)/] }; errs }
       element(:validation_err_war_fields) { |b| b.frm.tds(width: '94%') }
-    end
-
-    def accounting_lines
-      element(:account_expired_override) { |b| b.frm.select(name: 'document.newMaintainableObject.override') }
-      accounting_lines_to
-      accounting_lines_from
-    end
-
-    def accounting_lines_to
-      element(:to_chart_code) { |b| b.frm.text_field(name: 'newTargetLine.chartOfAccountsCode') }
-      element(:to_account_number) { |b| b.frm.text_field(name: 'newTargetLine.accountNumber') }
-      element(:to_sub_account) { |b| b.frm.text_field(name: 'newTargetLine.subAccountNumber') }
-      element(:to_object) { |b| b.frm.text_field(name: 'newTargetLine.financialObjectCode') }
-      element(:to_sub_object) { |b| b.frm.text_field(name: 'newTargetLine.financialSubObjectCode') }
-      element(:to_project) { |b| b.frm.text_field(name: 'newTargetLine.projectCode') }
-      element(:to_org_ref_id) { |b| b.frm.text_field(name: 'newTargetLine.organizationReferenceId') }
-      element(:to_reference_origin_code) { |b| b.frm.text_field(name: 'newTargetLine.referenceOriginCode') }
-      element(:to_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
-      element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
-      element(:to_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
-      action(:import_lines_to_line) { |b| b.frm.button(id: 'document.sourceAccountingLinesShowLink').click }
-      action(:add_to_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingSourceAnchor').click }
-    end
-
-    def accounting_lines_from
-      element(:from_chart_code) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
-      element(:from_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-      element(:from_sub_account) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-      element(:from_object) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-      element(:from_sub_object) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-      element(:from_project) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-      element(:from_org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-      element(:from_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
-      element(:from_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
-      element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-      element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-      action(:import_lines_from_line) { |b| b.frm.button(id: 'document.targetAccountingLinesShowLink').click }
-      action(:add_from_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
     end
 
     # ========
