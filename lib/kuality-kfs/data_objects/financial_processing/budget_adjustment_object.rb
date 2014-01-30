@@ -1,7 +1,6 @@
-class BudgetAdjustmentObject < KFSDataObject
+class BudgetAdjustmentObject < FinancialProcessingObject
 
-  attr_accessor  :fdd_year, :from_chart_code, :from_account_number, :from_object_code, :from_current_amount,
-                 :to_chart_code, :to_object_code, :to_current_amount
+  attr_accessor  :fdd_year
 
   def initialize(browser, opts={})
     @browser = browser
