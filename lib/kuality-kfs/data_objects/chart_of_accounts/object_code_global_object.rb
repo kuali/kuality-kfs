@@ -8,7 +8,6 @@ class ObjectCodeGlobalObject < KFSDataObject
                 :level_code,
                 :cg_reporting_code,
                 :object_sub_type_code,
-                :suny_object_code,
                 :financial_object_code_description,
                 :historical_financial_object_code,
                 :budget_aggregation_code,
@@ -54,8 +53,6 @@ class ObjectCodeGlobalObject < KFSDataObject
                :cg_reporting_code, :budget_aggregation_code, :mandatory_transfer,
                :federal_funded_code, :next_year_object_code, :new_year_chart_code
       page.add_chart_code
-      #TODO Cornell - use extended attributes hook!
-      fill_out page, :suny_object_code
     end
   end
 
