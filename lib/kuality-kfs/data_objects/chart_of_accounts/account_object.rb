@@ -58,5 +58,4 @@ class AccountObject < KFSDataObject
                :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number
     end
   end
-
 end

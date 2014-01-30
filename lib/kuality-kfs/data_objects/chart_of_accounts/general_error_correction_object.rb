@@ -1,10 +1,7 @@
 class GeneralErrorCorrectionObject < KFSDataObject
 
-  attr_accessor   :from_chart_code, :from_account_number, :from_sub_account, :from_object, :from_sub_object,
-                  :from_project, :from_org_ref_id, :from_reference_origin_code, :from_reference_number,
-                  :from_line_description, :from_amount,
-                  :to_chart_code, :to_account_number, :to_sub_account, :to_object, :to_sub_object, :to_project,
-                  :to_org_ref_id, :to_reference_origin_code, :to_reference_number, :to_line_description, :to_amount
+  attr_accessor :organization_document_number, :explanation,
+                :from_lines, :to_lines # Each of these should be an array of hashes for the proper settings
 
   def initialize(browser, opts={})
     @browser = browser
@@ -16,97 +13,35 @@ class GeneralErrorCorrectionObject < KFSDataObject
         press:                             :save
     }
 
-    defaults.merge!({
-      from_chart_code:            '',
-      from_account_number:        '',
-      from_sub_account:           '',
-      from_object:                '',
-      from_sub_object:            '',
-      from_project:               '',
-      from_org_ref_id:            '',
-      from_reference_origin_code: '',
-      from_reference_number:      '',
-      from_line_description:      '',
-      from_amount:                ''
-    }) unless @from_account_number.nil?
-
-    defaults.merge!({
-      to_chart_code:              '',
-      to_account_number:          '',
-      to_sub_account:             '',
-      to_object:                  '',
-      to_sub_object:              '',
-      to_project:                 '',
-      to_org_ref_id:              '',
-      to_reference_origin_code:   '',
-      to_reference_number:        '',
-      to_line_description:        '',
-      to_amount:                  ''
-    }) unless @to_account_number.nil?
-
     set_options(defaults.merge(opts))
   end
 
-  def create
-    pre_create
-
+  def build
     visit(MainPage).general_error_correction
     on GeneralErrorCorrectionPage do |page|
-      @document_id = page.document_id
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
-      fill_out_extended_attributes
-
-      add_from_line unless @from_account_number.nil?
-      add_to_line unless @to_account_number.nil?
-
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      page.send(@press) unless @press.nil?
-    end
-
-    post_create
-  end
-
-  def add_from_line
-    on GeneralErrorCorrectionPage do |page|
-      fill_out page, :from_chart_code, :from_account_number, :from_sub_account, :from_object,
-                     :from_sub_object, :from_project, :from_org_ref_id, :from_reference_origin_code,
-                     :from_reference_number, :from_line_description, :from_amount
-      fill_out_extended_attributes(:from_line)
-      page.add_from_line
     end
   end
 
-  def add_to_line
-    on GeneralErrorCorrectionPage do |page|
-      fill_out page, :to_chart_code, :to_account_number, :to_sub_account, :to_object,
-                     :to_sub_object, :to_project, :to_org_ref_id, :to_reference_origin_code,
-                     :to_reference_number, :to_line_description, :to_amount
-      fill_out_extended_attributes(:to_line)
-      page.add_to_line
+  def post_create
+    add_line(:to) unless @from_lines.nil?
+    add_line(:from) unless @to_lines.nil?
+  end
+
+  def add_line(type)
+    case type
+    when type == :to
+      lines_array = @to_lines
+      @to_lines = CollectionsFactory.new(@browser).contains(AccountingLineObject)
+      lines_array.each { |line| @to_lines.add(line.merge({target: 'to'})) }
+    when type == :from
+      lines_array = @from_lines
+      @from_lines = CollectionsFactory.new(@browser).contains(AccountingLineObject)
+      lines_array.each { |line| @from_lines.add(line.merge({target: 'from'})) }
     end
-  end
-
-  def save
-    on(GeneralErrorCorrectionPage).save
-  end
-
-  def submit
-    on(GeneralErrorCorrectionPage).submit
-  end
-
-  def blanket_approve
-    on(GeneralErrorCorrectionPage).blanket_approve
-  end
-
-  def view
-    # TODO: GeneralErrorCorrectionObject#view
-  end
-
-  def copy
-    on(GeneralErrorCorrectionPage).copy
   end
 
 end
