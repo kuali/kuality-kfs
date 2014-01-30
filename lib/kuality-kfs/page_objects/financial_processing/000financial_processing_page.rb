@@ -41,6 +41,8 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
       element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
+      action(:add_from_accounting_line) { |b| b.frm.button(title: 'Add From/Decrease Accounting Line').click }
+
       element(:from_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:from_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
       element(:from_month_3) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth3LineAmount') }
@@ -54,7 +56,6 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_month_11) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth11LineAmount') }
       element(:from_month_12) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth12LineAmount') }
 
-      action(:add_from_accounting_line) { |b| b.frm.button(title: 'Add From/Decrease Accounting Line').click }
 
       #ACCOUNTING LINES TO/INCREASE
       element(:to_chart_code) { |b| b.frm.select(name: 'newTargetLine.chartOfAccountsCode') }
@@ -68,6 +69,8 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_base_amount) { |b| b.frm.text_field(name: 'newTargetLine.baseBudgetAdjustmentAmount') }
       element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
+      action(:add_to_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
+
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
       element(:to_month_3) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth3LineAmount') }
@@ -80,8 +83,6 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_month_10) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth10LineAmount') }
       element(:to_month_11) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth11LineAmount') }
       element(:to_month_12) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth12LineAmount') }
-
-      action(:add_to_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
     end
 
 
