@@ -17,8 +17,8 @@ class AccountGlobalObject < KFSDataObject
         new_number:                             '1000710', #TODO get from config
         supervisor_principal_name:              'jaraujo',
         manager_principal_name:                 'warriaga',
-        organization_code:                               'BI',
-        sub_fund_group_code:                     '',
+        organization_code:                      '0001',
+        sub_fund_group_code:                    '',
         acct_expire_date:                       '',
         postal_code:                            '14853',
         city:                                   'Ithaca',
@@ -29,12 +29,11 @@ class AccountGlobalObject < KFSDataObject
         income_stream_financial_cost_code:      'IT - Ithaca Campus',
         income_stream_account_number:           '0142900',
         cfda_number:                            '',
-        higher_ed_funct_code:                     '',
+        higher_ed_funct_code:                   '',
         sufficient_funds_code:                  'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code:       '',
         press:                                  :save
-        #organization_code: '00*'
 
     }
     set_options(defaults.merge(opts))
