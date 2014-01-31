@@ -17,6 +17,10 @@ class BudgetAdjustmentPage < FinancialProcessingPage
 
 
 
+  #viewing document without editing
+
+ value(:find_me) { |b| b.frm.span(id: 'document.sourceAccountingLine[0].currentBudgetAdjustmentAmount.div').text }
+
 
 
 

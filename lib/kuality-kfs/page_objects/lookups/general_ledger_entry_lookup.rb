@@ -40,4 +40,6 @@ class GeneralLedgerEntryLookupPage < Lookups
   action(:search_reference_origin_code) { |b| b.frm.button(title: 'Search Reference Origin Code').click }
   action(:search_fiscal_period) { |b| b.frm.button(title: 'Search Fiscal Period').click }
 
+
+
 end #class

@@ -69,50 +69,50 @@ class BudgetAdjustmentObject < KFSDataObject
   end
 
 
-
-  def puts_text_fields(page)
-    page.frm.text_fields.each { |t| puts 'element(:) { |b| b.frm.text_field(name: \'' + t.name.to_s + '\') }' "\n" }
-  end
-
-  def puts_links(page)
-    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(text: \'' + t.text.to_s + '\') }' "\n" }
-  end
-
-  def puts_links_href(page)
-    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(href: \'' + t.href.to_s + '\') }' "\n" }
-  end
-
-# LABELS
-   def puts_labels(page)
-     page.frm.labels.each { |t| puts 'element(:'+t.text.to_s.downcase.gsub(' ', '_').gsub(':','').gsub('-','_') +') ' "\n"}
-   end
-
-# SELECT
-    def puts_select(page)
-      page.frm.select_lists.each { |t| puts 'element(:) { |b| b.frm.select(name: \''+t.name.to_s+'\') }' }
-    end
-
-# CHECKBOXES
-    def puts_checkboxes(page)
-      page.frm.checkboxes.each { |t| puts 'element(:) { |b| b.frm.checkbox(name: \''+t.name.to_s+'\') }' }
-    end
-
-#BUTTONS
-    def puts_buttons(page)
-      page.frm.buttons.each { |t| puts 'action(:'+ t.title.to_s.downcase.gsub(' ', '_').gsub('-','_') + ') { |b| b.frm.button(title: \'' + t.title.to_s + '\').click }' "\n" }
-    end
-
-#RADIO
-    def puts_radios(page)
-      page.frm.radios.each { |r| puts 'element(:) { |b| b.frm.radio(id: \''+r.id.to_s+'\') }' "\n"}
-    end
-
-#WORKS FOR ACCOUNT PAGE
-  def puts_text_field_with_name(page)
-  page.frm.trs.each do |tr|
-      puts 'element(:' + tr.label.text.to_s.downcase.gsub(' ', '_').gsub(':', '').gsub('-','_') + ') ' + '{ |b| b.frm.text_field(name: ' + tr.text_field.name.to_s + ') }' + "\n"
-    end
-  end
+#
+#  def puts_text_fields(page)
+#    page.frm.text_fields.each { |t| puts 'element(:) { |b| b.frm.text_field(name: \'' + t.name.to_s + '\') }' "\n" }
+#  end
+#
+#  def puts_links(page)
+#    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(text: \'' + t.text.to_s + '\') }' "\n" }
+#  end
+#
+#  def puts_links_href(page)
+#    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(href: \'' + t.href.to_s + '\') }' "\n" }
+#  end
+#
+## LABELS
+#   def puts_labels(page)
+#     page.frm.labels.each { |t| puts 'element(:'+t.text.to_s.downcase.gsub(' ', '_').gsub(':','').gsub('-','_') +') ' "\n"}
+#   end
+#
+## SELECT
+#    def puts_select(page)
+#      page.frm.select_lists.each { |t| puts 'element(:) { |b| b.frm.select(name: \''+t.name.to_s+'\') }' }
+#    end
+#
+## CHECKBOXES
+#    def puts_checkboxes(page)
+#      page.frm.checkboxes.each { |t| puts 'element(:) { |b| b.frm.checkbox(name: \''+t.name.to_s+'\') }' }
+#    end
+#
+##BUTTONS
+#    def puts_buttons(page)
+#      page.frm.buttons.each { |t| puts 'action(:'+ t.title.to_s.downcase.gsub(' ', '_').gsub('-','_') + ') { |b| b.frm.button(title: \'' + t.title.to_s + '\').click }' "\n" }
+#    end
+#
+##RADIO
+#    def puts_radios(page)
+#      page.frm.radios.each { |r| puts 'element(:) { |b| b.frm.radio(id: \''+r.id.to_s+'\') }' "\n"}
+#    end
+#
+##WORKS FOR ACCOUNT PAGE
+#  def puts_text_field_with_name(page)
+#  page.frm.trs.each do |tr|
+#      puts 'element(:' + tr.label.text.to_s.downcase.gsub(' ', '_').gsub(':', '').gsub('-','_') + ') ' + '{ |b| b.frm.text_field(name: ' + tr.text_field.name.to_s + ') }' + "\n"
+#    end
+#  end
 
 
 

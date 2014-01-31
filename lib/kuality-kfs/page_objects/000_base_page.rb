@@ -112,6 +112,9 @@ class BasePage < PageFactory
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 
       p_value(:docs_with_status) { |status, b| array = []; (b.results_table.rows.find_all{|row| row[1].text==status}).each { |row| array << row[0].text }; array }
+
+      action(:select_monthly_item){ |obj_code, monthly_number, b| b.frm.link(href: /financialObjectCode=#{obj_code}(.*?)universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
+
     end
 
     def route_log
