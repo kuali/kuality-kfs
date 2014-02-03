@@ -1,7 +1,5 @@
 class GeneralLedgerBalanceLookupPage < Lookups
 
-  #search_results_table
-
   element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
   element(:chart_code) { |b| b.frm.text_field(name: 'chartOfAccountsCode') }
   element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
@@ -30,20 +28,5 @@ class GeneralLedgerBalanceLookupPage < Lookups
   action(:search_sub_object_code) { |b| b.frm.button(title: 'Search Sub-Object Code').click }
   action(:search_balance_type_code) { |b| b.frm.button(title: 'Search Balance Type Code').click }
   action(:search_object_type_code) { |b| b.frm.button(title: 'Search Object Type Code').click }
-
-
-
-  #JULY = 01
-  #AUGUST = 02
-  #SEPTEMBER = 03
-  #OCTOBER = 04
-  #NOVEMBER = 05
-  #DECEMBER = 06
-  #JANUARY = 07
-  #FEBRUARY = 08
-  #MARCH = 09
-  #APRIL = 10
-  #MAY = 11
-  #JUNE = 12
 
 end

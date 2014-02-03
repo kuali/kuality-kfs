@@ -1,8 +1,10 @@
 class BudgetAdjustmentObject < KFSDataObject
 
   attr_accessor  :fdd_year, :from_chart_code, :from_account_number,
-                 :from_object_code, :from_current_amount, :from_base_amount,
-                 :to_chart_code, :to_object_code, :to_current_amount, :to_base_amount
+                 :from_object_code, :from_current_amount, :from_base_amount, :from_line_description,
+
+                 :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount, :to_line_description,
+                 :converted_month_number
 
   def initialize(browser, opts={})
     @browser = browser
@@ -11,7 +13,8 @@ class BudgetAdjustmentObject < KFSDataObject
         from_chart_code: 'IT',
         from_account_number: '1258322',
         from_object_code: '4480',
-        from_current_amount: '10000'
+        from_current_amount: '10000',
+        converted_month_number: get_month_conversion
     }
     set_options(defaults.merge(opts))
   end
@@ -25,10 +28,10 @@ class BudgetAdjustmentObject < KFSDataObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
       fill_out page, :description, :fdd_year,
-               :from_chart_code, :from_account_number, :from_object_code, :from_current_amount, :from_base_amount
+               :from_chart_code, :from_account_number, :from_object_code, :from_current_amount, :from_base_amount, :from_line_description
       page.add_from_accounting_line unless @from_account_number.nil?
 
-      fill_out page, :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount
+      fill_out page, :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount, :to_line_description
       page.add_to_accounting_line unless @to_account_number.nil?
 
       fill_out_extended_attributes
@@ -45,7 +48,6 @@ class BudgetAdjustmentObject < KFSDataObject
   #  #TODO:: not sure if this global variable works
   #  @browser.goto "#{$base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{$users.current_user}"
   #end
-
 
   def adding_a_from_accounting_line(page, acct_num, obj_code, current_amt, line_desc, base_amt)
     page.from_account_number.fit acct_num
@@ -65,55 +67,23 @@ class BudgetAdjustmentObject < KFSDataObject
     page.to_base_amount.fit base_amt
 
     page.add_to_accounting_line
-
   end
 
-
-#
-#  def puts_text_fields(page)
-#    page.frm.text_fields.each { |t| puts 'element(:) { |b| b.frm.text_field(name: \'' + t.name.to_s + '\') }' "\n" }
-#  end
-#
-#  def puts_links(page)
-#    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(text: \'' + t.text.to_s + '\') }' "\n" }
-#  end
-#
-#  def puts_links_href(page)
-#    page.frm.links.each { |t| puts 'element(:) { |b| b.frm.link(href: \'' + t.href.to_s + '\') }' "\n" }
-#  end
-#
-## LABELS
-#   def puts_labels(page)
-#     page.frm.labels.each { |t| puts 'element(:'+t.text.to_s.downcase.gsub(' ', '_').gsub(':','').gsub('-','_') +') ' "\n"}
-#   end
-#
-## SELECT
-#    def puts_select(page)
-#      page.frm.select_lists.each { |t| puts 'element(:) { |b| b.frm.select(name: \''+t.name.to_s+'\') }' }
-#    end
-#
-## CHECKBOXES
-#    def puts_checkboxes(page)
-#      page.frm.checkboxes.each { |t| puts 'element(:) { |b| b.frm.checkbox(name: \''+t.name.to_s+'\') }' }
-#    end
-#
-##BUTTONS
-#    def puts_buttons(page)
-#      page.frm.buttons.each { |t| puts 'action(:'+ t.title.to_s.downcase.gsub(' ', '_').gsub('-','_') + ') { |b| b.frm.button(title: \'' + t.title.to_s + '\').click }' "\n" }
-#    end
-#
-##RADIO
-#    def puts_radios(page)
-#      page.frm.radios.each { |r| puts 'element(:) { |b| b.frm.radio(id: \''+r.id.to_s+'\') }' "\n"}
-#    end
-#
-##WORKS FOR ACCOUNT PAGE
-#  def puts_text_field_with_name(page)
-#  page.frm.trs.each do |tr|
-#      puts 'element(:' + tr.label.text.to_s.downcase.gsub(' ', '_').gsub(':', '').gsub('-','_') + ') ' + '{ |b| b.frm.text_field(name: ' + tr.text_field.name.to_s + ') }' + "\n"
-#    end
-#  end
-
-
+  #private
+  def get_month_conversion
+    #general ledger balance lookup to select monthly link does not use numbers that match month
+    return '07' if current_month == 'JAN'
+    return '08' if current_month == 'FEB'
+    return '09' if current_month == 'MAR'
+    return '10' if current_month == 'APR'
+    return '11' if current_month == 'MAY'
+    return '12' if current_month == 'JUN'
+    return '01' if current_month == 'JUL'
+    return '02' if current_month == 'AUG'
+    return '03' if current_month == 'SEP'
+    return '04' if current_month == 'OCT'
+    return '05' if current_month == 'NOV'
+    return '06' if current_month == 'DEC'
+  end
 
 end #class
