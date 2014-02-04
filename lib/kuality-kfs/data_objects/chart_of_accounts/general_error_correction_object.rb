@@ -27,20 +27,30 @@ class GeneralErrorCorrectionObject < KFSDataObject
   end
 
   def post_create
-    add_line(:to) unless @from_lines.nil?
-    add_line(:from) unless @to_lines.nil?
+    add_line(:to) unless @from_lines.empty?
+    add_line(:from) unless @to_lines.empty?
   end
 
   def add_line(type)
     case type
-    when type == :to
-      lines_array = @to_lines
-      @to_lines = CollectionsFactory.new(@browser).contains(AccountingLineObject)
-      lines_array.each { |line| @to_lines.add(line.merge({target: 'to'})) }
-    when type == :from
-      lines_array = @from_lines
-      @from_lines = CollectionsFactory.new(@browser).contains(AccountingLineObject)
-      lines_array.each { |line| @from_lines.add(line.merge({target: 'from'})) }
+    when :to
+      puts @to_lines
+      @to_lines = @to_lines.is_a?(Array) ? @to_lines : [@to_lines]
+      lines_array = collection('AccountingLineObject')
+      @to_lines.each { |line| lines_array.add line.merge({target: 'to'})}
+      #@to_lines = @to_lines.is_a?(Array) ? @to_lines : [@to_lines]
+      #lines_array = CollectionsFactory.new(@browser)
+      #lines_array.contains(AccountingLineObject)
+      #@to_lines.each { |line| puts "Adding line for #{line}"; lines_array.add(line.merge({target: 'to'})) }
+    when :from
+      puts @from_lines
+      @from_lines = @from_lines.is_a?(Array) ? @from_lines : [@from_lines]
+      lines_array = collection('AccountingLineObject')
+      @from_lines.each { |line| lines_array.add line.merge({target: 'from'})}
+      #@from_lines = @from_lines.is_a?(Array) ? @from_lines : [@from_lines]
+      #lines_array = CollectionsFactory.new(@browser)
+      #lines_array.contains(AccountingLineObject)
+      #@from_lines.each { |line| puts "Adding line for #{line}"; lines_array.add(line.merge({target: 'from'})) }
     end
   end
 

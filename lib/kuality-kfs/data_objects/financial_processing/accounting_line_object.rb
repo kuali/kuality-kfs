@@ -30,17 +30,17 @@ class AccountingLineObject < DataObject
   def create
     on AccountingLine do |page|
       mappings = {
-        "#{@target}_chart_code".to_sym            => @chart_code,
-        "#{@target}_account_number".to_sym        => @account_number,
-        "#{@target}_sub_account".to_sym           => @sub_account,
-        "#{@target}_object".to_sym                => @object,
-        "#{@target}_sub_object".to_sym            => @sub_object,
-        "#{@target}_project".to_sym               => @project,
-        "#{@target}_org_ref_id".to_sym            => @org_ref_id,
-        "#{@target}_reference_origin_code".to_sym => @reference_origin_code,
-        "#{@target}_reference_number".to_sym      => @reference_number,
-        "#{@target}_line_description".to_sym      => @line_description,
-        "#{@target}_amount".to_sym                => @amount
+        "#{@target}_chart_code".to_sym                 => @chart_code,
+        "#{@target}_account_number".to_sym             => @account_number,
+        "#{@target}_sub_account_code".to_sym           => @sub_account,
+        "#{@target}_object_code".to_sym                => @object,
+        "#{@target}_sub_object_code".to_sym            => @sub_object,
+        "#{@target}_project_code".to_sym               => @project,
+        "#{@target}_organization_reference_id".to_sym  => @org_ref_id,
+        "#{@target}_reference_origin_code".to_sym      => @reference_origin_code,
+        "#{@target}_reference_number".to_sym           => @reference_number,
+        "#{@target}_line_description".to_sym           => @line_description,
+        "#{@target}_amount".to_sym                     => @amount
       }
       mappings.merge!({"#{@target}_month_1".to_sym => @month_1}) unless @month_1.nil?
       mappings.merge!({"#{@target}_month_2".to_sym => @month_2}) unless @month_2.nil?
@@ -66,5 +66,11 @@ class AccountingLineObject < DataObject
     # You'll probably need to use the provided @target value to generate the
     # proper symbols.
   end
+
+end
+
+class AccountingLineObjectCollection < CollectionsFactory
+
+  contains AccountingLineObject
 
 end
