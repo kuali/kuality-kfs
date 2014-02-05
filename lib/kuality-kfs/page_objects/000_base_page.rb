@@ -95,7 +95,8 @@ class BasePage < PageFactory
     end
 
     def search_results_table
-      element(:header_row_key) { |b| b.results_table.tr(text: /Action/m).cells.collect { |x| snake_case(x.text).to_sym } }
+      element(:header_row) { |b| b.results_table.tr(text: /Action/m).cells.collect { |x| snake_case(x.text).to_sym } }
+      action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }

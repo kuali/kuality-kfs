@@ -20,7 +20,7 @@ class AccountingLineObject < DataObject
         org_ref_id:            nil,
         reference_origin_code: nil,
         reference_number:      nil,
-        line_description:      "Testing #{@target} Accounting Line",
+        line_description:      "Testing #{opts[:target]} Accounting Line",
         amount:                '0.01',
     }
 
@@ -55,7 +55,12 @@ class AccountingLineObject < DataObject
       mappings.merge!({"#{@target}_month_11".to_sym => @month_11}) unless @month_11.nil?
       mappings.merge!({"#{@target}_month_12".to_sym => @month_12}) unless @month_12.nil?
 
-      fill_out page, mappings
+      mappings.each do |field, value|
+        lmnt = page.send(*[field, nil].compact)
+        var = value.nil? ? instance_variable_get("@#{field}") : value
+        lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
+      end
+
       fill_out_extended_attributes
       page.send("add_#{@target}_accounting_line")
     end

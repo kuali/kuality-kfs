@@ -1,16 +1,18 @@
 class GeneralErrorCorrectionObject < KFSDataObject
 
   attr_accessor :organization_document_number, :explanation,
-                :from_lines, :to_lines # Each of these should be an array of hashes for the proper settings
+                :from_lines, :to_lines
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        description:                       random_alphanums(40, 'AFT'),
-        organization_document_number:      random_alphanums(10, 'AFT'),
-        explanation:                       'Because I said so!',
-        press:                             :save
+        description:                     random_alphanums(40, 'AFT'),
+        organization_document_number:    random_alphanums(10, 'AFT'),
+        explanation:                     'Because I said so!',
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
+        press:                           nil
     }
 
     set_options(defaults.merge(opts))
@@ -27,31 +29,26 @@ class GeneralErrorCorrectionObject < KFSDataObject
   end
 
   def post_create
-    add_line(:to) unless @from_lines.empty?
-    add_line(:from) unless @to_lines.empty?
+    #add_line(:to) unless (@from_lines.nil? || @from_lines.empty?)
+    #add_line(:from) unless (@to_lines.nil? || @to_lines.empty?)
+    #on(GeneralErrorCorrectionPage)
   end
 
-  def add_line(type)
+  def add_line(type, al)
     case type
-    when :to
-      puts @to_lines
-      @to_lines = @to_lines.is_a?(Array) ? @to_lines : [@to_lines]
-      lines_array = collection('AccountingLineObject')
-      @to_lines.each { |line| lines_array.add line.merge({target: 'to'})}
-      #@to_lines = @to_lines.is_a?(Array) ? @to_lines : [@to_lines]
-      #lines_array = CollectionsFactory.new(@browser)
-      #lines_array.contains(AccountingLineObject)
-      #@to_lines.each { |line| puts "Adding line for #{line}"; lines_array.add(line.merge({target: 'to'})) }
-    when :from
-      puts @from_lines
-      @from_lines = @from_lines.is_a?(Array) ? @from_lines : [@from_lines]
-      lines_array = collection('AccountingLineObject')
-      @from_lines.each { |line| lines_array.add line.merge({target: 'from'})}
-      #@from_lines = @from_lines.is_a?(Array) ? @from_lines : [@from_lines]
-      #lines_array = CollectionsFactory.new(@browser)
-      #lines_array.contains(AccountingLineObject)
-      #@from_lines.each { |line| puts "Adding line for #{line}"; lines_array.add(line.merge({target: 'from'})) }
+      when :to
+        @to_lines.add(al.merge({target: 'to'}))
+      when :from
+        @from_lines.add(al.merge({target: 'from'}))
     end
+  end
+
+  def add_to_line(al)
+    add_line(:to, al)
+  end
+
+  def add_from_line(al)
+    add_line(:from, al)
   end
 
 end
