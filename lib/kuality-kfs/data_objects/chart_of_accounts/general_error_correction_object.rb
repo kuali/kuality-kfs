@@ -28,12 +28,6 @@ class GeneralErrorCorrectionObject < KFSDataObject
     end
   end
 
-  def post_create
-    #add_line(:to) unless (@from_lines.nil? || @from_lines.empty?)
-    #add_line(:from) unless (@to_lines.nil? || @to_lines.empty?)
-    #on(GeneralErrorCorrectionPage)
-  end
-
   def add_line(type, al)
     case type
       when :to
