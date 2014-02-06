@@ -3,7 +3,7 @@ class AccountingLineObject < DataObject
   attr_accessor   :target,
                   :chart_code, :account_number, :sub_account, :object, :sub_object,
                   :project, :org_ref_id, :reference_origin_code, :reference_number,
-                  :line_description, :amount,
+                  :line_description, :amount, :account_expired_override,
                   :month_1, :month_2, :month_3, :month_4, :month_5, :month_6,
                   :month_7, :month_8, :month_9, :month_10, :month_11, :month_12
 
@@ -63,6 +63,10 @@ class AccountingLineObject < DataObject
 
       fill_out_extended_attributes
       page.send("add_#{@target}_accounting_line")
+      unless @account_expired_override.nil?
+        page.send("#{@target}_account_expired_override").set
+        page.send("add_#{@target}_accounting_line")
+      end
     end
   end
 

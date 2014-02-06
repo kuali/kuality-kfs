@@ -11,7 +11,7 @@ class DocumentSearch < Lookups
 
   element(:document_id) { |b| b.frm.text_field(id: 'documentId') }
 
-  action(:open_doc) { |document_id, b| b.frm.link(text: document_id).click; b.use_new_tab }
+  action(:open_doc) { |document_id, b| b.frm.link(text: document_id).click; b.use_new_tab; b.close_parents }
   action(:doc_status) { |document_id, b| b.results_table.row(text: /#{document_id}/)[3].text }
 
 end
