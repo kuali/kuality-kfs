@@ -23,11 +23,28 @@ class FinancialProcessingPage < KFSBasePage
       element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
       element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
       element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-      element(:credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
-      element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
       element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
       action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+
+      element(:credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
+      element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
+
+      action(:chart_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].chartOfAccountsCode") }
+      action(:account_number_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].accountNumber") }
+      action(:sub_account_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].subAccountNumber") }
+      action(:object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
+      action(:sub_object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialSubObjectCode") }
+      action(:project_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].projectCode") }
+      action(:org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
+      action(:line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
+
+      action(:delete_line_item) { |line_item='0', b| b.text_field(name: "methodToCall.deleteSourceLine.line#{line_item}.anchoraccountingSourceAnchor") }
+      action(:bal_inquiry_line_item) { |line_item='0', b| b.text_field(name: "methodToCall.performBalanceInquiryForSourceLine.line#{line_item}.anchoraccountingSourceexistingLineLineAnchor0") }
+
+      action(:debit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].debit") }
+      action(:credit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].credit") }
+
     end
 
     def accounting_lines_from_to
@@ -40,9 +57,12 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
       element(:from_organization_reference_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
       element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+
+      element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+
+      #Budget Adjustment
       element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
       element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
-      element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
       element(:from_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:from_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
@@ -69,9 +89,12 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_project_code) { |b| b.frm.text_field(name: 'newTargetLine.projectCode') }
       element(:to_organization_reference_id) { |b| b.frm.text_field(name: 'newTargetLine.organizationReferenceId') }
       element(:to_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
+
+      element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
+
+      #Budget Adjustment
       element(:to_current_amount) { |b| b.frm.text_field(name: 'newTargetLine.currentBudgetAdjustmentAmount') }
       element(:to_base_amount) { |b| b.frm.text_field(name: 'newTargetLine.baseBudgetAdjustmentAmount') }
-      element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
@@ -88,17 +111,24 @@ class FinancialProcessingPage < KFSBasePage
 
       action(:add_to_increase_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
       action(:add_to_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
-    end
 
+
+      #action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].amount") }
+      #action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].amount") }
+
+      action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+      action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+
+    end
 
     def  accounting_lines_for_capitalization
             #on advanced deposit and general error correction
-
     end
 
     def create_capital_assets
       #on internal billing page
     end
+
     def modify_capital_assets
       #on advanced deposit and general error correction
     end
@@ -110,6 +140,10 @@ class FinancialProcessingPage < KFSBasePage
     def notes_and_attachments
       element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
+
     end
 
     def ad_hoc_recipients

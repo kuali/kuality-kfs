@@ -13,4 +13,9 @@ class BudgetAdjustmentPage < FinancialProcessingPage
 
 #General Ledger Pending Entries
 
+  action(:from_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+  action(:from_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
+
+  action(:to_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+
 end

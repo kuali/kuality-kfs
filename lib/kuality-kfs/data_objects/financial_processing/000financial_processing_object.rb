@@ -6,10 +6,11 @@ class FinancialProcessingObject < KFSDataObject
                 :to_chart_code, :to_object_code, :to_current_amount,
                 :general_ledger_pending_entries
 
-  @@skip_default_accounting_lines = false
+                #:new_account_number  ,:new_account_object_code, :new_account_amount, :add_accounting_line
+  #@@skip_default_accounting_lines = false
 
-  def skip_default_accounting_lines
-    @@skip_default_accounting_lines = true
-  end
+  #def skip_default_accounting_lines
+  #  @skip_default_accounting_lines = true
+  #end
 
 end
