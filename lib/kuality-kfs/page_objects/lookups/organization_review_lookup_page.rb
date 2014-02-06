@@ -2,7 +2,7 @@ class OrganizationReviewLookupPage < Lookups
 
   element(:doc_type) { |b| b.frm.hidden(name: 'financialSystemDocumentTypeCode') }
   element(:chart_code) { |b| b.frm.select(name: 'chartOfAccountsCode') }
-  element(:org_code) { |b| b.frm.text_field(name: 'organizationCode') }
+  element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
   element(:principal_name) { |b| b.frm.text_field(name: 'principalMemberPrincipalName') }
   element(:namespace) { |b| b.frm.select(name: 'roleMemberRoleNamespaceCode') }
   element(:role_name) { |b| b.frm.select(name: 'roleMemberRoleName') }

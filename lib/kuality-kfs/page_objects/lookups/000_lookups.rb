@@ -20,4 +20,95 @@ class Lookups < BasePage
   element(:copy_value_links) { |b| b.results_table.links(text: 'copy') }
 
 
+  class << self
+
+    def document_facets
+      element(:doc_number) { |b| b.frm.text_field(name: 'documentNumber') }
+      element(:doc_type) { |b| b.frm.text_field(name: 'documentTypeCode') }
+    end
+
+    def account_facets
+      element(:chart_code) { |b| b.frm.text_field(name: 'chartOfAccountsCode') }
+      element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
+      element(:account_name) { |b| b.frm.text_field(name: 'accountName') }
+      element(:account_type_code) { |b| b.frm.select(name: 'accountTypeCode') }
+      element(:sub_fund_group_code) { |b| b.frm.text_field(name: 'subFundGroupCode') }
+      closed_radios
+    end
+
+    def subaccount_facets
+      element(:sub_account_number) { |b| b.frm.text_field(name: 'subAccountNumber') }
+    end
+
+    def account_principals_facets
+      element(:account_manager_principal_name) { |b| b.frm.text_field(name: 'accountManagerUser.principalName') }
+      element(:account_supervisor_principal_name) { |b| b.frm.text_field(name: 'accountSupervisoryUser.principalName') }
+    end
+
+    def fiscal_officer_facets
+      element(:fo_principal_name) { |b| b.frm.text_field(name: 'accountFiscalOfficerUser.principalName') }
+    end
+
+    #def organization_facets
+    #  element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
+    #  element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
+    #  element(:organization_document_number) { |b| b.frm.text_field(name: 'organizationDocumentNumber') }
+    #  element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
+    #end
+
+    def financial_object_facets
+      element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
+      element(:subobject_code) { |b| b.frm.text_field(name: 'financialSubObjectCode') }
+      element(:object_type_code) { |b| b.frm.text_field(name: 'financialObjectTypeCode') }
+      element(:balance_type_code) { |b| b.frm.text_field(name: 'financialBalanceTypeCode') }
+      element(:origin_code) { |b| b.frm.text_field(name: 'financialSystemOriginationCode') }
+    end
+
+    def selection_actions
+      action(:select_all_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').when_present.click }
+      action(:select_all_from_all_pages) { |b| b.frm.img(title: 'Select all rows from all pages').click }
+      action(:deselect_all_from_all_pages) { |b| b.frm.img(title: 'Unselect all rows from all pages').click }
+      action(:deselect_all_from_this_page) { |b| b.frm.img(title: 'Deselect all rows from this page').click }
+    end
+
+    def fiscal_year_facets
+      element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
+      element(:fiscal_period) { |b| b.frm.text_field(name: 'universityFiscalPeriodCode') }
+    end
+
+    def encumbrance_object_facets
+      element(:encumbrance_object_code) { |b| b.frm.text_field(name: 'objectCode') }
+      element(:encumbrance_subobject_code) { |b| b.frm.text_field(name: 'subObjectCode') }
+      element(:encumbrance_balance_type) { |b| b.frm.text_field(name: 'balanceTypeCode') }
+      element(:encumbrance_origin_code) { |b| b.frm.text_field(name: 'originCode') }
+      element(:include_pending_ledger_entry) { |b| b.frm.radio(name: 'dummyBusinessObject.pendingEntryOption') }
+      element(:include_zeroed_out_encumbrances) { |b| b.frm.radio(name: 'dummyBusinessObject.zeroEncumbranceOption') }
+    end
+
+    def closed_radios
+      element(:closed) { |b| b.frm.radios(name: 'closed') }
+      element(:closed_yes) { |b| b.frm.radio(id: 'closedYes') }
+      element(:closed_no) { |b| b.frm.radio(id: 'closedNo') }
+      element(:closed_both) { |b| b.frm.radio(id: 'closedBoth') }
+    end
+
+    def reference_document_facets
+      element(:reference_document_number) { |b| b.frm.text_field(name: 'referenceFinancialDocumentNumber') }
+      element(:reference_document_type_code) { |b| b.frm.text_field(name: 'referenceFinancialDocumentTypeCode') }
+      element(:reference_origin_code) { |b| b.frm.text_field(name: 'referenceFinancialSystemOriginationCode') }
+    end
+
+    def project_facets
+      element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
+    end
+
+    def account_global_cornell_university_extensions
+      # FIXME: Someday soon, we should implement a solution similar to the one we did with DataObjects that will allow us to add extensions for Lookups
+      element(:major_reporting_category_code) { |b| b.frm.text_field(name: 'extension.majorReportingCategoryCode') }
+      element(:sub_fund_program_code) { |b| b.frm.text_field(name: 'extension.programCode') }
+      element(:appropriation_account_number) { |b| b.frm.text_field(name: 'extension.appropriationAccountNumber') }
+    end
+
+  end
+
 end

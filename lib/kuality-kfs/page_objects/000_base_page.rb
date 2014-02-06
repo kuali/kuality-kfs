@@ -56,8 +56,13 @@ class BasePage < PageFactory
     # Included here because this is such a common field in KC
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
-#      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-#      element(:org_doc_num) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+    end
+
+    def organization_facets
+      element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
+      element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+      element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
     def global_buttons
@@ -72,6 +77,10 @@ class BasePage < PageFactory
     end
 
     def tab_buttons
+      action(:main_menu_tab) { |b| b.link(title: 'Main Menu').click }
+      action(:maintenance_tab) { |b| b.link(title: 'Maintenance').click }
+      action(:administration_tab) { |b| b.link(title: 'Administration').click }
+
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
     end
 
@@ -88,10 +97,9 @@ class BasePage < PageFactory
 
     def search_results_table
       element(:results_table) { |b| b.frm.table(id: 'row') }
-
+      action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
-
-      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click }  #; p.use_new_tab; p.close_parents }
+      action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
@@ -105,7 +113,8 @@ class BasePage < PageFactory
 
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
-      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click }
+      action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
+      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length)] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }

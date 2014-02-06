@@ -4,7 +4,6 @@ class FinancialProcessingPage < KFSBasePage
   class << self
 
     def document_overview
-      #element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
       element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
     end
