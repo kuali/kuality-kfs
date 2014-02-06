@@ -142,6 +142,8 @@ class BasePage < PageFactory
         b.left_errmsg_tabs.each do |div|
           if div.div.div.exist?
             errs << div.div.divs.collect{ |div| div.text }
+          elsif div.div.exist?
+            errs << div.divs.collect{ |div| div.text unless div.text == '' }.compact
           elsif div.li.exist?
             errs << div.lis.collect{ |li| li.text }
           end
