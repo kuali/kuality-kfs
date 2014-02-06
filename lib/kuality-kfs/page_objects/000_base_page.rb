@@ -124,7 +124,7 @@ class BasePage < PageFactory
 
       action(:select_monthly_item){ |obj_code, monthly_number, p| p.frm.link(href: /financialObjectCode=#{obj_code}(.*?)universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
 
-      action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).click }
+      action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
     end
 
