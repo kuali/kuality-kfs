@@ -53,7 +53,6 @@ class BasePage < PageFactory
       alias_method :created, :last_updated
     end
 
-    # Included here because this is such a common field in KC
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
     end
@@ -96,6 +95,8 @@ class BasePage < PageFactory
     end
 
     def search_results_table
+      element(:header_row) { |b| b.results_table.tr(text: /Action/m).cells.collect { |x| snake_case(x.text).to_sym } }
+      action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
@@ -146,6 +147,8 @@ class BasePage < PageFactory
         b.left_errmsg_tabs.each do |div|
           if div.div.div.exist?
             errs << div.div.divs.collect{ |div| div.text }
+          elsif div.div.exist?
+            errs << div.divs.collect{ |div| div.text unless div.text == '' }.compact
           elsif div.li.exist?
             errs << div.lis.collect{ |li| li.text }
           end

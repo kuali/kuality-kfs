@@ -61,5 +61,4 @@ class ObjectCodeObject < KFSDataObject
       fill_out page, :suny_object_code
     end
   end
-
 end #class
