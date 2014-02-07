@@ -12,7 +12,7 @@ class KFSDataObject < DataObject
     fill_out_extended_attributes
     post_create
 
-    page_klass = Kernel.const_get(self.class.to_s.gsub('Object','Page'))
+    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
 
     on(page_klass) do
       $current_page.alert.ok if $current_page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
