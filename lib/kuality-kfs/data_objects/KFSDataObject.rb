@@ -12,9 +12,12 @@ class KFSDataObject < DataObject
     fill_out_extended_attributes
     post_create
 
-    $current_page.alert.ok if $current_page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-    @document_id = $current_page.document_id
-    $current_page.send(@press) unless @press.nil?
+    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
+    on page_klass do |page|
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      @document_id = page.document_id
+      page.send(@press) unless @press.nil?
+    end
   end
 
   def pre_create

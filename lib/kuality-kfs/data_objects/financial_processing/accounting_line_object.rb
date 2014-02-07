@@ -63,6 +63,10 @@ class AccountingLineObject < DataObject
 
       fill_out_extended_attributes
       page.send("add_#{@target}_accounting_line")
+      unless @account_expired_override.nil?
+        page.send("#{@target}_account_expired_override").set
+        page.send("add_#{@target}_accounting_line")
+      end
     end
   end
 

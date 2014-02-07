@@ -6,7 +6,7 @@ class AccountObject < KFSDataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_code, :sufficient_funds_code,
                 :expense_guideline_text, :income_guideline_txt, :purpose_text,
-                :income_stream_financial_cost_code, :income_stream_account_number, :labor_benefit_rate_cat_code
+                :income_stream_financial_cost_code, :income_stream_account_number, :labor_benefit_rate_cat_code, :account_expiration_date
 
   def initialize(browser, opts={})
     @browser = browser
@@ -38,6 +38,7 @@ class AccountObject < KFSDataObject
         income_stream_financial_cost_code: 'IT - Ithaca Campus',
         income_stream_account_number:      '1000710',
         labor_benefit_rate_cat_code:       'CC',
+        account_expiration_date: '',
         press:                             :save
     }
     set_options(defaults.merge(opts))
@@ -55,7 +56,8 @@ class AccountObject < KFSDataObject
                :effective_date, :postal_code, :city, :state, :address, :sub_fund_group_code,
                :higher_ed_funct_code, :restricted_status_code, :fo_principal_name, :supervisor_principal_name,
                :manager_principal_name, :budget_record_level_code, :sufficient_funds_code, :expense_guideline_text,
-               :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number
+               :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number,
+               :account_expiration_date
     end
   end
 end

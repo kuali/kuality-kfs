@@ -42,6 +42,7 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
       element(:from_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
       element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      element(:from_account_expired_override) { |b| b.frm.checkbox(name: 'newSourceLine.accountExpiredOverride') }
 
       element(:from_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:from_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
@@ -75,6 +76,7 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_reference_origin_code) { |b| b.frm.text_field(name: 'newTargetLine.referenceOriginCode') }
       element(:to_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
       element(:to_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
+      element(:to_account_expired_override) { |b| b.frm.checkbox(name: 'newTargetLine.accountExpiredOverride') }
 
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
