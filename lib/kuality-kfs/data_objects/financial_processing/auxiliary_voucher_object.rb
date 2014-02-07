@@ -31,13 +31,15 @@ class AuxiliaryVoucherObject < FinancialProcessingObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
 
-
+      if @add_accounting_line == true
           accounting_lines.each do |dep|
           page.account_number.fit dep[:new_account_number]
           page.object_code.fit dep[:new_account_object_code]
           page.debit.fit dep[:new_account_amount]
-          page.add_accounting_line unless @add_accounting_line == false
-        end
+          page.add_accounting_line
+          end
+      end
+
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end

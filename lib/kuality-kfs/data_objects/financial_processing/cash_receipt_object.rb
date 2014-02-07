@@ -28,17 +28,20 @@ class CashReceiptObject < FinancialProcessingObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
 
-      accounting_lines.each do |dep|
-        page.from_account_number.fit dep[:new_account_number]
-        page.from_object_code.fit dep[:new_account_object_code]
-        page.from_amount.fit dep[:new_account_amount]
-        page.add_from_accounting_line unless @add_accounting_line == false
+      if @add_accounting_line == true
+        accounting_lines.each do |dep|
+          page.from_account_number.fit dep[:new_account_number]
+          page.from_object_code.fit dep[:new_account_object_code]
+          page.from_amount.fit dep[:new_account_amount]
+          page.add_from_accounting_line
+        end
       end
     end
 
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
-  end
+
+  end #build
 
   def view
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"

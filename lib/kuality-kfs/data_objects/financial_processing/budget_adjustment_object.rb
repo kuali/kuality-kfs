@@ -34,30 +34,37 @@ class BudgetAdjustmentObject < FinancialProcessingObject
 
       fill_out page, :description, :fdd_year
 
-      accounting_lines.each do |dep|
-        page.from_chart_code.fit dep[:from_chart_code]
-        page.from_account_number.fit dep[:from_account_number]
-        page.from_object_code.fit dep[:from_object_code]
-        page.from_current_amount.fit dep[:from_current_amount]
-        page.from_base_amount.fit dep[:from_base_amount]
-        page.from_line_description.fit dep[:from_line_description]
-        page.add_from_accounting_line unless @add_accounting_line == false
-      end
+      if @add_accounting_line == true
+        accounting_lines.each do |dep|
+          page.from_chart_code.fit dep[:from_chart_code]
+          page.from_account_number.fit dep[:from_account_number]
+          page.from_object_code.fit dep[:from_object_code]
+          page.from_current_amount.fit dep[:from_current_amount]
+          page.from_base_amount.fit dep[:from_base_amount]
+          page.from_line_description.fit dep[:from_line_description]
+          page.add_from_accounting_line
+        end
 
-      accounting_lines.each do |dep|
-        page.to_chart_code.fit dep[:to_chart_code]
-        page.to_account_number.fit dep[:to_account_number]
-        page.to_object_code.fit dep[:to_object_code]
-        page.to_current_amount.fit dep[:to_current_amount]
-        page.to_base_amount.fit dep[:to_base_amount]
-        page.to_line_description.fit dep[:to_line_description]
-        page.add_to_accounting_line unless @add_accounting_line == false
+        accounting_lines.each do |dep|
+          page.to_chart_code.fit dep[:to_chart_code]
+          page.to_account_number.fit dep[:to_account_number]
+          page.to_object_code.fit dep[:to_object_code]
+          page.to_current_amount.fit dep[:to_current_amount]
+          page.to_base_amount.fit dep[:to_base_amount]
+          page.to_line_description.fit dep[:to_line_description]
+          page.add_to_accounting_line
+        end
       end
 
       fill_out_extended_attributes
 
       page.send(@press) unless @press.nil?
     end
+  end
+
+  def view
+    @browser.goto "#{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    #"https://kfs-ci.kuali.cornell.edu/kfs/financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView&backdoorId=lrz8#topOfForm"
   end
 
   def view_as(username)
@@ -94,7 +101,6 @@ class BudgetAdjustmentObject < FinancialProcessingObject
     page.add_to_accounting_line
   end
 
-  #private
   def get_month_conversion
     #general ledger balance lookup to select monthly link does not use numbers that match month
     return '07' if current_month == 'JAN'
@@ -109,18 +115,6 @@ class BudgetAdjustmentObject < FinancialProcessingObject
     return '04' if current_month == 'OCT'
     return '05' if current_month == 'NOV'
     return '06' if current_month == 'DEC'
-  end
-
-
-
-  #def viewAsUser()
-  #  @browser.goto "#{$base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{$users.current_user}"
-  #end
-
-  def view
-    "#{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-    #"#{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-    #"https://kfs-ci.kuali.cornell.edu/kfs/financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView&backdoorId=lrz8#topOfForm"
   end
 
 end #class

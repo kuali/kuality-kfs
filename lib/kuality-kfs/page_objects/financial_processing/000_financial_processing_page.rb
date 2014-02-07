@@ -10,6 +10,7 @@ class FinancialProcessingPage < KFSBasePage
 
     def financial_document_detail
       value(:fdd_total_amount) { |b| b.frm.table(summary: 'KFS Detail Section').td(align: 'left').text }
+      element(:bank_code_field) {|b| b.frm.text_field(name: 'document.financialDocumentBankCode') }
     end
 
 
@@ -28,6 +29,8 @@ class FinancialProcessingPage < KFSBasePage
 
       element(:credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
       element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
+
+      element(:reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
 
       action(:chart_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].chartOfAccountsCode") }
       action(:account_number_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].accountNumber") }

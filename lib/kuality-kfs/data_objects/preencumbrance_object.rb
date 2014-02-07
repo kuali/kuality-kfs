@@ -1,5 +1,7 @@
 class PreEncumbranceObject < KFSDataObject
 
+  DOC_INFO = { label: 'Pre Encumbrance', type_code: 'PE'}
+
   attr_accessor   :organization_document_number, :explanation,
                   :encumbrance_reversal_date, :encumbrance_chart_code, :encumbrance_account_number,
                   :encumbrance_sub_account, :encumbrance_object, :encumbrance_sub_object,
@@ -68,4 +70,19 @@ class PreEncumbranceObject < KFSDataObject
       page.add_disencumbrance_line
     end
   end
-end
+
+  def view
+    #@browser.goto "#{$base_url}financialPreEncumbrance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    #on DocumentSearch do |page|
+    #  puts page.url
+
+      @browser.goto "#{$base_url}financialPreEncumbrance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+
+      #"https://kfs-ci.kuali.cornell.edu/kfs/financialPreEncumbrance.do?methodToCall=docHandler&docId=4260297&command=displayDocSearchView&backdoorId=hc224#topOfForm"
+
+  end
+
+
+end #class
+
+

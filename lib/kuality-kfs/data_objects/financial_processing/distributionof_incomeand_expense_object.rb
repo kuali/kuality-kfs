@@ -12,9 +12,9 @@ class DistributionofIncomeandExpenseObject < FinancialProcessingObject
             # Dangerously close to needing to be a Data Object proper...
             { from_account_number: '1258322', #TODO get from config
               from_object_code: '4420', #TODO get from config
-              from_amount: '100', add_accounting_line: true
+              from_amount: '100'
             }
-        ],
+        ],       add_accounting_line: true,
         press: :save
     }
     set_options(defaults.merge(opts))
@@ -27,14 +27,14 @@ class DistributionofIncomeandExpenseObject < FinancialProcessingObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
-      #unless @@skip_default_accounting_lines
+      if @add_accounting_line == true
         accounting_lines.each do |dep|
           page.from_account_number.fit dep[:from_account_number]
           page.from_object_code.fit dep[:from_object_code]
           page.from_amount.fit dep[:from_amount]
-          page.add_from_accounting_line unless @add_accounting_line == false
+          page.add_from_accounting_line
         end
-      #end
+      end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end
