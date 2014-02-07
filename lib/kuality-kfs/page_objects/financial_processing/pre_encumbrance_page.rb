@@ -10,12 +10,11 @@ class PreEncumbrancePage < FinancialProcessingPage
   ad_hoc_recipients
 
   #pre_encumbrance_details
-   element(:reversal_date) { |b| b.frn.text_field(name: 'document.reversalDate') }
+   element(:reversal_date) { |b| b.frm.text_field(name: 'document.reversalDate') }
 
   #accounting_lines_encumbrance_disencumbrance
   #ENCUMBRANCE
-  element(:encumbrance_chart) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
-
+  element(:encumbrance_chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
   element(:encumbrance_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
   element(:encumbrance_sub_account) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
   element(:encumbrance_object) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
@@ -31,7 +30,7 @@ class PreEncumbrancePage < FinancialProcessingPage
 
   action(:add_encumbrance_line) { |b| b.frm.button(alt: 'Add Encumbrance Accounting Line').click }
   #DISENCUMBRANCE
-  element(:disencumbrance_chart) { |b| b.select(name: 'newTargetLine.chartOfAccountsCode') }
+  element(:disencumbrance_chart_code) { |b| b.select(name: 'newTargetLine.chartOfAccountsCode') }
   element(:disencumbrance_account_number) { |b| b.frm.text_field(name: 'newTargetLine.accountNumber') }
   element(:disencumbrance_sub_account) { |b| b.frm.text_field(name: 'newTargetLine.subAccountNumber') }
   element(:disencumbrance_object) { |b| b.frm.text_field(name: 'newTargetLine.financialObjectCode') }

@@ -8,7 +8,7 @@ class OrganizationPage < BasePage
   error_messages
 
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
-  element(:org_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
+  element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
   element(:name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationName') }
   element(:manager_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationManagerUniversal.principalName') }
   element(:resp_center_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.responsibilityCenterCode') }

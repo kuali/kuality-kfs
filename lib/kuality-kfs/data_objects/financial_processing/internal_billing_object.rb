@@ -14,7 +14,7 @@ class InternalBillingObject < FinancialProcessingObject
               new_account_object_code: '4420', #TODO get from config
               new_account_amount: '100'
             }
-        ],
+        ],  add_accounting_line: true,
         press: :save
     }
     set_options(defaults.merge(opts))
@@ -27,7 +27,8 @@ class InternalBillingObject < FinancialProcessingObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
-      unless @@skip_default_accounting_lines
+
+      if  add_accounting_line == true
         accounting_lines.each do |dep|
           page.from_account_number.fit dep[:new_account_number]
           page.from_object_code.fit dep[:new_account_object_code]
@@ -41,7 +42,7 @@ class InternalBillingObject < FinancialProcessingObject
   end
 
   def view
-    @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    @browser.goto "#{$base_url}financialInternalBilling.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
     #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 

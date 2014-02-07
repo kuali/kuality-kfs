@@ -1,15 +1,15 @@
 class GeneralLedgerBalanceLookupPage < Lookups
 
-  element(:fiscal_year) { |b| b.frm.text_field(name: universityFiscalYear) }
-  element(:chart_code) { |b| b.frm.text_field(name: chartOfAccountsCode) }
-  element(:account_number) { |b| b.frm.text_field(name: accountNumber) }
-  element(:sub_account_number) { |b| b.frm.text_field(name: subAccountNumber) }
-  element(:object_code) { |b| b.frm.text_field(name: objectCode) }
-  element(:sub_object_code) { |b| b.frm.text_field(name: subObjectCode) }
-  element(:balance_type_code) { |b| b.frm.text_field(name: balanceTypeCode) }
-  element(:object_type_code) { |b| b.frm.text_field(name: objectTypeCode) }
-  element(:consolidation_option) { |b| b.frm.text_field(name: dummyBusinessObject.consolidationOption) }
-  element(:amount_view_option) { |b| b.frm.text_field(name: dummyBusinessObject.amountViewOption) }
+  element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
+  element(:chart_code) { |b| b.frm.text_field(name: 'chartOfAccountsCode') }
+  element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
+  element(:sub_account_number) { |b| b.frm.text_field(name: 'subAccountNumber') }
+  element(:object_code) { |b| b.frm.text_field(name: 'objectCode') }
+  element(:sub_object_code) { |b| b.frm.text_field(name: 'subObjectCode') }
+  element(:balance_type_code) { |b| b.frm.text_field(name: 'balanceTypeCode') }
+  element(:object_type_code) { |b| b.frm.text_field(name: 'objectTypeCode') }
+  element(:consolidation_option) { |b| b.frm.text_field(name: 'dummyBusinessObject.consolidationOption') }
+  element(:amount_view_option) { |b| b.frm.text_field(name: 'dummyBusinessObject.amountViewOption') }
 
   element(:consolidation_option_consolidation) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionConsolidation') }
   element(:consolidation_option_detail) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionDetail') }

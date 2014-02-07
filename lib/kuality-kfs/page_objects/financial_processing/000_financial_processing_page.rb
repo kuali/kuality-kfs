@@ -4,7 +4,6 @@ class FinancialProcessingPage < KFSBasePage
   class << self
 
     def document_overview
-      #element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
       element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
     end
@@ -60,9 +59,13 @@ class FinancialProcessingPage < KFSBasePage
 
       element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
-      #Budget Adjustment
-      element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
-      element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
+      #action(:dd_from_accounting_line) { |b| b.frm.button(title: 'Add From Accounting Line').click }
+
+      action(:add_from_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+      action(:add_to_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
+
+      action(:add_income_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor') }
+      action(:add_expense_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor') }
 
       element(:from_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:from_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
@@ -77,8 +80,6 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_month_11) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth11LineAmount') }
       element(:from_month_12) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth12LineAmount') }
 
-      action(:add_from_decrease_accounting_line) { |b| b.frm.button(title: 'Add From/Decrease Accounting Line').click }
-      action(:add_from_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
 
       #ACCOUNTING LINES TO/INCREASE
       element(:to_chart_code) { |b| b.frm.select(name: 'newTargetLine.chartOfAccountsCode') }
@@ -93,8 +94,15 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
       #Budget Adjustment
+      element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
+      element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
       element(:to_current_amount) { |b| b.frm.text_field(name: 'newTargetLine.currentBudgetAdjustmentAmount') }
       element(:to_base_amount) { |b| b.frm.text_field(name: 'newTargetLine.baseBudgetAdjustmentAmount') }
+      action(:add_from_decrease_accounting_line) { |b| b.frm.button(title: 'Add From/Decrease Accounting Line').click }
+      action(:add_to_increase_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
+
+
+      #action(:add_to_accounting_line) { |b| b.frm.button(title: 'Add To Accounting Line').click }
 
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
@@ -109,17 +117,22 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_month_11) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth11LineAmount') }
       element(:to_month_12) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth12LineAmount') }
 
-      action(:add_to_increase_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
-      action(:add_to_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
-
-
-      #action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].amount") }
-      #action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].amount") }
-
+      #Line Item
       action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
       action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
 
-    end
+      action(:from_object_code_line_item) { |line_item, b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
+      action(:from_account_number_line_item) { |b| b.text_field(name: "document.sourceAccountingLine[0].accountNumber") }
+      action(:from_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+      action(:from_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
+
+      action(:to_object_code_line_item) { |line_item, b| b.text_field(name: "document.targetAccountingLine[#{line_item}].financialObjectCode") }
+      action(:to_account_number_line_item) { |b| b.text_field(name: "document.targetAccountingLine[0].accountNumber") }
+      action(:to_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+      action(:to_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
+
+    end #accounting_lines_from_to
+
 
     def  accounting_lines_for_capitalization
             #on advanced deposit and general error correction

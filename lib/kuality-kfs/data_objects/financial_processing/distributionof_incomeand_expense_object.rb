@@ -1,4 +1,4 @@
-class DistributionOfIncomeAndExpenseObject < FinancialProcessingObject
+class DistributionofIncomeandExpenseObject < FinancialProcessingObject
 
   DOC_INFO = { label: 'Distribution of Income and Expense Document', type_code: 'DI' }
 
@@ -22,7 +22,7 @@ class DistributionOfIncomeAndExpenseObject < FinancialProcessingObject
 
   def build
     visit(MainPage).distribution_of_income_and_expense
-    on DistributionOfIncomeAndExpensePage do |page|
+    on DistributionofIncomeandExpensePage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

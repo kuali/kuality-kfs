@@ -8,7 +8,7 @@ class OrganizationReviewRolePage < BasePage
   error_messages
 
   element(:chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
-  element(:org_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
+  element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
   element(:doc_type) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialSystemDocumentTypeCode') }
   element(:review_types) { |b| b.frm.radio(name: 'document.newMaintainableObject.reviewRolesIndicator') }
   element(:from_amount) { |b| b.frm.text_field(name: 'document.newMaintainableObject.fromAmount') }

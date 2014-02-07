@@ -14,7 +14,7 @@ class GeneralErrorCorrectionObject < FinancialProcessingObject
               new_account_object_code: '4420', #TODO get from config
               new_account_amount: '100'
             }
-        ],
+        ], add_accounting_line: true,
         press: :save
     }
     set_options(defaults.merge(opts))
@@ -27,21 +27,21 @@ class GeneralErrorCorrectionObject < FinancialProcessingObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
-      unless @@skip_default_accounting_lines
+      #unless @@skip_default_accounting_lines
         accounting_lines.each do |dep|
           page.from_account_number.fit dep[:new_account_number]
           page.from_object_code.fit dep[:new_account_object_code]
           page.from_amount.fit dep[:new_account_amount]
-          page.add_from_accounting_line
+          page.add_from_accounting_line unless @add_accounting_line == false
         end
-      end
+      #end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end
   end
 
   def view
-    @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+    @browser.goto "#{$base_url}financialGeneralErrorCorrection.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
     #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 

@@ -11,11 +11,12 @@ class BudgetAdjustmentPage < FinancialProcessingPage
   element(:fdd_year) { |b| b.frm.select(name: 'document.postingYear') }
   action(:fdd_refresh) { |b| b.frm.button(class: 'tinybutton', name: 'methodToCall.refresh').click }
 
-#General Ledger Pending Entries
+  #viewing document without editing ability to locate values
+  value(:find_from_amount) { |level='0', b| b.frm.span(id: "document.sourceAccountingLine[#{level}].currentBudgetAdjustmentAmount.div").text }
+  value(:find_to_amount) { |level='0', b| b.frm.span(id: "document.targetAccountingLine[#{level}].currentBudgetAdjustmentAmount.div").text }
 
-  action(:from_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
-  action(:from_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
+  value(:find_from_line_description) { |level='0', b| b.frm.span(id: "document.sourceAccountingLine[#{level}].financialDocumentLineDescription.div").text }
+  value(:find_to_line_description) { |level='0', b| b.frm.span(id: "document.targetAccountingLine[#{level}].financialDocumentLineDescription.div").text }
 
-  action(:to_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
 
 end

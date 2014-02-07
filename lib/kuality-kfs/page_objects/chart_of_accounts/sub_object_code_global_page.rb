@@ -1,14 +1,6 @@
-class SubObjectCodeGlobalPage < BasePage
+class SubObjectCodeGlobalPage < KFSBasePage
 
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
-
-  element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-  element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+  organization_facets
 
   #New section
   element(:new_fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }

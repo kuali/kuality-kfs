@@ -14,6 +14,11 @@ class AuxiliaryVoucherPage < FinancialProcessingPage
   element(:auxiliary_voucher_type_accrual) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Accrual') }
   element(:auxiliary_voucher_type_recode) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Recode') }
 
+
+  #action(:debit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].debit") }
+  #action(:credit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].credit") }
+  #action(:object_code_line_item) { |line_item, b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
+
 #search buttons
   action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
   action(:search_sub_account_code) { |b| b.frm.button(title: 'Search Sub-Account Code').click }

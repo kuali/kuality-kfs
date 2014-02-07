@@ -2,7 +2,10 @@ class AdvanceDepositObject < FinancialProcessingObject
 
   DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
 
-  attr_accessor :advance_deposits
+  attr_accessor :advance_deposits, :new_deposit_date,
+                :new_deposit_ref_number, :new_deposit_description, :new_deposit_amount, :new_deposit_date
+
+
 
   def initialize(browser, opts={})
     @browser = browser
@@ -23,7 +26,7 @@ class AdvanceDepositObject < FinancialProcessingObject
               new_account_object_code: '4420', #TODO get from config
               new_account_amount: '100'
             }
-        ],
+        ], add_accounting_line: true, add_deposit_line: true,
         press: :save
     }
     set_options(defaults.merge(opts))
@@ -36,21 +39,39 @@ class AdvanceDepositObject < FinancialProcessingObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description
-      unless @@skip_default_accounting_lines
-        advance_deposits.each do |dep|
-          page.new_deposit_date.fit dep[:new_deposit_date]
-          page.new_deposit_ref_number.fit dep[:new_deposit_ref_number]
-          page.new_deposit_description.fit dep[:new_deposit_description]
-          page.new_deposit_amount.fit dep[:new_deposit_amount]
-          page.add_deposit
-        end
-        accounting_lines.each do |dep|
-          page.new_account_number.fit dep[:new_account_number]
-          page.new_account_object_code.fit dep[:new_account_object_code]
-          page.new_account_amount.fit dep[:new_account_amount]
-          page.add_accounting_line
-        end
+      advance_deposits.each do |dep|
+        page.advance_deposit_date.fit dep[:new_deposit_date]
+        page.advance_deposit_reference_number.fit dep[:new_deposit_ref_number]
+        page.advance_deposit_description.fit dep[:new_deposit_description]
+        page.advance_deposit_amount.fit dep[:new_deposit_amount]
+        page.add_an_advance_deposit
       end
+      accounting_lines.each do |dep|
+        page.account_number.fit dep[:new_account_number]
+        page.object_code.fit dep[:new_account_object_code]
+        page.amount.fit dep[:new_account_amount]
+        page.add_accounting_line
+
+      #  unless @add_deposit_line == false
+      #  advance_deposits.each do |dep|
+      #    page.new_deposit_date.fit dep[:new_deposit_date]
+      #    page.new_deposit_ref_number.fit dep[:new_deposit_ref_number]
+      #    page.new_deposit_description.fit dep[:new_deposit_description]
+      #    page.new_deposit_amount.fit dep[:new_deposit_amount]
+      #    page.add_deposit
+      #  end
+      #  end
+      #
+      #  unless @add_accounting_line == false
+      #    accounting_lines.each do |dep|
+      #    page.new_account_number.fit dep[:new_account_number]
+      #    page.new_account_object_code.fit dep[:new_account_object_code]
+      #    page.new_account_amount.fit dep[:new_account_amount]
+      #    page.add_accounting_line
+      #  end
+      #end
+
+
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end
@@ -61,4 +82,6 @@ class AdvanceDepositObject < FinancialProcessingObject
     #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
 
-end
+  end
+
+end #AdvDepositObj
