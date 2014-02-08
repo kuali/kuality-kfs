@@ -4,17 +4,19 @@ class BudgetAdjustmentObject < KFSDataObject
                  :from_object_code, :from_current_amount, :from_base_amount, :from_line_description,
 
                  :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount, :to_line_description,
-                 :converted_month_number
+                 :converted_month_number,
+                 :from_file_name, :to_file_name
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description:    random_alphanums(20, 'AFT'),
+    defaults = { description:    random_alphanums(20, 'AFT Budget Adj '),
         from_chart_code: 'IT',
         from_account_number: '1258322',
         from_object_code: '4480',
         from_current_amount: '10000',
         converted_month_number: get_month_conversion
+
     }
     set_options(defaults.merge(opts))
   end
@@ -45,6 +47,7 @@ class BudgetAdjustmentObject < KFSDataObject
   end
 
   def view
+    #@browser.goto "{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
     visit(MainPage).doc_search
     on DocumentSearch do |page|
       page.document_id_field.when_present.fit @document_id
@@ -74,7 +77,6 @@ class BudgetAdjustmentObject < KFSDataObject
     page.add_to_accounting_line
   end
 
-  #private
   def get_month_conversion
     #general ledger balance lookup to select monthly link does not use numbers that match month
     return '07' if current_month == 'JAN'
