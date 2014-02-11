@@ -55,8 +55,4 @@ class GeneralErrorCorrectionObject < KFSDataObject
     add_line(:from, al)
   end
 
-  def to_var_name
-    'ged'
-  end
-
 end
