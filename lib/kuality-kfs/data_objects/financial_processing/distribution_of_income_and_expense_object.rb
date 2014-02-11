@@ -1,4 +1,4 @@
-class DistributionofIncomeandExpenseObject < FinancialProcessingObject
+class DistributionOfIncomeAndExpenseObject < FinancialProcessingObject
 
   DOC_INFO = { label: 'Distribution of Income and Expense Document', type_code: 'DI' }
 
@@ -14,7 +14,9 @@ class DistributionofIncomeandExpenseObject < FinancialProcessingObject
               from_object_code: '4420', #TODO get from config
               from_amount: '100'
             }
-        ],       add_accounting_line: true,
+        ], add_accounting_line: true,
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
         press: :save
     }
     set_options(defaults.merge(opts))
@@ -47,3 +49,4 @@ class DistributionofIncomeandExpenseObject < FinancialProcessingObject
   end
 
 end #class
+DistributionofIncomeandExpenseObject = DistributionOfIncomeAndExpenseObject

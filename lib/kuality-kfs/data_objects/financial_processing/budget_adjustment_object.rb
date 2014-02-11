@@ -19,7 +19,9 @@ class BudgetAdjustmentObject < FinancialProcessingObject
         { from_chart_code: 'IT', from_account_number: '1258322', #TODO get from config
           from_object_code: '4480', #TODO get from config
           from_current_amount: '100',
-        } ], add_accounting_line: true
+        } ], add_accounting_line: true,
+         from_lines:                      collection('AccountingLineObject'),
+         to_lines:                        collection('AccountingLineObject')
     }
     set_options(defaults.merge(opts))
   end

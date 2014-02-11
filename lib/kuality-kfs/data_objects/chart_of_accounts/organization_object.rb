@@ -28,8 +28,8 @@ class OrganizationObject < KFSDataObject
         plant_chart:            'IT', #TODO grab this from config file
         plant_account_number:   '1000710', #TODO grab this from config file
         campus_plant_chart_code:'IT', #TODO grab this from config file
-        campus_plant_account_number: '1000710', #TODO grab this from config file
-        press:                       :save
+        campus_plant_account_number: '1000710'#, #TODO grab this from config file
+        #press:                       :save
     }
     set_options(defaults.merge(opts))
   end
@@ -44,7 +44,17 @@ class OrganizationObject < KFSDataObject
       fill_out page, :description, :chart_code, :organization_code, :name, :manager_principal_name, :resp_center_code,
                      :physcal_campus_code, :type_code,
                      :address_line_1, :address_line_2, :postal_code, :country_code,
-                     :begin_date, :reports_to_chart_code, :reports_to_org_code
+                     :begin_date, :end_date, :reports_to_chart_code, :reports_to_org_code
+    end
+  end
+
+  def view
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      search.open_doc @document_id
     end
   end
 

@@ -3,7 +3,8 @@ class KFSDataObject < DataObject
   include DateFactory
   include StringFactory
 
-  attr_accessor :document_id, :description, :press
+  attr_accessor :document_id, :description, :press,
+                :from_lines, :to_lines
 
   # Hooks:
   def create
@@ -12,9 +13,12 @@ class KFSDataObject < DataObject
     fill_out_extended_attributes
     post_create
 
-    $current_page.alert.ok if $current_page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-    @document_id = $current_page.document_id
-    $current_page.send(@press) unless @press.nil?
+    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
+    on page_klass do |page|
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      @document_id = page.document_id
+      page.send(@press) unless @press.nil?
+    end
   end
 
   def pre_create
@@ -59,6 +63,23 @@ class KFSDataObject < DataObject
 
   def view #should be overridden for transactional documents
     @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
+  def add_line(type, al)
+    case type
+      when :to
+        @to_lines.add(al.merge({target: 'to'}))
+      when :from
+        @from_lines.add(al.merge({target: 'from'}))
+    end
+  end
+
+  def add_to_line(al)
+    add_line(:to, al)
+  end
+
+  def add_from_line(al)
+    add_line(:from, al)
   end
 
 end

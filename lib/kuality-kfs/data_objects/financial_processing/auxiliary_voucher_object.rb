@@ -15,9 +15,12 @@ class AuxiliaryVoucherObject < FinancialProcessingObject
             # Dangerously close to needing to be a Data Object proper...
             { new_account_number: '1258322', #TODO get from config
               new_account_object_code: '4420', #TODO get from config
-              new_account_amount: '100', add_accounting_line: true
+              new_account_amount: '100'
             }
-        ],
+
+        ], add_accounting_line: true,
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
         press: :save
     }
     set_options(defaults.merge(opts))

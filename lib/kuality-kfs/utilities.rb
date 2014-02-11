@@ -28,6 +28,14 @@ module Utilities
     StringFactory.damballa(string)
   end
 
+  def object_class_for(document)
+    "#{document.split.map(&:capitalize).join('')}Object"
+  end
+
+  def page_class_for(document)
+    "#{document.split.map(&:capitalize).join('')}Page"
+  end
+
   def random_percentage
     random_dollar_value(100)
   end

@@ -18,6 +18,8 @@ class PreEncumbranceObject < KFSDataObject
 
     defaults = {
         description:                       random_alphanums(40, 'AFT'),
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
         press:                             :save
     }
 

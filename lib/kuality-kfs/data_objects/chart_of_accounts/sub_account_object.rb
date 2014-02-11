@@ -41,5 +41,4 @@ class SubAccountObject < KFSDataObject
     page.ad_hoc_person.fit @adhoc_approver_userid
     page.ad_hoc_person_add
   end
-
 end

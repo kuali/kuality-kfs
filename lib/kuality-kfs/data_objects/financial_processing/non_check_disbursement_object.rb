@@ -15,6 +15,8 @@ class NonCheckDisbursementObject < FinancialProcessingObject
               amount: '100', reference_number: '1234'
             }
         ], add_accounting_line: true,
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
         press: :save
     }
     set_options(defaults.merge(opts))

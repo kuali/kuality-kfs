@@ -33,6 +33,7 @@ class IndirectCostAdjustmentObject < FinancialProcessingObject
           page.from_object_code.fit dep[:new_account_object_code]
           page.from_amount.fit dep[:new_account_amount]
           page.add_from_accounting_line
+
         end
       end
 #      page.accounting_lines_for_capitalization_select(0).select

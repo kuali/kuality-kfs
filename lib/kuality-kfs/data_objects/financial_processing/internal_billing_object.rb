@@ -15,6 +15,8 @@ class InternalBillingObject < FinancialProcessingObject
               new_account_amount: '100'
             }
         ],  add_accounting_line: true,
+        from_lines:                      collection('AccountingLineObject'),
+        to_lines:                        collection('AccountingLineObject'),
         press: :save
     }
     set_options(defaults.merge(opts))

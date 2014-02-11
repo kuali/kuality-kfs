@@ -14,58 +14,50 @@ class FinancialProcessingPage < KFSBasePage
     end
 
 
-    def accounting_lines
-      element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
-      element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-      element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-      element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-      element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-      element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-      element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-      element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-      element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+    #def accounting_lines
+      #element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
+      #element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+      #element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
+      #element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+      #element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
+      #element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
+      #element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
+      #element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      #element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
-      action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
-
-      element(:credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
-      element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
-
-      element(:reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
-
-      action(:chart_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].chartOfAccountsCode") }
-      action(:account_number_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].accountNumber") }
-      action(:sub_account_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].subAccountNumber") }
-      action(:object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
-      action(:sub_object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialSubObjectCode") }
-      action(:project_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].projectCode") }
-      action(:org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
-      action(:line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
-
-      action(:delete_line_item) { |line_item='0', b| b.text_field(name: "methodToCall.deleteSourceLine.line#{line_item}.anchoraccountingSourceAnchor") }
-      action(:bal_inquiry_line_item) { |line_item='0', b| b.text_field(name: "methodToCall.performBalanceInquiryForSourceLine.line#{line_item}.anchoraccountingSourceexistingLineLineAnchor0") }
-
-      action(:debit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].debit") }
-      action(:credit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].credit") }
-
-    end
+      #action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+    #end
 
     def accounting_lines_from_to
       #ACCOUNTING LINES FROM/DECREASE
       element(:from_chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
-      element(:from_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-      element(:from_sub_account_code) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-      element(:from_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-      element(:from_sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-      element(:from_project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-      element(:from_organization_reference_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-      element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      alias_method :account_chart, :from_chart_code
 
+      element(:from_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+      alias_method :account_number, :from_account_number
+      element(:from_sub_account_code) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
+      alias_method :sub_account_number, :from_sub_account_code
+      element(:from_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+      alias_method :object_code, :from_object_code
+      element(:from_sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
+      alias_method :sub_object_code, :from_sub_object_code
+      element(:from_project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
+      alias_method :project_code, :from_project_code
+      element(:from_organization_reference_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
+      alias_method :org_ref_id, :from_organization_reference_id
+      element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      alias_method :amount, :from_amount
       element(:from_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+      alias_method :line_description, :from_line_description
+
+      element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
+      element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
+
+      element(:from_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
+      element(:from_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
+      element(:from_account_expired_override) { |b| b.frm.checkbox(name: 'newSourceLine.accountExpiredOverride') }
 
       #action(:dd_from_accounting_line) { |b| b.frm.button(title: 'Add From Accounting Line').click }
-
-      action(:add_from_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
-      action(:add_to_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
 
       action(:add_income_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor') }
       action(:add_expense_accounting_line) {|b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor') }
@@ -83,6 +75,15 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_month_11) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth11LineAmount') }
       element(:from_month_12) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth12LineAmount') }
 
+      action(:add_from_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+      alias_method :add_accounting_line, :add_from_accounting_line
+
+      action(:delete_from_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
+      alias_method :delete_line_item, :delete_from_accounting_line
+
+      action(:balance_inquiry_from_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click }
+      alias_method :bal_inquiry_line_item, :balance_inquiry_from_accounting_line
+      action(:refresh_from_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingSourceAnchor").click }
 
       #ACCOUNTING LINES TO/INCREASE
       element(:to_chart_code) { |b| b.frm.select(name: 'newTargetLine.chartOfAccountsCode') }
@@ -97,15 +98,17 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
       #Budget Adjustment
-      element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
-      element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
+      #element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
+      #element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
       element(:to_current_amount) { |b| b.frm.text_field(name: 'newTargetLine.currentBudgetAdjustmentAmount') }
       element(:to_base_amount) { |b| b.frm.text_field(name: 'newTargetLine.baseBudgetAdjustmentAmount') }
+      #element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
+      element(:to_reference_origin_code) { |b| b.frm.text_field(name: 'newTargetLine.referenceOriginCode') }
+      element(:to_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
+      
+      element(:to_account_expired_override) { |b| b.frm.checkbox(name: 'newTargetLine.accountExpiredOverride') }
       action(:add_from_decrease_accounting_line) { |b| b.frm.button(title: 'Add From/Decrease Accounting Line').click }
       action(:add_to_increase_accounting_line) { |b| b.frm.button(title: 'Add To/Increase Accounting Line').click }
-
-
-      #action(:add_to_accounting_line) { |b| b.frm.button(title: 'Add To Accounting Line').click }
 
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
@@ -120,22 +123,50 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_month_11) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth11LineAmount') }
       element(:to_month_12) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth12LineAmount') }
 
+      action(:add_to_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
+      action(:delete_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteTargetLine.line#{l}.anchoraccountingTargetAnchor").click }
+      action(:balance_inquiry_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForTargetLine.line#{l}.anchoraccountingTargetexistingLineLineAnchor#{l}").click }
+      action(:refresh_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingTargetAnchor").click }
+   
+
       #Line Item
       action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
+
       action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
 
       action(:from_object_code_line_item) { |line_item, b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
-      action(:from_account_number_line_item) { |b| b.text_field(name: "document.sourceAccountingLine[0].accountNumber") }
+      alias_method :object_code_line_item, :from_object_code_line_item
+      action(:from_account_number_line_item) { |l, b| b.text_field(name: "document.sourceAccountingLine[#{l}].accountNumber") }
+      alias_method :account_number_line_item, :from_account_number_line_item
+      action(:from_sub_account_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].subAccountNumber") }
+      alias_method :sub_account_code_line_item, :from_sub_account_code_line_item
+
       action(:from_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
       action(:from_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
 
       action(:to_object_code_line_item) { |line_item, b| b.text_field(name: "document.targetAccountingLine[#{line_item}].financialObjectCode") }
       action(:to_account_number_line_item) { |b| b.text_field(name: "document.targetAccountingLine[0].accountNumber") }
+
       action(:to_current_amount_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
       action(:to_base_amt_line_item) {|line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].baseBudgetAdjustmentAmount") }
 
-    end #accounting_lines_from_to
+      action(:debit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].debit") }
+      action(:credit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].credit") }
 
+      element(:credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
+      alias_method :credit_amount, :credit
+      element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
+      alias_method :debit_amount, :debit
+
+      # NEED TO CHECK FOR ALIAS ON THESE SOME MORE OR MAKE FROM UP IF NOT EXISTING
+      action(:sub_object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialSubObjectCode") }
+      action(:project_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].projectCode") }
+      action(:org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
+      action(:line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
+
+      element(:reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
+    end #accounting_lines_from_to
+     alias_method :accounting_lines, :accounting_lines_from_to
 
     def  accounting_lines_for_capitalization
             #on advanced deposit and general error correction
