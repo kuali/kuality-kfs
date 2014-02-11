@@ -147,7 +147,7 @@ class FinancialProcessingPage < KFSBasePage
       alias_method :project_code_line_item, :from_project_code_line_item
       action(:from_org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
       alias_method :org_ref_id_line_item, :from_org_ref_id_line_item
-      action(:line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
+      action(:from_line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
       alias_method :line_description_line_item, :from_line_description_line_item
 
     end #accounting_lines_from_to
