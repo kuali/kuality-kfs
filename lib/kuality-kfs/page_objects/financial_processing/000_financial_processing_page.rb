@@ -13,21 +13,6 @@ class FinancialProcessingPage < KFSBasePage
       element(:bank_code_field) {|b| b.frm.text_field(name: 'document.financialDocumentBankCode') }
     end
 
-
-    #def accounting_lines
-      #element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
-      #element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-      #element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-      #element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-      #element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-      #element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-      #element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-      #element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-      #element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-
-      #action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
-    #end
-
     def accounting_lines_from_to
       #ACCOUNTING LINES FROM/DECREASE
       element(:from_chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
@@ -54,7 +39,10 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
 
       element(:from_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
+      alias_method :reference_origin_code, :from_reference_origin_code
       element(:from_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
+      alias_method :reference_number, :from_reference_number
+
       element(:from_account_expired_override) { |b| b.frm.checkbox(name: 'newSourceLine.accountExpiredOverride') }
 
       #action(:dd_from_accounting_line) { |b| b.frm.button(title: 'Add From Accounting Line').click }
@@ -98,11 +86,9 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
       #Budget Adjustment
-      #element(:from_current_amount) { |b| b.frm.text_field(name: 'newSourceLine.currentBudgetAdjustmentAmount') }
-      #element(:from_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
       element(:to_current_amount) { |b| b.frm.text_field(name: 'newTargetLine.currentBudgetAdjustmentAmount') }
       element(:to_base_amount) { |b| b.frm.text_field(name: 'newTargetLine.baseBudgetAdjustmentAmount') }
-      #element(:to_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
+
       element(:to_reference_origin_code) { |b| b.frm.text_field(name: 'newTargetLine.referenceOriginCode') }
       element(:to_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
       
@@ -127,11 +113,8 @@ class FinancialProcessingPage < KFSBasePage
       action(:delete_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteTargetLine.line#{l}.anchoraccountingTargetAnchor").click }
       action(:balance_inquiry_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForTargetLine.line#{l}.anchoraccountingTargetexistingLineLineAnchor#{l}").click }
       action(:refresh_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingTargetAnchor").click }
-   
 
-      #Line Item
       action(:from_amount_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
-
       action(:to_amount_line_item) { |line_item='0', b| b.text_field(name: "document.targetAccountingLine[#{line_item}].currentBudgetAdjustmentAmount") }
 
       action(:from_object_code_line_item) { |line_item, b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
@@ -158,15 +141,17 @@ class FinancialProcessingPage < KFSBasePage
       element(:debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
       alias_method :debit_amount, :debit
 
-      # NEED TO CHECK FOR ALIAS ON THESE SOME MORE OR MAKE FROM UP IF NOT EXISTING
-      action(:sub_object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialSubObjectCode") }
-      action(:project_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].projectCode") }
-      action(:org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
+      action(:from_sub_object_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialSubObjectCode") }
+      alias_method :sub_object_code_line_item, :from_sub_object_code_line_item
+      action(:from_project_code_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].projectCode") }
+      alias_method :project_code_line_item, :from_project_code_line_item
+      action(:from_org_ref_id_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].organizationReferenceId") }
+      alias_method :org_ref_id_line_item, :from_org_ref_id_line_item
       action(:line_description_line_item) { |line_item='0', b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialDocumentLineDescription") }
+      alias_method :line_description_line_item, :from_line_description_line_item
 
-      element(:reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
     end #accounting_lines_from_to
-     alias_method :accounting_lines, :accounting_lines_from_to
+    alias_method :accounting_lines, :accounting_lines_from_to
 
     def  accounting_lines_for_capitalization
             #on advanced deposit and general error correction
