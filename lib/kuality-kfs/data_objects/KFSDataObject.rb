@@ -5,6 +5,7 @@ class KFSDataObject < DataObject
 
   attr_accessor :document_id, :description, :press
 
+
   # Hooks:
   def create
     pre_create
@@ -62,6 +63,10 @@ class KFSDataObject < DataObject
 
   def view #should be overridden for transactional documents
     @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  end
+
+  def self.to_var_name
+    snake_case self.class.to_s.partition(/Object$/)[0]
   end
 
 end

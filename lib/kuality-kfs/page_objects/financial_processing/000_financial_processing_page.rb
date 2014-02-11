@@ -44,6 +44,21 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
       element(:from_account_expired_override) { |b| b.frm.checkbox(name: 'newSourceLine.accountExpiredOverride') }
 
+      action(:update_from_chart_code) { |i, b| b.frm.select(name: "document.sourceAccountingLine[#{i}].chartOfAccountsCode") }
+      action(:update_from_account_number) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].accountNumber") }
+      action(:update_from_sub_account_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].subAccountNumber") }
+      action(:update_from_object_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialObjectCode") }
+      action(:update_from_sub_object_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialSubObjectCode") }
+      action(:update_from_project_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].projectCode") }
+      action(:update_from_organization_reference_id) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].organizationReferenceId") }
+      action(:update_from_current_amount) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].currentBudgetAdjustmentAmount") }
+      action(:update_from_base_amount) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].baseBudgetAdjustmentAmount") }
+      action(:update_from_line_description) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentLineDescription") }
+      action(:update_from_reference_origin_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].referenceOriginCode") }
+      action(:update_from_reference_number) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].referenceNumber") }
+      action(:update_from_amount) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].amount") }
+      action(:update_from_account_expired_override) { |i, b| b.frm.checkbox(name: "document.sourceAccountingLine[#{i}].accountExpiredOverride") }
+
       element(:from_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:from_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
       element(:from_month_3) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth3LineAmount') }
@@ -56,6 +71,19 @@ class FinancialProcessingPage < KFSBasePage
       element(:from_month_10) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth10LineAmount') }
       element(:from_month_11) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth11LineAmount') }
       element(:from_month_12) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth12LineAmount') }
+
+      action(:update_from_month_1) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth1LineAmount") }
+      action(:update_from_month_2) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth2LineAmount") }
+      action(:update_from_month_3) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth3LineAmount") }
+      action(:update_from_month_4) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth4LineAmount") }
+      action(:update_from_month_5) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth5LineAmount") }
+      action(:update_from_month_6) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth6LineAmount") }
+      action(:update_from_month_7) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth7LineAmount") }
+      action(:update_from_month_8) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth8LineAmount") }
+      action(:update_from_month_9) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth9LineAmount") }
+      action(:update_from_month_10) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth10LineAmount") }
+      action(:update_from_month_11) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth11LineAmount") }
+      action(:update_from_month_12) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].financialDocumentMonth12LineAmount") }
 
       action(:add_from_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
       action(:delete_from_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
@@ -78,6 +106,21 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
       element(:to_account_expired_override) { |b| b.frm.checkbox(name: 'newTargetLine.accountExpiredOverride') }
 
+      action(:update_to_chart_code) { |i, b| b.frm.select(name: "document.targetAccountingLine[#{i}].chartOfAccountsCode") }
+      action(:update_to_account_number) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].accountNumber") }
+      action(:update_to_sub_account_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].subAccountNumber") }
+      action(:update_to_object_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialObjectCode") }
+      action(:update_to_sub_object_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialSubObjectCode") }
+      action(:update_to_project_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].projectCode") }
+      action(:update_to_organization_reference_id) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].organizationReferenceId") }
+      action(:update_to_current_amount) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].currentBudgetAdjustmentAmount") }
+      action(:update_to_base_amount) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].baseBudgetAdjustmentAmount") }
+      action(:update_to_line_description) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentLineDescription") }
+      action(:update_to_reference_origin_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].referenceOriginCode") }
+      action(:update_to_reference_number) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].referenceNumber") }
+      action(:update_to_amount) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].amount") }
+      action(:update_to_account_expired_override) { |i, b| b.frm.checkbox(name: "document.targetAccountingLine[#{i}].accountExpiredOverride") }
+
       element(:to_month_1) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth1LineAmount') }
       element(:to_month_2) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth2LineAmount') }
       element(:to_month_3) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth3LineAmount') }
@@ -90,6 +133,19 @@ class FinancialProcessingPage < KFSBasePage
       element(:to_month_10) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth10LineAmount') }
       element(:to_month_11) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth11LineAmount') }
       element(:to_month_12) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentMonth12LineAmount') }
+
+      action(:update_to_month_1) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth1LineAmount") }
+      action(:update_to_month_2) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth2LineAmount") }
+      action(:update_to_month_3) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth3LineAmount") }
+      action(:update_to_month_4) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth4LineAmount") }
+      action(:update_to_month_5) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth5LineAmount") }
+      action(:update_to_month_6) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth6LineAmount") }
+      action(:update_to_month_7) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth7LineAmount") }
+      action(:update_to_month_8) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth8LineAmount") }
+      action(:update_to_month_9) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth9LineAmount") }
+      action(:update_to_month_10) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth10LineAmount") }
+      action(:update_to_month_11) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth11LineAmount") }
+      action(:update_to_month_12) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialDocumentMonth12LineAmount") }
 
       action(:add_to_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertTargetLine.anchoraccountingTargetAnchor').click }
       action(:delete_to_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteTargetLine.line#{l}.anchoraccountingTargetAnchor").click }
