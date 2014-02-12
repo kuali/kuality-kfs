@@ -3,60 +3,6 @@ class AccountingLine < FinancialProcessingPage
   accounting_lines
   accounting_lines_from_to
 
-  #action(:result_from_chart_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].chartOfAccountsCode.div") }
-  #action(:result_from_account_number) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].accountNumber.div") }
-  #action(:result_from_sub_account_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].subAccountNumber.div") }
-  #action(:result_from_object_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialObjectCode.div") }
-  #action(:result_from_sub_object_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialSubObjectCode.div") }
-  #action(:result_from_project_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].projectCode.div") }
-  #action(:result_from_organization_reference_id) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].organizationReferenceId.div") }
-  #action(:result_from_current_amount) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].currentBudgetAdjustmentAmount.div") }
-  #action(:result_from_base_amount) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].baseBudgetAdjustmentAmount.div") }
-  #action(:result_from_line_description) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentLineDescription.div") }
-  #action(:result_from_reference_origin_code) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].referenceOriginCode.div") }
-  #action(:result_from_reference_number) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].referenceNumber.div") }
-  #action(:result_from_amount) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].amount.div") }
-  #
-  #action(:result_from_month_1) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth1LineAmount.div") }
-  #action(:result_from_month_2) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth2LineAmount.div") }
-  #action(:result_from_month_3) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth3LineAmount.div") }
-  #action(:result_from_month_4) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth4LineAmount.div") }
-  #action(:result_from_month_5) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth5LineAmount.div") }
-  #action(:result_from_month_6) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth6LineAmount.div") }
-  #action(:result_from_month_7) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth7LineAmount.div") }
-  #action(:result_from_month_8) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth8LineAmount.div") }
-  #action(:result_from_month_9) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth9LineAmount.div") }
-  #action(:result_from_month_10) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth10LineAmount.div") }
-  #action(:result_from_month_11) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth11LineAmount.div") }
-  #action(:result_from_month_12) { |i, b| b.span(id: "document.sourceAccountingLine[#{i}].financialDocumentMonth12LineAmount.div") }
-  #
-  #action(:result_to_chart_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].chartOfAccountsCode.div") }
-  #action(:result_to_account_number) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].accountNumber.div") }
-  #action(:result_to_sub_account_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].subAccountNumber.div") }
-  #action(:result_to_object_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialObjectCode.div") }
-  #action(:result_to_sub_object_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialSubObjectCode.div") }
-  #action(:result_to_project_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].projectCode.div") }
-  #action(:result_to_organization_reference_id) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].organizationReferenceId.div") }
-  #action(:result_to_current_amount) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].currentBudgetAdjustmentAmount.div") }
-  #action(:result_to_base_amount) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].baseBudgetAdjustmentAmount.div") }
-  #action(:result_to_line_description) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentLineDescription.div") }
-  #action(:result_to_reference_origin_code) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].referenceOriginCode.div") }
-  #action(:result_to_reference_number) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].referenceNumber.div") }
-  #action(:result_to_amount) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].amount.div") }
-  #
-  #action(:result_to_month_1) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth1LineAmount.div") }
-  #action(:result_to_month_2) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth2LineAmount.div") }
-  #action(:result_to_month_3) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth3LineAmount.div") }
-  #action(:result_to_month_4) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth4LineAmount.div") }
-  #action(:result_to_month_5) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth5LineAmount.div") }
-  #action(:result_to_month_6) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth6LineAmount.div") }
-  #action(:result_to_month_7) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth7LineAmount.div") }
-  #action(:result_to_month_8) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth8LineAmount.div") }
-  #action(:result_to_month_9) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth9LineAmount.div") }
-  #action(:result_to_month_10) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth10LineAmount.div") }
-  #action(:result_to_month_11) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth11LineAmount.div") }
-  #action(:result_to_month_12) { |i, b| b.span(id: "document.targetAccountingLine[#{i}].financialDocumentMonth12LineAmount.div") }
-
   action(:result_from_chart_code) { |i, b| b.result_chart_code(from_to_map(:from), i, b) }
   action(:result_from_account_number) { |i, b| b.result_account_number(from_to_map(:from), i, b) }
   action(:result_from_sub_account_code) { |i, b| b.result_sub_account_code(from_to_map(:from), i, b) }

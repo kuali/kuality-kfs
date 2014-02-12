@@ -1,7 +1,7 @@
 class GeneralErrorCorrectionObject < KFSDataObject
 
   attr_accessor :organization_document_number, :explanation,
-                :from_lines, :to_lines
+                :accounting_lines
 
   def initialize(browser, opts={})
     @browser = browser
@@ -10,8 +10,10 @@ class GeneralErrorCorrectionObject < KFSDataObject
         description:                     random_alphanums(40, 'AFT'),
         organization_document_number:    random_alphanums(10, 'AFT'),
         explanation:                     'Because I said so!',
-        from_lines:                      collection('AccountingLineObject'),
-        to_lines:                        collection('AccountingLineObject'),
+        accounting_lines:                {
+          from: collection('AccountingLineObject'),
+          to:   collection('AccountingLineObject')
+        },
         press:                           nil
     }
 
@@ -39,12 +41,7 @@ class GeneralErrorCorrectionObject < KFSDataObject
   end
 
   def add_line(type, al)
-    case type
-      when :to
-        @to_lines.add(al.merge({target: 'to'}))
-      when :from
-        @from_lines.add(al.merge({target: 'from'}))
-    end
+    @accounting_lines[type].add(al.merge({target: type}))
   end
 
   def add_to_line(al)
