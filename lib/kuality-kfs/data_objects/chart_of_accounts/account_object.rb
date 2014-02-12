@@ -38,7 +38,7 @@ class AccountObject < KFSDataObject
         income_stream_financial_cost_code: 'IT - Ithaca Campus',
         income_stream_account_number:      '1000710',
         labor_benefit_rate_cat_code:       'CC',
-        account_expiration_date: '',
+        account_expiration_date:           '',
         press:                             :save
     }
     set_options(defaults.merge(opts))
