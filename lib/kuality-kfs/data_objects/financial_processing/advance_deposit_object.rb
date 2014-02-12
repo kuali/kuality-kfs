@@ -50,6 +50,8 @@ class AdvanceDepositObject < KFSDataObject
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
   end
 
+  # The next few lines override the normal add_line operations to map
+  # them to the single accounting line type on this document.
   def add_from_line(al)
     @accounting_lines[:from].add(al.merge({target: :from}))
   end

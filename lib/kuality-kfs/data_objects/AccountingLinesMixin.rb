@@ -26,11 +26,9 @@ module AccountingLinesMixin
   def add_to_line(al)
     add_line(:to, al)
   end
-  alias add_disencumbrance_line add_to_line
 
   def add_from_line(al)
     add_line(:from, al)
   end
-  alias add_encumbrance_line add_from_line
 
 end

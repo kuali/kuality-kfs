@@ -3,6 +3,10 @@ class PreEncumbranceObject < KFSDataObject
   include AccountingLinesMixin
   extend AccountingLinesMixin
 
+  # These aliases are for convenience
+  alias add_disencumbrance_line add_to_line
+  alias add_encumbrance_line add_from_line
+
   attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
