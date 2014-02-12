@@ -13,6 +13,8 @@ class AuxiliaryVoucherPage < FinancialProcessingPage
   element(:auxiliary_voucher_type_accrual) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Accrual') }
   element(:auxiliary_voucher_type_recode) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Recode') }
 
+  element(:reversal_date) { |b| b.frm.text_field(name: 'document.reversalDate') }
+
 #General Ledger Pending Entries
 
 #search buttons
