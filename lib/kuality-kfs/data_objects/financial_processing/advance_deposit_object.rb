@@ -1,8 +1,11 @@
 class AdvanceDepositObject < KFSDataObject
 
+  include AccountingLinesMixin
+  extend AccountingLinesMixin
+
   DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
 
-  attr_accessor :advance_deposits, :accounting_lines, :initial_lines,
+  attr_accessor :advance_deposits,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
   def initialize(browser, opts={})
@@ -16,17 +19,11 @@ class AdvanceDepositObject < KFSDataObject
               new_deposit_ref_number: random_alphanums(10, 'AFT-AD'),
               new_deposit_description: random_alphanums(40, 'AFT-AD '),
               new_deposit_amount: '100' }
-        ],
-        accounting_lines: {from: collection('AccountingLineObject')},
-        initial_lines: [
-          {
-            account_number: '1258322', #TODO get from config
-            object_code: '4420', #TODO get from config
-            amount: '100'
-          }
-        ],
-#        press: :save
-    }
+    ]}.merge!(default_lines(initial_lines: [{
+                                              account_number: '1258322', #TODO get from config
+                                              object_code: '4420', #TODO get from config
+                                              amount: '100'
+                                            }]))
     set_options(defaults.merge(opts))
   end
 
@@ -44,7 +41,6 @@ class AdvanceDepositObject < KFSDataObject
         page.advance_deposit_amount.fit dep[:new_deposit_amount]
         page.add_an_advance_deposit
       end
-      @initial_lines.each{ |il| add_line(il) }
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end
@@ -58,5 +54,6 @@ class AdvanceDepositObject < KFSDataObject
     @accounting_lines[:from].add(al.merge({target: :from}))
   end
   alias :add_line :add_from_line
+  alias :add_to_line :add_from_line
 
 end
