@@ -1,12 +1,13 @@
 class BudgetAdjustmentObject < FinancialProcessingObject
 
   DOC_INFO = { label: 'Budget Adjustment', type_code: 'BA' }
+  
+  attr_accessor  :fdd_year, :from_chart_code, :from_account_number,
+                 :from_object_code, :from_current_amount, :from_base_amount, :from_line_description,
 
-  attr_accessor  :fdd_year, :converted_month_number
-
-  #:from_chart_code, :from_account_number,
-  #               :from_object_code, :from_current_amount, :from_base_amount, :from_line_description,
-     #            :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount, :to_line_description,
+                 :to_chart_code, :to_account_number, :to_object_code, :to_current_amount, :to_base_amount, :to_line_description,
+                 :converted_month_number,
+                 :from_file_name, :to_file_name
 
   def initialize(browser, opts={})
     @browser = browser
@@ -67,11 +68,13 @@ class BudgetAdjustmentObject < FinancialProcessingObject
   def view
     @browser.goto "#{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
     #"https://kfs-ci.kuali.cornell.edu/kfs/financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView&backdoorId=lrz8#topOfForm"
+    #@browser.goto "{$base_url}financialBudgetAdjustment.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
   end
 
   def view_as(username)
     @browser.goto "#{$base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{username}"
   end
+
 
   def view_document
     visit(MainPage).doc_search
