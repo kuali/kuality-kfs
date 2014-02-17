@@ -1,9 +1,20 @@
 class AdvanceDepositObject < KFSDataObject
 
+  include AccountingLinesMixin
+
   DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
 
-  attr_accessor :advance_deposits, :accounting_lines,
+  attr_accessor :advance_deposits,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
+
+  def default_lines(opts={})
+    super(opts).merge(
+    initial_lines: [{
+                      account_number: '1258322', #TODO get from config
+                      object_code: '4420', #TODO get from config
+                      amount: '100'
+                    }])
+  end
 
   def initialize(browser, opts={})
     @browser = browser
@@ -16,17 +27,8 @@ class AdvanceDepositObject < KFSDataObject
               new_deposit_ref_number: random_alphanums(10, 'AFT-AD'),
               new_deposit_description: random_alphanums(40, 'AFT-AD '),
               new_deposit_amount: '100' }
-        ],
-#        accounting_lines:     collection('AccountingLines')
-        accounting_lines: [
-            # Dangerously close to needing to be a Data Object proper...
-            { new_account_number: '1258322', #TODO get from config
-              new_account_object_code: '4420', #TODO get from config
-              new_account_amount: '100'
-            }
-        ],
-        press: :save
-    }
+    ]}.merge!(default_lines)
+
     set_options(defaults.merge(opts))
   end
 
@@ -44,12 +46,6 @@ class AdvanceDepositObject < KFSDataObject
         page.advance_deposit_amount.fit dep[:new_deposit_amount]
         page.add_an_advance_deposit
       end
-      accounting_lines.each do |dep|
-        page.account_number.fit dep[:new_account_number]
-        page.object_code.fit dep[:new_account_object_code]
-        page.amount.fit dep[:new_account_amount]
-        page.add_accounting_line
-      end
 #      page.accounting_lines_for_capitalization_select(0).select
 #      page.modify_asset
     end
@@ -57,7 +53,14 @@ class AdvanceDepositObject < KFSDataObject
 
   def view
     @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
   end
+
+  # The next few lines override the normal add_line operations to map
+  # them to the single accounting line type on this document.
+  def add_source_line(al)
+    @accounting_lines[:source].add(al.merge({type: :source}))
+  end
+  alias :add_line :add_source_line
+  alias :add_target_line :add_source_line
 
 end
