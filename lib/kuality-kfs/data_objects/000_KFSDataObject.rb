@@ -61,6 +61,10 @@ class KFSDataObject < DataObject
     on(KFSBasePage).approve
   end
 
+  def reload
+    on(KFSBasePage).reload
+  end
+
   def view #should be overridden for transactional documents
     @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
   end

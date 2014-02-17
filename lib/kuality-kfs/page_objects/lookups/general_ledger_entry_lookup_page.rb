@@ -17,16 +17,16 @@ class GeneralLedgerEntryLookupPage < Lookups
   action(:debit_credit_view_exclude) { |b| b.frm.radio(id: 'dummyBusinessObject.debitCreditOptionExclude').set }
 
 
-  action(:find_preencumbrance_doc) do |pe, b|
+  action(:find_encumbrance_doc) do |pe, b|
     # We'll assume that fiscal year and fiscal period default to nowish
-    b.chart_code.fit pe.accounting_lines[:from][0].chart_code
-    b.account_number.fit pe.accounting_lines[:from][0].account_number
+    b.chart_code.fit pe.accounting_lines[:source][0].chart_code
+    b.account_number.fit pe.accounting_lines[:source][0].account_number
     b.balance_type_code.fit ''
     b.pending_entry_approved_indicator_all
 
     b.search
 
-    b.open_item_via_text(pe.accounting_lines[:from][0].line_description, pe.document_id)
+    b.open_item_via_text(pe.accounting_lines[:source][0].line_description, pe.document_id)
   end
 
     action(:search_fiscal_year) { |b| b.frm.button(title: 'Search Fiscal Year').click }

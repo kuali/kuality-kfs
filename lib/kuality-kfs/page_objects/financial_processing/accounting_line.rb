@@ -3,59 +3,59 @@ class AccountingLine < FinancialProcessingPage
   accounting_lines
   accounting_lines_from_to
 
-  action(:result_from_chart_code) { |i, b| b.result_chart_code(from_to_map(:from), i, b) }
-  action(:result_from_account_number) { |i, b| b.result_account_number(from_to_map(:from), i, b) }
-  action(:result_from_sub_account_code) { |i, b| b.result_sub_account_code(from_to_map(:from), i, b) }
-  action(:result_from_object_code) { |i, b| b.result_object_code(from_to_map(:from), i, b) }
-  action(:result_from_sub_object_code) { |i, b| b.result_sub_object_code(from_to_map(:from), i, b) }
-  action(:result_from_project_code) { |i, b| b.result_project_code(from_to_map(:from), i, b) }
-  action(:result_from_organization_reference_id) { |i, b| b.result_organization_reference_id(from_to_map(:from), i, b) }
-  action(:result_from_current_amount) { |i, b| b.result_current_amount(from_to_map(:from), i, b) }
-  action(:result_from_base_amount) { |i, b| b.result_base_amount(from_to_map(:from), i, b) }
-  action(:result_from_line_description) { |i, b| b.result_line_description(from_to_map(:from), i, b) }
-  action(:result_from_reference_origin_code) { |i, b| b.result_reference_origin_code(from_to_map(:from), i, b) }
-  action(:result_from_reference_number) { |i, b| b.result_reference_number(from_to_map(:from), i, b) }
-  action(:result_from_amount) { |i, b| b.result_amount(from_to_map(:from), i, b) }
+  action(:result_source_chart_code) { |i, b| b.result_chart_code(:source, i, b) }
+  action(:result_source_account_number) { |i, b| b.result_account_number(:source, i, b) }
+  action(:result_source_sub_account_code) { |i, b| b.result_sub_account_code(:source, i, b) }
+  action(:result_source_object_code) { |i, b| b.result_object_code(:source, i, b) }
+  action(:result_source_sub_object_code) { |i, b| b.result_sub_object_code(:source, i, b) }
+  action(:result_source_project_code) { |i, b| b.result_project_code(:source, i, b) }
+  action(:result_source_organization_reference_id) { |i, b| b.result_organization_reference_id(:source, i, b) }
+  action(:result_source_current_amount) { |i, b| b.result_current_amount(:source, i, b) }
+  action(:result_source_base_amount) { |i, b| b.result_base_amount(:source, i, b) }
+  action(:result_source_line_description) { |i, b| b.result_line_description(:source, i, b) }
+  action(:result_source_reference_origin_code) { |i, b| b.result_reference_origin_code(:source, i, b) }
+  action(:result_source_reference_number) { |i, b| b.result_reference_number(:source, i, b) }
+  action(:result_source_amount) { |i, b| b.result_amount(:source, i, b) }
 
-  action(:result_from_month_1) { |i, b| b.result_month_1(from_to_map(:from), i, b) }
-  action(:result_from_month_2) { |i, b| b.result_month_2(from_to_map(:from), i, b) }
-  action(:result_from_month_3) { |i, b| b.result_month_3(from_to_map(:from), i, b) }
-  action(:result_from_month_4) { |i, b| b.result_month_4(from_to_map(:from), i, b) }
-  action(:result_from_month_5) { |i, b| b.result_month_5(from_to_map(:from), i, b) }
-  action(:result_from_month_6) { |i, b| b.result_month_6(from_to_map(:from), i, b) }
-  action(:result_from_month_7) { |i, b| b.result_month_7(from_to_map(:from), i, b) }
-  action(:result_from_month_8) { |i, b| b.result_month_8(from_to_map(:from), i, b) }
-  action(:result_from_month_9) { |i, b| b.result_month_9(from_to_map(:from), i, b) }
-  action(:result_from_month_10) { |i, b| b.result_month_10(from_to_map(:from), i, b) }
-  action(:result_from_month_11) { |i, b| b.result_month_11(from_to_map(:from), i, b) }
-  action(:result_from_month_12) { |i, b| b.result_month_12(from_to_map(:from), i, b) }
+  action(:result_source_month_1) { |i, b| b.result_month_1(:source, i, b) }
+  action(:result_source_month_2) { |i, b| b.result_month_2(:source, i, b) }
+  action(:result_source_month_3) { |i, b| b.result_month_3(:source, i, b) }
+  action(:result_source_month_4) { |i, b| b.result_month_4(:source, i, b) }
+  action(:result_source_month_5) { |i, b| b.result_month_5(:source, i, b) }
+  action(:result_source_month_6) { |i, b| b.result_month_6(:source, i, b) }
+  action(:result_source_month_7) { |i, b| b.result_month_7(:source, i, b) }
+  action(:result_source_month_8) { |i, b| b.result_month_8(:source, i, b) }
+  action(:result_source_month_9) { |i, b| b.result_month_9(:source, i, b) }
+  action(:result_source_month_10) { |i, b| b.result_month_10(:source, i, b) }
+  action(:result_source_month_11) { |i, b| b.result_month_11(:source, i, b) }
+  action(:result_source_month_12) { |i, b| b.result_month_12(:source, i, b) }
 
-  action(:result_to_chart_code) { |i, b| b.result_chart_code(from_to_map(:to), i, b) }
-  action(:result_to_account_number) { |i, b| b.result_account_number(from_to_map(:to), i, b) }
-  action(:result_to_sub_account_code) { |i, b| b.result_sub_account_code(from_to_map(:to), i, b) }
-  action(:result_to_object_code) { |i, b| b.result_object_code(from_to_map(:to), i, b) }
-  action(:result_to_sub_object_code) { |i, b| b.result_sub_object_code(from_to_map(:to), i, b) }
-  action(:result_to_project_code) { |i, b| b.result_project_code(from_to_map(:to), i, b) }
-  action(:result_to_organization_reference_id) { |i, b| b.result_organization_reference_id(from_to_map(:to), i, b) }
-  action(:result_to_current_amount) { |i, b| b.result_current_amount(from_to_map(:to), i, b) }
-  action(:result_to_base_amount) { |i, b| b.result_base_amount(from_to_map(:to), i, b) }
-  action(:result_to_line_description) { |i, b| b.result_line_description(from_to_map(:to), i, b) }
-  action(:result_to_reference_origin_code) { |i, b| b.result_reference_origin_code(from_to_map(:to), i, b) }
-  action(:result_to_reference_number) { |i, b| b.result_reference_number(from_to_map(:to), i, b) }
-  action(:result_to_amount) { |i, b| b.result_amount(from_to_map(:to), i, b) }
+  action(:result_target_chart_code) { |i, b| b.result_chart_code(:target, i, b) }
+  action(:result_target_account_number) { |i, b| b.result_account_number(:target, i, b) }
+  action(:result_target_sub_account_code) { |i, b| b.result_sub_account_code(:target, i, b) }
+  action(:result_target_object_code) { |i, b| b.result_object_code(:target, i, b) }
+  action(:result_target_sub_object_code) { |i, b| b.result_sub_object_code(:target, i, b) }
+  action(:result_target_project_code) { |i, b| b.result_project_code(:target, i, b) }
+  action(:result_target_organization_reference_id) { |i, b| b.result_organization_reference_id(:target, i, b) }
+  action(:result_target_current_amount) { |i, b| b.result_current_amount(:target, i, b) }
+  action(:result_target_base_amount) { |i, b| b.result_base_amount(:target, i, b) }
+  action(:result_target_line_description) { |i, b| b.result_line_description(:target, i, b) }
+  action(:result_target_reference_origin_code) { |i, b| b.result_reference_origin_code(:target, i, b) }
+  action(:result_target_reference_number) { |i, b| b.result_reference_number(:target, i, b) }
+  action(:result_target_amount) { |i, b| b.result_amount(:target, i, b) }
 
-  action(:result_to_month_1) { |i, b| b.result_month_1(from_to_map(:to), i, b) }
-  action(:result_to_month_2) { |i, b| b.result_month_2(from_to_map(:to), i, b) }
-  action(:result_to_month_3) { |i, b| b.result_month_3(from_to_map(:to), i, b) }
-  action(:result_to_month_4) { |i, b| b.result_month_4(from_to_map(:to), i, b) }
-  action(:result_to_month_5) { |i, b| b.result_month_5(from_to_map(:to), i, b) }
-  action(:result_to_month_6) { |i, b| b.result_month_6(from_to_map(:to), i, b) }
-  action(:result_to_month_7) { |i, b| b.result_month_7(from_to_map(:to), i, b) }
-  action(:result_to_month_8) { |i, b| b.result_month_8(from_to_map(:to), i, b) }
-  action(:result_to_month_9) { |i, b| b.result_month_9(from_to_map(:to), i, b) }
-  action(:result_to_month_10) { |i, b| b.result_month_10(from_to_map(:to), i, b) }
-  action(:result_to_month_11) { |i, b| b.result_month_11(from_to_map(:to), i, b) }
-  action(:result_to_month_12) { |i, b| b.result_month_12(from_to_map(:to), i, b) }
+  action(:result_target_month_1) { |i, b| b.result_month_1(:target, i, b) }
+  action(:result_target_month_2) { |i, b| b.result_month_2(:target, i, b) }
+  action(:result_target_month_3) { |i, b| b.result_month_3(:target, i, b) }
+  action(:result_target_month_4) { |i, b| b.result_month_4(:target, i, b) }
+  action(:result_target_month_5) { |i, b| b.result_month_5(:target, i, b) }
+  action(:result_target_month_6) { |i, b| b.result_month_6(:target, i, b) }
+  action(:result_target_month_7) { |i, b| b.result_month_7(:target, i, b) }
+  action(:result_target_month_8) { |i, b| b.result_month_8(:target, i, b) }
+  action(:result_target_month_9) { |i, b| b.result_month_9(:target, i, b) }
+  action(:result_target_month_10) { |i, b| b.result_month_10(:target, i, b) }
+  action(:result_target_month_11) { |i, b| b.result_month_11(:target, i, b) }
+  action(:result_target_month_12) { |i, b| b.result_month_12(:target, i, b) }
 
   action(:result_chart_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].chartOfAccountsCode.div").text }
   action(:result_account_number) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].accountNumber.div").text }
@@ -83,14 +83,5 @@ class AccountingLine < FinancialProcessingPage
   action(:result_month_10) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth10LineAmount.div").text }
   action(:result_month_11) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth11LineAmount.div").text }
   action(:result_month_12) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth12LineAmount.div").text }
-
-  def self.from_to_map(mode)
-    case mode
-      when :from
-        :source
-      when :to
-        :target
-    end
-  end
 
 end

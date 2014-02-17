@@ -1,7 +1,6 @@
 class AdvanceDepositObject < KFSDataObject
 
   include AccountingLinesMixin
-  extend AccountingLinesMixin
 
   DOC_INFO = { label: 'Award Budget Document', type_code: 'AD' }
 
@@ -52,10 +51,10 @@ class AdvanceDepositObject < KFSDataObject
 
   # The next few lines override the normal add_line operations to map
   # them to the single accounting line type on this document.
-  def add_from_line(al)
-    @accounting_lines[:from].add(al.merge({target: :from}))
+  def add_source_line(al)
+    @accounting_lines[:source].add(al.merge({type: :source}))
   end
-  alias :add_line :add_from_line
-  alias :add_to_line :add_from_line
+  alias :add_line :add_source_line
+  alias :add_target_line :add_source_line
 
 end

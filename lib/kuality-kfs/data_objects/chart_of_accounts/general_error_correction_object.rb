@@ -1,7 +1,6 @@
 class GeneralErrorCorrectionObject < KFSDataObject
 
   include AccountingLinesMixin
-  extend AccountingLinesMixin
 
   attr_accessor :organization_document_number, :explanation
 

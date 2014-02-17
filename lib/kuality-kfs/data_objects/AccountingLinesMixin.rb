@@ -7,8 +7,8 @@ module AccountingLinesMixin
     # overridden in a subclass if you don't want to chuck things in via opts.
     {
       accounting_lines: {
-        from: collection('AccountingLineObject'),
-        to:   collection('AccountingLineObject')
+        source: collection('AccountingLineObject'),
+        target: collection('AccountingLineObject')
       },
       initial_lines:    []
     }.merge(opts)
@@ -16,19 +16,20 @@ module AccountingLinesMixin
 
   def post_create
     super
-    @initial_lines.each{ |il| add_line((il[:target].nil? ? il[:target] : :from), il) }
+    @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) }
   end
 
   def add_line(type, al)
-    @accounting_lines[type].add(al.merge({target: type}))
+    raise ArgumentError "No type provided for line #{al}!" if (type.nil? || type.empty?)
+    @accounting_lines[type].add(al.merge({type: type}))
   end
 
-  def add_to_line(al)
-    add_line(:to, al)
+  def add_target_line(al)
+    add_line(:target, al)
   end
 
-  def add_from_line(al)
-    add_line(:from, al)
+  def add_source_line(al)
+    add_line(:source, al)
   end
 
 end
