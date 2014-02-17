@@ -1,13 +1,13 @@
-class DisbursementVoucherObject < KFSDataObject
+class JournalVoucherObject < KFSDataObject
 
   include AccountingLinesMixin
   alias :add_target_line :add_source_line
 
-  DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
+  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
 
   attr_accessor :organization_document_number, :explanation,
                 :accounting_period,
-                :contact_name, :phone_number, :email_address
+                :balance_type_code, :reversal_date
                 # TODO: Create a "line object" for Payment Information and add that to DV.
 
   def initialize(browser, opts={})
@@ -20,12 +20,12 @@ class DisbursementVoucherObject < KFSDataObject
 
   def build
     visit(MainPage).advance_deposit
-    on DisbursementVoucherPage do |page|
+    on JournalVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation,
-                     :accounting_period, :contact_name, :phone_number, :email_address
+                     :accounting_period, :balance_type_code, :reversal_date
     end
   end
 
