@@ -16,11 +16,10 @@ class GeneralLedgerEntryLookupPage < Lookups
   action(:debit_credit_view_include) { |b| b.frm.radio(id: 'dummyBusinessObject.debitCreditOptionInclude').set }
   action(:debit_credit_view_exclude) { |b| b.frm.radio(id: 'dummyBusinessObject.debitCreditOptionExclude').set }
 
-
-  action(:find_encumbrance_doc) do |pe, b|
+  action(:find_preencumbrance_doc) do |type, pe, b|
     # We'll assume that fiscal year and fiscal period default to nowish
-    b.chart_code.fit pe.accounting_lines[:source][0].chart_code
-    b.account_number.fit pe.accounting_lines[:source][0].account_number
+    b.chart_code.fit pe.accounting_lines[type][0].chart_code
+    b.account_number.fit pe.accounting_lines[type][0].account_number
     b.balance_type_code.fit ''
     b.pending_entry_approved_indicator_all
 
@@ -28,20 +27,22 @@ class GeneralLedgerEntryLookupPage < Lookups
 
     b.open_item_via_text(pe.accounting_lines[:source][0].line_description, pe.document_id)
   end
+  action(:find_disencumbrance_doc) { |pe, b| b.find_preencumbrance_doc(:target, pe) }
+  action(:find_encumbrance_doc) { |pe, b| b.find_preencumbrance_doc(:source, pe) }
 
-    action(:search_fiscal_year) { |b| b.frm.button(title: 'Search Fiscal Year').click }
-    action(:search_document_type) { |b| b.frm.button(title: 'Search Document Type').click }
-    action(:search_chart_code) { |b| b.frm.button(title: 'Search Chart Code').click }
-    action(:search_origin_code) { |b| b.frm.button(title: 'Search Origin Code').click }
-    action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
-    action(:search_sub_account_number) { |b| b.frm.button(title: 'Search Sub-Account Number').click }
-    action(:search_object_code) { |b| b.frm.button(title: 'Search Object Code').click }
-    action(:search_project_code) { |b| b.frm.button(title: 'Search Project Code').click }
-    action(:search_sub_object_code) { |b| b.frm.button(title: 'Search Sub-Object Code').click }
-    action(:search_balance_type_code) { |b| b.frm.button(title: 'Search Balance Type Code').click }
-    action(:search_reference_document_type_code) { |b| b.frm.button(title: 'Search Reference Document Type Code').click }
-    action(:search_object_type_code) { |b| b.frm.button(title: 'Search Object Type Code').click }
-    action(:search_reference_origin_code) { |b| b.frm.button(title: 'Search Reference Origin Code').click }
-    action(:search_fiscal_period) { |b| b.frm.button(title: 'Search Fiscal Period').click }
+  action(:search_fiscal_year) { |b| b.frm.button(title: 'Search Fiscal Year').click }
+  action(:search_document_type) { |b| b.frm.button(title: 'Search Document Type').click }
+  action(:search_chart_code) { |b| b.frm.button(title: 'Search Chart Code').click }
+  action(:search_origin_code) { |b| b.frm.button(title: 'Search Origin Code').click }
+  action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
+  action(:search_sub_account_number) { |b| b.frm.button(title: 'Search Sub-Account Number').click }
+  action(:search_object_code) { |b| b.frm.button(title: 'Search Object Code').click }
+  action(:search_project_code) { |b| b.frm.button(title: 'Search Project Code').click }
+  action(:search_sub_object_code) { |b| b.frm.button(title: 'Search Sub-Object Code').click }
+  action(:search_balance_type_code) { |b| b.frm.button(title: 'Search Balance Type Code').click }
+  action(:search_reference_document_type_code) { |b| b.frm.button(title: 'Search Reference Document Type Code').click }
+  action(:search_object_type_code) { |b| b.frm.button(title: 'Search Object Type Code').click }
+  action(:search_reference_origin_code) { |b| b.frm.button(title: 'Search Reference Origin Code').click }
+  action(:search_fiscal_period) { |b| b.frm.button(title: 'Search Fiscal Period').click }
 
 end

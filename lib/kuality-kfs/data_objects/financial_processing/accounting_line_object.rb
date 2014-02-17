@@ -5,6 +5,7 @@ class AccountingLineObject < DataObject
                   :project, :org_ref_id, :reference_origin_code, :reference_number,
                   :line_description, :amount, :base_amount, :current_amount,
                   :account_expired_override,
+                  :file_name,
                   :month_1, :month_2, :month_3, :month_4, :month_5, :month_6,
                   :month_7, :month_8, :month_9, :month_10, :month_11, :month_12
 
@@ -79,7 +80,7 @@ class AccountingLineObject < DataObject
           "update_#{@type}_line_description".to_sym           => opts[:line_description],
           "update_#{@type}_amount".to_sym                     => opts[:amount],
           "update_#{@type}_current_amount".to_sym             => opts[:current_amount],
-          "update_#{@type}_base_amount".to_sym                => opts[:base_amount]
+          "update_#{@type}_base_amount".to_sym                => opts[:base_amount],
       }
       mappings.merge!({"update_#{@type}_month_1".to_sym => opts[:month_1]}) unless opts[:month_1].nil?
       mappings.merge!({"update_#{@type}_month_2".to_sym => opts[:month_2]}) unless opts[:month_2].nil?
@@ -112,6 +113,14 @@ class AccountingLineObject < DataObject
 
   def delete
     on(AccountingLine).send("delete_#{@type}_accounting_line")
+  end
+
+  def import_lines
+    on(AccountingLine) do |line|
+      line.send("import_lines_#{@type}")
+      line.send("account_line_#{@type}_file_name").set($file_folder+file_name)
+      line.send("add_#{@type}_import")
+    end
   end
 
   def fill_out_extended_attributes

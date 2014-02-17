@@ -151,6 +151,14 @@ class FinancialProcessingPage < KFSBasePage
       action(:delete_target_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteTargetLine.line#{l}.anchoraccountingTargetAnchor").click }
       action(:balance_inquiry_target_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForTargetLine.line#{l}.anchoraccountingTargetexistingLineLineAnchor#{l}").click }
       action(:refresh_target_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingTargetAnchor").click }
+
+      # For Uploading Documents
+      element(:account_line_source_file_name) { |b| b.frm.div(id: 'uploaddocument.sourceAccountingLinesDiv').file_field(name: 'sourceFile') }
+      element(:account_line_target_file_name) { |b| b.frm.div(id: 'uploaddocument.targetAccountingLinesDiv').file_field(name: 'targetFile') }
+      action(:import_lines_source) {|b| b.frm.link(id: 'document.sourceAccountingLinesShowLink').click }
+      action(:import_lines_target) {|b| b.frm.link(id: 'document.targetAccountingLinesShowLink').click }
+      action(:add_source_import) { |b| b.frm.button(name: 'methodToCall.uploadSourceLines.document.sourceAccountingLines').click }
+      action(:add_target_import) { |b| b.frm.button(name: 'methodToCall.uploadTargetLines.document.targetAccountingLines').click }
     end
 
 
