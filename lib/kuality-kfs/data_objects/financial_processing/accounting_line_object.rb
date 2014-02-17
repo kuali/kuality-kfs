@@ -6,6 +6,7 @@ class AccountingLineObject < DataObject
                   :line_description, :amount, :base_amount, :current_amount,
                   :account_expired_override,
                   :file_name,
+                  :debit, :credit,
                   :month_1, :month_2, :month_3, :month_4, :month_5, :month_6,
                   :month_7, :month_8, :month_9, :month_10, :month_11, :month_12
 
@@ -35,7 +36,9 @@ class AccountingLineObject < DataObject
         "#{@type}_line_description".to_sym           => @line_description,
         "#{@type}_amount".to_sym                     => @amount,
         "#{@type}_current_amount".to_sym             => @current_amount,
-        "#{@type}_base_amount".to_sym                => @base_amount
+        "#{@type}_base_amount".to_sym                => @base_amount,
+        "#{@type}_debit".to_sym                      => @debit,
+        "#{@type}_credit".to_sym                     => @credit
       }
       mappings.merge!({"#{@type}_month_1".to_sym => @month_1}) unless @month_1.nil?
       mappings.merge!({"#{@type}_month_2".to_sym => @month_2}) unless @month_2.nil?
@@ -81,6 +84,8 @@ class AccountingLineObject < DataObject
           "update_#{@type}_amount".to_sym                     => opts[:amount],
           "update_#{@type}_current_amount".to_sym             => opts[:current_amount],
           "update_#{@type}_base_amount".to_sym                => opts[:base_amount],
+          "update_#{@type}_debit".to_sym                      => opts[:debit],
+          "update_#{@type}_credit".to_sym                     => opts[:credit]
       }
       mappings.merge!({"update_#{@type}_month_1".to_sym => opts[:month_1]}) unless opts[:month_1].nil?
       mappings.merge!({"update_#{@type}_month_2".to_sym => opts[:month_2]}) unless opts[:month_2].nil?

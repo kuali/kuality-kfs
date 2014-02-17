@@ -42,6 +42,8 @@ class FinancialProcessingPage < KFSBasePage
       element(:source_reference_origin_code) { |b| b.frm.text_field(name: 'newSourceLine.referenceOriginCode') }
       element(:source_reference_number) { |b| b.frm.text_field(name: 'newSourceLine.referenceNumber') }
       element(:source_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      element(:source_debit) { |b| b.frm.text_field(name: 'newSourceLineDebit') }
+      element(:source_credit) { |b| b.frm.text_field(name: 'newSourceLineCredit') }
       element(:source_account_expired_override) { |b| b.frm.checkbox(name: 'newSourceLine.accountExpiredOverride') }
 
       action(:update_source_chart_code) { |i, b| b.frm.select(name: "document.sourceAccountingLine[#{i}].chartOfAccountsCode") }
@@ -57,6 +59,8 @@ class FinancialProcessingPage < KFSBasePage
       action(:update_source_reference_origin_code) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].referenceOriginCode") }
       action(:update_source_reference_number) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].referenceNumber") }
       action(:update_source_amount) { |i, b| b.frm.text_field(name: "document.sourceAccountingLine[#{i}].amount") }
+      action(:update_source_debit) { |i, b| b.frm.text_field(name: "voucherLineHelper[#{i}].debit") }
+      action(:update_source_credit) { |i, b| b.frm.text_field(name: "voucherLineHelper[#{i}].credit") }
       action(:update_source_account_expired_override) { |i, b| b.frm.checkbox(name: "document.sourceAccountingLine[#{i}].accountExpiredOverride") }
 
       element(:source_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
