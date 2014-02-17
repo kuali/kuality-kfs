@@ -45,7 +45,7 @@ class BudgetAdjustmentObject < FinancialProcessingObject
           page.from_current_amount.fit dep[:from_current_amount]
           page.from_base_amount.fit dep[:from_base_amount]
           page.from_line_description.fit dep[:from_line_description]
-          page.add_from_accounting_line
+          page.add_from_accounting_line unless @from_account_number.nil?
         end
 
         accounting_lines.each do |dep|
@@ -55,7 +55,7 @@ class BudgetAdjustmentObject < FinancialProcessingObject
           page.to_current_amount.fit dep[:to_current_amount]
           page.to_base_amount.fit dep[:to_base_amount]
           page.to_line_description.fit dep[:to_line_description]
-          page.add_to_accounting_line
+          page.add_to_accounting_line unless @to_account_number.nil?
         end
       end
 
