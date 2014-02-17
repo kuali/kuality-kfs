@@ -3,7 +3,7 @@ module AccountingLinesMixin
   attr_accessor :accounting_lines, :initial_lines
 
   def default_lines(opts={})
-    # This just makes it so don't have to be so repetitive. It can certainly be
+    # This just makes it so we don't have to be so repetitive. It can certainly be
     # overridden in a subclass if you don't want to chuck things in via opts.
     {
       accounting_lines: {
@@ -20,7 +20,6 @@ module AccountingLinesMixin
   end
 
   def add_line(type, al)
-    raise ArgumentError "No type provided for line #{al}!" if (type.nil? || type.empty?)
     @accounting_lines[type].add(al.merge({type: type}))
   end
 
