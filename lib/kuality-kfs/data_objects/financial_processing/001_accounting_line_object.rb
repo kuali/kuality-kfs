@@ -24,7 +24,7 @@ class AccountingLineObject < DataObject
           "#{@type}_chart_code".to_sym                 => @chart_code,
           "#{@type}_account_number".to_sym             => @account_number,
           "#{@type}_sub_account_code".to_sym           => @sub_account,
-          "#{@type}_object_code".to_sym                => @object,
+          #"#{@type}_object_code".to_sym                => @object,
           "#{@type}_sub_object_code".to_sym            => @sub_object,
           "#{@type}_project_code".to_sym               => @project,
           "#{@type}_organization_reference_id".to_sym  => @org_ref_id,
@@ -35,6 +35,7 @@ class AccountingLineObject < DataObject
           "#{@type}_current_amount".to_sym             => @current_amount,
           "#{@type}_base_amount".to_sym                => @base_amount
       }
+      mappings.merge!({"#{@type}_object_code".to_sym => @object}) unless @object.nil?
       mappings.merge!(extended_create_mappings)
 
       mappings.each do |field, value|
@@ -58,7 +59,7 @@ class AccountingLineObject < DataObject
           "update_#{@type}_chart_code".to_sym                 => opts[:chart_code],
           "update_#{@type}_account_number".to_sym             => opts[:account_number],
           "update_#{@type}_sub_account_code".to_sym           => opts[:sub_account],
-          "update_#{@type}_object_code".to_sym                => opts[:object],
+          #"update_#{@type}_object_code".to_sym                => opts[:object],
           "update_#{@type}_sub_object_code".to_sym            => opts[:sub_object],
           "update_#{@type}_project_code".to_sym               => opts[:project],
           "update_#{@type}_organization_reference_id".to_sym  => opts[:org_ref_id],
@@ -69,6 +70,7 @@ class AccountingLineObject < DataObject
           "update_#{@type}_current_amount".to_sym             => opts[:current_amount],
           "update_#{@type}_base_amount".to_sym                => opts[:base_amount]
       }
+      mappings.merge!({"update_#{@type}_object_code".to_sym => opts[:object]}) unless opts[:object].nil?
       mappings.merge!(extended_update_mappings)
 
       mappings.each do |field, value|
