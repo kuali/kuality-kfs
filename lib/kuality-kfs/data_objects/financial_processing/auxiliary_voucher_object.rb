@@ -1,6 +1,6 @@
 class AuxiliaryVoucherObject < KFSDataObject
 
-  include AccountingLinesMixin
+  include VoucherLinesMixin
   alias :add_target_line :add_source_line
 
   DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
