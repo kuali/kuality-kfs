@@ -18,7 +18,7 @@ class AuxiliaryVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).auxiliary_voucher
     on AuxiliaryVoucherPage do |page|
       page.expand_all
       page.description.focus

@@ -19,7 +19,7 @@ class JournalVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).journal_voucher
     on JournalVoucherPage do |page|
       page.expand_all
       page.description.focus

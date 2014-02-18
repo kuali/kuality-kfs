@@ -15,7 +15,7 @@ class TransferOfFundsObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).transfer_of_funds
     on TransferOfFundsPage do |page|
       page.expand_all
       page.description.focus

@@ -15,7 +15,7 @@ class DistributionOfIncomeAndExpenseObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).distribution_of_income_and_expense
     on DistributionOfIncomeAndExpensePage do |page|
       page.expand_all
       page.description.focus
