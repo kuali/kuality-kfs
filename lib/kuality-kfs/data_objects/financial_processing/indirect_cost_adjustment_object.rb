@@ -15,7 +15,7 @@ class IndirectCostAdjustmentObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).indirect_cost_adjustment
     on IndirectCostAdjustmentPage do |page|
       page.expand_all
       page.description.focus

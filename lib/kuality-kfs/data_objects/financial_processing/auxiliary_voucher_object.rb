@@ -1,6 +1,6 @@
 class AuxiliaryVoucherObject < KFSDataObject
 
-  include AccountingLinesMixin
+  include VoucherLinesMixin
   alias :add_target_line :add_source_line
 
   DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
@@ -18,7 +18,7 @@ class AuxiliaryVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).auxiliary_voucher
     on AuxiliaryVoucherPage do |page|
       page.expand_all
       page.description.focus

@@ -15,7 +15,7 @@ class InternalBillingObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).internal_billing
     on InternalBillingPage do |page|
       page.expand_all
       page.description.focus
