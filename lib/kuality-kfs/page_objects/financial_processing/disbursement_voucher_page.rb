@@ -1,6 +1,5 @@
 class DisbursementVoucherPage < FinancialProcessingPage
 
-
   document_overview
   financial_document_detail
   accounting_lines_from_to
