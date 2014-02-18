@@ -53,10 +53,13 @@ class AccountingLineObject < DataObject
       mappings.merge!({"#{@type}_month_11".to_sym => @month_11}) unless @month_11.nil?
       mappings.merge!({"#{@type}_month_12".to_sym => @month_12}) unless @month_12.nil?
 
-      mappings.each do |field, value|
-        lmnt = page.send(*[field, nil].compact)
-        var = value.nil? ? instance_variable_get("@#{field}") : value
-        lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
+      begin
+        mappings.each do |field, value|
+          lmnt = page.send(*[field, nil].compact)
+          var = value.nil? ? instance_variable_get("@#{field}") : value
+          lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
+        end
+      rescue
       end
 
       fill_out_extended_attributes
