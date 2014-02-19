@@ -115,7 +115,7 @@ class BasePage < PageFactory
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
       action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
-      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length)] }
+      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
