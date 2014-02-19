@@ -1,22 +1,28 @@
-class CreditCardReceiptObject < KFSDataObject
+class ServiceBillingObject < KFSDataObject
 
-  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
+  DOC_INFO = { label: 'Service Billing Document', type_code: 'SB' }
 
   include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation
+  # These aliases are for convenience
+  alias add_expense_line add_target_line
+  alias add_income_line add_source_line
+
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+    defaults = {
+        description: random_alphanums(40, 'AFT')
+    }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).credit_card_receipt
-    on CreditCardReceiptPage do |page|
+    visit(MainPage).service_billing
+    on ServiceBillingPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

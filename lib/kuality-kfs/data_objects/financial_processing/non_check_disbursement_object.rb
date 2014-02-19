@@ -1,10 +1,10 @@
-class CreditCardReceiptObject < KFSDataObject
+class NonCheckDisbursementObject < KFSDataObject
 
-  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
+  DOC_INFO = { label: 'Non-Check Disbursement Document', type_code: 'ND' }
 
   include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation
+  attr_accessor :organization_document_number, :explanation, :bank_code
 
   def initialize(browser, opts={})
     @browser = browser
@@ -15,12 +15,12 @@ class CreditCardReceiptObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).credit_card_receipt
-    on CreditCardReceiptPage do |page|
+    visit(MainPage).non_check_disbursement
+    on NonCheckDisbursementPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :organization_document_number, :explanation
+      fill_out page, :description, :organization_document_number, :explanation, :bank_code
     end
   end
 
