@@ -36,6 +36,7 @@ module PaymentInformationMixin
 
   # NOTE: This will only really work if you know the @payee_id and @address_type_description!
   def choose_payee
+    on(KFSBasePage).search
     on PayeeLookup do |plookup| # TODO: Make PayeeLookup
       plookup.payment_reason_code.fit @payment_reason_code unless @payment_reason_code.nil?
       plookup.vendor_name.fit         @payee_name unless @payee_name.nil?

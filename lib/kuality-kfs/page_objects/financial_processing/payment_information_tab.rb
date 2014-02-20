@@ -1,9 +1,9 @@
 class PaymentInformationTab < FinancialProcessingPage
 
-  element(:payment_reason_code) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
-  element(:payee_id) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
-  element(:type) { |b| b.frm.th(text: 'Payee Type:').parent.td(class: 'datacell').text }
-  element(:payee_name) { |b| b.frm.th(text: 'Payee Name:').parent.td(class: 'datacell').text }
+  value(:payment_reason_code) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
+  value(:payee_id) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
+  value(:type) { |b| b.frm.th(text: 'Payee Type:').parent.td(class: 'datacell').text }
+  value(:payee_name) { |b| b.frm.th(text: 'Payee Name:').parent.td(class: 'datacell').text }
   element(:address_1) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeLine1Addr') }
   element(:address_2) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeLine2Addr') }
   element(:city) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeCityName') }

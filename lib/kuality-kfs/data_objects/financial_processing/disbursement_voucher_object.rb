@@ -7,7 +7,6 @@ class DisbursementVoucherObject < KFSDataObject
   alias :add_target_line :add_source_line
 
   attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
                 :contact_name, :phone_number, :email_address
                 # TODO: Create a "line object" for Payment Information and add that to DV.
 
@@ -26,7 +25,7 @@ class DisbursementVoucherObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation,
-                     :accounting_period, :contact_name, :phone_number, :email_address
+                     :contact_name, :phone_number, :email_address
     end
   end
 
