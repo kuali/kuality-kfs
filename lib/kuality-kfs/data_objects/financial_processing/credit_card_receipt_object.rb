@@ -4,12 +4,16 @@ class CreditCardReceiptObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation
+  attr_accessor :organization_document_number, :explanation,
+                :credit_card_receipts
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+    defaults = {
+                 description:          random_alphanums(40, 'AFT'),
+                 credit_card_receipts: collection('CreditCardReceiptLineObject')
+               }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
@@ -24,14 +28,27 @@ class CreditCardReceiptObject < KFSDataObject
     end
   end
 
+  def post_create
+    super
+    add_credit_card_receipt_line # We need at least one CCR line
+  end
+
   def view
     visit(MainPage).doc_search
     on DocumentSearch do |search|
       search.document_type.fit ''
-      search.document_id.fit @document_id
+      search.document_id.fit   @document_id
       search.search
       search.open_doc @document_id
     end
+  end
+
+  def add_credit_card_receipt_line(opts={})
+    on(CreditCardReceiptPage) { @credit_card_receipts.add(opts) }
+  end
+
+  def delete_credit_card_receipt_line(line_number=0)
+    on(CreditCardReceiptPage) { @credit_card_receipts.delete_at(line_number) }
   end
 
 end

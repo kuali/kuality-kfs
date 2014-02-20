@@ -7,7 +7,6 @@ class CreditCardReceiptPage < FinancialProcessingPage
     notes_and_attachments
     ad_hoc_recipients
 
-
     #accounting_lines_for_capitalization
 
     #create_capital_assets
