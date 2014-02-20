@@ -19,7 +19,7 @@ class DisbursementVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).disbursement_voucher
     on DisbursementVoucherPage do |page|
       page.expand_all
       page.description.focus

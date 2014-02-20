@@ -1,22 +1,28 @@
-class TransferOfFundsObject < KFSDataObject
+class ServiceBillingObject < KFSDataObject
+
+  DOC_INFO = { label: 'Service Billing Document', type_code: 'SB' }
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Transfer Of Funds Document', type_code: 'TF' }
+  # These aliases are for convenience
+  alias add_expense_line add_target_line
+  alias add_income_line add_source_line
 
-  attr_accessor :organization_document_number, :explanation
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+    defaults = {
+        description: random_alphanums(40, 'AFT')
+    }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).transfer_of_funds
-    on TransferOfFundsPage do |page|
+    visit(MainPage).service_billing
+    on ServiceBillingPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

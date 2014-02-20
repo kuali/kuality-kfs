@@ -1,8 +1,8 @@
 class CreditCardReceiptObject < KFSDataObject
 
-  include AccountingLinesMixin
-
   DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
+
+  include AccountingLinesMixin
 
   attr_accessor :organization_document_number, :explanation
 
@@ -15,7 +15,7 @@ class CreditCardReceiptObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).credit_card_receipt
     on CreditCardReceiptPage do |page|
       page.expand_all
       page.description.focus
