@@ -8,4 +8,8 @@ class JournalVoucherPage < FinancialProcessingPage
   notes_and_attachments
   ad_hoc_recipients
 
+  element(:accounting_period) { |b| b.frm.select(name: 'selectedAccountingPeriod') }
+  element(:balance_type_code) { |b| b.frm.select(name: 'selectedBalanceType.code') }
+  element(:reversal_date) { |b| b.frm.text_field(id: 'document.reversalDate') }
+
 end
