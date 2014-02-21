@@ -4,7 +4,7 @@ class BudgetAdjustmentObject < KFSDataObject
 
   attr_accessor  :fdd_year
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     super(opts).merge(
         initial_lines: [{
                             type:           :source,
@@ -18,7 +18,7 @@ class BudgetAdjustmentObject < KFSDataObject
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(20, 'AFT') }.merge!(default_lines)
+    defaults = { description: random_alphanums(20, 'AFT') }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
