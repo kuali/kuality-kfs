@@ -1,26 +1,28 @@
-class JournalVoucherObject < KFSDataObject
+class ServiceBillingObject < KFSDataObject
 
-  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
+  DOC_INFO = { label: 'Service Billing Document', type_code: 'SB' }
 
-  include VoucherLinesMixin
-  alias add_target_line add_source_line
+  include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
-                :balance_type_code, :reversal_date
-                # TODO: Create a "line object" for Payment Information and add that to DV.
+  # These aliases are for convenience
+  alias add_expense_line add_target_line
+  alias add_income_line add_source_line
+
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+    defaults = {
+        description: random_alphanums(40, 'AFT')
+    }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).journal_voucher
-    on JournalVoucherPage do |page|
+    visit(MainPage).service_billing
+    on ServiceBillingPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

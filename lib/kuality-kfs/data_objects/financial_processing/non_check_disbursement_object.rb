@@ -1,14 +1,10 @@
-class JournalVoucherObject < KFSDataObject
+class NonCheckDisbursementObject < KFSDataObject
 
-  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
+  DOC_INFO = { label: 'Non-Check Disbursement Document', type_code: 'ND' }
 
-  include VoucherLinesMixin
-  alias add_target_line add_source_line
+  include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
-                :balance_type_code, :reversal_date
-                # TODO: Create a "line object" for Payment Information and add that to DV.
+  attr_accessor :organization_document_number, :explanation, :bank_code
 
   def initialize(browser, opts={})
     @browser = browser
@@ -19,12 +15,12 @@ class JournalVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).journal_voucher
-    on JournalVoucherPage do |page|
+    visit(MainPage).non_check_disbursement
+    on NonCheckDisbursementPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :organization_document_number, :explanation
+      fill_out page, :description, :organization_document_number, :explanation, :bank_code
     end
   end
 
