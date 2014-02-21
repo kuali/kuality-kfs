@@ -1,9 +1,14 @@
 class PaymentInformationTab < FinancialProcessingPage
 
-  value(:payment_reason_code) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
-  value(:payee_id) { |b| b.frm.th(text: 'Payee ID:').parent.td(class: 'datacell').text }
-  value(:type) { |b| b.frm.th(text: 'Payee Type:').parent.td(class: 'datacell').text }
-  value(:payee_name) { |b| b.frm.th(text: 'Payee Name:').parent.td(class: 'datacell').text }
+
+  action(:labelled_fields) { |s, b| b.frm.th(text: /#{s}/m).parent.tds(class: 'datacell') }
+  action(:labelled_field) { |s, c=0, b| b.labelled_fields(s)[c] }
+  action(:payee_search) { |b| b.labelled_field('Payee ID', 0).input(title: /Search/m).click }
+
+  value(:payment_reason_code) { |b| b.labelled_field('Payment Reason Code', 0).text }
+  value(:payee_id) { |b| b.labelled_field('Payee ID', 0).text }
+  value(:type) { |b| b.labelled_field('Payee Type',0 ).text }
+  value(:payee_name) { |b| b.labelled_field('Payee Name', 1).text }
   element(:address_1) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeLine1Addr') }
   element(:address_2) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeLine2Addr') }
   element(:city) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrPayeeCityName') }

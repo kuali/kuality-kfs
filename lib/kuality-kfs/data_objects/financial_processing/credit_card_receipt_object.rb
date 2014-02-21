@@ -13,7 +13,7 @@ class CreditCardReceiptObject < KFSDataObject
     defaults = {
                  description:          random_alphanums(40, 'AFT'),
                  credit_card_receipts: collection('CreditCardReceiptLineObject')
-               }.merge!(default_lines)
+               }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
