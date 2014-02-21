@@ -37,7 +37,7 @@ module BudgetAdjustmentLinesMixin
   include AccountingLinesMixin
   extend AccountingLinesMixin
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     {
         accounting_lines: {
             source: collection('BudgetAdjustmentLineObject'),
@@ -53,7 +53,7 @@ module VoucherLinesMixin
   include AccountingLinesMixin
   extend AccountingLinesMixin
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     {
         accounting_lines: {
             source: collection('VoucherLineObject'),
