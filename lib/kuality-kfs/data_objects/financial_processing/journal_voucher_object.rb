@@ -1,9 +1,9 @@
 class JournalVoucherObject < KFSDataObject
 
-  include AccountingLinesMixin
-  alias :add_target_line :add_source_line
-
   DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
+
+  include VoucherLinesMixin
+  alias add_target_line add_source_line
 
   attr_accessor :organization_document_number, :explanation,
                 :accounting_period,
@@ -19,13 +19,12 @@ class JournalVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).advance_deposit
+    visit(MainPage).journal_voucher
     on JournalVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :organization_document_number, :explanation,
-                     :accounting_period, :balance_type_code, :reversal_date
+      fill_out page, :description, :organization_document_number, :explanation
     end
   end
 

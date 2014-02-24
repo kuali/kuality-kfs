@@ -1,6 +1,6 @@
 class BudgetAdjustmentObject < KFSDataObject
 
-  include AccountingLinesMixin
+  include BudgetAdjustmentLinesMixin
 
   attr_accessor  :fdd_year
 

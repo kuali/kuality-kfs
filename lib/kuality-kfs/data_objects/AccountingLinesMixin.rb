@@ -6,11 +6,11 @@ module AccountingLinesMixin
     # This just makes it so we don't have to be so repetitive. It can certainly be
     # overridden in a subclass if you don't want to chuck things in via opts.
     {
-      accounting_lines: {
-        source: collection('AccountingLineObject'),
-        target: collection('AccountingLineObject')
-      },
-      initial_lines:    []
+        accounting_lines: {
+            source: collection('AccountingLineObject'),
+            target: collection('AccountingLineObject')
+        },
+        initial_lines:    []
     }.merge(opts)
   end
 
@@ -29,6 +29,38 @@ module AccountingLinesMixin
 
   def add_source_line(al)
     add_line(:source, al)
+  end
+
+end
+
+module BudgetAdjustmentLinesMixin
+  include AccountingLinesMixin
+  extend AccountingLinesMixin
+
+  def default_lines(opts={})
+    {
+        accounting_lines: {
+            source: collection('BudgetAdjustmentLineObject'),
+            target: collection('BudgetAdjustmentLineObject')
+        },
+        initial_lines:    []
+    }.merge(opts)
+  end
+
+end
+
+module VoucherLinesMixin
+  include AccountingLinesMixin
+  extend AccountingLinesMixin
+
+  def default_lines(opts={})
+    {
+        accounting_lines: {
+            source: collection('VoucherLineObject'),
+            target: collection('VoucherLineObject')
+        },
+        initial_lines:    []
+    }.merge(opts)
   end
 
 end
