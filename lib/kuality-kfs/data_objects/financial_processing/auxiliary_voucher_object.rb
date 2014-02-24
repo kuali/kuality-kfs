@@ -1,55 +1,40 @@
-class AuxiliaryVoucherObject < FinancialProcessingObject
+class AuxiliaryVoucherObject < KFSDataObject
+
+  include AccountingLinesMixin
+  alias :add_target_line :add_source_line
 
   DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
 
-  attr_accessor   :add_accounting_line
-
+  attr_accessor :organization_document_number, :explanation,
+                :accounting_period,
+                :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {
-        description:          random_alphanums(40, 'AFT'),
-        #        accounting_lines:     collection('AccountingLines')
-        accounting_lines: [
-            # Dangerously close to needing to be a Data Object proper...
-            { new_account_number: '1258322', #TODO get from config
-              new_account_object_code: '4420', #TODO get from config
-              new_account_amount: '100'
-            }
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
 
-        ], add_accounting_line: true,
-        from_lines:                      collection('AccountingLineObject'),
-        to_lines:                        collection('AccountingLineObject'),
-        press: :save
-    }
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).auxiliary_voucher
+    visit(MainPage).advance_deposit
     on AuxiliaryVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description
-
-      if @add_accounting_line == true
-          accounting_lines.each do |dep|
-          page.account_number.fit dep[:new_account_number]
-          page.object_code.fit dep[:new_account_object_code]
-          page.debit.fit dep[:new_account_amount]
-          page.add_accounting_line
-          end
-      end
-
-#      page.accounting_lines_for_capitalization_select(0).select
-#      page.modify_asset
+      fill_out page, :description, :organization_document_number, :explanation
     end
   end
 
   def view
-    @browser.goto "#{$base_url}/financialAuxiliaryVoucher.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView#topOfForm"
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      search.open_doc @document_id
+    end
   end
 
-end #class
+end

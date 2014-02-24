@@ -1,46 +1,42 @@
-class DisbursementVoucherObject < FinancialProcessingObject
+class DisbursementVoucherObject < KFSDataObject
+
+  include AccountingLinesMixin
+  alias :add_target_line :add_source_line
 
   DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
+
+  attr_accessor :organization_document_number, :explanation,
+                :accounting_period,
+                :contact_name, :phone_number, :email_address
+                # TODO: Create a "line object" for Payment Information and add that to DV.
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {
-        description:          random_alphanums(40, 'AFT'),
-        #        accounting_lines:     collection('AccountingLines')
-        accounting_lines: [
-            # Dangerously close to needing to be a Data Object proper...
-            { new_account_number: '1258322', #TODO get from config
-              new_account_object_code: '4420', #TODO get from config
-              new_account_amount: '100'
-            }
-        ],
-        press: :save
-    }
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).disbursement_voucher
+    visit(MainPage).advance_deposit
     on DisbursementVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description
-      accounting_lines.each do |dep|
-        page.account_number.fit dep[:new_account_number]
-        page.object_code.fit dep[:new_account_object_code]
-        page.amount.fit dep[:new_account_amount]
-        page.add_accounting_line
-      end
-#      page.accounting_lines_for_capitalization_select(0).select
-#      page.modify_asset
+      fill_out page, :description, :organization_document_number, :explanation,
+                     :accounting_period, :contact_name, :phone_number, :email_address
     end
   end
 
   def view
-    @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      search.open_doc @document_id
+    end
   end
 
-end #class
+end

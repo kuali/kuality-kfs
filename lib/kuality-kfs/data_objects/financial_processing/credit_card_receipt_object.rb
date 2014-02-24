@@ -1,8 +1,8 @@
-class TransferOfFundsObject < KFSDataObject
+class CreditCardReceiptObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Transfer Of Funds Document', type_code: 'TF' }
+  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
 
   attr_accessor :organization_document_number, :explanation
 
@@ -16,7 +16,7 @@ class TransferOfFundsObject < KFSDataObject
 
   def build
     visit(MainPage).advance_deposit
-    on TransferOfFundsPage do |page|
+    on CreditCardReceiptPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

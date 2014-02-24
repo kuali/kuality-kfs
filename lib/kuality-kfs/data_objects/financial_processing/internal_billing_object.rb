@@ -1,51 +1,37 @@
-class InternalBillingObject < FinancialProcessingObject
+class InternalBillingObject < KFSDataObject
+
+  include AccountingLinesMixin
 
   DOC_INFO = { label: 'Internal Billing Document', type_code: 'IB' }
+
+  attr_accessor :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {
-        description:          random_alphanums(40, 'AFT'),
-        #        accounting_lines:     collection('AccountingLines')
-        accounting_lines: [
-            # Dangerously close to needing to be a Data Object proper...
-            { new_account_number: '1258322', #TODO get from config
-              new_account_object_code: '4420', #TODO get from config
-              new_account_amount: '100'
-            }
-        ],  add_accounting_line: true,
-        from_lines:                      collection('AccountingLineObject'),
-        to_lines:                        collection('AccountingLineObject'),
-        press: :save
-    }
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).internal_billing
+    visit(MainPage).advance_deposit
     on InternalBillingPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description
-
-      if  add_accounting_line == true
-        accounting_lines.each do |dep|
-          page.from_account_number.fit dep[:new_account_number]
-          page.from_object_code.fit dep[:new_account_object_code]
-          page.from_amount.fit dep[:new_account_amount]
-          page.add_from_accounting_line
-        end
-      end
-#      page.accounting_lines_for_capitalization_select(0).select
-#      page.modify_asset
+      fill_out page, :description, :organization_document_number, :explanation
     end
   end
 
   def view
-    @browser.goto "#{$base_url}financialInternalBilling.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-    #https://cynergy-ci.kuali.cornell.edu/cynergy/kew/DocHandler.do?command=displayDocSearchView&docId=4257342
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      search.open_doc @document_id
+    end
   end
 
-end #class
+end
