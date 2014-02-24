@@ -13,6 +13,7 @@ Dir["#{cwd}/kuality-kfs/data_objects/*/*.rb"].alphabetize.each {|f| require f }
 #
 # The initialization will
 # create the browser object that can be used throughout the page classes
+# test commit
 class KualityKFS
 
   attr_reader :browser
