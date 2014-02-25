@@ -22,5 +22,5 @@ class KualityKFS
     @browser.window.resize_to(1400,900)
     @browser.goto $base_url
   end
-
+# Add a comment
 end
