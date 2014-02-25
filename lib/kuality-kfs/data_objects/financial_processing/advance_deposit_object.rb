@@ -7,7 +7,7 @@ class AdvanceDepositObject < KFSDataObject
   attr_accessor :advance_deposits,
                 :accounting_lines_for_capitalization, :capital_assets, :general_ledger_pending_entries
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     super(opts).merge(
     initial_lines: [{
                       account_number: '1258322', #TODO get from config
@@ -27,7 +27,7 @@ class AdvanceDepositObject < KFSDataObject
               new_deposit_ref_number: random_alphanums(10, 'AFT-AD'),
               new_deposit_description: random_alphanums(40, 'AFT-AD '),
               new_deposit_amount: '100' }
-    ]}.merge!(default_lines)
+    ]}.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
