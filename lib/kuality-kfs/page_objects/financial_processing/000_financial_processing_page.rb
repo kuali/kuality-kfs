@@ -98,7 +98,7 @@ class FinancialProcessingPage < KFSBasePage
       action(:update_target_chart_code) { |i, b| b.frm.select(name: "document.targetAccountingLine[#{i}].chartOfAccountsCode") }
       action(:update_target_account_number) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].accountNumber") }
       action(:update_target_sub_account_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].subAccountNumber") }
-      action(:update_target_object_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialObjectCode") }
+      action(:update_target_object_code) { |i='0', b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialObjectCode") }
       action(:update_target_sub_object_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].financialSubObjectCode") }
       action(:update_target_project_code) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].projectCode") }
       action(:update_target_organization_reference_id) { |i, b| b.frm.text_field(name: "document.targetAccountingLine[#{i}].organizationReferenceId") }
@@ -171,6 +171,10 @@ class FinancialProcessingPage < KFSBasePage
       element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
+
     end
 
     def ad_hoc_recipients
