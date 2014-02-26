@@ -1,5 +1,6 @@
 class FinancialProcessingPage < KFSBasePage
 
+  route_log
 
   class << self
 
