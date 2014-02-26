@@ -4,8 +4,8 @@ class VendorObject < KFSDataObject
       :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
       :ownership, :w9_received,  :address_type, :address_1, :address_2,
       :city, :state, :zipcode, :country, :default_address,
-      :supplier_diversity, :w9_received_date, :supplier_diversity_expiration_date, :method_of_po_trasmission,
-      :attachment_file_name
+      :supplier_diversity, :w9_received_date, :supplier_diversity_expiration_date, :method_of_po_transmission,
+      :attachment_file_name, :note_text, :attach_notes_file
 
   def initialize(browser, opts={})
     @browser = browser
@@ -27,7 +27,7 @@ class VendorObject < KFSDataObject
         zipcode: '91190',
         country: 'United States',
         default_address: 'Yes',
-        method_of_po_trasmission: 'US MAIL',
+        method_of_po_transmission: 'US MAIL',
         supplier_diversity: 'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name: 'vendor_attachment_test.png',
@@ -52,7 +52,7 @@ class VendorObject < KFSDataObject
 
 
       fill_out page,  :address_type, :address_1, :city, :state, :zipcode,
-               :country, :default_address, :method_of_po_trasmission
+               :country, :default_address, :method_of_po_transmission
       page.add_address
 
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date

@@ -19,7 +19,6 @@ class Lookups < BasePage
   action(:copy_random) { |b| b.copy_value_links[rand(b.copy_value_links.length)].click }
   element(:copy_value_links) { |b| b.results_table.links(text: 'copy') }
 
-  action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
   class << self
 

@@ -128,6 +128,8 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
+      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
+
     end
 
     def notes_and_attachments

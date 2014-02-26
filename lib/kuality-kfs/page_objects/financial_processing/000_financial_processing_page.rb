@@ -1,7 +1,6 @@
 class FinancialProcessingPage < KFSBasePage
 
 
-  notes_and_attachments
 
 
   class << self
