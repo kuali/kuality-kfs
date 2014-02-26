@@ -130,6 +130,17 @@ class BasePage < PageFactory
 
     end
 
+    def notes_and_attachments
+      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+
+      element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
+    end
+
+
+
+
     def route_log
       element(:route_log_iframe) { |b| b.frm.frame(name: 'routeLogIFrame') }
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
