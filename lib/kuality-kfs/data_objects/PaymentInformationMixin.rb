@@ -12,7 +12,7 @@ module PaymentInformationMixin
   def default_payment_information_lines(opts={})
     {
       payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
-      payee_id:            '5328-1',
+      payee_id:            '12076-0', #'5328-1',
       check_amount:        '100.00',
       #due_date:            '',
       #other_considerations_check_enclosure:    '',
@@ -20,7 +20,7 @@ module PaymentInformationMixin
       #other_considerations_w9_completed:       '',
       #other_considerations_exception_attached: '',
       #other_considerations_immediate_payment_indicator: '',
-      payment_method:              'F - Foreign Draft',
+      payment_method:              'P - Check/ACH',#'F - Foreign Draft',
       #documentation_location_code: '',
       check_stub_text:             'test, Check Stub',
       address_type_description:    'TX - TAX'
@@ -64,19 +64,19 @@ module PaymentInformationMixin
       plookup.search
       plookup.return_value(@payee_id)
     end
-    #on VendorAddressLookup do |valookup|
-    #  valookup.address_1.fit @address_1 unless @address_1.nil?
-    #  valookup.address_2.fit @address_2 unless @address_2.nil?
-    #  valookup.city.fit @city unless @city.nil?
-    #  valookup.state.fit @state unless @state.nil?
-    #  valookup.country.fit @country unless @country.nil?
-    #  valookup.postal_code.fit @postal_code unless @postal_code.nil?
-    #  valookup.address_type.fit @address_type_description unless @address_type_description.nil?
-    #
-    #  pending
-    #  valookup.search
-    #  valookup.return_value_links.first.click
-    #end
+    on VendorAddressLookup do |valookup|
+      valookup.address_1.fit @address_1 unless @address_1.nil?
+      valookup.address_2.fit @address_2 unless @address_2.nil?
+      valookup.city.fit @city unless @city.nil?
+      valookup.state.fit @state unless @state.nil?
+      valookup.country.fit @country unless @country.nil?
+      valookup.postal_code.fit @postal_code unless @postal_code.nil?
+      valookup.address_type.fit @address_type_description unless @address_type_description.nil?
+
+      #pending
+      valookup.search
+      valookup.return_value_links.first.click
+    end
   end
 
 end
