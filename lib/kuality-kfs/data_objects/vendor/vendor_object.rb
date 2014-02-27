@@ -11,28 +11,27 @@ class VendorObject < KFSDataObject
     @browser = browser
 
     defaults = {
-        description:            random_alphanums(40, 'AFT'),
-        vendor_type:   'PO - PURCHASE ORDER',
-        vendor_name: 'Keith, inc',
-        foreign: 'No',
-        tax_number:  "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-        tax_number_type_ssn:   :set,
-        ownership: 'INDIVIDUAL/SOLE PROPRIETOR',
-        w9_received: 'Yes',
-        w9_received_date: yesterday[:date_w_slashes],
-        address_type: 'PO - PURCHASE ORDER',
-        address_1: '6655 Sunset BLvd',
-        city: 'Denver',
-        state: 'CO',
-        zipcode: '91190',
-        country: 'United States',
-        default_address: 'Yes',
+        description:                random_alphanums(40, 'AFT'),
+        vendor_type:                'PO - PURCHASE ORDER',
+        vendor_name:                'Keith, inc',
+        foreign:                    'No',
+        tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
+        tax_number_type_ssn:       :set,
+        ownership:                 'INDIVIDUAL/SOLE PROPRIETOR',
+        w9_received:               'Yes',
+        w9_received_date:          yesterday[:date_w_slashes],
+        address_type:              'PO - PURCHASE ORDER',
+        address_1:                 '6655 Sunset BLvd',
+        city:                      'Denver',
+        state:                     'CO',
+        zipcode:                   '91190',
+        country:                   'United States',
+        default_address:           'Yes',
         method_of_po_transmission: 'US MAIL',
-        supplier_diversity: 'HUBZONE',
+        supplier_diversity:        'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
-        attachment_file_name: 'vendor_attachment_test.png',
-        note_text: random_alphanums(20, 'AFT')
-        #press:                       :save
+        attachment_file_name:      'vendor_attachment_test.png',
+        note_text:                 random_alphanums(20, 'AFT')
     }
     set_options(defaults.merge(opts))
   end
@@ -56,11 +55,8 @@ class VendorObject < KFSDataObject
       page.add_address
 
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
-      #page.supplier_diversity_expiration_date.fit @supplier_diversity_expiration_date.to_s
+
       page.add_supplier_diversity
-
-
-
     end
   end
 
