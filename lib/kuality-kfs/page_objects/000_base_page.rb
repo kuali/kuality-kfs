@@ -12,7 +12,8 @@ class BasePage < PageFactory
     approve:           'approve',
     disapprove:        'disapprove',
     send_notification: 'send notification',
-    recall:            'Recall current document'
+    recall:            'Recall current document',
+    error_correction:  'Error Correction'
   }
 
   def self.available_buttons
