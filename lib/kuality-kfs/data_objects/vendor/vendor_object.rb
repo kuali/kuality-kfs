@@ -15,7 +15,7 @@ class VendorObject < KFSDataObject
         vendor_type:   'PO - PURCHASE ORDER',
         vendor_name: 'Keith, inc',
         foreign: 'No',
-        tax_number:  rand(999999999),
+        tax_number:  "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
         tax_number_type_ssn:   :set,
         ownership: 'INDIVIDUAL/SOLE PROPRIETOR',
         w9_received: 'Yes',
