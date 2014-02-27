@@ -1,0 +1,4 @@
+class VendorLookupPage < Lookups
+
+end
+
