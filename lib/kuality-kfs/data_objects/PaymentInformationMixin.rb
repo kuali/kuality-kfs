@@ -73,7 +73,6 @@ module PaymentInformationMixin
       valookup.postal_code.fit @postal_code unless @postal_code.nil?
       valookup.address_type.fit @address_type_description unless @address_type_description.nil?
 
-      #pending
       valookup.search
       valookup.return_value_links.first.click
     end
