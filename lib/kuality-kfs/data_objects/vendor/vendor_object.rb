@@ -5,7 +5,12 @@ class VendorObject < KFSDataObject
       :ownership, :w9_received,  :address_type, :address_1, :address_2,
       :city, :state, :zipcode, :country, :default_address,
       :supplier_diversity, :w9_received_date, :supplier_diversity_expiration_date, :method_of_po_transmission,
-      :attachment_file_name, :note_text, :attach_notes_file
+      :attachment_file_name, :note_text, :attach_notes_file, :contract_name, :contract_description, :contract_begin_date, :contract_end_date,
+      :contract_extension_date, :contract_po_limit, :general_liability_coverage_amt, :general_liability_expiration_date, :automobile_liability_coverage_amt,
+      :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date, :excess_liability_umb_amt,
+      :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note, :contract_manager_code, :b2b_contract_indicator,
+      :po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code, :insurance_req_complete,
+      :cornell_additional_ins_ind, :health_offsite_catering_lic_req, :contract_campus_code, :insurance_requirements_complete, :insurance_requirement_indicator
 
   def initialize(browser, opts={})
     @browser = browser
@@ -16,22 +21,48 @@ class VendorObject < KFSDataObject
         vendor_name:                'Keith, inc',
         foreign:                    'No',
         tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-        tax_number_type_ssn:       :set,
-        ownership:                 'INDIVIDUAL/SOLE PROPRIETOR',
-        w9_received:               'Yes',
-        w9_received_date:          yesterday[:date_w_slashes],
-        address_type:              'PO - PURCHASE ORDER',
-        address_1:                 '6655 Sunset BLvd',
-        city:                      'Denver',
-        state:                     'CO',
-        zipcode:                   '91190',
-        country:                   'United States',
-        default_address:           'Yes',
-        method_of_po_transmission: 'US MAIL',
-        supplier_diversity:        'HUBZONE',
+        tax_number_type_ssn:        :set,
+        ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
+        w9_received:                'Yes',
+        w9_received_date:           yesterday[:date_w_slashes],
+        address_type:               'PO - PURCHASE ORDER',
+        address_1:                  '6655 Sunset BLvd',
+        city:                       'Denver',
+        state:                      'CO',
+        zipcode:                    '91190',
+        country:                    'United States',
+        default_address:            'Yes',
+        method_of_po_transmission:  'US MAIL',
+        supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
-        attachment_file_name:      'vendor_attachment_test.png',
-        note_text:                 random_alphanums(20, 'AFT')
+        attachment_file_name:       'vendor_attachment_test.png',
+        note_text:                  random_alphanums(20, 'AFT'),
+        contract_po_limit:          '100001',
+        contract_name:              random_alphanums(20),
+        contract_description:       random_alphanums(60),
+        contract_begin_date:        yesterday[:date_w_slashes],
+        contract_end_date:          tomorrow[:date_w_slashes],
+        contract_campus_code:       'IT - Ithaca',
+        contract_manager_code:      'Clark Kent',
+        po_cost_source_code:        'GSA',
+        b2b_contract_indicator:     'No',
+        vendor_pmt_terms_code:      'Net 5 Days',
+        insurance_requirements_complete:      'Yes',
+        general_liability_coverage_amt:       '100',
+        general_liability_expiration_date:    tomorrow[:date_w_slashes],
+        general_liability_coverage_amt:       '100',
+        general_liability_expiration_date:    tomorrow[:date_w_slashes],
+        automobile_liability_coverage_amt:    '100',
+        automobile_liability_expiration_date: tomorrow[:date_w_slashes],
+        workman_liability_coverage_amt:       '100',
+        workman_liability_expiration_date:    tomorrow[:date_w_slashes],
+        excess_liability_umb_amt:             '100',
+        excess_liability_umb_expiration_date: tomorrow[:date_w_slashes],
+        health_offsite_catering_lic_req:      'Yes',
+        health_offset_lic_expiration_date:    tomorrow[:date_w_slashes],
+        insurance_note:                       random_alphanums(240),
+        insurance_requirement_indicator:      :set
+
     }
     set_options(defaults.merge(opts))
   end
@@ -57,6 +88,11 @@ class VendorObject < KFSDataObject
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
 
       page.add_supplier_diversity
+
+      fill_out page, :contract_po_limit, :contract_name, :contract_description, :contract_begin_date, :contract_end_date,
+               :contract_campus_code, :contract_manager_code, :b2b_contract_indicator, :vendor_pmt_terms_code
+
+      page.add_vendor_contract
     end
   end
 
