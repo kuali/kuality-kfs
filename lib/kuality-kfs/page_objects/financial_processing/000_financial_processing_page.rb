@@ -1,8 +1,5 @@
 class FinancialProcessingPage < KFSBasePage
 
-
-
-
   class << self
 
     def document_overview
