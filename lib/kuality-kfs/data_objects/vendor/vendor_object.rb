@@ -77,11 +77,11 @@ class VendorObject < KFSDataObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
 
-      fill_out page, :description, :vendor_type, :vendor_name, :foreign, :tax_number , :tax_number_type_ssn,
+      fill_out page, :description, :vendor_type, :vendor_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
          :ownership, :w9_received, :w9_received_date
 
 
-      fill_out page,  :address_type, :address_1, :city, :state, :zipcode,
+      fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,
                :country, :default_address, :method_of_po_transmission
       page.add_address
 
@@ -89,10 +89,13 @@ class VendorObject < KFSDataObject
 
       page.add_supplier_diversity
 
-      fill_out page, :contract_po_limit, :contract_name, :contract_description, :contract_begin_date, :contract_end_date,
-               :contract_campus_code, :contract_manager_code, :b2b_contract_indicator, :vendor_pmt_terms_code
+      #fill_out page, :contract_po_limit, :contract_name, :contract_description, :contract_begin_date, :contract_end_date,
+      #         :po_cost_source_code, :contract_campus_code, :contract_manager_code, :b2b_contract_indicator, :vendor_pmt_terms_code
+      #
+      #page.add_vendor_contract
 
-      page.add_vendor_contract
+      fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
+
     end
   end
 
