@@ -1,28 +1,33 @@
-class GeneralErrorCorrectionObject < KFSDataObject
+class PreEncumbranceObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation
+  # These aliases are for convenience
+  alias add_disencumbrance_line add_target_line
+  alias add_encumbrance_line add_source_line
+
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        description:                     random_alphanums(40, 'AFT'),
-        organization_document_number:    random_alphanums(10, 'AFT'),
-        explanation:                     'Because I said so!'
+        description: random_alphanums(40, 'AFT')
     }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).general_error_correction
-    on GeneralErrorCorrectionPage do |page|
+    visit(MainPage).pre_encumbrance
+    on PreEncumbrancePage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
+
+
+      #FYI: Pre Encumbrance document needs to be saved before it can be submitted.
     end
   end
 

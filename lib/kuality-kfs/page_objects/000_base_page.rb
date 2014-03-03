@@ -11,7 +11,8 @@ class BasePage < PageFactory
     copy:              'Copy current document',
     approve:           'approve',
     disapprove:        'disapprove',
-    send_notification: 'send notification'
+    send_notification: 'send notification',
+    recall:            'Recall current document'
   }
 
   def self.available_buttons
@@ -66,7 +67,7 @@ class BasePage < PageFactory
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:edit) { |b| b.edit_button.click }
       element(:edit_button) { |b| b.frm.button(name: 'methodToCall.editOrVersion') }
@@ -95,7 +96,7 @@ class BasePage < PageFactory
     end
 
     def search_results_table
-      element(:header_row) { |b| b.results_table.tr(text: /Action/m).cells.collect { |x| snake_case(x.text).to_sym } }
+      element(:header_row) { |b| b.results_table.th(class: 'sortable').parent.cells.collect { |x| snake_case(x.text).to_sym } }
       action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
@@ -115,7 +116,7 @@ class BasePage < PageFactory
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
       action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
-      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length)] }
+      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
@@ -127,7 +128,20 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
+      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
+
     end
+
+    def notes_and_attachments
+      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+
+      element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
+    end
+
+
+
 
     def route_log
       element(:route_log_iframe) { |b| b.frm.frame(name: 'routeLogIFrame') }

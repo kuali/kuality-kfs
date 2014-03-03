@@ -1,24 +1,25 @@
-class GeneralErrorCorrectionObject < KFSDataObject
+class AuxiliaryVoucherObject < KFSDataObject
 
-  include AccountingLinesMixin
+  include VoucherLinesMixin
+  alias :add_target_line :add_source_line
 
-  attr_accessor :organization_document_number, :explanation
+  DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
+
+  attr_accessor :organization_document_number, :explanation,
+                :accounting_period,
+                :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {
-        description:                     random_alphanums(40, 'AFT'),
-        organization_document_number:    random_alphanums(10, 'AFT'),
-        explanation:                     'Because I said so!'
-    }.merge!(default_lines)
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).general_error_correction
-    on GeneralErrorCorrectionPage do |page|
+    visit(MainPage).auxiliary_voucher
+    on AuxiliaryVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

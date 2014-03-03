@@ -2,8 +2,9 @@ class AuxiliaryVoucherPage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
-  accounting_lines
+  accounting_lines_from_to
 
+  general_ledger_pending_entries
   notes_and_attachments
   ad_hoc_recipients
 
@@ -13,7 +14,10 @@ class AuxiliaryVoucherPage < FinancialProcessingPage
   element(:auxiliary_voucher_type_accrual) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Accrual') }
   element(:auxiliary_voucher_type_recode) { |b| b.frm.radio(title: '* Auxiliary Voucher Type - Recode') }
 
-#General Ledger Pending Entries
+
+  #action(:debit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].debit") }
+  #action(:credit_line_item) { |line_item='0', b| b.text_field(name: "voucherLineHelper[#{line_item}].credit") }
+  #action(:object_code_line_item) { |line_item, b| b.text_field(name: "document.sourceAccountingLine[#{line_item}].financialObjectCode") }
 
 #search buttons
   action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
@@ -21,4 +25,5 @@ class AuxiliaryVoucherPage < FinancialProcessingPage
   action(:search_object_code) { |b| b.frm.button(title: 'Search Object Code').click }
   action(:search_sub_object_code) { |b| b.frm.button(title: 'Search Sub-Object Code').click }
   action(:search_project_code) { |b| b.frm.button(title: 'Search Project Code').click }
+
 end

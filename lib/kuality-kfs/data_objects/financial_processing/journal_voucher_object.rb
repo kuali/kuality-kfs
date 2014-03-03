@@ -1,24 +1,26 @@
-class GeneralErrorCorrectionObject < KFSDataObject
+class JournalVoucherObject < KFSDataObject
 
-  include AccountingLinesMixin
+  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
 
-  attr_accessor :organization_document_number, :explanation
+  include VoucherLinesMixin
+  alias add_target_line add_source_line
+
+  attr_accessor :organization_document_number, :explanation,
+                :accounting_period,
+                :balance_type_code, :reversal_date
+                # TODO: Create a "line object" for Payment Information and add that to DV.
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {
-        description:                     random_alphanums(40, 'AFT'),
-        organization_document_number:    random_alphanums(10, 'AFT'),
-        explanation:                     'Because I said so!'
-    }.merge!(default_lines)
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).general_error_correction
-    on GeneralErrorCorrectionPage do |page|
+    visit(MainPage).journal_voucher
+    on JournalVoucherPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

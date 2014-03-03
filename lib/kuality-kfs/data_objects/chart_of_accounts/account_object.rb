@@ -6,9 +6,11 @@ class AccountObject < KFSDataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_code, :sufficient_funds_code,
                 :expense_guideline_text, :income_guideline_txt, :purpose_text,
-                :income_stream_financial_cost_code, :income_stream_account_number, :labor_benefit_rate_cat_code, :account_expiration_date
+                :income_stream_financial_cost_code, :income_stream_account_number, :labor_benefit_rate_cat_code, :account_expiration_date,
+                :indirect_cost_recovery_chart_of_accounts_code, :indirect_cost_recovery_account_number, :indirect_cost_recovery_account_line_percent,
+                :indirect_cost_recovery_active_indicator
 
-  def initialize(browser, opts={})
+                    def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
@@ -38,7 +40,7 @@ class AccountObject < KFSDataObject
         income_stream_financial_cost_code: 'IT - Ithaca Campus',
         income_stream_account_number:      '1000710',
         labor_benefit_rate_cat_code:       'CC',
-        account_expiration_date: '',
+        account_expiration_date:           '',
         press:                             :save
     }
     set_options(defaults.merge(opts))
@@ -53,11 +55,23 @@ class AccountObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :chart_code, :number, :name, :organization_code, :campus_code,
-               :effective_date, :postal_code, :city, :state, :address, :sub_fund_group_code,
-               :higher_ed_funct_code, :restricted_status_code, :fo_principal_name, :supervisor_principal_name,
-               :manager_principal_name, :budget_record_level_code, :sufficient_funds_code, :expense_guideline_text,
-               :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number,
-               :account_expiration_date
+                     :effective_date, :postal_code, :city, :state, :address, :sub_fund_group_code,
+                     :higher_ed_funct_code, :restricted_status_code, :fo_principal_name, :supervisor_principal_name,
+                     :manager_principal_name, :budget_record_level_code, :sufficient_funds_code, :expense_guideline_text,
+                     :income_guideline_txt, :purpose_text, :income_stream_financial_cost_code, :income_stream_account_number,
+                     :account_expiration_date,
+                     :indirect_cost_recovery_chart_of_accounts_code, :indirect_cost_recovery_account_number,
+                     :indirect_cost_recovery_account_line_percent, :indirect_cost_recovery_active_indicator
+    end
+  end
+
+  def view
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      search.open_doc @document_id
     end
   end
 end
