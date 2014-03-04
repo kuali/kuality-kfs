@@ -166,6 +166,15 @@ class FinancialProcessingPage < KFSBasePage
       #on every page.
     end
 
+    def notes_and_attachments
+      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
+
+    end
 
 
     def ad_hoc_recipients

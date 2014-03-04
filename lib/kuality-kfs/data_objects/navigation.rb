@@ -17,7 +17,7 @@ module Navigation
   def doc_search
     visit DocumentSearch do |search|
       search.close_parents
-      search.document_id.set @document_id
+      search.document_id_field.set @document_id
       search.search
       search.open_doc @document_id
     end
