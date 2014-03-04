@@ -51,6 +51,9 @@ class PersonPage < BasePage
   action(:descends_hierarchy) { |role, b| b.target_row(role).checkbox(title: 'Descends Hierarchy') }
   action(:add_role_qualifier) { |role, b| b.target_row(role).button(name: /methodToCall.addRoleQualifier.line\d+.anchor/).click }
 
+  # Not entirely sure this is the right page for this, but we'll put it here for now:
+  action(:get_user) { |b| b.frm.div(id: 'tab-Overview-div').tables[0][1].tds[0].text }
+
   # =========
   private
   # =========
