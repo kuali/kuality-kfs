@@ -6,5 +6,6 @@ class KFSBasePage < BasePage
   tiny_buttons
   tab_buttons
   error_messages
+  route_log
 
 end
