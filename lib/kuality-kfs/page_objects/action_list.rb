@@ -1,10 +1,6 @@
 class ActionList < BasePage
 
   page_url "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_rice_url}kew/ActionList.do"
-  #
-  #def viewAsUser(username)
-  #    @browser.goto "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_rice_url}kew/ActionList.do?backdoorId=#{username}"
-  #end
 
   def view_as(username)
     @browser.goto "#{$base_url}portal.do?channelTitle=Action List&channelUrl=#{$base_rice_url}kew/ActionList.do?backdoorId=#{username}"
