@@ -24,8 +24,7 @@ class JournalVoucherObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :organization_document_number, :explanation,
-                     :accounting_period, :balance_type_code, :reversal_date
+      fill_out page, :description, :organization_document_number, :explanation
     end
   end
 

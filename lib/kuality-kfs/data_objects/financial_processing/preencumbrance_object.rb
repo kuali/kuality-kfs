@@ -25,6 +25,9 @@ class PreEncumbranceObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
+
+
+      #FYI: Pre Encumbrance document needs to be saved before it can be submitted.
     end
   end
 

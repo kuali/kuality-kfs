@@ -2,6 +2,7 @@ class InternalBillingPage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
+  accounting_lines_from_to
 
   accounting_lines_for_capitalization
   create_capital_assets
@@ -25,7 +26,7 @@ class InternalBillingPage < FinancialProcessingPage
   element(:income_base_amount) { |b| b.frm.text_field(name: 'newSourceLine.baseBudgetAdjustmentAmount') }
   element(:income_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
 
-  action(:add_income_accounting_line) { |b| b.frm.button(alt: 'Add Income Accounting Line').click }
+  #action(:add_income_accounting_line) { |b| b.frm.button(alt: 'Add Income Accounting Line').click }
   #EXPENSE
   element(:expense_chart) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
   element(:expense_account_number) { |b| b.frm.text_field(name: 'newTargetLine.accountNumber') }
@@ -37,7 +38,7 @@ class InternalBillingPage < FinancialProcessingPage
   element(:expense_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
   element(:expense_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
-  action(:add_expense_accounting_line) { |b| b.frm.button(alt: 'Add Expense Accounting Line').click }
+  #action(:add_expense_accounting_line) { |b| b.frm.button(alt: 'Add Expense Accounting Line').click }
 
 #items
   element(:items_date) { |b| b.frm.text_field(name: 'newItem.itemServiceDate') }
