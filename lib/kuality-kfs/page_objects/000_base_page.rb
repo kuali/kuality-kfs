@@ -1,5 +1,7 @@
 class BasePage < PageFactory
 
+  include Utilities
+
   # These constants can be used with switches to add modularity to object create methods.
   KNOWN_BUTTONS = {
     save:              'save',
@@ -12,7 +14,8 @@ class BasePage < PageFactory
     approve:           'approve',
     disapprove:        'disapprove',
     send_notification: 'send notification',
-    recall:            'Recall current document'
+    recall:            'Recall current document',
+    error_correction:  'error correction'
   }
 
   def self.available_buttons
@@ -69,6 +72,7 @@ class BasePage < PageFactory
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
            'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
+      action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
       element(:edit_button) { |b| b.frm.button(name: 'methodToCall.editOrVersion') }
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
@@ -96,7 +100,7 @@ class BasePage < PageFactory
     end
 
     def search_results_table
-      element(:header_row) { |b| b.results_table.th(class: 'sortable').parent.cells.collect { |x| snake_case(x.text).to_sym } }
+      element(:header_row) { |b| b.results_table.th(class: 'sortable').parent.cells.collect { |x| snake_case(x.text.strip).to_sym } }
       action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
@@ -139,9 +143,6 @@ class BasePage < PageFactory
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
     end
-
-
-
 
     def route_log
       element(:route_log_iframe) { |b| b.frm.frame(name: 'routeLogIFrame') }

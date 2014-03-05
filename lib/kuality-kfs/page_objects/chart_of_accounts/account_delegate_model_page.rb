@@ -1,13 +1,4 @@
-class AccountDelegateModelPage < BasePage
-
-  #TODO: Kyle and Todd can discuss these in detail reason for these.
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
-  route_log
+class AccountDelegateModelPage < KFSBasePage
 
   element(:chart_of_accounts_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
