@@ -1,7 +1,5 @@
 class FinancialProcessingPage < KFSBasePage
 
-  route_log
-
   class << self
 
     def document_overview
