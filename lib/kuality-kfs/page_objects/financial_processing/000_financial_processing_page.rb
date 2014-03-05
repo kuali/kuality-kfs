@@ -163,7 +163,7 @@ class FinancialProcessingPage < KFSBasePage
     end
 
     def general_ledger_pending_entries
-      #on every page.
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
     end
 
     def notes_and_attachments
