@@ -58,12 +58,10 @@ class VendorObject < KFSDataObject
       fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,
                :country, :default_address, :method_of_po_transmission
       page.add_address
-      page.address_type_1.value.should_not == '' #verify that address is indeed added.  Not sure why can't use 'should exist' in data object
 
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
 
       page.add_supplier_diversity
-      page.supplier_diversity_code_1.should_not == ''  #verify that supplier diversity is indeed added
 
       fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
 
