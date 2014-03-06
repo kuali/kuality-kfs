@@ -9,7 +9,7 @@ class NonCheckDisbursementObject < KFSDataObject
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_lines)
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
