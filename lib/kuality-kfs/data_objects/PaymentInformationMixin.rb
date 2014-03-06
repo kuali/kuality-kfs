@@ -6,8 +6,8 @@ module PaymentInformationMixin
                 :other_considerations_check_enclosure, :other_considerations_special_handling,
                 :other_considerations_w9_completed, :other_considerations_exception_attached,
                 :other_considerations_immediate_payment_indicator, :payment_method,
-                :documentation_location_code, :check_stub_text
-                :address_type_description
+                :documentation_location_code, :check_stub_text,
+                :address_type_description, :auto_populate
 
   def default_payment_information_lines(opts={})
     {
@@ -30,12 +30,20 @@ module PaymentInformationMixin
   def post_create
     super
     on PaymentInformationTab do |tab|
-      @payment_reason_code.eql?('B - Reimbursement for Out-of-Pocket Expenses') ? payment_info(tab)  : ''
+      puts 'auto populate flag'
+      puts @auto_populate
+      if not @auto_populate.eql?('N')
+        payment_info(tab)
+      end
     end
   end
 
   def payment_info(tab)
-    choose_payee
+    if @address_type_description.eql?('TX - TAX')
+      choose_venhdor
+    else
+      choose_emp
+    end
     # These are returned to the page by choose_payee
     @payment_reason_code = tab.payment_reason_code
     @payee_name = tab.payee_name
@@ -56,7 +64,7 @@ module PaymentInformationMixin
     fill_out tab, :payment_method, :check_amount, :documentation_location_code, :check_stub_text
   end
   # NOTE: This will only really work if you know the @payee_id and @address_type_description!
-  def choose_payee
+  def choose_venhdor
     on(PaymentInformationTab).payee_search
     on PayeeLookup do |plookup|
       plookup.payment_reason_code.fit @payment_reason_code unless @payment_reason_code.nil?
@@ -77,6 +85,17 @@ module PaymentInformationMixin
 
       valookup.search
       valookup.return_value_links.first.click
+    end
+  end
+
+  def choose_emp
+    on(PaymentInformationTab).payee_search
+    on PayeeLookup do |plookup|
+      plookup.payment_reason_code.fit @payment_reason_code unless @payment_reason_code.nil?
+      plookup.employee_id.fit       @payee_id unless @payee_id.nil?
+
+      plookup.search
+      plookup.return_value(@payee_id)
     end
   end
 

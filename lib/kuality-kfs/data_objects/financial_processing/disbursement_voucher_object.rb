@@ -17,9 +17,8 @@ class DisbursementVoucherObject < KFSDataObject
         description:                       random_alphanums(40, 'AFT'),
         #foreign_draft_in_foreign_currency: :set,
         #currency_type:                     'Canadian $'
-    }
-    # this is kind of hack for KFSQA-709, so Payment Info tab will not be filled
-    opts.size == 0 ? defaults.merge!(default_accounting_lines).merge!(default_payment_information_lines) : defaults.merge!(default_accounting_lines)
+    }.merge!(default_accounting_lines).merge!(default_payment_information_lines(opts))
+
     set_options(defaults.merge(opts))
   end
 
