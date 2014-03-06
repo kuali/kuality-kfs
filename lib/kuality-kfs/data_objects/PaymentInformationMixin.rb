@@ -30,29 +30,31 @@ module PaymentInformationMixin
   def post_create
     super
     on PaymentInformationTab do |tab|
-      choose_payee
-
-      # These are returned to the page by choose_payee
-      @payment_reason_code = tab.payment_reason_code
-      @payee_name = tab.payee_name
-      @address_1 = tab.address_1.value
-      @address_2 = tab.address_2.value
-      @city = tab.city.value
-      @state = tab.state.value
-      @country = tab.country.selected_options.first.text
-      @postal_code = tab.postal_code.value
-      @due_date = tab.due_date.value
-      @other_considerations_check_enclosure = (tab.other_considerations_check_enclosure.exists? ? tab.other_considerations_check_enclosure.value : 'No')
-      @other_considerations_special_handling = (tab.other_considerations_special_handling.exists? ? tab.other_considerations_special_handling.value : 'No')
-      @other_considerations_w9_completed = (tab.other_considerations_w9_completed.exists? ? tab.other_considerations_w9_completed.value : 'No')
-      @other_considerations_exception_attached = (tab.other_considerations_exception_attached.exists? ? tab.other_considerations_exception_attached.value : 'No')
-      @other_considerations_immediate_payment_indicator = (tab.other_considerations_immediate_payment_indicator.exists? ? tab.other_considerations_immediate_payment_indicator.value : 'No')
-      @documentation_location_code = tab.documentation_location_code.selected_options.first.text
-
-      fill_out tab, :payment_method, :check_amount, :documentation_location_code, :check_stub_text
+      @payment_reason_code.eql?('B - Reimbursement for Out-of-Pocket Expenses') ? payment_info(tab)  : ''
     end
   end
 
+  def payment_info(tab)
+    choose_payee
+    # These are returned to the page by choose_payee
+    @payment_reason_code = tab.payment_reason_code
+    @payee_name = tab.payee_name
+    @address_1 = tab.address_1.value
+    @address_2 = tab.address_2.value
+    @city = tab.city.value
+    @state = tab.state.value
+    @country = tab.country.selected_options.first.text
+    @postal_code = tab.postal_code.value
+    @due_date = tab.due_date.value
+    @other_considerations_check_enclosure = (tab.other_considerations_check_enclosure.exists? ? tab.other_considerations_check_enclosure.value : 'No')
+    @other_considerations_special_handling = (tab.other_considerations_special_handling.exists? ? tab.other_considerations_special_handling.value : 'No')
+    @other_considerations_w9_completed = (tab.other_considerations_w9_completed.exists? ? tab.other_considerations_w9_completed.value : 'No')
+    @other_considerations_exception_attached = (tab.other_considerations_exception_attached.exists? ? tab.other_considerations_exception_attached.value : 'No')
+    @other_considerations_immediate_payment_indicator = (tab.other_considerations_immediate_payment_indicator.exists? ? tab.other_considerations_immediate_payment_indicator.value : 'No')
+    @documentation_location_code = tab.documentation_location_code.selected_options.first.text
+
+    fill_out tab, :payment_method, :check_amount, :documentation_location_code, :check_stub_text
+  end
   # NOTE: This will only really work if you know the @payee_id and @address_type_description!
   def choose_payee
     on(PaymentInformationTab).payee_search
