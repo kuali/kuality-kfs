@@ -57,13 +57,6 @@ class AdvanceDepositObject < KFSDataObject
 
   # The next few lines override the normal add_line operations to map
   # them to the single accounting line type on this document.
-  #def add_source_line(al)
-  #  @accounting_lines[:source].add(al.merge({type: :source}))
-  #end
-  #def add_source_line(type, al)
-  #  add_source_line(al)
-  #end
-  #alias :add_line :add_source_line
   alias :add_target_line :add_source_line
 
 end

@@ -1,10 +1,10 @@
 class DisbursementVoucherObject < KFSDataObject
 
-  DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
-
   include PaymentInformationMixin
   include AccountingLinesMixin
   alias :add_target_line :add_source_line
+
+  DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
 
   attr_accessor :organization_document_number, :explanation,
                 :contact_name, :phone_number, :email_address,
@@ -32,16 +32,6 @@ class DisbursementVoucherObject < KFSDataObject
       fill_out page, :description, :organization_document_number, :explanation,
                      :contact_name, :phone_number, :email_address,
                      :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
-    end
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
     end
   end
 
