@@ -1,11 +1,4 @@
-class ObjectCodePage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class ObjectCodePage < KFSBasePage
 
   element(:fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }

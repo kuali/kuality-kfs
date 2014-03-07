@@ -1,6 +1,6 @@
 class CreditCardReceiptLine < FinancialProcessingPage
 
-  accounting_lines_from_to
+  accounting_lines
 
   element(:type) { |b| b.frm.text_field(id: 'newCreditCardReceipt.financialDocumentCreditCardTypeCode') }
   element(:vendor_number) { |b| b.frm.text_field(id: 'newCreditCardReceipt.financialDocumentCreditCardVendorNumber') }

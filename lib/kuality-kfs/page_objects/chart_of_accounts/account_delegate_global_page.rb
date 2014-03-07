@@ -1,11 +1,4 @@
-class AccountDelegateGlobalPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class AccountDelegateGlobalPage < KFSBasePage
 
   element(:doc_type) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.delegateGlobals.financialDocumentTypeCode') }
   element(:primary_route) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.delegateGlobals.accountDelegatePrimaryRoutingIndicator') }

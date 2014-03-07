@@ -12,21 +12,21 @@ class FinancialProcessingPage < KFSBasePage
     end
 
 
-    def accounting_lines
-      element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
-      element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-      element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-      element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-      element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-      element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-      element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-      element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-      element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+    #def accounting_lines
+    #  element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
+    #  element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+    #  element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
+    #  element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+    #  element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
+    #  element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
+    #  element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
+    #  element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+    #  element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+    #
+    #  action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
+    #end
 
-      action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
-    end
-
-    def accounting_lines_from_to
+    def accounting_lines # formerly accounting_lines_from_to
       #ACCOUNTING LINES FROM/DECREASE
       element(:source_chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
       element(:source_account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
