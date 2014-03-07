@@ -29,11 +29,11 @@ module Utilities
   end
 
   def object_class_for(document)
-    "#{document.split.map(&:capitalize).join('')}Object"
+    Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Object")
   end
 
   def page_class_for(document)
-    "#{document.split.map(&:capitalize).join('')}Page"
+    Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Page")
   end
 
   def random_percentage

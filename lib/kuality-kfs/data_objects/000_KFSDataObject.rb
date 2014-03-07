@@ -70,8 +70,23 @@ class KFSDataObject < DataObject
     on(KFSBasePage).error_correction
   end
 
-  def view #should be overridden for transactional documents
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  #def view #should be overridden for transactional documents
+  #  @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
+  #end
+
+  def view
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      if search.frm.divs(id: 'lookup')[0].parent.text.include?('No values match this search.')
+        # Double-check, for timing issues.
+        sleep 10
+        search.search
+      end
+      search.open_doc @document_id
+    end
   end
 
   def self.to_var_name

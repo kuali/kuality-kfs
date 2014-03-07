@@ -31,9 +31,9 @@ class AccountingLineObject < DataObject
           "#{@type}_reference_number".to_sym           => @reference_number,
           "#{@type}_line_description".to_sym           => @line_description,
           "#{@type}_amount".to_sym                     => @amount,
-          "#{@type}_current_amount".to_sym             => @current_amount,
-          "#{@type}_base_amount".to_sym                => @base_amount
+          "#{@type}_current_amount".to_sym             => @current_amount
       }
+      mappings.merge!({"#{@type}_base_amount".to_sym => @base_amount}) unless @base_amount.nil?
       mappings.merge!({"#{@type}_object_code".to_sym => @object}) unless @object.nil?
       mappings.merge!(extended_create_mappings)
 
@@ -65,9 +65,9 @@ class AccountingLineObject < DataObject
           "update_#{@type}_reference_number".to_sym           => opts[:reference_number],
           "update_#{@type}_line_description".to_sym           => opts[:line_description],
           "update_#{@type}_amount".to_sym                     => opts[:amount],
-          "update_#{@type}_current_amount".to_sym             => opts[:current_amount],
-          "update_#{@type}_base_amount".to_sym                => opts[:base_amount]
+          "update_#{@type}_current_amount".to_sym             => opts[:current_amount]
       }
+      mappings.merge!({"update_#{@type}_base_amount".to_sym => opts[:base_amount]}) unless opts[:base_amount].nil?
       mappings.merge!({"update_#{@type}_object_code".to_sym => opts[:object]}) unless opts[:object].nil?
       mappings.merge!(extended_update_mappings)
 

@@ -9,7 +9,6 @@ class ObjectCodeObject < KFSDataObject
       :object_type_code,
       :level_code,
       :object_sub_type_code,
-      :suny_object_code,
       :financial_object_code_description,
       :cg_reporting_code,
       :historical_financial_object_code,
@@ -56,9 +55,6 @@ class ObjectCodeObject < KFSDataObject
               :level_code, :object_sub_type_code, :financial_object_code_description,
               :cg_reporting_code, :historical_financial_object_code, :budget_aggregation_code,
               :mandatory_transfer, :federal_funded_code, :next_year_object_code
-
-      #TODO Cornell - use ext attr hook!
-      fill_out page, :suny_object_code
     end
   end
 end #class
