@@ -7,10 +7,9 @@ module PaymentInformationMixin
                 :other_considerations_w9_completed, :other_considerations_exception_attached,
                 :other_considerations_immediate_payment_indicator, :payment_method,
                 :documentation_location_code, :check_stub_text,
-                :address_type_description, :auto_populate, :num_result_rows , :vendor_payee
+                :address_type_description, :num_result_rows, :vendor_payee
 
   alias :vendor_payee? :vendor_payee
-  alias :auto_populate? :auto_populate
   def default_payment_information_lines(opts={})
     {
       payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
@@ -26,7 +25,6 @@ module PaymentInformationMixin
       #documentation_location_code: '',
       check_stub_text:             'test, Check Stub',
       address_type_description:    'TX - TAX',
-      auto_populate:               true,
       vendor_payee:                true
     }.merge(opts)
   end
@@ -34,15 +32,12 @@ module PaymentInformationMixin
   def post_create
     super
     on PaymentInformationTab do |tab|
-      if auto_populate?
-        payment_info(tab)
-      end
+        payment_info(tab) unless @payee_id.nil?
     end
   end
 
   def payment_info(tab)
     choose_payee
-
     # These are returned to the page by choose_payee
     @payment_reason_code = tab.payment_reason_code
     @payee_name = tab.payee_name
@@ -101,9 +96,8 @@ module PaymentInformationMixin
   end
 
   def change_default_check_amount
-  on PaymentInformationTab do |tab|
-    fill_out tab,  :check_amount
-  end
-
+    on PaymentInformationTab do |tab|
+      fill_out tab,  :check_amount
+    end
   end
 end
