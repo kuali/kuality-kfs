@@ -1,6 +1,7 @@
 module AccountingLinesMixin
 
-  attr_accessor :accounting_lines, :initial_lines
+  attr_accessor :accounting_lines, :initial_lines, :auto_populate
+  alias :auto_populate? :auto_populate
 
   def default_accounting_lines(opts={})
     # This just makes it so we don't have to be so repetitive. It can certainly be
@@ -10,13 +11,16 @@ module AccountingLinesMixin
             source: collection('AccountingLineObject'),
             target: collection('AccountingLineObject')
         },
-        initial_lines:    []
+        initial_lines:    [],
+        auto_populate:    true
     }.merge(opts)
   end
 
   def post_create
     super
-    @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) }
+    if auto_populate?
+      @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) }
+    end
   end
 
   def add_line(type, al)

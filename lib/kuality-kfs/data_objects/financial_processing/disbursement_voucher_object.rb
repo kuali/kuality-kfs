@@ -14,13 +14,13 @@ class DisbursementVoucherObject < KFSDataObject
     @browser = browser
 
     defaults = {
-                 description:                       random_alphanums(40, 'AFT'),
-                 #foreign_draft_in_foreign_currency: :set,
-                 #currency_type:                     'Canadian $'
-               }.merge!(default_accounting_lines)
-                .merge!(default_payment_information_lines)
+        description:                       random_alphanums(40, 'AFT'),
+        #foreign_draft_in_foreign_currency: :set,
+        #currency_type:                     'Canadian $'
+    }.merge!(default_accounting_lines(opts[:account_default].nil? ? {} : opts[:account_default]))
+     .merge!(default_payment_information_lines(opts[:payment_default].nil? ? {} : opts[:payment_default]))
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(opts[:dv_default].nil? ? {} : opts[:dv_default]))
   end
 
   def build
@@ -30,8 +30,8 @@ class DisbursementVoucherObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation,
-                     :contact_name, :phone_number, :email_address,
-                     :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
+               :contact_name, :phone_number, :email_address,
+               :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
     end
   end
 
