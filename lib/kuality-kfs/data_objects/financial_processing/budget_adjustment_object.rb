@@ -67,20 +67,4 @@ class BudgetAdjustmentObject < KFSDataObject
                     })
   end
 
-  def self.fiscal_period_conversion(month)
-    #general ledger balance lookup to select monthly link does not use numbers that match month
-    return '07' if month == 'JAN'
-    return '08' if month == 'FEB'
-    return '09' if month == 'MAR'
-    return '10' if month == 'APR'
-    return '11' if month == 'MAY'
-    return '12' if month == 'JUN'
-    return '01' if month == 'JUL'
-    return '02' if month == 'AUG'
-    return '03' if month == 'SEP'
-    return '04' if month == 'OCT'
-    return '05' if month == 'NOV'
-    return '06' if month == 'DEC'
-  end
-
 end #class
