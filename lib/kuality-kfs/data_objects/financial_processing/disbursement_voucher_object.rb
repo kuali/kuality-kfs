@@ -17,7 +17,8 @@ class DisbursementVoucherObject < KFSDataObject
         description:                       random_alphanums(40, 'AFT'),
         #foreign_draft_in_foreign_currency: :set,
         #currency_type:                     'Canadian $'
-    }.merge!(default_accounting_lines).merge!(default_payment_information_lines(opts))
+    }.merge!(default_accounting_lines)
+    .merge!(default_payment_information_lines)
 
     set_options(defaults.merge(opts))
   end
