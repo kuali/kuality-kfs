@@ -13,7 +13,6 @@ module PaymentInformationMixin
   def default_payment_information_lines(opts={})
     {
       payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
-      payee_id:            '12076-0', #'5328-1',
       check_amount:        '100.00',
       #due_date:            '',
       #other_considerations_check_enclosure:    '',
