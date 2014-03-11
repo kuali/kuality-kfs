@@ -24,6 +24,7 @@ class Lookups < BasePage
 
     def document_facets
       element(:doc_number) { |b| b.frm.text_field(name: 'documentNumber') }
+      alias_method :document_number, :doc_number
       element(:doc_type) { |b| b.frm.text_field(name: 'documentTypeCode') }
     end
 

@@ -148,6 +148,10 @@ class FinancialProcessingPage < KFSBasePage
       action(:import_lines_target) {|b| b.frm.link(id: 'document.targetAccountingLinesShowLink').when_present.click }
       action(:add_source_import) { |b| b.frm.button(name: 'methodToCall.uploadSourceLines.document.sourceAccountingLines').when_present.click }
       action(:add_target_import) { |b| b.frm.button(name: 'methodToCall.uploadTargetLines.document.targetAccountingLines').when_present.click }
+
+      # FOR VIEWING WITHOUT EDIT
+      value(:source_line_description_value) {|i='0', b| b.frm.span(id: "document.sourceAccountingLine[#{i}].financialDocumentLineDescription.div").text }
+
     end
 
 
