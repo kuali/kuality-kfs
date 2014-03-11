@@ -7,7 +7,7 @@ module PaymentInformationMixin
                 :other_considerations_w9_completed, :other_considerations_exception_attached,
                 :other_considerations_immediate_payment_indicator, :payment_method,
                 :documentation_location_code, :check_stub_text,
-                :address_type_description, :num_result_rows, :vendor_payee
+                :address_type_description, :vendor_payee
 
   alias :vendor_payee? :vendor_payee
   def default_payment_information_lines(opts={})
@@ -31,12 +31,10 @@ module PaymentInformationMixin
 
   def post_create
     super
-    on PaymentInformationTab do |tab|
-        payment_info(tab) unless @payee_id.nil?
-    end
+    on (PaymentInformationTab) {|tab| fill_in_payment_info(tab) unless @payee_id.nil?}
   end
 
-  def payment_info(tab)
+  def fill_in_payment_info(tab)
     choose_payee
     # These are returned to the page by choose_payee
     @payment_reason_code = tab.payment_reason_code
@@ -70,7 +68,7 @@ module PaymentInformationMixin
       end
 
       plookup.search
-      @num_result_rows = plookup.results_table.rows.length
+      plookup.results_table.rows.length.should == 2 if (@payee_id.eql?('map3') && !vendor_payee?)
       plookup.return_value(@payee_id)
     end
     if vendor_payee?
@@ -89,15 +87,7 @@ module PaymentInformationMixin
     end
   end
 
- def payee_lookup
-    on PaymentInformationTab do |tab|
-        payment_info(tab)
-    end
-  end
-
   def change_default_check_amount
-    on PaymentInformationTab do |tab|
-      fill_out tab,  :check_amount
-    end
+    on (PaymentInformationTab) {|tab| fill_out tab,  :check_amount}
   end
 end
