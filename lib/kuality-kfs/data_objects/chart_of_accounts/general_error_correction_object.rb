@@ -11,7 +11,7 @@ class GeneralErrorCorrectionObject < KFSDataObject
         description:                     random_alphanums(40, 'AFT'),
         organization_document_number:    random_alphanums(10, 'AFT'),
         explanation:                     'Because I said so!'
-    }.merge!(default_lines)
+    }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end

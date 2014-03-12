@@ -2,7 +2,7 @@ module AccountingLinesMixin
 
   attr_accessor :accounting_lines, :initial_lines
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     # This just makes it so we don't have to be so repetitive. It can certainly be
     # overridden in a subclass if you don't want to chuck things in via opts.
     {
@@ -37,7 +37,7 @@ module BudgetAdjustmentLinesMixin
   include AccountingLinesMixin
   extend AccountingLinesMixin
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     {
         accounting_lines: {
             source: collection('BudgetAdjustmentLineObject'),
@@ -53,7 +53,7 @@ module VoucherLinesMixin
   include AccountingLinesMixin
   extend AccountingLinesMixin
 
-  def default_lines(opts={})
+  def default_accounting_lines(opts={})
     {
         accounting_lines: {
             source: collection('VoucherLineObject'),

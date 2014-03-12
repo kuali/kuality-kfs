@@ -93,6 +93,13 @@ class Lookups < BasePage
       element(:closed_both) { |b| b.frm.radio(id: 'closedBoth') }
     end
 
+    def active_radios
+      element(:active) { |b| b.frm.radios(name: 'active') }
+      element(:active_yes) { |b| b.frm.radio(id: 'activeYes') }
+      element(:active_no) { |b| b.frm.radio(id: 'activeNo') }
+      element(:active_both) { |b| b.frm.radio(id: 'activeBoth') }
+    end
+
     def reference_document_facets
       element(:reference_document_number) { |b| b.frm.text_field(name: 'referenceFinancialDocumentNumber') }
       element(:reference_document_type_code) { |b| b.frm.text_field(name: 'referenceFinancialDocumentTypeCode') }
@@ -108,6 +115,21 @@ class Lookups < BasePage
       element(:major_reporting_category_code) { |b| b.frm.text_field(name: 'extension.majorReportingCategoryCode') }
       element(:sub_fund_program_code) { |b| b.frm.text_field(name: 'extension.programCode') }
       element(:appropriation_account_number) { |b| b.frm.text_field(name: 'extension.appropriationAccountNumber') }
+    end
+
+    def vendor_facets
+      element(:address_type) { |b| b.frm.select(id: 'vendorAddressTypeCode') }
+      element(:address_1) { |b| b.frm.text_field(id: 'vendorLine1Address') }
+      element(:address_2) { |b| b.frm.text_field(id: 'vendorLine2Address') }
+      element(:city) { |b| b.frm.text_field(id: 'vendorCityName') }
+      element(:state) { |b| b.frm.text_field(id: 'vendorStateCode') }
+      element(:postal_code) { |b| b.frm.text_field(id: 'vendorZipCode') }
+      element(:province) { |b| b.frm.text_field(id: 'vendorAddressInternationalProvinceName') }
+      element(:country) { |b| b.frm.select(id: 'vendorCountryCode') }
+      element(:attention) { |b| b.frm.text_field(id: 'vendorAttentionName') }
+      element(:url) { |b| b.frm.text_field(id: 'vendorBusinessToBusinessUrlAddress') }
+      element(:vendor_fax_number) { |b| b.frm.text_field(id: 'vendorFaxNumber') }
+      element(:email_address) { |b| b.frm.text_field(id: 'vendorAddressEmailAddress') }
     end
 
   end

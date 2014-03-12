@@ -1,6 +1,5 @@
 class FinancialProcessingPage < KFSBasePage
 
-
   class << self
 
     def document_overview
@@ -10,6 +9,21 @@ class FinancialProcessingPage < KFSBasePage
 
     def financial_document_detail
       value(:fdd_total_amount) { |b| b.frm.table(summary: 'KFS Detail Section').td(align: 'left').text }
+    end
+
+
+    def accounting_lines
+      element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
+      element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+      element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
+      element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+      element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
+      element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
+      element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
+      element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+      element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
+
+      action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
     end
 
     def accounting_lines_from_to
@@ -79,7 +93,7 @@ class FinancialProcessingPage < KFSBasePage
       action(:balance_inquiry_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click }
       action(:refresh_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingSourceAnchor").click }
 
-        #ACCOUNTING LINES TO/INCREASE
+      #ACCOUNTING LINES TO/INCREASE
       element(:target_chart_code) { |b| b.frm.select(name: 'newTargetLine.chartOfAccountsCode') }
       element(:target_account_number) { |b| b.frm.text_field(name: 'newTargetLine.accountNumber') }
       element(:target_sub_account_code) { |b| b.frm.text_field(name: 'newTargetLine.subAccountNumber') }
@@ -168,7 +182,7 @@ class FinancialProcessingPage < KFSBasePage
     end
 
     def general_ledger_pending_entries
-      #on every page.
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
     end
 
     def notes_and_attachments
@@ -180,7 +194,6 @@ class FinancialProcessingPage < KFSBasePage
       element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
 
     end
-
 
     def ad_hoc_recipients
       element(:ad_hoc_person) { |b| b.frm.text_field(name: 'newAdHocRoutePerson.id') }
