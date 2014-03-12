@@ -1,25 +1,28 @@
-class AuxiliaryVoucherObject < KFSDataObject
+class ServiceBillingObject < KFSDataObject
 
-  include VoucherLinesMixin
-  alias :add_target_line :add_source_line
+  DOC_INFO = { label: 'Service Billing Document', type_code: 'SB' }
 
-  DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
+  include AccountingLinesMixin
 
-  attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
-                :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
+  # These aliases are for convenience
+  alias add_expense_line add_target_line
+  alias add_income_line add_source_line
+
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
+    defaults = {
+        description: random_alphanums(40, 'AFT')
+    }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).auxiliary_voucher
-    on AuxiliaryVoucherPage do |page|
+    visit(MainPage).service_billing
+    on ServiceBillingPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

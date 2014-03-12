@@ -1,13 +1,10 @@
-class AuxiliaryVoucherObject < KFSDataObject
+class DistributionOfIncomeAndExpenseObject < KFSDataObject
 
-  include VoucherLinesMixin
-  alias :add_target_line :add_source_line
+  include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
+  DOC_INFO = { label: 'Distribution Of Income And Expense Document', type_code: 'DI' }
 
-  attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
-                :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
+  attr_accessor :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
@@ -18,8 +15,8 @@ class AuxiliaryVoucherObject < KFSDataObject
   end
 
   def build
-    visit(MainPage).auxiliary_voucher
-    on AuxiliaryVoucherPage do |page|
+    visit(MainPage).distribution_of_income_and_expense
+    on DistributionOfIncomeAndExpensePage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

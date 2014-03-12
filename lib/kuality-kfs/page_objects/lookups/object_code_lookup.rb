@@ -1,5 +1,9 @@
 class ObjectCodeLookupPage < Lookups
 
+  action(:get_random_object_code) do |b|
+    b.return_random_row[3].text
+  end
+
   element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
   element(:chart_code) { |b| b.frm.select(name: 'chartOfAccountsCode') }
 

@@ -1,4 +1,4 @@
-class DistributionIncomeExpensePage < FinancialProcessingPage
+class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
   document_overview
   financial_document_detail

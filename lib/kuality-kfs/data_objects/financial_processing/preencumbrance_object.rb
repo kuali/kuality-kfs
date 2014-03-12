@@ -1,29 +1,33 @@
-class AuxiliaryVoucherObject < KFSDataObject
+class PreEncumbranceObject < KFSDataObject
 
-  include VoucherLinesMixin
-  alias :add_target_line :add_source_line
+  include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Auxiliary Voucher Document', type_code: 'AV' }
+  # These aliases are for convenience
+  alias add_disencumbrance_line add_target_line
+  alias add_encumbrance_line add_source_line
 
-  attr_accessor :organization_document_number, :explanation,
-                :accounting_period,
-                :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
+  attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
+    defaults = {
+        description: random_alphanums(40, 'AFT')
+    }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
 
   def build
-    visit(MainPage).auxiliary_voucher
-    on AuxiliaryVoucherPage do |page|
+    visit(MainPage).pre_encumbrance
+    on PreEncumbrancePage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
+
+
+      #FYI: Pre Encumbrance document needs to be saved before it can be submitted.
     end
   end
 
