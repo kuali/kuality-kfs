@@ -12,19 +12,19 @@ module PaymentInformationMixin
   alias :vendor_payee? :vendor_payee
   def default_payment_information_lines(opts={})
     {
-      payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
-      check_amount:        '100.00',
-      #due_date:            '',
-      #other_considerations_check_enclosure:    '',
-      #other_considerations_special_handling:   '',
-      #other_considerations_w9_completed:       '',
-      #other_considerations_exception_attached: '',
-      #other_considerations_immediate_payment_indicator: '',
-      payment_method:              'P - Check/ACH',#'F - Foreign Draft',
-      #documentation_location_code: '',
-      check_stub_text:             'test, Check Stub',
-      address_type_description:    'TX - TAX',
-      vendor_payee:                true
+        payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
+        check_amount:        '100.00',
+        #due_date:            '',
+        #other_considerations_check_enclosure:    '',
+        #other_considerations_special_handling:   '',
+        #other_considerations_w9_completed:       '',
+        #other_considerations_exception_attached: '',
+        #other_considerations_immediate_payment_indicator: '',
+        payment_method:              'P - Check/ACH',#'F - Foreign Draft',
+        #documentation_location_code: '',
+        check_stub_text:             'test, Check Stub',
+        address_type_description:    'TX - TAX',
+        vendor_payee:                true
     }.merge(opts)
   end
 

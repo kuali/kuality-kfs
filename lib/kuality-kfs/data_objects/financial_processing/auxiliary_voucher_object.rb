@@ -9,6 +9,20 @@ class AuxiliaryVoucherObject < KFSDataObject
                 :accounting_period,
                 :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
 
+
+  def default_lines(opts={})
+    super(opts).merge(
+        initial_lines: [{
+                            type:           :source,
+                            chart_code:     '',
+                            account_number: '',
+                            object:         '',
+                            current_amount: ''
+                        }])
+  end
+
+
+
   def initialize(browser, opts={})
     @browser = browser
 

@@ -24,3 +24,4 @@ class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
 
 end
+#DistributionOfIncomeAndExpensePage = DistributionIncomeExpensePage
