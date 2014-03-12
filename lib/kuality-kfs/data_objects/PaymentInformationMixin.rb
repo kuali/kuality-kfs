@@ -68,7 +68,11 @@ module PaymentInformationMixin
 
       plookup.search
       plookup.results_table.rows.length.should == 2 if (@payee_id.eql?('map3') && !vendor_payee?)
-      plookup.return_value(@payee_id)
+      if (@payee_id.eql?('msw13') && !vendor_payee?)
+        plookup.frm.divs(id: 'lookup')[0].parent.text.include?('No values match this search').should == true
+      else
+        plookup.return_value(@payee_id)
+      end
     end
     if vendor_payee?
       on VendorAddressLookup do |valookup|
