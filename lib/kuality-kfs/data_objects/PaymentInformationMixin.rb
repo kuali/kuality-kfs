@@ -30,11 +30,15 @@ module PaymentInformationMixin
 
   def post_create
     super
-    on (PaymentInformationTab) {|tab| fill_in_payment_info(tab) unless @payee_id.nil?}
+    on (PaymentInformationTab) do |tab|
+      unless @payee_id.nil?
+        choose_payee
+        fill_in_payment_info(tab)
+      end
+    end
   end
 
   def fill_in_payment_info(tab)
-    choose_payee
     # These are returned to the page by choose_payee
     @payment_reason_code = tab.payment_reason_code
     @payee_name = tab.payee_name
@@ -67,7 +71,6 @@ module PaymentInformationMixin
       end
 
       plookup.search
-      plookup.results_table.rows.length.should == 2 if (@payee_id.eql?('map3') && !vendor_payee?)
       plookup.return_value(@payee_id)
     end
     if vendor_payee?
