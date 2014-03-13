@@ -28,6 +28,10 @@ module Utilities
     StringFactory.damballa(string)
   end
 
+  def document_object_for(document)
+    get(snake_case(document))
+  end
+
   def object_class_for(document)
     Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Object")
   end
@@ -38,6 +42,41 @@ module Utilities
 
   def random_percentage
     random_dollar_value(100)
+  end
+
+  def fiscal_period_conversion(month)
+    case month
+      when 'JAN', 'Jan', 'January'
+        '07'
+      when 'FEB', 'Feb', 'February'
+        '08'
+      when 'MAR', 'Mar', 'March'
+        '09'
+      when 'APR', 'Apr', 'April'
+        '10'
+      when 'MAY', 'May',
+        '11'
+      when 'JUN', 'Jun', 'June'
+        '12'
+      when 'JUL', 'Jul', 'July'
+        '01'
+      when 'AUG', 'Aug', 'August'
+        '02'
+      when 'SEP', 'Sep', 'September'
+        '03'
+      when 'OCT', 'Oct', 'October'
+        '04'
+      when 'NOV', 'Nov', 'December'
+        '05'
+      when 'DEC', 'Dec', 'December'
+        '06'
+      else
+        # We'll do a recursive conversion if we have to. On the second-time through,
+        # we can be assured that the String length is 3 and will match something above
+        # if the conversion is good.
+        fail ArgumentError, 'Bad Fiscal Period conversion!' if month.length == 3
+        fiscal_period_conversion(month[:MON]) # This may throw other errors, but that's ok.
+    end
   end
 
   private

@@ -158,10 +158,14 @@ class FinancialProcessingPage < KFSBasePage
       # For Uploading Documents
       element(:account_line_source_file_name) { |b| b.frm.div(id: 'uploaddocument.sourceAccountingLinesDiv').file_field(name: 'sourceFile') }
       element(:account_line_target_file_name) { |b| b.frm.div(id: 'uploaddocument.targetAccountingLinesDiv').file_field(name: 'targetFile') }
-      action(:import_lines_source) {|b| b.frm.link(id: 'document.sourceAccountingLinesShowLink').click }
-      action(:import_lines_target) {|b| b.frm.link(id: 'document.targetAccountingLinesShowLink').click }
-      action(:add_source_import) { |b| b.frm.button(name: 'methodToCall.uploadSourceLines.document.sourceAccountingLines').click }
-      action(:add_target_import) { |b| b.frm.button(name: 'methodToCall.uploadTargetLines.document.targetAccountingLines').click }
+      action(:import_lines_source) {|b| b.frm.link(id: 'document.sourceAccountingLinesShowLink').when_present.click }
+      action(:import_lines_target) {|b| b.frm.link(id: 'document.targetAccountingLinesShowLink').when_present.click }
+      action(:add_source_import) { |b| b.frm.button(name: 'methodToCall.uploadSourceLines.document.sourceAccountingLines').when_present.click }
+      action(:add_target_import) { |b| b.frm.button(name: 'methodToCall.uploadTargetLines.document.targetAccountingLines').when_present.click }
+
+      # FOR VIEWING WITHOUT EDIT
+      value(:source_line_description_value) {|i='0', b| b.frm.span(id: "document.sourceAccountingLine[#{i}].financialDocumentLineDescription.div").text }
+
     end
 
 
@@ -178,7 +182,7 @@ class FinancialProcessingPage < KFSBasePage
     end
 
     def general_ledger_pending_entries
-      #on every page.
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
     end
 
     def notes_and_attachments
