@@ -39,16 +39,6 @@ class BudgetAdjustmentObject < KFSDataObject
     @browser.goto "#{$base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{username}"
   end
 
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |page|
-      page.document_id_field.when_present.fit @document_id
-      page.search
-      page.open_item(@document_id)
-    end
-    on(BudgetAdjustmentPage)
-  end
-
   def adding_a_from_accounting_line(page, acct_num, obj_code, current_amt, line_desc, base_amt)
     add_source_line({
                     account_number:   acct_num,
