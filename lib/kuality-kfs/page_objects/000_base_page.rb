@@ -104,13 +104,14 @@ class BasePage < PageFactory
       action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
-      element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
+
       action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
 
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
 
       action(:item_row) { |match, b| b.results_table.row(text: /#{match}/m) }
+      alias_method :result_item, :item_row
       # Note: Use this when you need to click the "open" link on the target row
       action(:open) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'open').click; p.use_new_tab; p.close_parents }
       # Note: Use this when the link itself is the text you want to match
@@ -134,6 +135,8 @@ class BasePage < PageFactory
 
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
+      #action(:find_header_index) { |text_match, b| b.frm.results_table.ths.each { |t| puts t.text.to_s + 'la la la la la' + i.to_s; i += 1  }
+      value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
     end
 
     def notes_and_attachments
