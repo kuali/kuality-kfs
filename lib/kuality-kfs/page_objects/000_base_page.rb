@@ -134,6 +134,9 @@ class BasePage < PageFactory
 
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
+      element(:no_result_table_returned) {|b| b.frm.divs(id: 'lookup')[0].parent.text.include?('No values match this search.') }
+      alias_method :no_result_table_returned?, :no_result_table_returned
+
     end
 
     def notes_and_attachments
