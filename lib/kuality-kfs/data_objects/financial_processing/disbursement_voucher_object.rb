@@ -30,8 +30,8 @@ class DisbursementVoucherObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation,
-               :contact_name, :phone_number, :email_address,
-               :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
+                     :contact_name, :phone_number, :email_address,
+                     :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
     end
   end
 
