@@ -73,7 +73,7 @@ module PaymentInformationMixin
       plookup.search
       plookup.return_value(@payee_id)
     end
-    if vendor_payee?
+    if vendor_payee? && !@address_type_description.nil?
       on VendorAddressLookup do |valookup|
         valookup.address_1.fit @address_1 unless @address_1.nil?
         valookup.address_2.fit @address_2 unless @address_2.nil?
