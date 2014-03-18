@@ -1,8 +1,8 @@
 class CreditCardReceiptObject < KFSDataObject
 
-  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
-
   include AccountingLinesMixin
+
+  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
 
   attr_accessor :organization_document_number, :explanation,
                 :credit_card_receipts
@@ -31,16 +31,6 @@ class CreditCardReceiptObject < KFSDataObject
   def post_create
     super
     add_credit_card_receipt_line # We need at least one CCR line
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit   @document_id
-      search.search
-      search.open_doc @document_id
-    end
   end
 
   def add_credit_card_receipt_line(opts={})

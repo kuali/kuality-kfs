@@ -48,14 +48,4 @@ class OrganizationObject < KFSDataObject
     end
   end
 
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
-    end
-  end
-
 end

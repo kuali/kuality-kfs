@@ -2,7 +2,7 @@ class PreEncumbrancePage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
-  accounting_lines_from_to
+  accounting_lines
 
   general_ledger_pending_entries
 

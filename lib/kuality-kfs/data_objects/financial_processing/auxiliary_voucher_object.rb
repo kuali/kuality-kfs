@@ -9,6 +9,20 @@ class AuxiliaryVoucherObject < KFSDataObject
                 :accounting_period,
                 :auxiliary_voucher_type_adjustment, :auxiliary_voucher_type_accrual, :auxiliary_voucher_type_recode
 
+
+  def default_lines(opts={})
+    super(opts).merge(
+        initial_lines: [{
+                            type:           :source,
+                            chart_code:     '',
+                            account_number: '',
+                            object:         '',
+                            current_amount: ''
+                        }])
+  end
+
+
+
   def initialize(browser, opts={})
     @browser = browser
 
@@ -24,16 +38,6 @@ class AuxiliaryVoucherObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
-    end
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
     end
   end
 

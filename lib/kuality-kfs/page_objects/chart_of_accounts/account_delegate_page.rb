@@ -1,11 +1,4 @@
-class AccountDelegatePage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class AccountDelegatePage < KFSBasePage
 
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountNumber') }

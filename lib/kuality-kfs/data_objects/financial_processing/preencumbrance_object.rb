@@ -6,6 +6,8 @@ class PreEncumbranceObject < KFSDataObject
   alias add_disencumbrance_line add_target_line
   alias add_encumbrance_line add_source_line
 
+  DOC_INFO = { label: 'Pre-Encumbrance Document', type_code: 'PE' }
+
   attr_accessor   :organization_document_number, :explanation
 
   def initialize(browser, opts={})
@@ -28,16 +30,6 @@ class PreEncumbranceObject < KFSDataObject
 
 
       #FYI: Pre Encumbrance document needs to be saved before it can be submitted.
-    end
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
     end
   end
 

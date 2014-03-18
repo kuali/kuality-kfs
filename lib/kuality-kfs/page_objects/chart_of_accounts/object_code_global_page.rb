@@ -1,11 +1,4 @@
-class ObjectCodeGlobalPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class ObjectCodeGlobalPage < KFSBasePage
 
   element(:object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCode') }
   element(:object_code_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeName') }

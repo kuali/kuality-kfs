@@ -2,7 +2,7 @@ class AdvanceDepositPage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
-  accounting_lines_from_to
+  accounting_lines
 
   #need to make
   accounting_lines_for_capitalization

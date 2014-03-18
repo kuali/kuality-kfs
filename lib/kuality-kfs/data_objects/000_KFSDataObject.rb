@@ -3,8 +3,7 @@ class KFSDataObject < DataObject
   include DateFactory
   include StringFactory
 
-  attr_accessor :document_id, :description, :press,
-                :from_lines, :to_lines
+  attr_accessor :document_id, :description, :press
 
 
   # Hooks:
@@ -70,29 +69,19 @@ class KFSDataObject < DataObject
     on(KFSBasePage).error_correction
   end
 
-  def view #should be overridden for transactional documents
-    @browser.goto "#{$base_url}kr/maintenance.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  end
-
-  def self.to_var_name
-    snake_case self.class.to_s.partition(/Object$/)[0]
-  end
-
-  def add_line(type, al)
-    case type
-      when :to
-        @to_lines.add(al.merge({target: 'to'}))
-      when :from
-        @from_lines.add(al.merge({target: 'from'}))
+  def view
+    visit(MainPage).doc_search
+    on DocumentSearch do |search|
+      search.document_type.fit ''
+      search.document_id.fit @document_id
+      search.search
+      if search.frm.divs(id: 'lookup')[0].parent.text.include?('No values match this search.')
+        # Double-check, for timing issues.
+        sleep 10
+        search.search
+      end
+      search.open_doc @document_id
     end
-  end
-
-  def add_to_line(al)
-    add_line(:to, al)
-  end
-
-  def add_from_line(al)
-    add_line(:from, al)
   end
 
 end

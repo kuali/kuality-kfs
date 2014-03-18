@@ -6,6 +6,7 @@ class GeneralLedgerEntryLookupPage < Lookups
   subaccount_facets
   financial_object_facets
   reference_document_facets
+  fiscal_year_facets
 
   element(:pending_entry_approved_indicator) { |b| b.frm.radios(name: 'dummyBusinessObject.pendingEntryOption') }
   element(:debit_credit_view) { |b| b.frm.radios(name: 'dummyBusinessObject.debitCreditOption') }

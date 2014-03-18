@@ -4,6 +4,8 @@ class BudgetAdjustmentObject < KFSDataObject
 
   attr_accessor  :fdd_year
 
+  DOC_INFO = { label: 'Budget Adjustment', type_code: 'BA' }
+
   def default_accounting_lines(opts={})
     super(opts).merge(
         initial_lines: [{
@@ -37,16 +39,6 @@ class BudgetAdjustmentObject < KFSDataObject
     @browser.goto "#{$base_url}channelTitle=Budget%20Adjustment&channelUrl=financialBudgetAdjustment.do?methodToCall=docHandler&command=initiate&docTypeName=BA&backdoorId=#{username}"
   end
 
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |page|
-      page.document_id_field.when_present.fit @document_id
-      page.search
-      page.open_item(@document_id)
-    end
-    on(BudgetAdjustmentPage)
-  end
-
   def adding_a_from_accounting_line(page, acct_num, obj_code, current_amt, line_desc, base_amt)
     add_source_line({
                     account_number:   acct_num,
@@ -65,22 +57,6 @@ class BudgetAdjustmentObject < KFSDataObject
                       base_amount:      base_amt,
                       line_description: line_desc,
                     })
-  end
-
-  def self.fiscal_period_conversion(month)
-    #general ledger balance lookup to select monthly link does not use numbers that match month
-    return '07' if month == 'JAN'
-    return '08' if month == 'FEB'
-    return '09' if month == 'MAR'
-    return '10' if month == 'APR'
-    return '11' if month == 'MAY'
-    return '12' if month == 'JUN'
-    return '01' if month == 'JUL'
-    return '02' if month == 'AUG'
-    return '03' if month == 'SEP'
-    return '04' if month == 'OCT'
-    return '05' if month == 'NOV'
-    return '06' if month == 'DEC'
   end
 
 end #class

@@ -64,14 +64,4 @@ class AccountObject < KFSDataObject
                      :indirect_cost_recovery_account_line_percent, :indirect_cost_recovery_active_indicator
     end
   end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
-    end
-  end
 end

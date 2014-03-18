@@ -2,7 +2,7 @@ class InternalBillingPage < FinancialProcessingPage
 
   document_overview
   financial_document_detail
-  accounting_lines_from_to
+  accounting_lines
 
   accounting_lines_for_capitalization
   create_capital_assets

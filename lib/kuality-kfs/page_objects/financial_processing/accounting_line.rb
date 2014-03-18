@@ -1,6 +1,6 @@
 class AccountingLine < FinancialProcessingPage
 
-  accounting_lines_from_to
+  accounting_lines
 
   action(:result_source_chart_code) { |i, b| b.result_chart_code(:source, i, b) }
   action(:result_source_account_number) { |i, b| b.result_account_number(:source, i, b) }
