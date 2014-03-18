@@ -89,7 +89,4 @@ module PaymentInformationMixin
     end
   end
 
-  def change_default_check_amount
-    on (PaymentInformationTab) {|tab| fill_out tab,  :check_amount}
-  end
 end
