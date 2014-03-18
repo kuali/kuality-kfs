@@ -18,6 +18,9 @@ class DisbursementVoucherPage < FinancialProcessingPage
 
   value(:bank_code) { |b| b.frm.table(summary: 'Advance Deposits').td(class: 'infoline').text }
   value(:bank_code_full) { |b| b.frm.table(summary: 'KFS Detail Section').td(class: 'datacell-nowrap').text }
+
+  element(:payment_table) { |b| b.frm.table(summary: 'Payment Section') }
+  value(:payee_name) { |p| p.payment_table[2][3].text }
 #        #returns  "DISB\nMellon Controlled Disbursement Account "
 #  value(:bank_code_bank_text) { |b| b.frm.table(summary: 'KFS Detail Section').div(id: 'document.bank.div').text }
 #        #returns "Mellon Controlled Disbursement Account "
