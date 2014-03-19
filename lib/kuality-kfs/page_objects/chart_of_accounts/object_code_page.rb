@@ -29,5 +29,6 @@ class ObjectCodePage < KFSBasePage
   #DOCUMENT
   action(:search_reports_to_object_code) { |b| b.frm.button(alt: 'Search Reports To Object Code').click }
 
+  value(:reports_to_object_code_value) { |b| b.frm.span(id: 'document.oldMaintainableObject.reportsToFinancialObjectCode.div').text }
 
 end
