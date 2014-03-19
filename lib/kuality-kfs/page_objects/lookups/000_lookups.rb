@@ -110,13 +110,6 @@ class Lookups < BasePage
       element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
     end
 
-    def account_global_cornell_university_extensions
-      # FIXME: Someday soon, we should implement a solution similar to the one we did with DataObjects that will allow us to add extensions for Lookups
-      element(:major_reporting_category_code) { |b| b.frm.text_field(name: 'extension.majorReportingCategoryCode') }
-      element(:sub_fund_program_code) { |b| b.frm.text_field(name: 'extension.programCode') }
-      element(:appropriation_account_number) { |b| b.frm.text_field(name: 'extension.appropriationAccountNumber') }
-    end
-
     def vendor_facets
       element(:address_type) { |b| b.frm.select(id: 'vendorAddressTypeCode') }
       element(:address_1) { |b| b.frm.text_field(id: 'vendorLine1Address') }
