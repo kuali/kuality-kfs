@@ -73,7 +73,7 @@ module PaymentInformationMixin
       plookup.search
       plookup.return_value(@payee_id)
     end
-    if vendor_payee?
+    if $current_page.url.include?('businessObjectClassName=org.kuali.kfs.vnd.businessobject.VendorAddress')
       on VendorAddressLookup do |valookup|
         valookup.address_1.fit @address_1 unless @address_1.nil?
         valookup.address_2.fit @address_2 unless @address_2.nil?
@@ -89,7 +89,4 @@ module PaymentInformationMixin
     end
   end
 
-  def change_default_check_amount
-    on (PaymentInformationTab) {|tab| fill_out tab,  :check_amount}
-  end
 end
