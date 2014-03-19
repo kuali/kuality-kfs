@@ -132,6 +132,20 @@ class Lookups < BasePage
       element(:email_address) { |b| b.frm.text_field(id: 'vendorAddressEmailAddress') }
     end
 
+    def include_pending_ledger_entry_radios
+      element(:include_pending_entry_approved_indicator) { |b| b.frm.radios(name: 'dummyBusinessObject.pendingEntryOption') }
+      action(:include_pending_entry_approved_indicator_all) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionAll').set }
+      action(:include_pending_entry_approved_indicator_no) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionNo').set }
+      action(:include_pending_entry_approved_indicator_approved) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionApproved').set }
+    end
+
+    def consolidation_option_radios
+      element(:consolidation_option) { |b| b.frm.radios(name: 'dummyBusinessObject.consolidationOption') }
+      action(:consolidation_option_consolidation) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionConsolidation').set }
+      action(:consolidation_option_detail) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionDetail').set }
+      action(:consolidation_option_exclude_sub_accounts) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionAll').set }
+    end
+
   end
 
 end

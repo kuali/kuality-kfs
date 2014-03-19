@@ -104,6 +104,7 @@ class BasePage < PageFactory
       action(:column_index) { |col, b| b.header_row.index(col) }
       element(:results_table) { |b| b.frm.table(id: 'row') }
       action(:open_item_via_text) { |match, text, p| p.item_row(match).link(text: text).click; p.use_new_tab; p.close_parents }
+      #action(:open_item_in_column) { |col, text, p| p.results_table.column(col).link(text: text).click; p.use_new_tab; p.close_parents }
       element(:result_item) { |match, p| p.results_table.row(text: /#{match}/m) }
       action(:edit_item) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'edit').click; p.use_new_tab; p.close_parents }
       alias_method :edit_person, :edit_item
@@ -129,6 +130,7 @@ class BasePage < PageFactory
       p_value(:docs_with_status) { |status, b| array = []; (b.results_table.rows.find_all{|row| row[1].text==status}).each { |row| array << row[0].text }; array }
 
       action(:select_monthly_item){ |obj_code, monthly_number, p| p.frm.link(href: /financialObjectCode=#{obj_code}(.*?)universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
+      action(:single_entry_monthly_item){ |monthly_number, p| p.frm.link(href: /universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 

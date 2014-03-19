@@ -121,6 +121,16 @@ class AccountingLineObject < DataObject
     # proper symbols.
   end
 
+  def self.get_type_conversion(given_type)
+    case given_type
+      when 'Source', 'From', 'Encumbrance'
+        :source
+      when 'Target', 'To', 'Disencumbrance'
+        :target
+      else
+        fail ArgumentError, "Given type \"#{given_type}\" didn't map to any particular kind of Accounting Line!"
+    end
+  end
 end
 
 class AccountingLineObjectCollection < LineObjectCollection
