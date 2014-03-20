@@ -142,6 +142,7 @@ class BasePage < PageFactory
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
+      element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }
     end
 
     def route_log
