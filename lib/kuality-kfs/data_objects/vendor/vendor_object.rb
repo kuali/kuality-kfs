@@ -13,7 +13,7 @@ class VendorObject < KFSDataObject
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
                 :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1,
-                :added_address_1, :added_phone_type,:added_address_2, :added_phone_number,:added_attention, :added_phone_ext
+                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext
 
   def initialize(browser, opts={})
     @browser = browser
