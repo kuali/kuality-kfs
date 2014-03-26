@@ -110,7 +110,7 @@ class Lookups < BasePage
       element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
     end
 
-    def vendor_facets
+    def vendor_address_facets
       element(:address_type) { |b| b.frm.select(id: 'vendorAddressTypeCode') }
       element(:address_1) { |b| b.frm.text_field(id: 'vendorLine1Address') }
       element(:address_2) { |b| b.frm.text_field(id: 'vendorLine2Address') }
@@ -123,6 +123,21 @@ class Lookups < BasePage
       element(:url) { |b| b.frm.text_field(id: 'vendorBusinessToBusinessUrlAddress') }
       element(:vendor_fax_number) { |b| b.frm.text_field(id: 'vendorFaxNumber') }
       element(:email_address) { |b| b.frm.text_field(id: 'vendorAddressEmailAddress') }
+    end
+
+    def vendor_facets
+      element(:vendor_name) { |b| b.frm.text_field(id: 'vendorName') }
+      element(:tax_number) { |b| b.frm.text_field(id: 'vendorTaxNumber') }
+      element(:vendor_number) { |b| b.frm.text_field(id: 'vendorNumber') }
+      element(:vendor_type_code) { |b| b.frm.select(id: 'vendorHeader.vendorTypeCode') }
+      element(:state) { |b| b.frm.text_field(id: 'vendorAddresses.StateCode') }
+      element(:commodity_code) { |b| b.frm.text_field(id: 'vendorCommodities.purchasingCommodityCode') }
+      element(:supplier_diversity_code) { |b| b.frm.text_field(id: 'vendorHeader.vendorSupplierDiversities.vendorSupplierDiversityCode') }
+      element(:contract_number) { |b| b.frm.select(id: 'vendorContracts.vendorContractGeneratedIdentifier') }
+      element(:einvoice_ind) { |b| b.frm.radios(name: 'extension.einvoiceVendorIndicator') }
+      element(:einvoice_in_yes) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorYes') }
+      element(:einvoice_in_no) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorNo') }
+      element(:einvoice_in_both) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorBoth') }
     end
 
     def include_pending_ledger_entry_radios

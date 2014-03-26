@@ -1,6 +1,6 @@
 class VendorAddressLookup < Lookups
 
-  vendor_facets
+  vendor_address_facets
   active_radios
 
 end
