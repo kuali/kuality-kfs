@@ -1,4 +1,4 @@
-class GroupObject < DataFactory #DataObject
+class GroupObject < DataFactory
 
   include Navigation
   include StringFactory

@@ -1,4 +1,4 @@
-class UserGroupObject < DataFactory #DataObject
+class UserGroupObject < DataFactory
 
   include StringFactory
 

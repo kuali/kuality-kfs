@@ -1,4 +1,4 @@
-class CreditCardReceiptLineObject < DataFactory #DataObject
+class CreditCardReceiptLineObject < DataFactory
 
   include DateFactory
   include StringFactory

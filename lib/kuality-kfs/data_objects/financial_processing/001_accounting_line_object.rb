@@ -1,4 +1,4 @@
-class AccountingLineObject < DataFactory #DataObject
+class AccountingLineObject < DataFactory
 
   attr_accessor   :line_number, :type,
                   :chart_code, :account_number, :sub_account, :object, :sub_object,

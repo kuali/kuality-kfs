@@ -1,4 +1,4 @@
-class RoleObject < DataFactory #DataObject
+class RoleObject < DataFactory
 
   include Navigation
   include StringFactory
