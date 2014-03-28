@@ -94,7 +94,7 @@ class AccountingLineObject < DataObject
   def import_lines
     on(AccountingLine) do |line|
       line.send("import_lines_#{@type}")
-      line.send("account_line_#{@type}_file_name").set($file_folder+file_name)
+      line.send("account_line_#{@type}_file_name").set($file_folder+@file_name)
       line.send("add_#{@type}_import")
     end
   end
