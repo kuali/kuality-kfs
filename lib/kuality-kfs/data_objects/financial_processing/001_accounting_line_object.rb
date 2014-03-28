@@ -91,6 +91,14 @@ class AccountingLineObject < DataObject
     on(AccountingLine).send("delete_#{@type}_accounting_line")
   end
 
+  # This function should only be used when a file or set of files is provided
+  # as part of an initial_lines Array. The initial_lines index provides you with
+  # a way to load the lines (by type) in sequence, which may be useful.
+  # Otherwise, you'd probably be better served by using
+  # LineObjectCollection::import_lines.
+  #
+  # NOTE: If you do import lines this way, you may want to nil the default
+  # values for the line!
   def import_lines
     on(AccountingLine) do |line|
       line.send("import_lines_#{@type}")
@@ -123,9 +131,9 @@ class AccountingLineObject < DataObject
 
   def self.get_type_conversion(given_type)
     case given_type
-      when 'Source', 'From', 'Encumbrance'
+      when 'Source', 'From', 'Encumbrance', 'Grant'
         :source
-      when 'Target', 'To', 'Disencumbrance'
+      when 'Target', 'To', 'Disencumbrance', 'Receipt'
         :target
       else
         fail ArgumentError, "Given type \"#{given_type}\" didn't map to any particular kind of Accounting Line!"

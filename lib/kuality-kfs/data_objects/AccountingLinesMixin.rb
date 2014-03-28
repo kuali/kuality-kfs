@@ -31,6 +31,20 @@ module AccountingLinesMixin
     add_line(:source, al)
   end
 
+  # This seems to be the best way to shorten the repeated information in the
+  # import_lines method and makes the method call make more symantic sense.
+  def import_lines(type, file_name)
+    @accounting_lines[type].import_lines(type, file_name)
+  end
+
+  def import_source_lines(file_name)
+    import_lines(:source, file_name)
+  end
+
+  def import_target_lines(file_name)
+    import_lines(:target, file_name)
+  end
+
 end
 
 module BudgetAdjustmentLinesMixin
