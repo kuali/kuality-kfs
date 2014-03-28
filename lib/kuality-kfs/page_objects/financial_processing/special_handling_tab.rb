@@ -7,4 +7,5 @@ class SpecialHandlingTab < FinancialProcessingPage
   element(:state) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrSpecialHandlingStateCode') }
   element(:country) { |b| b.frm.select(id: 'document.dvPayeeDetail.disbVchrSpecialHandlingCountryCode') }
   element(:postal_code) { |b| b.frm.text_field(id: 'document.dvPayeeDetail.disbVchrSpecialHandlingZipCode') }
+  element(:close_special_handling) { |b| b.frm.button(title: 'close Special Handling') }
 end
