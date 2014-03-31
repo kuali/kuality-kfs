@@ -1,4 +1,4 @@
-class MaintenanceObject < DataObject
+class MaintenanceObject < DataFactory
 
   include DateFactory
   include StringFactory
