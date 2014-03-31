@@ -1,6 +1,6 @@
 module AccountingLinesMixin
 
-  attr_accessor :accounting_lines, :initial_lines
+  attr_accessor :accounting_lines, :initial_lines, :immediate_import
 
   def default_accounting_lines(opts={})
     # This just makes it so we don't have to be so repetitive. It can certainly be
@@ -10,13 +10,20 @@ module AccountingLinesMixin
             source: collection('AccountingLineObject'),
             target: collection('AccountingLineObject')
         },
-        initial_lines:    []
+        initial_lines:    [],
+        immediate_import: true
     }.merge(opts)
   end
 
   def post_create
     super
-    @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) }
+    if @immediate_import
+      @initial_lines.each{ |il| import_lines((il[:type].nil? ? :source : il[:type]), il) if il.has_key?(:file_name); }
+      @initial_lines.delete_if{ |il| il.has_key?(:file_name) } # Remove all import initial lines
+    end
+
+    @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) unless il.has_key?(:file_name); }
+    @initial_lines.delete_if{ |il| !il.has_key?(:file_name) } # Remove all non-import initial lines
   end
 
   def add_line(type, al)
@@ -32,7 +39,7 @@ module AccountingLinesMixin
   end
 
   # This seems to be the best way to shorten the repeated information in the
-  # import_lines method and makes the method call make more symantic sense.
+  # import_lines method and makes the method call make more semantic sense.
   def import_lines(type, file_name)
     @accounting_lines[type].import_lines(type, file_name)
   end

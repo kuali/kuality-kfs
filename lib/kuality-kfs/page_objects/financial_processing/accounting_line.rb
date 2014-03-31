@@ -83,4 +83,13 @@ class AccountingLine < FinancialProcessingPage
   action(:result_month_11) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth11LineAmount.div").text }
   action(:result_month_12) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth12LineAmount.div").text }
 
+  action(:current_line_count) do |b|
+    b.frm.div(id: 'tab-AccountingLines-div')
+         .table(class: 'datatable')
+         .rows
+         .collect { |row| row[0].text.to_i if (row[0].text.to_f.to_s == row[0].text || row[0].text.to_i.to_s == row[0].text) }
+         .delete_if { |r| r.nil? }
+         .sort
+         .last
+  end
 end
