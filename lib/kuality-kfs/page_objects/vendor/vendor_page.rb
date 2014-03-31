@@ -43,4 +43,15 @@ class VendorPage < KFSBasePage
   element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
   value(:supplier_diversity_code_1) { |b| b.frm.span(id: 'document.newMaintainableObject.vendorHeader.vendorSupplierDiversities[0].vendorSupplierDiversityCode.div').text }
 
+  element(:updated_address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine1Address') }
+  element(:updated_phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneTypeCode') }
+  element(:updated_address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine2Address') }
+  element(:updated_phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneNumber') }
+  element(:updated_address_attention) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAttentionName') }
+  element(:updated_phone_ext) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneExtensionNumber') }
+
+  element(:phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneTypeCode') }
+  element(:phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneNumber') }
+  action(:add_phone_number) { |b| b.frm.button(id: /methodToCall.addLine.vendorPhoneNumbers/m).click }
+
 end
