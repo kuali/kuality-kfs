@@ -56,40 +56,45 @@ class AccountingLine < FinancialProcessingPage
   action(:result_target_month_11) { |i=0, b| b.result_month_11(:target, i, b) }
   action(:result_target_month_12) { |i=0, b| b.result_month_12(:target, i, b) }
 
-  action(:result_chart_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].chartOfAccountsCode.div").text }
-  action(:result_account_number) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].accountNumber.div").text }
-  action(:result_sub_account_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].subAccountNumber.div").text }
-  action(:result_object_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialObjectCode.div").text }
-  action(:result_sub_object_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialSubObjectCode.div").text }
-  action(:result_project_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].projectCode.div").text }
-  action(:result_organization_reference_id) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].organizationReferenceId.div").text }
-  action(:result_current_amount) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].currentBudgetAdjustmentAmount.div").text }
-  action(:result_base_amount) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].baseBudgetAdjustmentAmount.div").text }
-  action(:result_line_description) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentLineDescription.div").text }
-  action(:result_reference_origin_code) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].referenceOriginCode.div").text }
-  action(:result_reference_number) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].referenceNumber.div").text }
-  action(:result_amount) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].amount.div").text }
+  action(:result_chart_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].chartOfAccountsCode.div").text }
+  action(:result_account_number) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].accountNumber.div").text }
+  action(:result_sub_account_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].subAccountNumber.div").text }
+  action(:result_object_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialObjectCode.div").text }
+  action(:result_sub_object_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialSubObjectCode.div").text }
+  action(:result_project_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].projectCode.div").text }
+  action(:result_organization_reference_id) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].organizationReferenceId.div").text }
+  action(:result_current_amount) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].currentBudgetAdjustmentAmount.div").text }
+  action(:result_base_amount) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].baseBudgetAdjustmentAmount.div").text }
+  action(:result_line_description) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentLineDescription.div").text }
+  action(:result_reference_origin_code) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].referenceOriginCode.div").text }
+  action(:result_reference_number) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].referenceNumber.div").text }
+  action(:result_amount) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].amount.div").text }
 
-  action(:result_month_1) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth1LineAmount.div").text }
-  action(:result_month_2) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth2LineAmount.div").text }
-  action(:result_month_3) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth3LineAmount.div").text }
-  action(:result_month_4) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth4LineAmount.div").text }
-  action(:result_month_5) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth5LineAmount.div").text }
-  action(:result_month_6) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth6LineAmount.div").text }
-  action(:result_month_7) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth7LineAmount.div").text }
-  action(:result_month_8) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth8LineAmount.div").text }
-  action(:result_month_9) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth9LineAmount.div").text }
-  action(:result_month_10) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth10LineAmount.div").text }
-  action(:result_month_11) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth11LineAmount.div").text }
-  action(:result_month_12) { |m, i, b| b.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth12LineAmount.div").text }
+  action(:result_source_debit) { |i=0, b| b.result_debit('source', i, b) }
+  action(:result_source_credit) { |i=0, b| b.result_credit('source', i, b) }
+  action(:result_target_debit) { |i=0, b| b.result_debit('target', i, b) }
+  action(:result_target_credit) { |i=0, b| b.result_credit('target', i, b) }
+  action(:result_debit) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentDebit.div").text } # TODO: Verify this gets the right value
+  action(:result_credit) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentCredit.div").text } # TODO: Verify this gets the right value
 
-  action(:current_line_count) do |b|
+  action(:result_month_1) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth1LineAmount.div").text }
+  action(:result_month_2) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth2LineAmount.div").text }
+  action(:result_month_3) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth3LineAmount.div").text }
+  action(:result_month_4) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth4LineAmount.div").text }
+  action(:result_month_5) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth5LineAmount.div").text }
+  action(:result_month_6) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth6LineAmount.div").text }
+  action(:result_month_7) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth7LineAmount.div").text }
+  action(:result_month_8) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth8LineAmount.div").text }
+  action(:result_month_9) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth9LineAmount.div").text }
+  action(:result_month_10) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth10LineAmount.div").text }
+  action(:result_month_11) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth11LineAmount.div").text }
+  action(:result_month_12) { |m, i, b| b.frm.span(id: "document.#{m}AccountingLine[#{i}].financialDocumentMonth12LineAmount.div").text }
+
+  action(:current_line_count) do |t, b|
     b.frm.div(id: 'tab-AccountingLines-div')
          .table(class: 'datatable')
-         .rows
-         .collect { |row| row[0].text.to_i if (row[0].text.to_f.to_s == row[0].text || row[0].text.to_i.to_s == row[0].text) }
-         .delete_if { |r| r.nil? }
-         .sort
-         .last
+         .elements(id: /document.#{t}AccountingLine(.*?)chartOfAccountsCode/).length # Should show up fairly consistently
   end
+  action(:current_source_line_count) { |b| b.current_line_count('source', b) }
+  action(:current_target_line_count) { |b| b.current_line_count('target', b) }
 end

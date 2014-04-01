@@ -24,6 +24,9 @@ module AccountingLinesMixin
 
     @initial_lines.each{ |il| add_line((il[:type].nil? ? :source : il[:type]), il) unless il.has_key?(:file_name); }
     @initial_lines.delete_if{ |il| !il.has_key?(:file_name) } # Remove all non-import initial lines
+
+    # At the end of the method, we should either have either no remaining initial
+    # lines, or (if @immediate_import is false) only file names of files to be imported at a later time
   end
 
   def add_line(type, al)
@@ -38,8 +41,21 @@ module AccountingLinesMixin
     add_line(:source, al)
   end
 
-  # This seems to be the best way to shorten the repeated information in the
-  # import_lines method and makes the method call make more semantic sense.
+  # Import from any remaining initial lines.
+  # @param [Symbol] type Import all lines of this type
+  def import_initial_lines(type)
+    @initial_lines.each do |initial_line|
+      import_lines(type, initial_line[:file_name]) unless (initial_line[:type] != type ||
+                                                           initial_line[:file_name].nil?)
+    end
+    @initial_lines.delete_if do |il|
+      il.has_key?(:file_name) && il[:type] == type
+    end # Remove all imported lines
+  end
+
+  # Import from a specific file
+  # @param [Symbol] type Type of line to import
+  # @param [String] file_name The name of the file to import, relative to the resources folder
   def import_lines(type, file_name)
     @accounting_lines[type].import_lines(type, file_name)
   end
@@ -64,7 +80,8 @@ module BudgetAdjustmentLinesMixin
             source: collection('BudgetAdjustmentLineObject'),
             target: collection('BudgetAdjustmentLineObject')
         },
-        initial_lines:    []
+        initial_lines:    [],
+        immediate_import: true
     }.merge(opts)
   end
 
@@ -80,7 +97,8 @@ module VoucherLinesMixin
             source: collection('VoucherLineObject'),
             target: collection('VoucherLineObject')
         },
-        initial_lines:    []
+        initial_lines:    [],
+        immediate_import: true
     }.merge(opts)
   end
 
