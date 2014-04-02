@@ -1,4 +1,4 @@
-class KFSDataObject < DataObject
+class KFSDataObject < DataFactory
 
   include DateFactory
   include StringFactory
