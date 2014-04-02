@@ -110,13 +110,6 @@ class Lookups < BasePage
       element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
     end
 
-    def account_global_cornell_university_extensions
-      # FIXME: Someday soon, we should implement a solution similar to the one we did with DataObjects that will allow us to add extensions for Lookups
-      element(:major_reporting_category_code) { |b| b.frm.text_field(name: 'extension.majorReportingCategoryCode') }
-      element(:sub_fund_program_code) { |b| b.frm.text_field(name: 'extension.programCode') }
-      element(:appropriation_account_number) { |b| b.frm.text_field(name: 'extension.appropriationAccountNumber') }
-    end
-
     def vendor_address_facets
       element(:address_type) { |b| b.frm.select(id: 'vendorAddressTypeCode') }
       element(:address_1) { |b| b.frm.text_field(id: 'vendorLine1Address') }
@@ -145,6 +138,20 @@ class Lookups < BasePage
       element(:einvoice_in_yes) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorYes') }
       element(:einvoice_in_no) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorNo') }
       element(:einvoice_in_both) { |b| b.frm.radio(id: 'extension.einvoiceVendorIndicatorBoth') }
+    end
+
+    def include_pending_ledger_entry_radios
+      element(:include_pending_entry_approved_indicator) { |b| b.frm.radios(name: 'dummyBusinessObject.pendingEntryOption') }
+      action(:include_pending_entry_approved_indicator_all) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionAll').set }
+      action(:include_pending_entry_approved_indicator_no) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionNo').set }
+      action(:include_pending_entry_approved_indicator_approved) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionApproved').set }
+    end
+
+    def consolidation_option_radios
+      element(:consolidation_option) { |b| b.frm.radios(name: 'dummyBusinessObject.consolidationOption') }
+      action(:consolidation_option_consolidation) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionConsolidation').set }
+      action(:consolidation_option_detail) { |b| b.frm.radio(id: 'dummyBusinessObject.consolidationOptionDetail').set }
+      action(:consolidation_option_exclude_sub_accounts) { |b| b.frm.radio(id: 'dummyBusinessObject.pendingEntryOptionAll').set }
     end
 
   end

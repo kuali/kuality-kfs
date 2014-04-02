@@ -1,24 +1,28 @@
-class KFSDataObject < DataObject
+class MaintenanceObject < DataObject
 
   include DateFactory
   include StringFactory
 
   attr_accessor :document_id, :description, :press
 
-
   # Hooks:
-  def create
+  def create(opts={})
     pre_create
     build
-    fill_out_extended_attributes
+    fill_out_extended_attributes(opts)
     post_create
 
-    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
-    on page_klass do |page|
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      @document_id = page.document_id
-      page.send(@press) unless @press.nil?
-    end
+    finish
+  end
+
+  def edit(opts={})
+    pre_edit
+    update(opts)
+    update_extended_attributes(opts)
+    post_edit
+
+    update_options(opts)
+    finish
   end
 
   def pre_create
@@ -33,6 +37,37 @@ class KFSDataObject < DataObject
   def post_create
   end
 
+  def pre_edit
+  end
+
+  def update(opts={})
+  end
+
+  def update_extended_attributes(attribute_group=nil)
+  end
+
+  def post_edit
+  end
+
+  # Utilities
+  def finish
+    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
+    on page_klass do |page|
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      @document_id = page.document_id
+      page.send(@press) unless @press.nil?
+    end
+  end
+
+  def prep_page
+    on KFSBasePage do |page|
+      page.description.focus
+      page.expand_all
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+    end
+  end
+
+  # Button Shortcuts:
   def save
     on(KFSBasePage).save
   end
@@ -69,6 +104,7 @@ class KFSDataObject < DataObject
     on(KFSBasePage).error_correction
   end
 
+  # Lookups:
   def view
     visit(MainPage).doc_search
     on DocumentSearch do |search|
