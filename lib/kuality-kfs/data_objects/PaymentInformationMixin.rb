@@ -72,19 +72,19 @@ module PaymentInformationMixin
 
       plookup.search
       plookup.return_value(@payee_id)
-    end
-    if $current_page.url.include?('businessObjectClassName=org.kuali.kfs.vnd.businessobject.VendorAddress')
-      on VendorAddressLookup do |valookup|
-        valookup.address_1.fit @address_1 unless @address_1.nil?
-        valookup.address_2.fit @address_2 unless @address_2.nil?
-        valookup.city.fit @city unless @city.nil?
-        valookup.state.fit @state unless @state.nil?
-        valookup.country.fit @country unless @country.nil?
-        valookup.postal_code.fit @postal_code unless @postal_code.nil?
-        valookup.address_type.fit @address_type_description unless @address_type_description.nil?
+      if plookup.doc_title.eql?('Vendor Address Lookup')
+        on VendorAddressLookup do |valookup|
+          valookup.address_1.fit @address_1 unless @address_1.nil?
+          valookup.address_2.fit @address_2 unless @address_2.nil?
+          valookup.city.fit @city unless @city.nil?
+          valookup.state.fit @state unless @state.nil?
+          valookup.country.fit @country unless @country.nil?
+          valookup.postal_code.fit @postal_code unless @postal_code.nil?
+          valookup.address_type.fit @address_type_description unless @address_type_description.nil?
 
-        valookup.search
-        valookup.return_value_links.first.click
+          valookup.search
+          valookup.return_value_links.first.click
+        end
       end
     end
   end
