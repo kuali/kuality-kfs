@@ -4,6 +4,7 @@ class AdministrationPage < BasePage
 
   links 'Person', 'Group', 'Role',
         # Parameters
-        'Namespace', 'Parameter', 'Parameter Component', 'Parameter Type'
+        'Namespace', 'Parameter', 'Parameter Component', 'Parameter Type',
+        'Cache Admin'
 
 end
