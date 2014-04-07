@@ -61,6 +61,10 @@ class KFSDataObject < DataFactory
     on(KFSBasePage).approve
   end
 
+  def fyi
+    on(KFSBasePage).fyi
+  end
+
   def reload
     on(KFSBasePage).reload
   end
