@@ -141,7 +141,7 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
-      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
 
