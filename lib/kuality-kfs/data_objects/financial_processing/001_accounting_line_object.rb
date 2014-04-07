@@ -11,7 +11,7 @@ class AccountingLineObject < DataObject
     @browser = browser
 
     defaults = {
-        chart_code:            'IT',
+        chart_code:            get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         line_description:      "Testing #{opts[:type]} Accounting Line"
     }
 

@@ -15,7 +15,7 @@ class AccountObject < KFSDataObject
 
     defaults = {
         description:                       random_alphanums(40, 'AFT'),
-        chart_code:                        'IT', #TODO grab this from config file
+        chart_code:                        get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
         number:                            random_alphanums(7),
         name:                              random_alphanums(10),
         organization_code:                          '01G0',
