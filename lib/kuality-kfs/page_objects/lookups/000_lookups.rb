@@ -19,6 +19,8 @@ class Lookups < BasePage
   action(:copy_random) { |b| b.copy_value_links[rand(b.copy_value_links.length)].click }
   element(:copy_value_links) { |b| b.results_table.links(text: 'copy') }
 
+  element(:lookup_title) { |b| b.frm.div(id: /headerarea/).h1.text }
+  action(:on_a_lookup?) { |b| b.lookup_title.include?('Lookup') }
 
   class << self
 

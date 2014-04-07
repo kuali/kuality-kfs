@@ -1,4 +1,4 @@
-class UserRoleObject < DataObject
+class UserRoleObject < DataFactory
 
   include StringFactory
 

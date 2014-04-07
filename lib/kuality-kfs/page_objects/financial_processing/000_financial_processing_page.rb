@@ -61,6 +61,7 @@ class FinancialProcessingPage < KFSBasePage
       action(:update_source_debit) { |i=0, b| b.frm.text_field(name: "voucherLineHelper[#{i}].debit") }
       action(:update_source_credit) { |i=0, b| b.frm.text_field(name: "voucherLineHelper[#{i}].credit") }
       action(:update_source_account_expired_override) { |i=0, b| b.frm.checkbox(name: "document.sourceAccountingLine[#{i}].accountExpiredOverride") }
+      action(:update_account_search) { |i=0, b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.coa.businessobject.Account!!\).\(\(\(chartOfAccountsCode:document.sourceAccountingLine\[#{i}\].chartOfAccountsCode,accountNumber:document.sourceAccountingLine\[#{i}\].accountNumber\)\)\)/m).click }
 
       element(:source_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
       element(:source_month_2) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth2LineAmount') }
