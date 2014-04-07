@@ -15,7 +15,7 @@ class ObjectCodePage < KFSBasePage
   #CU item
   element(:suny_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.sunyObjectCode') }
 
-  element(:financial_object_code_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.financialObjectCodeDescr') }
+  element(:financial_object_code_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.extension.financialObjectCodeDescr') }
   element(:cg_reporting_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.cgReportingCode') }
   element(:historical_financial_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.historicalFinancialObjectCode') }
   element(:active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.active') }

@@ -2,29 +2,9 @@ class FinancialProcessingPage < KFSBasePage
 
   class << self
 
-    def document_overview
-      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
-      element(:explanation) { |b| b.frm.text_field(name: 'document.documentHeader.explanation') }
-    end
-
     def financial_document_detail
       value(:fdd_total_amount) { |b| b.frm.table(summary: 'KFS Detail Section').td(align: 'left').text }
     end
-
-
-    #def accounting_lines
-    #  element(:account_chart) { |b| b.frm.text_field(name: 'newSourceLine.chartOfAccountsCode') }
-    #  element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
-    #  element(:sub_account_number) { |b| b.frm.text_field(name: 'newSourceLine.subAccountNumber') }
-    #  element(:object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
-    #  element(:sub_object_code) { |b| b.frm.text_field(name: 'newSourceLine.financialSubObjectCode') }
-    #  element(:project_code) { |b| b.frm.text_field(name: 'newSourceLine.projectCode') }
-    #  element(:org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
-    #  element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
-    #  element(:line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-    #
-    #  action(:add_accounting_line) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.anchoraccountingSourceAnchor').click }
-    #end
 
     def accounting_lines # formerly accounting_lines_from_to
       #ACCOUNTING LINES FROM/DECREASE
@@ -184,16 +164,6 @@ class FinancialProcessingPage < KFSBasePage
 
     def general_ledger_pending_entries
       element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
-    end
-
-    def notes_and_attachments
-      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
-      action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
-      element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
-
-      #viewing document where changes have been made
-      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
-
     end
 
     def ad_hoc_recipients
