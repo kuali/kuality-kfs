@@ -39,7 +39,7 @@ class VendorObject < KFSDataObject
         supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT'),
+        note_text:                  random_alphanums(20, 'AFT')
     }
     set_options(defaults.merge(opts))
   end
