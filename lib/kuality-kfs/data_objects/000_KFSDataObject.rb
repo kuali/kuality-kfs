@@ -3,7 +3,8 @@ class KFSDataObject < DataFactory
   include DateFactory
   include StringFactory
 
-  attr_accessor :document_id, :description, :press
+  attr_accessor :document_id, :description, :press,
+                :notes_and_attachments_tab
 
 
   # Hooks:
@@ -31,6 +32,7 @@ class KFSDataObject < DataFactory
   end
 
   def post_create
+    @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
   def save
