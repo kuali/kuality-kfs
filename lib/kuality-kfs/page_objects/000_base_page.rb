@@ -147,6 +147,9 @@ class BasePage < PageFactory
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
       element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }
+      element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
+      element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
+
     end
 
     def route_log
