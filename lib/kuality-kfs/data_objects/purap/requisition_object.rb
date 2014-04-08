@@ -35,33 +35,17 @@ class RequisitionObject < KFSDataObject
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
 
-      #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
+      #wait? for balance Perform Balance Inquiry for added Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
+      @requisition_number = page.requisition_number
+      puts 'is the req number'
+      puts @requisition_number
+      puts 'was the req number'
+      puts @document_id
 
     end
-
   end
-  #
-  #And I create the Requisition document with:
-  #| positive approval | :clear   |
-  #| vendor            | 4471-0   |
-  #| e-shop flags      | :clear   |
-  #
-  #| item number       | 9.9      |
-  #
-  #| item quanity      | 1000     |
-  #
-  #| item name         | Dog Food |
-  #|
-  #item account      | 10121800 |
-  #
-  #
-  #| account number    | 1093603  |
-  #| object code       | 6540     |
-  #| percent           | 100      |
-  #| button            | calculate|
-
 
 end #class

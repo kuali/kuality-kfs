@@ -171,5 +171,11 @@ class RequisitionPage < KFSBasePage
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
   action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+
+#VIEW RELATED DOCUMENTS
+  action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
+  alias_method :show_view_related_documents, :show_related_documents
+  action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
+
 end
 
