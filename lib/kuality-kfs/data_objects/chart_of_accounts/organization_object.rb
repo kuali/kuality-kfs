@@ -12,7 +12,7 @@ class OrganizationObject < KFSDataObject
     defaults = {
         description:            random_alphanums(40, 'AFT'),
         chart_code:             get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        organization_code:               random_alphanums(4),
+        organization_code:      random_alphanums(4),
         name:                   random_alphanums(10, 'AFT'),
         manager_principal_name: 'ccs1', #TODO grab this from config file
         resp_center_code:       'NA',
@@ -27,7 +27,7 @@ class OrganizationObject < KFSDataObject
         reports_to_org_code:    '01Y9', #TODO grab this from config file
         plant_chart:            get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         plant_account_number:   '1000710', #TODO grab this from config file
-        campus_plant_chart_code:get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
+        campus_plant_chart_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         campus_plant_account_number: '1000710'#, #TODO grab this from config file
         #press:                       :save
     }

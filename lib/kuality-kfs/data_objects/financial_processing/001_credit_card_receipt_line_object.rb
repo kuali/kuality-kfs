@@ -2,6 +2,7 @@ class CreditCardReceiptLineObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
   attr_accessor   :line_number,
                   :type, :vendor_number, :date, :reference_number, :amount

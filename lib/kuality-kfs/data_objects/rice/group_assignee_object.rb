@@ -2,6 +2,7 @@ class GroupAssigneeObject < DataFactory
 
   include Navigation
   include StringFactory
+  include GlobalConfig
 
   attr_accessor :type_code, :member_identifier
 

@@ -1,6 +1,7 @@
 class BasePage < PageFactory
 
   include Utilities
+  include GlobalConfig
 
   # These constants can be used with switches to add modularity to object create methods.
   KNOWN_BUTTONS = {
