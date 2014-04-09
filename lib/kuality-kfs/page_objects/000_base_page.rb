@@ -59,12 +59,13 @@ class BasePage < PageFactory
 
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
 
     def organization_facets
       element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
       element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
-      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
       element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
@@ -141,12 +142,15 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
-      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
       element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
       element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
       element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
 

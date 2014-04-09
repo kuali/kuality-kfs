@@ -1,5 +1,4 @@
 class RequisitionPage < KFSBasePage
-  notes_and_attachments
 
 #REQUISITION DETAIL
   action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search
