@@ -1,6 +1,6 @@
 class RecallPage < BasePage
 
-  element(:reason) { |b| b.frm.text_field(name: 'reason') }
+  element(:reason) { |b| b.frm.textarea(name: 'reason') }
   element(:recall_button) { |b| b.frm.button(name: 'methodToCall.processAnswer.button0') }
   element(:recall_and_cancel_button) { |b| b.frm.button(name: 'methodToCall.processAnswer.button1') }
   action(:recall) { |b| b.recall_button.click }

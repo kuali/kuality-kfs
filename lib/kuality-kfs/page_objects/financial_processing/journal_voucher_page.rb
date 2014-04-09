@@ -1,11 +1,8 @@
 class JournalVoucherPage < FinancialProcessingPage
 
   # FIXME: Review these includes and remove any unneeded ones.
-  document_overview
   financial_document_detail
   accounting_lines
-
-  notes_and_attachments
   ad_hoc_recipients
 
   element(:reversal_date) { |b| b.frm.text_field(name: 'document.reversalDate') }

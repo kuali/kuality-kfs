@@ -7,5 +7,6 @@ class KFSBasePage < BasePage
   tab_buttons
   error_messages
   route_log
+  notes_and_attachments
 
 end

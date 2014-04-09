@@ -19,6 +19,8 @@ class Lookups < BasePage
   action(:copy_random) { |b| b.copy_value_links[rand(b.copy_value_links.length)].click }
   element(:copy_value_links) { |b| b.results_table.links(text: 'copy') }
 
+  element(:lookup_title) { |b| b.frm.div(id: /headerarea/).h1.text }
+  action(:on_a_lookup?) { |b| b.lookup_title.include?('Lookup') }
 
   class << self
 
@@ -49,13 +51,6 @@ class Lookups < BasePage
     def fiscal_officer_facets
       element(:fo_principal_name) { |b| b.frm.text_field(name: 'accountFiscalOfficerUser.principalName') }
     end
-
-    #def organization_facets
-    #  element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
-    #  element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
-    #  element(:organization_document_number) { |b| b.frm.text_field(name: 'organizationDocumentNumber') }
-    #  element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
-    #end
 
     def financial_object_facets
       element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
