@@ -150,7 +150,7 @@ class AccountingLineObjectCollection < LineObjectCollection
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       (0..(lines.current_line_count(type) - 1)).to_a.collect!{ |i|
-        pull_existing_line_values(type, i, lines).merge(pull_extended_existing_line_values(type, i, lines))
+        lines.pull_existing_line_values(type, i).merge(pull_extended_existing_line_values(type, i))
       }.each { |new_obj|
         # Update the stored lines
         self << (make contained_class, new_obj)
@@ -159,32 +159,12 @@ class AccountingLineObjectCollection < LineObjectCollection
     end
   end
 
-  # @param [Symbol] type The type of line to import (source or target). You may want to use AccountingLineObject#get_type_conversion
-  # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
-  def pull_existing_line_values(type, i, b)
-      {
-        chart_code:            (b.update_chart_code(type, i).value                if b.update_chart_code(type, i).visible?),
-        account_number:        (b.update_account_number(type, i).value            if b.update_account_number(type, i).exists?),
-        sub_account:           (b.update_sub_account_code(type, i).value          if b.update_sub_account_code(type, i).exists?),
-        object:                (b.update_object_code(type, i).exists? ? b.update_object_code(type, i).value : b.result_object_code(type, i)),
-        sub_object:            (b.update_sub_object_code(type, i).value           if b.update_sub_object_code(type, i).exists?),
-        project:               (b.update_project_code(type, i).value              if b.update_project_code(type, i).exists?),
-        org_ref_id:            (b.update_organization_reference_id(type, i).value if b.update_organization_reference_id(type, i).exists?),
-        current_amount:        (b.update_current_amount(type, i).value            if b.update_current_amount(type, i).exists?),
-        base_amount:           (b.update_base_amount(type, i).value               if b.update_base_amount(type, i).exists?),
-        line_description:      (b.update_line_description(type, i).value          if b.update_line_description(type, i).exists?),
-        reference_origin_code: (b.update_reference_origin_code(type, i).value     if b.update_reference_origin_code(type, i).exists?),
-        reference_number:      (b.update_reference_number(type, i).value          if b.update_reference_number(type, i).exists?),
-        amount:                (b.update_amount(type, i).value                    if b.update_amount(type, i).exists?)
-      }
-  end
-
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Symbol] type The type of line to import (source or target). You may want to use AccountingLineObject#get_type_conversion
   # @param [Fixnum] i The line number to look for (zero-based)
   # @param [Watir::Browser] b The current browser object
-  def pull_extended_existing_line_values(type, i, b)
+  # @return [Hash] The known line values
+  def pull_extended_existing_line_values(type, i)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

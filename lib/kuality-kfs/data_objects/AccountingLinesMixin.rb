@@ -18,7 +18,7 @@ module AccountingLinesMixin
   def post_create
     super
     if @immediate_import
-      @initial_lines.each{ |il| import_lines((il[:type].nil? ? :source : il[:type]), il) if il.has_key?(:file_name); }
+      @initial_lines.each{ |il| import_lines((il[:type].nil? ? :source : il[:type]), il[:file_name]) if il.has_key?(:file_name); }
       @initial_lines.delete_if{ |il| il.has_key?(:file_name) } # Remove all import initial lines
     end
 

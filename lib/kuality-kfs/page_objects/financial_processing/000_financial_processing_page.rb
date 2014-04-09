@@ -38,8 +38,6 @@ class FinancialProcessingPage < KFSBasePage
       action(:update_source_reference_origin_code) { |i=0, b| b.update_reference_origin_code('source', i, b) }
       action(:update_source_reference_number) { |i=0, b| b.update_reference_number('source', i, b) }
       action(:update_source_amount) { |i=0, b| b.update_amount('source', i, b) }
-      action(:update_source_debit) { |i=0, b| b.update_debit('source', i, b) }
-      action(:update_source_credit) { |i=0, b| b.update_credit('source', i, b) }
       action(:update_source_account_expired_override) { |i=0, b| b.update_account_expired_override('source', i, b) }
 
       element(:source_month_1) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentMonth1LineAmount') }
@@ -149,6 +147,8 @@ class FinancialProcessingPage < KFSBasePage
       action(:update_reference_number) { |t='source', i=0, b| b.frm.text_field(name: "document.#{t}AccountingLine[#{i}].referenceNumber") }
       action(:update_amount) { |t='source', i=0, b| b.frm.text_field(name: "document.#{t}AccountingLine[#{i}].amount") }
       action(:update_account_expired_override) { |t='source', i=0, b| b.frm.checkbox(name: "document.#{t}AccountingLine[#{i}].accountExpiredOverride") }
+      action(:update_debit) { |i=0, b| b.frm.text_field(name: "voucherLineHelper[#{i}].debit") }
+      action(:update_credit) { |i=0, b| b.frm.text_field(name: "voucherLineHelper[#{i}].credit") }
 
       action(:update_month_1) { |t='source', i=0, b| b.frm.text_field(name: "document.#{t}AccountingLine[#{i}].financialDocumentMonth1LineAmount") }
       action(:update_month_2) { |t='source', i=0, b| b.frm.text_field(name: "document.#{t}AccountingLine[#{i}].financialDocumentMonth2LineAmount") }
@@ -170,6 +170,24 @@ class FinancialProcessingPage < KFSBasePage
       action(:import_lines_target) {|b| b.frm.link(id: 'document.targetAccountingLinesShowLink').when_present.click }
       action(:add_source_import) { |b| b.frm.button(name: 'methodToCall.uploadSourceLines.document.sourceAccountingLines').when_present.click }
       action(:add_target_import) { |b| b.frm.button(name: 'methodToCall.uploadTargetLines.document.targetAccountingLines').when_present.click }
+
+      action(:pull_existing_line_values) do |type='source', i, b|
+        {
+            chart_code:            (b.update_chart_code(type, i).value                if b.update_chart_code(type, i).visible?),
+            account_number:        (b.update_account_number(type, i).value            if b.update_account_number(type, i).exists?),
+            sub_account:           (b.update_sub_account_code(type, i).value          if b.update_sub_account_code(type, i).exists?),
+            object:                (b.update_object_code(type, i).exists? ? b.update_object_code(type, i).value : b.result_object_code(type, i)),
+            sub_object:            (b.update_sub_object_code(type, i).value           if b.update_sub_object_code(type, i).exists?),
+            project:               (b.update_project_code(type, i).value              if b.update_project_code(type, i).exists?),
+            org_ref_id:            (b.update_organization_reference_id(type, i).value if b.update_organization_reference_id(type, i).exists?),
+            current_amount:        (b.update_current_amount(type, i).value            if b.update_current_amount(type, i).exists?),
+            base_amount:           (b.update_base_amount(type, i).value               if b.update_base_amount(type, i).exists?),
+            line_description:      (b.update_line_description(type, i).value          if b.update_line_description(type, i).exists?),
+            reference_origin_code: (b.update_reference_origin_code(type, i).value     if b.update_reference_origin_code(type, i).exists?),
+            reference_number:      (b.update_reference_number(type, i).value          if b.update_reference_number(type, i).exists?),
+            amount:                (b.update_amount(type, i).value                    if b.update_amount(type, i).exists?)
+        }
+      end
 
       # FOR VIEWING WITHOUT EDIT
       value(:source_line_description_value) {|i='0', b| b.frm.span(id: "document.sourceAccountingLine[#{i}].financialDocumentLineDescription.div").text }
