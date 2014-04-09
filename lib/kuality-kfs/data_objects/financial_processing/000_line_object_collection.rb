@@ -7,6 +7,8 @@
 # and delete performs any actions on the page required to remove the line.
 class LineObjectCollection < CollectionsFactory
 
+  include Foundry
+
   # This is a little hackish, but it makes it so that the line index
   # gets set when the line is added.
   def <<(lo)
@@ -26,6 +28,10 @@ class LineObjectCollection < CollectionsFactory
     self[line_number].delete
     super(line_number)
     update_line_numbers!
+  end
+
+  def contained_class
+    Kernel.const_get(self.class.to_s.gsub('Collection', ''))
   end
 
 end
