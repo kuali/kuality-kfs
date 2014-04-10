@@ -3,8 +3,10 @@ class PreEncumbranceObject < KFSDataObject
   include AccountingLinesMixin
 
   # These aliases are for convenience
-  alias add_disencumbrance_line add_target_line
-  alias add_encumbrance_line add_source_line
+  alias :add_disencumbrance_line :add_target_line
+  alias :add_encumbrance_line :add_source_line
+  alias :import_disencumbrance_lines :import_target_lines
+  alias :import_encumbrance_line :import_source_lines
 
   DOC_INFO = { label: 'Pre-Encumbrance Document', type_code: 'PE' }
 

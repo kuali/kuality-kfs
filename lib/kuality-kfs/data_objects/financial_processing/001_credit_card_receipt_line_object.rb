@@ -5,7 +5,7 @@ class CreditCardReceiptLineObject < DataFactory
   include GlobalConfig
 
   attr_accessor   :line_number,
-                  :type, :vendor_number, :date, :reference_number, :amount
+                  :type, :vendor_number, :date, :ref_nbr, :amount
 
   def initialize(browser, opts={})
     @browser = browser
@@ -14,7 +14,7 @@ class CreditCardReceiptLineObject < DataFactory
       type:             'VM',
       vendor_number:    '8008384516',
       date:             right_now[:date_w_slashes],
-      reference_number: '1234',
+      ref_nbr:          '1234',
       amount:           '100'
     }
 
@@ -23,7 +23,7 @@ class CreditCardReceiptLineObject < DataFactory
 
   def create
     on CreditCardReceiptLine do |line|
-      fill_out line, :type, :vendor_number, :date, :reference_number, :amount
+      fill_out line, :type, :vendor_number, :date, :ref_nbr, :amount
 
       fill_out_extended_attributes
       line.add_credit_card_receipt_line
@@ -37,7 +37,7 @@ class CreditCardReceiptLineObject < DataFactory
           update_type:             opts[:type],
           update_vendor_number:    opts[:vendor_number],
           update_date:             opts[:date],
-          update_reference_number: opts[:reference_number],
+          update_ref_nbr:          opts[:ref_nbr],
           update_amount:           opts[:amount]
       }
       mappings.merge!(extended_update_mappings)

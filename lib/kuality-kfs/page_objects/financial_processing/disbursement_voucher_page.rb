@@ -1,10 +1,6 @@
 class DisbursementVoucherPage < FinancialProcessingPage
 
-
-  document_overview
   accounting_lines
-
-  notes_and_attachments
   ad_hoc_recipients
 
   element(:foreign_draft_in) { |v, b| b.frm.radio(name: 'document.dvWireTransfer.disbursementVoucherForeignCurrencyTypeCode', value: v) }

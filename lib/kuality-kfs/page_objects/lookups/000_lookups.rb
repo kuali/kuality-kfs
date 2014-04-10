@@ -52,13 +52,6 @@ class Lookups < BasePage
       element(:fo_principal_name) { |b| b.frm.text_field(name: 'accountFiscalOfficerUser.principalName') }
     end
 
-    #def organization_facets
-    #  element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
-    #  element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
-    #  element(:organization_document_number) { |b| b.frm.text_field(name: 'organizationDocumentNumber') }
-    #  element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
-    #end
-
     def financial_object_facets
       element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
       element(:subobject_code) { |b| b.frm.text_field(name: 'financialSubObjectCode') }

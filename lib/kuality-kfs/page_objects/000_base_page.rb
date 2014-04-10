@@ -16,7 +16,8 @@ class BasePage < PageFactory
     disapprove:        'disapprove',
     send_notification: 'send notification',
     recall:            'Recall current document',
-    error_correction:  'error correction'
+    error_correction:  'error correction',
+    fyi:           'fyi'
   }
 
   def self.available_buttons
@@ -60,18 +61,19 @@ class BasePage < PageFactory
 
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
 
     def organization_facets
       element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
       element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
-      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
       element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
@@ -142,12 +144,22 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
-      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      action(:delete_note) { |l=0,b| b.frm.button(name: "methodToCall.deleteBONote.line#{l}").click }
+      action(:send_note_fyi) { |l=0,b| b.frm.button(name: "methodToCall.sendNoteWorkflowNotification.line#{l}").click }
+      action(:notification_recipient) { |l=0,b| b.frm.text_field(id: "document.note[#{l}].adHocRouteRecipient.id") }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
       element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
+      element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
+      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      action(:download_file) { |l=0, b| b.download_file(l).click }
+
     end
 
     def route_log

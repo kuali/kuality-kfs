@@ -75,6 +75,17 @@ module Watir
     end
   end
 
+  class TextFieldLocator
+
+    def validate_element(element)
+      if element.tag_name.downcase == 'textarea'
+        warn "Locating textareas with '#text_field' is deprecated. Please, use '#textarea' method instead for element with id='#{element.attribute('id')}', class='#{element.attribute('class')}', name='#{element.attribute('name')}'"
+      end
+      super
+    end
+
+  end # TextFieldLocator
+
 end
 
 class Array
