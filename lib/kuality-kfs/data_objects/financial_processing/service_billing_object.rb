@@ -3,8 +3,10 @@ class ServiceBillingObject < KFSDataObject
   include AccountingLinesMixin
 
   # These aliases are for convenience
-  alias add_expense_line add_target_line
-  alias add_income_line add_source_line
+  alias :add_expense_line :add_target_line
+  alias :add_income_line :add_source_line
+  alias :import_expense_lines :import_target_lines
+  alias :import_income_line :import_source_lines
 
   DOC_INFO = { label: 'Service Billing Document', type_code: 'SB' }
 

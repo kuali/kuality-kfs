@@ -1,10 +1,8 @@
 class CreditCardReceiptPage < FinancialProcessingPage
 
-    document_overview
     financial_document_detail
     accounting_lines
 
-    notes_and_attachments
     ad_hoc_recipients
 
     #accounting_lines_for_capitalization

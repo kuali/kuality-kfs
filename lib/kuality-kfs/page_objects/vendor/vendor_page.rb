@@ -1,6 +1,6 @@
 class VendorPage < KFSBasePage
 
-  notes_and_attachments
+  #notes_and_attachments
 
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorName') }
   element(:vendor_last_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorLastName') }
@@ -40,7 +40,6 @@ class VendorPage < KFSBasePage
   action(:add_vendor_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
   element(:address_type_1) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAddressTypeCode') }
   element(:contract_name_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorContracts[0].vendorContractName') }
-  element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
   value(:supplier_diversity_code_1) { |b| b.frm.span(id: 'document.newMaintainableObject.vendorHeader.vendorSupplierDiversities[0].vendorSupplierDiversityCode.div').text }
 
   element(:updated_address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine1Address') }
@@ -53,5 +52,7 @@ class VendorPage < KFSBasePage
   element(:phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneTypeCode') }
   element(:phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneNumber') }
   action(:add_phone_number) { |b| b.frm.button(id: /methodToCall.addLine.vendorPhoneNumbers/m).click }
+
+  element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
 
 end

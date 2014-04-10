@@ -73,7 +73,8 @@ module PaymentInformationMixin
       plookup.search
       plookup.return_value(@payee_id)
     end
-    if $current_page.url.include?('businessObjectClassName=org.kuali.kfs.vnd.businessobject.VendorAddress')
+
+    if on(Lookups).on_a_lookup? && (on(Lookups).lookup_title == 'Vendor Address Lookup')
       on VendorAddressLookup do |valookup|
         valookup.address_1.fit @address_1 unless @address_1.nil?
         valookup.address_2.fit @address_2 unless @address_2.nil?
