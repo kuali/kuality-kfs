@@ -57,7 +57,7 @@ class RequisitionPage < KFSBasePage
   alias_method :item_catalog,:item_catalog_number
 
   element(:item_commodity_code) { |b| b.frm.text_field(name: 'newPurchasingItemLine.purchasingCommodityCode') }
-  element(:item_description) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemDescription') }
+  element(:item_description) { |b| b.frm.textarea(name: 'newPurchasingItemLine.itemDescription') }
   element(:item_unit_cost) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemUnitPrice') }
   alias_method :unit_cost, :item_unit_cost
 
