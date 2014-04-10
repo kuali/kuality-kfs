@@ -42,6 +42,10 @@ class NotesAndAttachmentsLineObject < DataFactory
     on(KFSBasePage).attach_notes_file.set($file_folder+filename)
   end
 
+  def download_file
+    on(KFSBasePage).download_file @line_number
+  end
+
   def delete
     on(KFSBasePage).delete_note @line_number
   end

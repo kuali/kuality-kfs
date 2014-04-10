@@ -155,7 +155,8 @@ class BasePage < PageFactory
       #viewing document where changes have been made
       element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
       element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
-      element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
+      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      action(:download_file) { |l=0, b| b.download_file(l).click }
 
     end
 
