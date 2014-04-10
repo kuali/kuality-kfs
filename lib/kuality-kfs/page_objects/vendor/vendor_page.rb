@@ -40,7 +40,6 @@ class VendorPage < KFSBasePage
   action(:add_vendor_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
   element(:address_type_1) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAddressTypeCode') }
   element(:contract_name_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorContracts[0].vendorContractName') }
-  element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
   value(:supplier_diversity_code_1) { |b| b.frm.span(id: 'document.newMaintainableObject.vendorHeader.vendorSupplierDiversities[0].vendorSupplierDiversityCode.div').text }
 
   element(:updated_address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine1Address') }
