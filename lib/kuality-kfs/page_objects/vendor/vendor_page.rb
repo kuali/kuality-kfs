@@ -48,6 +48,7 @@ class VendorPage < KFSBasePage
   element(:updated_phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneNumber') }
   element(:updated_address_attention) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAttentionName') }
   element(:updated_phone_ext) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneExtensionNumber') }
+  element(:updated_2nd_address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[1].vendorLine2Address') }
 
   element(:phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneTypeCode') }
   element(:phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneNumber') }
