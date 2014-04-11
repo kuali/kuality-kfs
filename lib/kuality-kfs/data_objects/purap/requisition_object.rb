@@ -41,10 +41,11 @@ class RequisitionObject < KFSDataObject
       page.calculate
 
       @requisition_number = page.requisition_number
-      puts 'is the req number'
-      puts @requisition_number
-      puts 'was the req number'
-      puts @document_id
+      #FOR DEBUGGING
+      # puts 'is the req number'
+      # puts @requisition_number
+      # puts 'was the req number'
+      # puts @document_id
 
     end
   end

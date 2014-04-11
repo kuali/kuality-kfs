@@ -1,9 +1,9 @@
 class RequisitionPage < KFSBasePage
 
   #TEXTAREAS
-  element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
+  # element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
 
-  element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
+  # element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
 
 #REQUISITION DETAIL
   action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search

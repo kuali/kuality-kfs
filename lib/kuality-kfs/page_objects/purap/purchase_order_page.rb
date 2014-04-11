@@ -1,7 +1,7 @@
 class PurchaseOrderPage <  KFSBasePage
 
-  element(:explanation) { |b| b.textarea(name: 'document.documentHeader.explanation') }
-  element(:organization_document_number) { |b| b.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
+  # element(:explanation) { |b| b.textarea(name: 'document.documentHeader.explanation') }
+  # element(:organization_document_number) { |b| b.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
 
   element(:posting_year) { |b| b.select(name: 'document.postingYear') }
 #PURCHASSE ORDER DETAIL
@@ -62,7 +62,6 @@ class PurchaseOrderPage <  KFSBasePage
   action(:vendor_add_stipulation) { |b| b.table(summary: 'Stipulations &amp; Info Section').button(name: 'methodToCall.addStipulation').click }
 
 #ITEMS
-
   element(:item_type) { |b| b.select(name: 'newPurchasingItemLine.itemTypeCode') }
   element(:item_quantity) { |b| b.text_field(name: 'newPurchasingItemLine.itemQuantity') }
   element(:item_unit_of_measure) { |b| b.text_field(name: 'newPurchasingItemLine.itemUnitOfMeasureCode') }
@@ -123,7 +122,6 @@ class PurchaseOrderPage <  KFSBasePage
   alias_method :old_amt, :old_amount
 
 #PAYMENT INFO
-
   element(:begin_date) { |b| b.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:end_date) { |b| b.text_field(name: 'document.purchaseOrderEndDate') }
   element(:recurring_payment_amount) { |b| b.text_field(name: 'document.recurringPaymentAmount') }
