@@ -10,7 +10,7 @@ class BudgetAdjustmentObject < KFSDataObject
     super(opts).merge(
         initial_lines: [{
                             type:           :source,
-                            chart_code:     'IT',
+                            chart_code:     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
                             account_number: '1258322',
                             object:         '4480',
                             current_amount: '10000'

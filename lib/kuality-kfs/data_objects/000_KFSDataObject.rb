@@ -2,8 +2,10 @@ class KFSDataObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
-  attr_accessor :document_id, :description, :press
+  attr_accessor :document_id, :description, :press,
+                :notes_and_attachments_tab
 
 
   # Hooks:
@@ -31,6 +33,7 @@ class KFSDataObject < DataFactory
   end
 
   def post_create
+    @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
   def save
@@ -61,6 +64,10 @@ class KFSDataObject < DataFactory
     on(KFSBasePage).approve
   end
 
+  def fyi
+    on(KFSBasePage).fyi
+  end
+
   def reload
     on(KFSBasePage).reload
   end
@@ -75,11 +82,7 @@ class KFSDataObject < DataFactory
       search.document_type.fit ''
       search.document_id.fit @document_id
       search.search
-      if search.no_result_table_returned?
-        # Double-check, for timing issues.
-        sleep 10
-        search.search
-      end
+      search.wait_for_search_results
       search.open_doc @document_id
     end
   end

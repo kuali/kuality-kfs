@@ -18,7 +18,7 @@ module BatchUtilities
       page.run_job
       if wait_for_completion == true
         x = 0
-        while x < 4
+        while x < 12 # Hell, let's give it a whole minute if it needs it.
           break if (page.job_status =~ /Succeeded/) == 0
           sleep 5
           page.refresh
