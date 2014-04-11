@@ -39,8 +39,40 @@ class BudgetAdjustmentLineObject < AccountingLineObject
 
 end
 
-class BudgetAdjustmentLineObjectCollection < LineObjectCollection
+class BudgetAdjustmentLineObjectCollection < AccountingLineObjectCollection
 
   contains BudgetAdjustmentLineObject
+
+
+  # @param [Symbol] type The type of line to import (source or target). You may want to use AccountingLineObject#get_type_conversion
+  # @param [Fixnum] i The line number to look for (zero-based)
+  def pull_existing_line_values(type, i)
+    on AccountingLine do |lines|
+      super.merge({
+                    month_1:  (lines.update_month_1(type, i).value  if lines.update_month_1(type, i).exists?),
+                    month_2:  (lines.update_month_2(type, i).value  if lines.update_month_2(type, i).exists?),
+                    month_3:  (lines.update_month_3(type, i).value  if lines.update_month_3(type, i).exists?),
+                    month_4:  (lines.update_month_4(type, i).value  if lines.update_month_4(type, i).exists?),
+                    month_5:  (lines.update_month_5(type, i).value  if lines.update_month_5(type, i).exists?),
+                    month_6:  (lines.update_month_6(type, i).value  if lines.update_month_6(type, i).exists?),
+                    month_7:  (lines.update_month_7(type, i).value  if lines.update_month_7(type, i).exists?),
+                    month_8:  (lines.update_month_8(type, i).value  if lines.update_month_8(type, i).exists?),
+                    month_9:  (lines.update_month_9(type, i).value  if lines.update_month_9(type, i).exists?),
+                    month_10: (lines.update_month_10(type, i).value if lines.update_month_10(type, i).exists?),
+                    month_11: (lines.update_month_11(type, i).value if lines.update_month_11(type, i).exists?),
+                    month_12: (lines.update_month_12(type, i).value if lines.update_month_12(type, i).exists?)
+                  })
+      .merge(pull_budget_adjustment_extended_existing_line_values(type, i))
+    end
+  end
+
+  # @param [Symbol] type The type of line to import (source or target). You may want to use AccountingLineObject#get_type_conversion
+  # @param [Fixnum] i The line number to look for (zero-based)
+  def pull_budget_adjustment_extended_existing_line_values(type, i)
+    # This can be implemented for site-specific attributes particular to the BudgetAdjustmentLineObject.
+    # See the Hash returned in the #collect! in #update_from_page! above for the kind of way
+    # to get the right return value.
+    Hash.new
+  end
 
 end

@@ -2,8 +2,10 @@ class KFSDataObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
-  attr_accessor :document_id, :description, :press
+  attr_accessor :document_id, :description, :press,
+                :notes_and_attachments_tab
 
 
   # Hooks:
@@ -31,6 +33,7 @@ class KFSDataObject < DataFactory
   end
 
   def post_create
+    @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
   def save
@@ -59,6 +62,10 @@ class KFSDataObject < DataFactory
 
   def approve
     on(KFSBasePage).approve
+  end
+
+  def fyi
+    on(KFSBasePage).fyi
   end
 
   def reload
