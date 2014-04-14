@@ -12,6 +12,10 @@ module BatchUtilities
     run_unscheduled_job('scrubberJob', wait_for_completion)
   end
 
+  def run_auto_close_purchase_orders(wait_for_completion = false)
+    run_unscheduled_job('autoClosePurchaseOrdersJob', wait_for_completion)
+  end
+
   def run_unscheduled_job(job_name, wait_for_completion)
     @browser.goto "#{$base_url}batchModify.do?methodToCall=start&name=#{job_name}&group=unscheduled"
     on SchedulePage do |page|
