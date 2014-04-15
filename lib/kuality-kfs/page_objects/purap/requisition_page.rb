@@ -173,6 +173,7 @@ class RequisitionPage < KFSBasePage
   action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
 
   value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
+  value(:po_unapprove) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s[1].font.text }
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
 
 end
