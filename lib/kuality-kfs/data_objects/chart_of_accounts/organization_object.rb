@@ -17,10 +17,10 @@ class OrganizationObject < KFSDataObject
         manager_principal_name: get_aft_parameter_values(ParameterConstants::DEFAULT_MANAGER),
         resp_center_code:       'NA',
         physcal_campus_code:    get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        type_code:              'D - Department', #TODO grab this from config file
-        address_line_1:         '120 Maple Ave', #TODO grab this from config file
-        address_line_2:         'Cornell University', #TODO grab this from config file
-        postal_code:            '14850', #TODO grab this from config file
+        type_code:              get_aft_parameter_value(ParameterConstants::DEFAULT_ORGANIZATION_TYPE_CODE_WITH_NAME),
+        address_line_1:         get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
+        address_line_2:         get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_2),
+        postal_code:            get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_POSTAL_CODE),
         country_code:           'United States',
         begin_date:             '01/01/2010',
         reports_to_chart_code:  get_aft_parameter_value(ParameterConstants::DEFAULT_REPORTS_TO_CHART_CODE),

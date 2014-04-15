@@ -28,13 +28,13 @@ class ObjectCodeObject < KFSDataObject
         object_code: random_alphanums(4), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
         object_code_name: random_alphanums(10, 'AFT'),
         object_code_short_name: random_alphanums(5, 'AFT'),
-        reports_to_object_code: 'A000',
-        object_type_code: 'ES',
-        level_code:    'BADJ',
-        object_sub_type_code: 'BI',
+        reports_to_object_code: 'A000',#TODO config?
+        object_type_code: 'ES',#TODO config?
+        level_code:    'BADJ',#TODO config?
+        object_sub_type_code: 'BI',#TODO config?
         financial_object_code_description: random_alphanums(30, 'AFT'),
-        cg_reporting_code:      '06SM',
-        budget_aggregation_code: 'L',
+        cg_reporting_code:      '06SM',#TODO config?
+        budget_aggregation_code: 'L',#TODO config?
         mandatory_transfer: '::random::',
         federal_funded_code: '::random::',
         press: :save

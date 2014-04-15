@@ -12,7 +12,7 @@ class SubAccountObject < KFSDataObject
     defaults = {
         description:          random_alphanums(40, 'AFT'),
         chart_code:           get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        account_number:       '1000710', #TODO need to look this up
+        account_number:       get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         sub_account_number:   random_alphanums(7),
         name:                 random_alphanums(10),
         press:                :save

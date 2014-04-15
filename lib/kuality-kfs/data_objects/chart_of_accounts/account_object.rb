@@ -24,22 +24,22 @@ class AccountObject < KFSDataObject
         postal_code:                       get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_POSTAL_CODE),
         city:                              get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_CITY),
         state:                             get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_STATE),
-        address:                           get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_ADDRESS),
-        type_code:                         'CC - Contract College', #TODO grab this from config file
-        sub_fund_group_code:               'ADMSYS',
-        higher_ed_funct_code:              '4000',
-        restricted_status_code:            'U - Unrestricted',
+        address:                           get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
+        type_code:                         get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_TYPE_CODE),
+        sub_fund_group_code:               'ADMSYS',#TODO config?
+        higher_ed_funct_code:              '4000',#TODO config?
+        restricted_status_code:            'U - Unrestricted',#TODO config?
         fo_principal_name:                 get_aft_parameter_values(ParameterConstants::DEFAULT_FISCAL_OFFICER),
         supervisor_principal_name:         get_aft_parameter_values(ParameterConstants::DEFAULT_SUPERVISOR),
         manager_principal_name:            get_aft_parameter_values(ParameterConstants::DEFAULT_MANAGER),
-        budget_record_level_code:          'C - Consolidation',
-        sufficient_funds_code:             'C - Consolidation',
+        budget_record_level_code:          'C - Consolidation',#TODO config?
+        sufficient_funds_code:             'C - Consolidation',#TODO config?
         expense_guideline_text:            'expense guideline text',
         income_guideline_txt:              'incomde guideline text',
         purpose_text:                      'purpose text',
         income_stream_financial_cost_code: get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         income_stream_account_number:      get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
-        labor_benefit_rate_cat_code:       'CC',
+        labor_benefit_rate_cat_code:       'CC',#TODO config?
         account_expiration_date:           '',
         press:                             :save
     }

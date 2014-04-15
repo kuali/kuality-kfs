@@ -10,10 +10,10 @@ class RequisitionObject < KFSDataObject
     defaults = {
         description:    random_alphanums(40, 'AFT'),
         item_quantity: '1000',
-        item_catalog: '10121800',
+        item_catalog: '10121800',#TODO config?
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
-        item_uom: 'BX',
+        item_uom: 'BX',#TODO config?
         attachment_file_name:       'happy_path_reqs.png',
     }
 

@@ -10,11 +10,11 @@ class AccountDelegateModelObject < KFSDataObject
     defaults = {
       description:                          random_alphanums(40, 'AFT'),
       chart_of_accounts_code:               get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-      organization_code:                    '0100',
+      organization_code:                    '0100',#TODO config?
       account_delegate_model_name:          random_alphanums(40, 'AFT'),
       document_type_name:                   'IB',
       account_delegate_start_date:          '01/01/2010',
-      account_delegate_principal_name:      'JMD11',
+      account_delegate_principal_name:      'JMD11',#TODO config?
       active_indicator:                     :set,
       active:                               :set
     }

@@ -14,23 +14,23 @@ class AccountGlobalObject < KFSDataObject
     defaults = {
         description:                            random_alphanums(20, 'AFT'),
         new_chart_code:                         get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        new_number:                             '1000710', #TODO get from config
-        supervisor_principal_name:              'jaraujo',
-        manager_principal_name:                 'warriaga',
+        new_number:                             get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
+        supervisor_principal_name:              get_aft_parameter_value(ParameterConstants::DEFAULT_SUPERVISOR),
+        manager_principal_name:                 get_aft_parameter_value(ParameterConstants::DEFAULT_MANAGER),
         organization_code:                      get_aft_parameter_value(ParameterConstants::DEFAULT_ORGANIZATION_CODE),
         sub_fund_group_code:                    '',
         acct_expire_date:                       '',
         postal_code:                            get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_POSTAL_CODE),
         city:                                   get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_CITY),
         state:                                  get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_STATE),
-        address:                                get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS),
+        address:                                get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
         continuation_coa_code:                  '',
         continuation_acct_number:               '',
         income_stream_financial_cost_code:      get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         income_stream_account_number:           get_aft_parameter_value(ParameterConstants::DEFAULT_INCOME_STREAM_ACCOUNT_NUMBER),
         cfda_number:                            '',
         higher_ed_funct_code:                   '',
-        sufficient_funds_code:                  'C - Consolidation',
+        sufficient_funds_code:                  'C - Consolidation',#TODO config?
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code:       '',
         press:                                  :save

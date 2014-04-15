@@ -24,10 +24,10 @@ class ObjectCodeGlobalObject < KFSDataObject
         object_code:             random_alphanums(2, '65'), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
         object_code_name:        'Supplies - Classroom ' + random_alphanums(10, 'AFT'),
         object_code_short_name:  'Classroom',
-        reports_to_object_code:  'E370',
-        object_type_code:        'EX',
-        level_code:              'SMAT',
-        cg_reporting_code:       '06SM',
+        reports_to_object_code:  'E370',#TODO config?
+        object_type_code:        'EX',#TODO config?
+        level_code:              'SMAT',#TODO config?
+        cg_reporting_code:       '06SM',#TODO config?
 
         object_sub_type_code:    'OE',
 
