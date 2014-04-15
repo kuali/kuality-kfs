@@ -32,7 +32,7 @@ class DocumentSearch < Lookups
   element(:document_description) { |b| b.frm.text_field(name: 'documentAttribute.documentDescription') }
   element(:organization_document_number) { |b| b.frm.text_field(name: 'documentAttribute.organizationDocumentNumber') }
   element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
-  element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.requisitionIdentifier') }
+  element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
   element(:vendor_number) { |b| b.frm.text_field(name: 'documentAttribute.vendorNumber') }
   element(:purchase_order_chart_code) { |b| b.frm.text_field(name: 'documentAttribute.documentChartOfAccountsCodeForSearching') }
   element(:purchase_order_organization_code) { |b| b.frm.text_field(name: 'documentAttribute.documentOrganizationCodeForSearching') }

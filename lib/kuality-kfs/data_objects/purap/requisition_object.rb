@@ -40,6 +40,12 @@ class RequisitionObject < KFSDataObject
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
+      @requisition_number = page.requisition_number
+      #FOR DEBUGGING
+      # puts 'is the req number'
+      # puts @requisition_number
+      # puts 'was the req number'
+      # puts @document_id
 
     end
 
