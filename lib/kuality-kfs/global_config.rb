@@ -31,10 +31,10 @@ module GlobalConfig
   def get_first_principal_id_for_role(name_space, role_name)
     role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().get(0)
   end
-  #def get_random_principal_id_for_role(name_space, role_name)
-  #  principal_ids ||= role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new)
-  #  principal_ids.sample
-  #end
+  def get_random_principal_id_for_role(name_space, role_name)
+    principalIds = role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId()
+    principalIds.get(java.lang.Math.random() * principalIds.size())
+  end
   def get_principal_name_for_principal_id(principal_name)
     identity_service.getEntityByPrincipalId(principal_name).getPrincipals().getPrincipal().get(0).getPrincipalName()
   end
@@ -47,15 +47,38 @@ module GlobalConfig
       @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_first_principal_id_for_role(name_space, role_name))
     end
   end
-  #def get_random_principal_name_for_role(name_space, role_name)
-  #  @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
-  #
-  #  if !@@prinicpal_names[name_space][role_name].nil?
-  #    @@prinicpal_names[name_space][role_name]
-  #  else
-  #    @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
-  #  end
-  #end
+  def get_random_principal_name_for_role(name_space, role_name)
+    @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
+
+    if !@@prinicpal_names[name_space][role_name].nil?
+       @@prinicpal_names[name_space][role_name]
+    else
+       @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
+    end
+  end
+
+  def get_kuali_business_object(namespace_code, object_type, identifiers)
+    # Create new mechanize agent and hit the main page
+    # then login once directed to CUWA
+    agent = Mechanize.new
+    page = agent.get($base_url)
+
+    #First we need to hit up the weblogin form and get our selves a cookie
+    perform_university_login(page)
+
+    #now lets backdoor
+    agent.get($base_url + '/portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
+
+    #finally make the request to the data object page
+    page = agent.get($base_url + '/dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
+
+    #pares the XML into a hash
+    XmlSimple.xml_in(page.body)
+  end
+
+  def perform_university_login(page)
+    #do nothing - override this in the university project
+  end
 end
 
 World(GlobalConfig)

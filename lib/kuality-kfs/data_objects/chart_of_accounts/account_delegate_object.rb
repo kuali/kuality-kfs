@@ -11,7 +11,7 @@ class AccountDelegateObject < KFSDataObject
       chart_code:           get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
       number:               random_alphanums(7),
       doc_type_name:        'IB',
-      principal_name:       'dh273', #TODO config this
+      principal_name:       get_random_principal_name_for_role('KFS-SYS', 'User'),
       start_date:           '01/01/2014',
       press:                :save
     }

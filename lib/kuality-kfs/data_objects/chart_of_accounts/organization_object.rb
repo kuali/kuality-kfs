@@ -14,7 +14,7 @@ class OrganizationObject < KFSDataObject
         chart_code:             get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         organization_code:      random_alphanums(4),
         name:                   random_alphanums(10, 'AFT'),
-        manager_principal_name: 'ccs1', #TODO grab this from config file
+        manager_principal_name: get_aft_parameter_values(ParameterConstants::DEFAULT_MANAGER),
         resp_center_code:       'NA',
         physcal_campus_code:    get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         type_code:              'D - Department', #TODO grab this from config file
@@ -23,12 +23,12 @@ class OrganizationObject < KFSDataObject
         postal_code:            '14850', #TODO grab this from config file
         country_code:           'United States',
         begin_date:             '01/01/2010',
-        reports_to_chart_code:  get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        reports_to_org_code:    '01Y9', #TODO grab this from config file
+        reports_to_chart_code:  get_aft_parameter_value(ParameterConstants::DEFAULT_REPORTS_TO_CHART_CODE),
+        reports_to_org_code:    get_aft_parameter_value(ParameterConstants::DEFAULT_REPORTS_TO_ORGANIZATION_CODE),
         plant_chart:            get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        plant_account_number:   '1000710', #TODO grab this from config file
+        plant_account_number:   get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         campus_plant_chart_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        campus_plant_account_number: '1000710'#, #TODO grab this from config file
+        campus_plant_account_number: get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         #press:                       :save
     }
     set_options(defaults.merge(opts))

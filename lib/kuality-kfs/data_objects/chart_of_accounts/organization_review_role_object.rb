@@ -10,8 +10,8 @@ class OrganizationReviewRoleObject < KFSDataObject
 
     defaults = {
         description:            random_alphanums(40, 'AFT'),
-        chart_code:             'IT - Ithaca Campus', #TODO grab this from config file
-        organization_code:               '017D', #TODO grab this from config file
+        chart_code:             get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        organization_code:      get_aft_parameter_values(ParameterConstants::DEFAULT_ORGANIZATION_CODE),
         doc_type:               'KFST',
         review_types:           'B',
         action_type_code:       'FYI',

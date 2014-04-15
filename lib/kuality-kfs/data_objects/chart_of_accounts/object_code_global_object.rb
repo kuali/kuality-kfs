@@ -35,7 +35,7 @@ class ObjectCodeGlobalObject < KFSDataObject
         budget_aggregation_code: 'O',
         mandatory_transfer: 'N - NOT APPLICABLE',
         federal_funded_code: 'N - Attribute Not Used at Cornell',
-        new_year_chart_code: 'IT - Ithaca Campus',
+        new_year_chart_code: get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         press: :save
     }
     set_options(defaults.merge(opts))
