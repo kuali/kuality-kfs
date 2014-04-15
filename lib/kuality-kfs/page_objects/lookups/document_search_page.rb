@@ -31,8 +31,17 @@ class DocumentSearch < Lookups
   #element(:date_created_to) { |b| b.frm.text_field(name: 'dateCreated') }
   element(:document_description) { |b| b.frm.text_field(name: 'documentAttribute.documentDescription') }
   element(:organization_document_number) { |b| b.frm.text_field(name: 'documentAttribute.organizationDocumentNumber') }
-  element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
+  element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purchaseOrderIdentifier') }
   element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.requisitionIdentifier') }
+
+
+  #selecting 'purchase_orders' the PO is different
+  element(:purchase_order_numb) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
+
+  #Selecting 'requisitions' the REQ tag is different
+  element(:requisition_num) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
+
+
   element(:vendor_number) { |b| b.frm.text_field(name: 'documentAttribute.vendorNumber') }
   element(:purchase_order_chart_code) { |b| b.frm.text_field(name: 'documentAttribute.documentChartOfAccountsCodeForSearching') }
   element(:purchase_order_organization_code) { |b| b.frm.text_field(name: 'documentAttribute.documentOrganizationCodeForSearching') }
@@ -87,5 +96,8 @@ class DocumentSearch < Lookups
   action(:search_organization_code) { |b| b.frm.button(title: 'Search Organization Code').click }
   action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
   action(:search_ledger_document_type) { |b| b.frm.button(title: 'Search Ledger Document Type').click }
+
+  # action(:select_doc_id_with_po_number) { |purchase_number, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
+  # action(:select_doc_id_with_po_number) { |purchase_number, b| b.frm.table(id: 'row', class: 'datatable-100').rows.each_with_index {|row, index| (b.link(index-1).clickb.use_new_tab; b.close_parents) if row.a(text: purchase_number).exists?;  } }
 
 end

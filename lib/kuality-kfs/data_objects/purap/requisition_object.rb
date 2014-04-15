@@ -40,14 +40,41 @@ class RequisitionObject < KFSDataObject
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
-      @requisition_number = page.requisition_number
+      @requisition_id = page.requisition_id
       #FOR DEBUGGING
-      # puts 'is the req number'
-      # puts @requisition_number
-      # puts 'was the req number'
-      # puts @document_id
+      puts 'is the req number'
+      puts @requisition_id
+      puts 'was the req number'
+      puts @document_id
 
+      #After successful submit the req gets a number
     end
   end
+
+
+  def edit opts={}
+    visit(MainPage).requisitions
+    on DocumentSearch do |page|
+      page.document_id
+    end
+
+    on RequisitionPage do |page|
+
+    end
+    update_options(opts)
+  end
+
+  def add_vendor_to_req(vendor_num)
+    on RequisitionPage do |page|
+      page.suggested_vendor_search
+
+      on VendorLookupPage do |page|
+        page.vendor_number.fit vendor_num
+        page.search
+        page.return_value(vendor_num)
+      end
+    end
+  end
+
 
 end #class

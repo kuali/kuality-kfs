@@ -57,7 +57,7 @@ class BasePage < PageFactory
       alias_method :disposition, :initiator
       value(:last_updated) {|p| p.headerinfo_table[1][3].text }
       alias_method :created, :last_updated
-      value(:requisition_number) { |p| p.headerinfo_table[2][1].text }
+      value(:requisition_id) { |p| p.headerinfo_table[2][1].text }
       value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
     end
 

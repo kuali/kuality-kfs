@@ -23,7 +23,8 @@ class RequisitionPage < KFSBasePage
 #VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
-  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/)}
+  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).click }
+  alias_method :suggested_vendor_search, :vendor_name_search
 
   element(:vendor_city) { |b| b.frm.text_field(name: 'document.vendorCityName') }
   element(:vendor_state) { |b| b.frm.text_field(name: 'document.vendorStateCode') }
@@ -171,14 +172,6 @@ class RequisitionPage < KFSBasePage
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
   action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
-
-#VIEW RELATED DOCUMENTS
-  action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
-  alias_method :show_view_related_documents, :show_related_documents
-  action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
-
-  value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
-  action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
 
 end
 
