@@ -26,7 +26,7 @@ class AccountGlobalObject < KFSDataObject
         address:                                get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
         continuation_coa_code:                  '',
         continuation_acct_number:               '',
-        income_stream_financial_cost_code:      get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        income_stream_financial_cost_code:      get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         income_stream_account_number:           get_aft_parameter_value(ParameterConstants::DEFAULT_INCOME_STREAM_ACCOUNT_NUMBER),
         cfda_number:                            '',
         higher_ed_funct_code:                   '',

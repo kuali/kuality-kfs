@@ -24,7 +24,7 @@ class ObjectCodeObject < KFSDataObject
     defaults = {
         description: random_alphanums(20, ' AFT'),
         fiscal_year:   '2014',
-        new_chart_code: get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        new_chart_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         object_code: random_alphanums(4), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
         object_code_name: random_alphanums(10, 'AFT'),
         object_code_short_name: random_alphanums(5, 'AFT'),

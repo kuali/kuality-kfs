@@ -18,27 +18,27 @@ class AccountObject < KFSDataObject
         chart_code:                        get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         number:                            random_alphanums(7),
         name:                              random_alphanums(10),
-        organization_code:                 '01G0',
-        campus_code:                       get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_CODE),
+        organization_code:                 '01G0',#TODO config?
+        campus_code:                       get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_CODE),
         effective_date:                    '01/01/2010',
-        postal_code:                       get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_POSTAL_CODE),
-        city:                              get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_CITY),
-        state:                             get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_STATE),
-        address:                           get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
-        type_code:                         get_aft_parameter_values(ParameterConstants::DEFAULT_CAMPUS_TYPE_CODE),
+        postal_code:                       get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_POSTAL_CODE),
+        city:                              get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_CITY),
+        state:                             get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_STATE),
+        address:                           get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_ADDRESS_1),
+        type_code:                         get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_TYPE_CODE),
         sub_fund_group_code:               'ADMSYS',#TODO config?
         higher_ed_funct_code:              '4000',#TODO config?
         restricted_status_code:            'U - Unrestricted',#TODO config?
-        fo_principal_name:                 get_aft_parameter_values(ParameterConstants::DEFAULT_FISCAL_OFFICER),
-        supervisor_principal_name:         get_aft_parameter_values(ParameterConstants::DEFAULT_SUPERVISOR),
-        manager_principal_name:            get_aft_parameter_values(ParameterConstants::DEFAULT_MANAGER),
+        fo_principal_name:                 get_aft_parameter_value(ParameterConstants::DEFAULT_FISCAL_OFFICER),
+        supervisor_principal_name:         get_aft_parameter_value(ParameterConstants::DEFAULT_SUPERVISOR),
+        manager_principal_name:            get_aft_parameter_value(ParameterConstants::DEFAULT_MANAGER),
         budget_record_level_code:          'C - Consolidation',#TODO config?
         sufficient_funds_code:             'C - Consolidation',#TODO config?
         expense_guideline_text:            'expense guideline text',
         income_guideline_txt:              'incomde guideline text',
         purpose_text:                      'purpose text',
-        income_stream_financial_cost_code: get_aft_parameter_values(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
-        income_stream_account_number:      get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
+        income_stream_financial_cost_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        income_stream_account_number:      get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         labor_benefit_rate_cat_code:       'CC',#TODO config?
         account_expiration_date:           '',
         press:                             :save

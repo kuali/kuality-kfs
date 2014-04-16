@@ -29,8 +29,8 @@ class CashReceiptObject < KFSDataObject
   def default_accounting_lines(opts={})
     super(opts).merge(
         initial_lines: [{
-                          account_number: get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNTING_LINE_ACCOUNT_NUMBER),
-                          object: get_aft_parameter_values(ParameterConstants::DEFAULT_ACCOUNTING_LINE_OBJECT_CODE),
+                          account_number: get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNTING_LINE_ACCOUNT_NUMBER),
+                          object: get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNTING_LINE_OBJECT_CODE),
                           amount: '100'
                         }])
   end
