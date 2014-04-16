@@ -168,6 +168,10 @@ class BasePage < PageFactory
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
       value(:actions_taken) { |b| (b.actions_taken_table.rows.collect{ |row| row[1].text }.compact.uniq).reject{ |action| action==''} }
       element(:pnd_act_req_table) { |b| b.route_log_iframe.div(id: 'tab-PendingActionRequests-div').table }
+      value(:pnd_act_req_table_action) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:action)] }
+      value(:pnd_act_req_table_requested_of) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:requested_of)] }
+      value(:pnd_act_req_table_time_date) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:time_date)] }
+      value(:pnd_act_req_table_annotation) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:annotation)] }
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
       action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
