@@ -21,7 +21,7 @@ class GeneralLedgerPendingEntryLookupPage < Lookups
   element(:reference_document_number) { |b| b.frm.text_field(name: 'referenceFinancialDocumentNumber') }
 
   element(:pending_entry_approved) { |b| b.frm.radio(id: 'documentHeader.financialDocumentStatusCodeApproved') }
-  element(:pending_entry_all) { |b| b.frm.radio(id: 'documentHeader.financialDocumentStatusCodeApproved') }
+  element(:pending_entry_all) { |b| b.frm.radio(id: 'documentHeader.financialDocumentStatusCodeAll') }
 
   action(:search_fiscal_year) { |b| b.frm.button(title: 'Search Fiscal Year').click }
   action(:search_ledger_document_type) { |b| b.frm.button(title: 'Search Ledger Document Type').click }

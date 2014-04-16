@@ -39,7 +39,7 @@ class VendorObject < KFSDataObject
         supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT'),
+        note_text:                  random_alphanums(20, 'AFT')
     }
     set_options(defaults.merge(opts))
   end
@@ -53,7 +53,7 @@ class VendorObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      fill_out page, :description, :vendor_type, :vendor_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
+      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name, :vendor_first_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
                :ownership, :w9_received, :w9_received_date
 
       fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,

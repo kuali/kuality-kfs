@@ -14,6 +14,16 @@ class DocumentSearch < Lookups
   action(:open_doc) { |document_id, b| b.frm.link(text: document_id).click; b.use_new_tab; b.close_parents }
   action(:doc_status) { |document_id, b| b.results_table.row(text: /#{document_id}/)[3].text }
 
+  action(:wait_for_search_results) do |attempts=5, b|
+    while b.no_result_table_returned? && attempts > 0
+      # Wait a bit and check, may be having timing issues.
+      sleep 10
+      attempts -= 1
+      b.search
+    end
+    raise StandardError.new('No results returned from the document search!') if b.no_result_table_returned?
+  end
+
   #ADDED for REQ
   element(:application_document_status) { |b| b.frm.select(name: 'applicationDocumentStatus') }
 
