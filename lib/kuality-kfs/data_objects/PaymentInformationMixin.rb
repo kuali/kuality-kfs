@@ -72,6 +72,8 @@ module PaymentInformationMixin
 
       plookup.search
       plookup.return_value(@payee_id)
+    end
+
       if on(Lookups).on_a_lookup? && (on(Lookups).lookup_title == 'Vendor Address Lookup')
         on VendorAddressLookup do |valookup|
           valookup.address_1.fit @address_1 unless @address_1.nil?
@@ -87,6 +89,5 @@ module PaymentInformationMixin
         end
       end
     end
-  end
 
 end
