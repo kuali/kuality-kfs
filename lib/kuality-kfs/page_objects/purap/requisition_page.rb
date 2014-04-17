@@ -13,7 +13,7 @@ class RequisitionPage < KFSBasePage
   element(:delivery_date_required) { |b| b.frm.text_field(name: 'document.deliveryRequiredDate') }
   element(:delivery_room) { |b| b.frm.text_field(name: 'document.deliveryBuildingRoomNumber') }
   element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
-  element(:delivery_instructions) { |b| b.frm.text_field(name: 'document.deliveryInstructionText') }
+  element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
 
 #VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
