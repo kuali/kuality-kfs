@@ -13,7 +13,7 @@ class AccountDelegateModelObject < KFSDataObject
       organization_code:                    '0100',#TODO config?
       account_delegate_model_name:          random_alphanums(40, 'AFT'),
       document_type_name:                   'IB',
-      account_delegate_start_date:          '01/01/2010',
+      account_delegate_start_date:          '01/01/2010', #TODO any limitations on this date?
       account_delegate_principal_name:      'JMD11',#TODO config?
       active_indicator:                     :set,
       active:                               :set

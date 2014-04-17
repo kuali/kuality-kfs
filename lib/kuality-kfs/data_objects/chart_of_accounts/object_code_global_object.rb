@@ -24,21 +24,19 @@ class ObjectCodeGlobalObject < KFSDataObject
         object_code:             random_alphanums(2, '65'), #if object code matches data user gets an error 'This document cannot be Saved or Routed because a record with the same primary key already exists.'
         object_code_name:        'Supplies - Classroom ' + random_alphanums(10, 'AFT'),
         object_code_short_name:  'Classroom',
-        reports_to_object_code:  'E370',#TODO config?
-        object_type_code:        'EX',#TODO config?
-        level_code:              'SMAT',#TODO config?
-        cg_reporting_code:       '06SM',#TODO config?
-
-        object_sub_type_code:    'OE',
-
+        # reports_to_object_code:  'E370',#TODO config? param and delete this
+        # object_type_code:        'EX',#TODO config?
+        # level_code:              'SMAT',#TODO config?
+        # cg_reporting_code:       '06SM',#TODO config? Cornell mod?
+        # object_sub_type_code:    'OE',#TODO config? param
         financial_object_code_description: random_alphanums(30, 'AFT'),
-        budget_aggregation_code: 'O',
-        mandatory_transfer: 'N - NOT APPLICABLE',
-        federal_funded_code: 'N - Attribute Not Used at Cornell',
-        new_year_chart_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        # budget_aggregation_code: 'O',#TODO config?
+        mandatory_transfer:      'N - NOT APPLICABLE',
+        federal_funded_code:     'N - Attribute Not Used at Cornell',
+        new_year_chart_code:      get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         press: :save
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_OBJECT_CODE_GLOBAL)).merge(opts))
   end
 
   def build

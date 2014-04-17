@@ -12,7 +12,7 @@ class AccountDelegateObject < KFSDataObject
       number:               random_alphanums(7),
       doc_type_name:        'IB',
       principal_name:       get_random_principal_name_for_role('KFS-SYS', 'User'),
-      start_date:           '01/01/2014',
+      start_date:           '01/01/2014', #TODO change to be first day of current fiscal year
       press:                :save
     }
     set_options(defaults.merge(opts))

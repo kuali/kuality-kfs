@@ -20,13 +20,13 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_CHART_CODE"/>
+      <column name="PARM_NM" value="DEFAULT_CHART_CODE"/><!-- change this -->
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="IT"/>
-      <column name="PARM_DESC_TXT" value="Default chart code for automated functional testing"/>
+      <column name="VAL" value="IT"/><!-- change this -->
+      <column name="PARM_DESC_TXT" value="Default chart code for automated functional testing"/><!-- change this -->
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
     <insert tableName="KRCR_PARM_T">
@@ -278,6 +278,18 @@
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
       <column name="VAL" value="D - Department"/>
+      <column name="PARM_DESC_TXT" value="Default accounting line object code for automated functional testing"/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="DEFAULTS_FOR_OBJECT_CODE_GLOBAL"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="reports_to_object_code=E370;object_type_code=EX;level_code=SMAT;cg_reporting_code=06SM;object_sub_type_code=OE;budget_aggregation_code=O"/>
       <column name="PARM_DESC_TXT" value="Default accounting line object code for automated functional testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>

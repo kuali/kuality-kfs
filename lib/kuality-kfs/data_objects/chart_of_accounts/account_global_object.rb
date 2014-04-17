@@ -30,7 +30,7 @@ class AccountGlobalObject < KFSDataObject
         income_stream_account_number:           get_aft_parameter_value(ParameterConstants::DEFAULT_INCOME_STREAM_ACCOUNT_NUMBER),
         cfda_number:                            '',
         higher_ed_funct_code:                   '',
-        sufficient_funds_code:                  'C - Consolidation',#TODO config?
+        sufficient_funds_code:                  'C - Consolidation',
         trans_processing_sufficient_funds_code: '',
         labor_benefit_rate_category_code:       '',
         press:                                  :save

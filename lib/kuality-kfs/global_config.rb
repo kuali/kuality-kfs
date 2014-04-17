@@ -15,15 +15,30 @@ module GlobalConfig
     @@parameter_service ||= ksb_client.getParameterService()
   end
   def get_parameter_values(namespace_code, parameter_name)
+    raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
+    raise ArgumentError, 'parameter_name missing' if parameter_name.to_s == ''
+
     paramKey = ParameterKeyType.new()
     paramKey.setApplicationId('KFS')
     paramKey.setNamespaceCode(namespace_code)
     paramKey.setComponentCode('All')
     paramKey.setName(parameter_name)
+    parameter = parameter_service.getParameterValuesAsString(paramKey)
+    puts parameter
+    raise 'No parameter found for namespace_code=' + namespace_code + ' and parameter_name=' + parameter_name if parameter.nil?
+
     @@parameter_values = parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
   def get_aft_parameter_values(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)
+  end
+  def get_aft_parameter_values_as_hash(parameter_name)
+    h = {}
+    get_parameter_values('KFS-AFTEST', parameter_name).each do |kay_val_pair|
+      k,v = kay_val_pair.split('=')
+      h[k] = v
+    end
+    h
   end
   def get_aft_parameter_value(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
@@ -57,6 +72,10 @@ module GlobalConfig
     end
   end
 
+  def get_kuali_business_objects(namespace_code, object_type, identifiers)
+    get_kuali_business_object(namespace_code, object_type, identifiers)[0]
+  end
+
   def get_kuali_business_object(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
     # then login once directed to CUWA
@@ -68,9 +87,10 @@ module GlobalConfig
 
     #now lets backdoor
     agent.get($base_url + '/portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
-
+    #TODO fix
     #finally make the request to the data object page
     page = agent.get($base_url + '/dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
+    #TODO fix
 
     #pares the XML into a hash
     XmlSimple.xml_in(page.body)
