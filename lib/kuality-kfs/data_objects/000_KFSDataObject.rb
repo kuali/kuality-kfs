@@ -1,7 +1,7 @@
 class KFSDataObject < DataFactory
 
   include DateFactory
-  include StringFactory
+  include Utilities
   include GlobalConfig
 
   attr_accessor :document_id, :description, :press,
@@ -15,22 +15,29 @@ class KFSDataObject < DataFactory
     fill_out_extended_attributes
     post_create
 
-    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
-    on page_klass do |page|
+    on page_class_for(self) do |page|
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
     end
   end
 
-  def pre_create
+  def pre_create; end
+
+  def build; end
+
+  def fill_out_required_attributes
+    on page_class_for(self) do |page|
+      page.expand_all
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      fill_out page, :description
+    end
   end
 
-  def build
-  end
+  def fill_out_optional_attributes; end
 
-  def fill_out_extended_attributes(attribute_group=nil)
-  end
+  def fill_out_extended_attributes(attribute_group=nil); end
 
   def post_create
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
