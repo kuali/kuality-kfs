@@ -79,6 +79,17 @@ module Utilities
     end
   end
 
+  def yesno2setclear(value)
+    case value.to_s.upcase
+      when 'YES', 'ON'
+        :set
+      when 'NO', 'OFF'
+        :clear
+      else
+        nil
+    end
+  end
+
   private
 
   def snakify(item)

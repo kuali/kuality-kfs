@@ -43,6 +43,8 @@ class KFSDataObject < DataFactory
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
+  def absorb(target={}); end
+
   def save
     on(KFSBasePage).save
   end
