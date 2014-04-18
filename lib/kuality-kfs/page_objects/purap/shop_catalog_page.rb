@@ -11,6 +11,7 @@ class ShopCatalogPage < KFSBasePage
   action(:order_doc) { |b| eshop_frame(b).link(id: 'PHX_NAV_OrdersAndDocuments_Invoker' ).click } #there is space after search
   action(:po_doc_search) { |b| eshop_frame(b).link(id: 'PHX_NAV_DocumentSearchSearch' ).click } #there is space after search
   element(:po_id) { |b| eshop_frame(b).textarea(id: 'purchaseOrder_AdvancedSearch_PO_Document_Number-InputText') }
+  element(:date_range) { |b| eshop_frame(b).selects(name: 'DateRangeSelector') } # multiple of them
   element(:go_buttons) { |b| eshop_frame(b).buttons(value: 'Go' )} #there is space after search
   action(:po_doc_row) { |match, b| b.search_results.row(text: /#{match}/m) }
   action(:return_po_value) { |match, p| p.po_doc_row(match).link(text: match).click }
