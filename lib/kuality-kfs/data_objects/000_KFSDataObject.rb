@@ -21,6 +21,15 @@ class KFSDataObject < DataFactory
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
     end
+  rescue Watir::Exception::UnknownObjectException => uoe
+    unless uoe.message.match(/:title=>"Create a new record", :tag_name=>"a"/).nil?
+      raise ArgumentError, '"Create New" button was not found on this page. ' <<
+                           'Does the current user have the permissions necessary ' <<
+                           'for creating a document of this type?' <<
+                           "\nOriginal Exception: #{uoe}"
+    else
+      raise uoe
+    end
   end
 
   def pre_create
