@@ -38,7 +38,7 @@ class DocumentSearch < Lookups
   #selecting 'purchase_orders' the PO is different
   element(:purchase_order_numb) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
 
-  #Selecting 'requisitions' the REQ tag is different
+  #Selecting 'requisitions' the requisition#: html tag is different
   element(:requisition_num) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
 
 

@@ -1,9 +1,5 @@
 class RequisitionPage < KFSBasePage
 
-  #TEXTAREAS
-  # element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
-
-  # element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
 
 #REQUISITION DETAIL
   action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search
@@ -23,7 +19,7 @@ class RequisitionPage < KFSBasePage
 #VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
-  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).click }
+  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).when_present.click }
   alias_method :suggested_vendor_search, :vendor_name_search
 
   element(:vendor_city) { |b| b.frm.text_field(name: 'document.vendorCityName') }
@@ -171,7 +167,7 @@ class RequisitionPage < KFSBasePage
   element(:reference_3) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference3Text') }
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+  # action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
 
 end
 

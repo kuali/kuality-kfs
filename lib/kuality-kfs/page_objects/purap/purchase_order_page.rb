@@ -153,5 +153,11 @@ class PurchaseOrderPage <  KFSBasePage
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
   action(:open_purchase_order_number) { |po_num, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK', text: po_num).click; b.use_new_tab; b.close_parents }
 
+#GLPE (General Ledger Pending Entries)
+  action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+
+#ROUTE LOG
+  value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
+  value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
 
 end

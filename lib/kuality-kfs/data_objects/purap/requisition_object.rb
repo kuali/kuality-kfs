@@ -1,8 +1,6 @@
 class RequisitionObject < KFSDataObject
 
-  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-
-  attr_reader :description, :item_quantitiy, :item_catalog_number, :item_description, :item_unit_cost, :item_uom, :attachment_file_name
+  attr_reader :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name
 
   def initialize(browser, opts={})
     @browser = browser
@@ -14,7 +12,7 @@ class RequisitionObject < KFSDataObject
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
         item_uom: 'BX',
-        attachment_file_name:       'happy_path_reqs.png',
+        attachment_file_name:       'happy_path_reqs.png'
     }
 
     set_options(defaults.merge(opts))
@@ -36,18 +34,18 @@ class RequisitionObject < KFSDataObject
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
 
-      #wait? for balance Perform Balance Inquiry for added Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
       @requisition_id = page.requisition_id
+
       #FOR DEBUGGING
       puts 'is the req number'
       puts @requisition_id
-      puts 'was the req number'
+      puts 'is the Doc ID number'
       puts @document_id
 
-      #After successful submit the req gets a number
+      #Requisition number is created only after a successful submit
     end
   end
 
@@ -59,7 +57,7 @@ class RequisitionObject < KFSDataObject
     end
 
     on RequisitionPage do |page|
-
+       #edit something
     end
     update_options(opts)
   end
@@ -69,6 +67,7 @@ class RequisitionObject < KFSDataObject
       page.suggested_vendor_search
 
       on VendorLookupPage do |page|
+        page.vendor_number.wait_until_present
         page.vendor_number.fit vendor_num
         page.search
         page.return_value(vendor_num)
