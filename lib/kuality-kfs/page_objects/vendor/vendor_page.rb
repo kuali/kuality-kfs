@@ -56,4 +56,19 @@ class VendorPage < KFSBasePage
 
   element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
 
+  # Search Alias
+  action(:add_search_alias) { |b| b.frm.button(id: 'methodToCall.addLine.vendorAliases.(!!org.kuali.kfs.vnd.businessobject.VendorAlias!!)').click }
+  action(:delete_search_alias) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').button(id: "methodToCall.deleteLine.vendorAliases.(!!.line#{i}").click }
+  action(:search_alias_active) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').checkbox(id: "document.newMaintainableObject.vendorAliases[#{i}].active").value }
+  action(:search_alias_name) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').span(id: "document.newMaintainableObject.vendorAliases[#{i}].vendorAliasName.div").text.strip }
+  element(:new_search_alias_active) { |b| b.frm.checkbox(id: 'document.newMaintainableObject.add.vendorAliases.active') }
+  element(:new_search_alias_name) { |b| b.frm.text_field(id: 'document.newMaintainableObject.add.vendorAliases.vendorAliasName') }
+  action(:pull_existing_search_alias) do |i, b|
+    {
+      name:   b.search_alias_name(i),
+      active: yesno2setclear(b.search_alias_active(i))
+    }
+  end
+  value(:current_search_alias_count) { |b| b.frm.div(id: 'tab-SearchAlias-div').spans(class: 'left', text: /Search Alias/m).length - 1 }
+
 end

@@ -13,7 +13,8 @@ class VendorObject < KFSDataObject
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
                 :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1,
-                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext
+                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext,
+                :search_aliases
 
   def initialize(browser, opts={})
     @browser = browser
@@ -39,7 +40,8 @@ class VendorObject < KFSDataObject
         supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT')
+        note_text:                  random_alphanums(20, 'AFT'),
+        search_aliases:             collection('SearchAliasLineObject')
     }
     set_options(defaults.merge(opts))
   end
