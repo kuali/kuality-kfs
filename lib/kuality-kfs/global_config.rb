@@ -23,10 +23,6 @@ module GlobalConfig
     paramKey.setNamespaceCode(namespace_code)
     paramKey.setComponentCode('All')
     paramKey.setName(parameter_name)
-    parameter = parameter_service.getParameterValuesAsString(paramKey)
-    puts parameter
-    raise 'No parameter found for namespace_code=' + namespace_code + ' and parameter_name=' + parameter_name if parameter.nil?
-
     @@parameter_values = parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
   def get_aft_parameter_values(parameter_name)
@@ -73,10 +69,6 @@ module GlobalConfig
   end
 
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
-    get_kuali_business_object(namespace_code, object_type, identifiers)[0]
-  end
-
-  def get_kuali_business_object(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
     # then login once directed to CUWA
     agent = Mechanize.new
@@ -86,18 +78,48 @@ module GlobalConfig
     perform_university_login(page)
 
     #now lets backdoor
-    agent.get($base_url + '/portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
+    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
     #TODO fix
     #finally make the request to the data object page
-    page = agent.get($base_url + '/dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
+    page = agent.get($base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
     #TODO fix
 
     #pares the XML into a hash
     XmlSimple.xml_in(page.body)
   end
 
+  def get_kuali_business_object(namespace_code, object_type, identifiers)
+    business_objects = get_kuali_business_objects(namespace_code, object_type, identifiers)
+    if business_objects.size > 1
+      business_objects
+    else
+      business_objects.values[0].sample
+    end
+  end
+
   def perform_university_login(page)
     #do nothing - override this in the university project
+  end
+
+  def get_generic_address_1()
+    "#{rand(1..9999)} Evergreen Terrace"
+  end
+  def get_generic_address_2()
+    "Room #{rand(1..999)}"
+  end
+  def get_generic_address_3()
+    'Attn: John Doe Faculty'
+  end
+  def get_generic_city()
+    random_letters(10)
+  end
+  def get_random_state_code()
+    state = get_kuali_business_object('KR-NS','State','countryCode=US')
+    account_info['code']
+  end
+  def get_random_postal_code(state)
+    state = get_kuali_business_object('KR-NS','PostalCode',"stateCode=NY")
+    account_info['code']
   end
 end
 

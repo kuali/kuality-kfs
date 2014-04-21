@@ -56,54 +56,6 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_CAMPUS_POSTAL_CODE"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="14853"/>
-      <column name="PARM_DESC_TXT" value="Default campus postal code for automated functional testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_CAMPUS_CITY"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="Ithaca"/>
-      <column name="PARM_DESC_TXT" value="Default campus city for automated functional testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_CAMPUS_ADDRESS_1"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="Address Line 1"/>
-      <column name="PARM_DESC_TXT" value="Default campus address 1 for automated functional testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_CAMPUS_ADDRESS_2"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="Address Line 2"/>
-      <column name="PARM_DESC_TXT" value="Default campus address 2 for automated functional testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="DEFAULT_CAMPUS_TYPE_CODE"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
