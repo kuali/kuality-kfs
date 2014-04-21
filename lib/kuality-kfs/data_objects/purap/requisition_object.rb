@@ -1,6 +1,6 @@
 class RequisitionObject < KFSDataObject
 
-  attr_reader :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name
+  attr_reader :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone
 
   def initialize(browser, opts={})
     @browser = browser
@@ -12,7 +12,9 @@ class RequisitionObject < KFSDataObject
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
         item_uom: 'BX',
-        attachment_file_name:       'happy_path_reqs.png'
+        attachment_file_name:       'happy_path_reqs.png',
+        building_address: 'random',
+        requestor_phone: rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s
     }
 
     set_options(defaults.merge(opts))
@@ -25,6 +27,8 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
+      add_random_building_address(page) if building_address == 'random'
+
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
       page.item_add
@@ -34,17 +38,11 @@ class RequisitionObject < KFSDataObject
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
 
+      page.requestor_phone.fit @requestor_phone
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
-      @requisition_id = page.requisition_id
-
-      #FOR DEBUGGING
-      puts 'is the req number'
-      puts @requisition_id
-      puts 'is the Doc ID number'
-      puts @document_id
-
+      # @requisition_id = page.requisition_id
       #Requisition number is created only after a successful submit
     end
   end
@@ -75,5 +73,17 @@ class RequisitionObject < KFSDataObject
     end
   end
 
+  def add_random_building_address(page)
+    page.building_search
+    on BuildingLookupPage do |page|
+      page.search
+      page.return_random
+    end
+    page.room_search
+    on RoomLookupPage do |page|
+      page.search
+      page.return_random
+    end
+  end
 
 end #class

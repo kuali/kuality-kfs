@@ -16,6 +16,9 @@ class RequisitionPage < KFSBasePage
   element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
   element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
 
+  action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
+  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
+
 #VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
