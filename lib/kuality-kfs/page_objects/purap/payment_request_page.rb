@@ -9,4 +9,11 @@ class PaymentRequestPage < KFSBasePage
   # TODO : there should have a purap page for shared purap page element.
   action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
 
+  # Tax Tab
+  element(:income_class_code) { |b| b.frm.select(id: 'document.taxClassificationCode') }
+  element(:federal_tax_pct) { |b| b.frm.text_field(id: 'document.taxFederalPercent') }
+  element(:state_tax_pct) { |b| b.frm.text_field(id: 'document.taxStatePercent') }
+  element(:postal_country_code) { |b| b.frm.select(id: 'document.taxCountryCode') }
+
+
 end
