@@ -5,8 +5,7 @@ class KFSDataObject < DataFactory
   include GlobalConfig
 
   attr_accessor :document_id, :description, :press,
-                :notes_and_attachments_tab
-
+                :notes_and_attachments_tab, :required_attributes, :default_attributes
 
   # Hooks:
   def create
@@ -15,7 +14,7 @@ class KFSDataObject < DataFactory
     fill_out_extended_attributes
     post_create
 
-    on page_class_for(self) do |page|
+    on page_class_for(self.class.to_s) do |page|
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
@@ -27,7 +26,7 @@ class KFSDataObject < DataFactory
   def build; end
 
   def fill_out_required_attributes
-    on page_class_for(self) do |page|
+    on page_class_for(self.class.to_s) do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...

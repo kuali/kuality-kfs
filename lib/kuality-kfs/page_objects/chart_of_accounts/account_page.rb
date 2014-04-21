@@ -26,7 +26,6 @@ class AccountPage < KFSBasePage
   element(:continuation_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.continuationFinChrtOfAcctCd') }
   element(:continuation_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.continuationAccountNumber') }
   element(:account_expiration_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountExpirationDate') }
-  element(:labor_benefit_rate_cat_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.laborBenefitRateCategoryCode') }
 
   element(:income_stream_financial_cost_code) { |b| b.frm.select(name: 'document.newMaintainableObject.incomeStreamFinancialCoaCode') }
   element(:income_stream_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.incomeStreamAccountNumber') }
@@ -64,14 +63,13 @@ class AccountPage < KFSBasePage
       purpose_text:              b.frm.span(id: 'document.oldMaintainableObject.accountGuideline.accountPurposeText.div').text.strip,
       income_stream_financial_cost_code: b.frm.span(id: 'document.oldMaintainableObject.incomeStreamFinancialCoaCode.div').text.strip,
       income_stream_account_number:      b.frm.span(id: 'document.oldMaintainableObject.incomeStreamAccountNumber.div').text.strip,
-      labor_benefit_rate_cat_code:       b.frm.span(id: 'document.oldMaintainableObject.laborBenefitRateCategoryCode.div').text.strip,
       account_expiration_date:           b.frm.span(id: 'document.oldMaintainableObject.accountExpirationDate.div').text.strip,
       # TODO: Make the next few lines grab every line of the ICRA data once we create a collection for ICRA data
       indirect_cost_recovery_chart_of_accounts_code: b.frm.span(id: 'document.oldMaintainableObject.indirectCostRecoveryAccounts[0].indirectCostRecoveryFinCoaCode.div').text.strip,
       indirect_cost_recovery_account_number:         b.frm.span(id: 'document.oldMaintainableObject.indirectCostRecoveryAccounts[0].indirectCostRecoveryAccountNumber.div').text.strip,
       indirect_cost_recovery_account_line_percent:   b.frm.span(id: 'document.oldMaintainableObject.indirectCostRecoveryAccounts[0].accountLinePercent.div').text.strip,
       indirect_cost_recovery_active_indicator:       yesno2setclear(b.frm.span(id: 'document.oldMaintainableObject.indirectCostRecoveryAccounts[0].active.div').text.strip)
-    }
+    }.merge(b.respond_to?(:original_account_extended_data) ? b.original_account_extended_data : Hash.new)
   end
   value(:new_account_data) do |b|
     {
@@ -99,14 +97,13 @@ class AccountPage < KFSBasePage
         purpose_text:              b.purpose_text.value,
         income_stream_financial_cost_code: b.income_stream_financial_cost_code.selected_options.first.text,
         income_stream_account_number:      b.income_stream_account_number.value,
-        labor_benefit_rate_cat_code:       b.labor_benefit_rate_cat_code.value,
         account_expiration_date:           b.account_expiration_date.value,
         # TODO: Make the next few lines grab every line of the ICRA data once we create a collection for ICRA data
         indirect_cost_recovery_chart_of_accounts_code: b.frm.select(name: 'document.newMaintainableObject.indirectCostRecoveryAccounts[0].indirectCostRecoveryFinCoaCode').selected_options.first.text,
         indirect_cost_recovery_account_number:         b.frm.text_field(name: 'document.newMaintainableObject.indirectCostRecoveryAccounts[0].indirectCostRecoveryAccountNumber').value,
         indirect_cost_recovery_account_line_percent:   b.frm.text_field(name: 'document.newMaintainableObject.indirectCostRecoveryAccounts[0].accountLinePercent').value,
         indirect_cost_recovery_active_indicator:       yesno2setclear(b.frm.checkbox(name: 'document.newMaintainableObject.indirectCostRecoveryAccounts[0].active').value)
-    }
+    }.merge(b.respond_to?(:new_account_extended_data) ? b.new_account_extended_data : Hash.new)
   end
 
   value(:account_maintenance_errors) { |b| b.frm.div(id: 'tab-AccountMaintenance-div').div(class: 'left-errmsg-tab').div.divs.collect{ |div| div.text }  }

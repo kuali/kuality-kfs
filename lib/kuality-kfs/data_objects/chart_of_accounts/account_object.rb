@@ -6,11 +6,25 @@ class AccountObject < KFSDataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_code, :sufficient_funds_code,
                 :expense_guideline_text, :income_guideline_text, :purpose_text,
-                :income_stream_financial_cost_code, :income_stream_account_number, :labor_benefit_rate_cat_code, :account_expiration_date,
+                :income_stream_financial_cost_code, :income_stream_account_number, :account_expiration_date,
                 :indirect_cost_recovery_chart_of_accounts_code, :indirect_cost_recovery_account_number, :indirect_cost_recovery_account_line_percent,
                 :indirect_cost_recovery_active_indicator
 
-                    def initialize(browser, opts={})
+  def required_attributes
+    @required_attributes ||= [:description, :chart_code, :number, :name, :organization_code,
+                              :campus_code, :effective_date, :account_expiration_date,
+                              :postal_code, :city, :state, :address,
+                              :type_code, :sub_fund_group_code, :higher_ed_funct_code, :restricted_status_code,
+                              :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
+                              :budget_record_level_code, :sufficient_funds_code,
+                              :expense_guideline_text, :income_guideline_text, :purpose_text]
+  end
+
+  def default_attributes
+    @default_attributes ||= [:description]
+  end
+
+  def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
@@ -39,7 +53,6 @@ class AccountObject < KFSDataObject
         purpose_text:                      'purpose text',
         income_stream_financial_cost_code: 'IT - Ithaca Campus',
         income_stream_account_number:      '1000710',
-        labor_benefit_rate_cat_code:       'CC',
         account_expiration_date:           '',
         press:                             :save
     }

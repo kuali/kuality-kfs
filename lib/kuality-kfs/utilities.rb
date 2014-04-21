@@ -37,7 +37,7 @@ module Utilities
   end
 
   def page_class_for(document)
-    Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Page")
+    Kernel.const_get("#{snake_case(document).to_s.gsub(/[oO]bject/, '').split('_').map(&:capitalize).join('')}Page")
   end
 
   def random_percentage
