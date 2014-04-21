@@ -27,9 +27,9 @@ class KFSDataObject < DataFactory
                            'Does the current user have the permissions necessary ' <<
                            'for creating a document of this type?' <<
                            "\nOriginal Exception: #{uoe}"
-    else
-      raise uoe
     end
+
+    raise uoe
   end
 
   def pre_create
@@ -89,7 +89,7 @@ class KFSDataObject < DataFactory
     visit(MainPage).doc_search
     on DocumentSearch do |search|
       search.document_type.fit ''
-      search.document_id.fit @document_id
+      search.document_id.fit   @document_id
       search.search
       search.wait_for_search_results
       search.open_doc @document_id
