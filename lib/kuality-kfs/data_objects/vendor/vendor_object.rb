@@ -16,11 +16,9 @@ class VendorObject < KFSDataObject
                 :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext,
                 :search_aliases
 
-  def initialize(browser, opts={})
-    @browser = browser
-
-    defaults = {
-        description:                random_alphanums(40, 'AFT'),
+  def defaults
+    super.merge(
+    {
         vendor_type:                'PO - PURCHASE ORDER',
         vendor_name:                'Keith, inc',
         foreign:                    'No',
@@ -42,8 +40,7 @@ class VendorObject < KFSDataObject
         attachment_file_name:       'vendor_attachment_test.png',
         note_text:                  random_alphanums(20, 'AFT'),
         search_aliases:             collection('SearchAliasLineObject')
-    }
-    set_options(defaults.merge(opts))
+    })
   end
 
   def build

@@ -7,8 +7,19 @@ class KFSDataObject < DataFactory
   attr_accessor :document_id, :description, :press,
                 :notes_and_attachments_tab
 
-
   # Hooks:
+  def defaults
+    {
+      description:                random_alphanums(40, 'AFT'),
+      notes_and_attachments_tab:  collection('NotesAndAttachmentsLineObject')
+    }
+  end
+
+  def initialize(browser, opts={})
+    @browser = browser
+    set_options(defaults.merge(opts))
+  end
+
   def create
     pre_create
     build

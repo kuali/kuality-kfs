@@ -97,3 +97,15 @@ class Array
   end
 end
 
+class Object
+  # Convenience shorthand method for comparing against false, similar to #nil?
+  def false?
+    self == false
+  end
+
+  # Convenience shorthand method for comparing against true, similar to #nil?
+  def true?
+    self == true
+  end
+end
+
