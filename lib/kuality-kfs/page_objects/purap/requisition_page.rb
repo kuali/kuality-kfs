@@ -149,6 +149,7 @@ class RequisitionPage < KFSBasePage
   element(:system_state) { |b| b.frm.select(name: 'document.capitalAssetSystemStateCode') }
 
 #PAYMENT INFO
+  element(:recurring_payment_type) { |b| b.frm.select(name: 'document.recurringPaymentTypeCode') }
   element(:payment_from_date) { |b| b.frm.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:payment_to_date) { |b| b.frm.text_field(name: 'document.purchaseOrderEndDate') }
 
