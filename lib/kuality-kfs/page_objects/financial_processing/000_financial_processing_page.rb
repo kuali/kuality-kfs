@@ -1,5 +1,13 @@
 class FinancialProcessingPage < KFSBasePage
 
+  action(:update_account_search) do |i=0, b|
+    regex = "methodToCall.performLookup.\\(!!org.kuali.kfs.coa.businessobject.Account!!\\)" <<
+            ".\\(\\(\\(chartOfAccountsCode:document.sourceAccountingLine\\[#{i}\\]." <<
+            "chartOfAccountsCode,accountNumber:document.sourceAccountingLine\\[#{i}\\]" <<
+            ".accountNumber\\)\\)\\)"
+    b.frm.button(name: /#{regex}/m).click
+  end
+
   class << self
 
     def financial_document_detail
