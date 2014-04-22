@@ -3,6 +3,7 @@ class DisbursementVoucherObject < KFSDataObject
   include PaymentInformationMixin
   include AccountingLinesMixin
   alias :add_target_line :add_source_line
+  alias :import_target_lines :import_source_lines
 
   DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
 

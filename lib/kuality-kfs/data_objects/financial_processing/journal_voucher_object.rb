@@ -1,7 +1,8 @@
 class JournalVoucherObject < KFSDataObject
 
   include VoucherLinesMixin
-  alias add_target_line add_source_line
+  alias :add_target_line :add_source_line
+  alias :import_target_lines :import_source_lines
 
   DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
 

@@ -2,6 +2,7 @@ class MaintenanceObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
   attr_accessor :document_id, :description, :press
 

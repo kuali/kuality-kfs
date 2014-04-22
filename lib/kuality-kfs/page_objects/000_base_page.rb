@@ -1,6 +1,7 @@
 class BasePage < PageFactory
 
   include Utilities
+  include GlobalConfig
 
   # These constants can be used with switches to add modularity to object create methods.
   KNOWN_BUTTONS = {
@@ -15,7 +16,8 @@ class BasePage < PageFactory
     disapprove:        'disapprove',
     send_notification: 'send notification',
     recall:            'Recall current document',
-    error_correction:  'error correction'
+    error_correction:  'error correction',
+    fyi:           'fyi'
   }
 
   def self.available_buttons
@@ -46,7 +48,7 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: 'headerarea').h1.text }
+      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
       element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
@@ -71,7 +73,7 @@ class BasePage < PageFactory
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
@@ -144,6 +146,9 @@ class BasePage < PageFactory
     def notes_and_attachments
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      action(:delete_note) { |l=0,b| b.frm.button(name: "methodToCall.deleteBONote.line#{l}").click }
+      action(:send_note_fyi) { |l=0,b| b.frm.button(name: "methodToCall.sendNoteWorkflowNotification.line#{l}").click }
+      action(:notification_recipient) { |l=0,b| b.frm.text_field(id: "document.note[#{l}].adHocRouteRecipient.id") }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
@@ -153,6 +158,8 @@ class BasePage < PageFactory
       element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
       element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
       element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
+      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      action(:download_file) { |l=0, b| b.download_file(l).click }
 
     end
 
