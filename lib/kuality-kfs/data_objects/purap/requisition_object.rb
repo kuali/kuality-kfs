@@ -1,8 +1,6 @@
 class RequisitionObject < KFSDataObject
 
-  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-
-  attr_reader :description, :item_quantitiy, :item_catalog_number, :item_description, :item_unit_cost, :item_uom, :attachment_file_name
+  attr_reader :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone
 
   def initialize(browser, opts={})
     @browser = browser
@@ -14,7 +12,9 @@ class RequisitionObject < KFSDataObject
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
         item_uom: 'BX',
-        attachment_file_name:       'happy_path_reqs.png'
+        attachment_file_name:       'happy_path_reqs.png',
+        building_address: 'random',
+        requestor_phone: rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s
     }
 
     set_options(defaults.merge(opts))
@@ -27,6 +27,8 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
+      add_random_building_address(page) if building_address == 'random'
+
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
       page.item_add
@@ -36,39 +38,53 @@ class RequisitionObject < KFSDataObject
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
 
-      #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
+      page.requestor_phone.fit @requestor_phone
       page.balance_inquiry_button.wait_until_present
       page.calculate
 
-      @requisition_number = page.requisition_number
-      #FOR DEBUGGING
-      # puts 'is the req number'
-      # puts @requisition_number
-      # puts 'was the req number'
-      # puts @document_id
+      #@requisition_number = page.requisition_number
+      # @requisition_id = page.requisition_id
+      #Requisition number is created only after a successful submit
+    end
+  end
 
+
+  def edit opts={}
+    visit(MainPage).requisitions
+    on DocumentSearch do |page|
+      page.document_id
     end
 
+    on RequisitionPage do |page|
+       #edit something
+    end
+    update_options(opts)
   end
-  #
-  #And I create the Requisition document with:
-  #| positive approval | :clear   |
-  #| vendor            | 4471-0   |
-  #| e-shop flags      | :clear   |
-  #
-  #| item number       | 9.9      |
-  #
-  #| item quanity      | 1000     |
-  #
-  #| item name         | Dog Food |
-  #|
-  #item account      | 10121800 |
-  #
-  #
-  #| account number    | 1093603  |
-  #| object code       | 6540     |
-  #| percent           | 100      |
-  #| button            | calculate|
 
+  def add_vendor_to_req(vendor_num)
+    on RequisitionPage do |page|
+      page.suggested_vendor_search
+
+      on VendorLookupPage do |page|
+        page.vendor_number.wait_until_present
+        page.vendor_number.fit vendor_num
+        page.search
+        page.return_value(vendor_num)
+      end
+    end
+  end
+
+  def add_random_building_address(page)
+    page.building_search
+    on BuildingLookupPage do |page|
+      page.search
+      page.return_random
+    end
+    page.room_search
+    on RoomLookupPage do |page|
+      page.search
+      page.return_random
+    end
+  end
 
 end #class
