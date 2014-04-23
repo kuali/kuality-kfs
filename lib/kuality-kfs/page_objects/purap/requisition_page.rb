@@ -13,12 +13,16 @@ class RequisitionPage < KFSBasePage
   element(:delivery_date_required) { |b| b.frm.text_field(name: 'document.deliveryRequiredDate') }
   element(:delivery_room) { |b| b.frm.text_field(name: 'document.deliveryBuildingRoomNumber') }
   element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
-  element(:delivery_instructions) { |b| b.frm.text_field(name: 'document.deliveryInstructionText') }
+  element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
+
+  action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
+  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
 
 #VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
-  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/)}
+  action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).when_present.click }
+  alias_method :suggested_vendor_search, :vendor_name_search
 
   element(:vendor_city) { |b| b.frm.text_field(name: 'document.vendorCityName') }
   element(:vendor_state) { |b| b.frm.text_field(name: 'document.vendorStateCode') }
@@ -149,6 +153,7 @@ class RequisitionPage < KFSBasePage
   element(:system_state) { |b| b.frm.select(name: 'document.capitalAssetSystemStateCode') }
 
 #PAYMENT INFO
+  element(:recurring_payment_type) { |b| b.frm.select(name: 'document.recurringPaymentTypeCode') }
   element(:payment_from_date) { |b| b.frm.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:payment_to_date) { |b| b.frm.text_field(name: 'document.purchaseOrderEndDate') }
 
@@ -165,9 +170,9 @@ class RequisitionPage < KFSBasePage
   element(:reference_3) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference3Text') }
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+  #action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
 
-#VIEW RELATED DOCUMENTS
+  #VIEW RELATED DOCUMENTS
   action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
   alias_method :show_view_related_documents, :show_related_documents
   action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
