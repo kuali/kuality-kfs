@@ -2,7 +2,7 @@ class RequisitionObject < KFSDataObject
 
   #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
 
-  attr_accessor :description, :item_quantity, :item_catalog_number, :item_description, :item_unit_cost, :item_uom, :attachment_file_name,
+  attr_accessor :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
                 :delivery_instructions, :vendor_notes
 
   def initialize(browser, opts={})
@@ -15,7 +15,7 @@ class RequisitionObject < KFSDataObject
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
         item_uom: 'BX',
-        attachment_file_name:       'happy_path_reqs.png'
+        attachment_file_name:       'happy_path_reqs.png',
     }
 
     set_options(defaults.merge(opts))

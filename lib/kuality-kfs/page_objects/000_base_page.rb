@@ -147,6 +147,11 @@ class BasePage < PageFactory
 
     end
 
+    def general_ledger_pending_entries
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+
+    end
+
     def notes_and_attachments
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
