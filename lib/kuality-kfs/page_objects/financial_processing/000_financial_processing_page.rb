@@ -215,7 +215,9 @@ class FinancialProcessingPage < KFSBasePage
       #on advanced deposit and general error correction
     end
 
-
+    def general_ledger_pending_entries
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+    end
 
     def ad_hoc_recipients
       element(:ad_hoc_person) { |b| b.frm.text_field(name: 'newAdHocRoutePerson.id') }

@@ -56,5 +56,4 @@ class ObjectCodeGlobalObject < KFSDataObject
     end
   end
 
-
 end #class
