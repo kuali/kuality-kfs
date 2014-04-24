@@ -20,11 +20,4 @@ class CreditCardReceiptPage < FinancialProcessingPage
     element(:receipt_amount) { |b| b.frm.text_field(name: 'newCreditCardReceipt.creditCardAdvanceDepositAmount') }
     action(:add_a_credit_card_receipt) { |b| b.frm.button(title: 'Add a Credit Card Receipt').click }
 
-
-
-    #general_ledger_pending_entries
-
-
-
-
   end

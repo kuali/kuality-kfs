@@ -57,6 +57,9 @@ class BasePage < PageFactory
       alias_method :disposition, :initiator
       value(:last_updated) {|p| p.headerinfo_table[1][3].text }
       alias_method :created, :last_updated
+      value(:requisition_id) { |p| p.headerinfo_table[2][1].text }
+      value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
+      alias_method :po_doc_status, :requisition_status
     end
 
     def description_field
@@ -73,7 +76,7 @@ class BasePage < PageFactory
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi', 'Calculate'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
@@ -143,6 +146,11 @@ class BasePage < PageFactory
 
     end
 
+    def general_ledger_pending_entries
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+      action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+    end
+
     def notes_and_attachments
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
@@ -172,6 +180,10 @@ class BasePage < PageFactory
       action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+
+      action(:pending_action_annotation) { |i=0, b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[(1+(i*2))][4].text }
+      value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
+      value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
