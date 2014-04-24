@@ -144,7 +144,21 @@ class PurchaseOrderPage <  KFSBasePage
   element(:institution_contact_email_address) { |b| b.text_field(name: 'document.institutionContactEmailAddress') }
   element(:pp_total_cannot_exceed) { |b| b.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  # TODO : there should have a purap page for shared purap page element.
-  action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+
+#VIEW RELATED DOCUMENTS
+  action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
+  alias_method :show_view_related_documents, :show_related_documents
+  action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
+
+  value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
+  action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
+  action(:open_purchase_order_number) { |po_num, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK', text: po_num).click; b.use_new_tab; b.close_parents }
+
+#GLPE (General Ledger Pending Entries)
+  action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+
+#ROUTE LOG
+  value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
+  value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
 
 end

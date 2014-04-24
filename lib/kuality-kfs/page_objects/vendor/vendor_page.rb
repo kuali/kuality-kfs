@@ -1,7 +1,5 @@
 class VendorPage < KFSBasePage
 
-  #notes_and_attachments
-
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorName') }
   element(:vendor_last_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorLastName') }
   element(:vendor_first_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorFirstName') }

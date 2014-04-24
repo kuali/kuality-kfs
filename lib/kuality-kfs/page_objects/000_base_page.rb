@@ -48,7 +48,7 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: 'headerarea').h1.text }
+      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
       element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
@@ -57,8 +57,9 @@ class BasePage < PageFactory
       alias_method :disposition, :initiator
       value(:last_updated) {|p| p.headerinfo_table[1][3].text }
       alias_method :created, :last_updated
-      value(:requisition_number) { |p| p.headerinfo_table[2][1].text }
+      value(:requisition_id) { |p| p.headerinfo_table[2][1].text }
       value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
+      alias_method :po_doc_status, :requisition_status
       value(:po_number) { |p| p.headerinfo_table[2][1].text }
       value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
     end
@@ -77,7 +78,7 @@ class BasePage < PageFactory
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi', 'Calculate'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
@@ -147,6 +148,11 @@ class BasePage < PageFactory
 
     end
 
+    def general_ledger_pending_entries
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+
+    end
+
     def notes_and_attachments
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
@@ -165,7 +171,6 @@ class BasePage < PageFactory
       element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
       action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
       action(:download_file) { |l=0, b| b.download_file(l).click }
-
     end
 
     def route_log
