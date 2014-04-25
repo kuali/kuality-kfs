@@ -1,6 +1,7 @@
 class RequisitionPage < KFSBasePage
 
-  #REQUISITION DETAIL
+
+#REQUISITION DETAIL
   action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search
   element(:payment_request_positive_approval_required) { |b| b.frm.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
   #value(:account_distribution_method) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').td(text: 'Proportional')}
@@ -14,10 +15,11 @@ class RequisitionPage < KFSBasePage
   element(:delivery_room) { |b| b.frm.text_field(name: 'document.deliveryBuildingRoomNumber') }
   element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
   element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
+
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
   action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
 
-  #VENDOR
+#VENDOR
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
   action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).when_present.click }
@@ -49,7 +51,7 @@ class RequisitionPage < KFSBasePage
   element(:vendor_name_4) { |b| b.frm.text_field(name: 'document.alternate4VendorName') }
   element(:vendor_name_5) { |b| b.frm.text_field(name: 'document.alternate5VendorName') }
 
-  #VENDOR - ADD ITEM
+#VENDOR - ADD ITEM
   element(:item_type) { |b| b.frm.select(name: 'newPurchasingItemLine.itemTypeCode') }
 
   element(:item_quantity) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemQuantity') }
@@ -71,8 +73,7 @@ class RequisitionPage < KFSBasePage
   action(:item_add) { |b| b.frm.button(title: 'Add an Item').click }
 
   action(:show_item_accounting_lines) { |b| b.frm.table(class: 'datatable', summary: 'Items Section').div(text: 'Accounting Lines').button(alt: 'show').click }
-
-  #ITEM ACCOUNTING LINES
+#ITEM ACCOUNTING LINES
   action(:item_account_number) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
   action(:item_sub_account) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.subAccountNumber") }
   action(:item_object) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.financialObjectCode") }
@@ -85,8 +86,7 @@ class RequisitionPage < KFSBasePage
   action(:item_amount) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.amount") }
   action(:item_add_account_line) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').button(name: "methodToCall.insertSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
   element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
-
-  #FREIGHT TODO: Make a FrieghtLineObject, etc.
+#FREIGHT
   element(:freight_description) { |b| b.frm.textarea(name: 'document.item[0].itemDescription') }
   element(:freight_cost) { |b| b.frm.text_field(name: 'document.item[0].itemUnitPrice') }
   element(:freight_chart) { |b| b.frm.select(name: 'document.item[1].newSourceLine.chartOfAccountsCode') }
@@ -102,7 +102,7 @@ class RequisitionPage < KFSBasePage
   element(:freight_amount) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.amount') }
   action(:freight_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line0.anchoraccountingSourceAnchor').click }
 
-  #TRADE IN TODO: Make a TradeInLineObject, etc.
+#TRADE IN
   element(:trade_in_description) { |b| b.frm.textarea(name: 'document.item[1].itemDescription') }
   element(:trade_in_cost) { |b| b.frm.text_field(name: 'document.item[1].itemUnitPrice') }
 
@@ -120,7 +120,7 @@ class RequisitionPage < KFSBasePage
   element(:trade_in_amount) { |b| b.frm.text_field(name: 'document.item[1].newSourceLine.amount') }
   action(:trade_in_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line1.anchoraccountingSourceAnchor').click }
 
-  #FULL ORDER DISCOUNT TODO: Make a FullOrderDiscountLineObject, etc.
+#FULL ORDER DISCOUNT
   element(:full_order_description) { |b| b.frm.textarea(name: 'document.item[2].itemDescription') }
   element(:full_order_cost) { |b| b.frm.text_field(name: 'document.item[2].itemUnitPrice') }
 
@@ -135,7 +135,7 @@ class RequisitionPage < KFSBasePage
   element(:full_order_amount) { |b| b.frm.text_field(name: 'document.item[2].newSourceLine.amount') }
   action(:full_order_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line2.anchoraccountingSourceAnchor').click }
 
-  #MISCELLANEOUS TODO: Make a MiscellaneousLineObject, etc.
+#MISCELLANEOUS
   element(:misc_description) { |b| b.frm.textarea(name: 'document.item[3].itemDescription') }
   element(:misc_cost) { |b| b.frm.text_field(name: 'document.item[3].itemUnitPrice') }
   element(:misc_account_number) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.accountNumber') }
@@ -149,16 +149,16 @@ class RequisitionPage < KFSBasePage
   element(:misc_percent) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.accountLinePercent') }
   element(:misc_amount) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.amount') }
 
-  #CAPITAL ASSET
+#CAPITAL ASSET
   element(:system_type) { |b| b.frm.select(name: 'document.capitalAssetSystemTypeCode') }
   element(:system_state) { |b| b.frm.select(name: 'document.capitalAssetSystemStateCode') }
 
-  #PAYMENT INFO
+#PAYMENT INFO
   element(:recurring_payment_type) { |b| b.frm.select(name: 'document.recurringPaymentTypeCode') }
   element(:payment_from_date) { |b| b.frm.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:payment_to_date) { |b| b.frm.text_field(name: 'document.purchaseOrderEndDate') }
 
-  #ADDITION INFO
+#ADDITION INFO
   element(:method_of_po_transmission) { |b| b.frm.select(name: 'document.purchaseOrderTransmissionMethodCode') }
   element(:requestor_name) { |b| b.frm.text_field(name: 'document.requestorPersonName') }
   element(:requestor_phone) { |b| b.frm.text_field(name: 'document.requestorPersonPhoneNumber') }
@@ -170,6 +170,17 @@ class RequisitionPage < KFSBasePage
   element(:reference_2) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference2Text') }
   element(:reference_3) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference3Text') }
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
+
+  # action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+
+  #VIEW RELATED DOCUMENTS
+  action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
+  alias_method :show_view_related_documents, :show_related_documents
+  action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
+
+  value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
+  value(:po_unapprove) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s[1].font.text }
+  action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
 
 end
 
