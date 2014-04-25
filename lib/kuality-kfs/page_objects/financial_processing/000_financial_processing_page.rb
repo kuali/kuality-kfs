@@ -1,5 +1,13 @@
 class FinancialProcessingPage < KFSBasePage
 
+  action(:update_account_search) do |i=0, b|
+    regex = "methodToCall.performLookup.\\(!!org.kuali.kfs.coa.businessobject.Account!!\\)" <<
+            ".\\(\\(\\(chartOfAccountsCode:document.sourceAccountingLine\\[#{i}\\]." <<
+            "chartOfAccountsCode,accountNumber:document.sourceAccountingLine\\[#{i}\\]" <<
+            ".accountNumber\\)\\)\\)"
+    b.frm.button(name: /#{regex}/m).click
+  end
+
   class << self
 
     def financial_document_detail
@@ -205,10 +213,6 @@ class FinancialProcessingPage < KFSBasePage
     end
     def modify_capital_assets
       #on advanced deposit and general error correction
-    end
-
-    def general_ledger_pending_entries
-      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
     end
 
     def ad_hoc_recipients

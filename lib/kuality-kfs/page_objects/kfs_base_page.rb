@@ -8,5 +8,6 @@ class KFSBasePage < BasePage
   error_messages
   route_log
   notes_and_attachments
+  general_ledger_pending_entries
 
 end
