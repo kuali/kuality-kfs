@@ -36,6 +36,4 @@ class CashReceiptPage < FinancialProcessingPage
 #accounting_lines_for_capitalization
 
 #modify_capital_assets
-
-#general_ledger_pending_entries
 end

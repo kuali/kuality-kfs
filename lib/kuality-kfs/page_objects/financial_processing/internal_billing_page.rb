@@ -6,8 +6,6 @@ class InternalBillingPage < FinancialProcessingPage
   accounting_lines_for_capitalization
   create_capital_assets
   modify_capital_assets
-
-  general_ledger_pending_entries
   ad_hoc_recipients
 
   #accounting_lines_income_expense
