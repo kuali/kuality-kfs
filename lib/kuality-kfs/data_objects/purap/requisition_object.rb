@@ -29,7 +29,7 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      add_random_building_address(page) if building_address == 'random'
+      add_random_building_address(page) if @building_address == 'random'
 
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
@@ -41,37 +41,23 @@ class RequisitionObject < KFSDataObject
       page.item_add_account_line
 
       page.requestor_phone.fit @requestor_phone
+      #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
+
 
       # @requisition_id = page.requisition_id
       #Requisition number is created only after a successful submit
     end
   end
 
-
-  def edit opts={}
-    visit(MainPage).requisitions
-    on DocumentSearch do |page|
-      page.document_id
-    end
-
-    on RequisitionPage do |page|
-       #edit something
-    end
-    update_options(opts)
-  end
-
   def add_vendor_to_req(vendor_num)
-    on RequisitionPage do |page|
-      page.suggested_vendor_search
-
-      on VendorLookupPage do |page|
-        page.vendor_number.wait_until_present
-        page.vendor_number.fit vendor_num
-        page.search
-        page.return_value(vendor_num)
-      end
+    on(RequisitionPage).suggested_vendor_search
+    on VendorLookupPage do |page|
+      page.vendor_number.wait_until_present
+      page.vendor_number.fit vendor_num
+      page.search
+      page.return_value(vendor_num)
     end
   end
 

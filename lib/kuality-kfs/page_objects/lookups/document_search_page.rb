@@ -21,9 +21,8 @@ class DocumentSearch < Lookups
   #element(:date_created_to) { |b| b.frm.text_field(name: 'dateCreated') }
   element(:document_description) { |b| b.frm.text_field(name: 'documentAttribute.documentDescription') }
   element(:organization_document_number) { |b| b.frm.text_field(name: 'documentAttribute.organizationDocumentNumber') }
-  #element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purchaseOrderIdentifier') }
-  #element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.requisitionIdentifier') }
-
+  element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purchaseOrderIdentifier') }
+  element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.requisitionIdentifier') }
 
   #selecting 'purchase_orders' the PO is different
   element(:purchase_order_numb) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
@@ -31,9 +30,6 @@ class DocumentSearch < Lookups
   #Selecting 'requisitions' the requisition#: html tag is different
   element(:requisition_num) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
 
-
-  element(:purchase_order_number) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
-  element(:requisition_number) { |b| b.frm.text_field(name: 'documentAttribute.purapDocumentIdentifier') }
   element(:vendor_number) { |b| b.frm.text_field(name: 'documentAttribute.vendorNumber') }
   element(:purchase_order_chart_code) { |b| b.frm.text_field(name: 'documentAttribute.documentChartOfAccountsCodeForSearching') }
   element(:purchase_order_organization_code) { |b| b.frm.text_field(name: 'documentAttribute.documentOrganizationCodeForSearching') }

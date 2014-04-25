@@ -2,7 +2,6 @@ class PreEncumbrancePage < FinancialProcessingPage
 
   financial_document_detail
   accounting_lines
-
   ad_hoc_recipients
 
   #pre_encumbrance_details

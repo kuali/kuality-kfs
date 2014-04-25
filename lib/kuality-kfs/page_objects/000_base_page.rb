@@ -150,7 +150,7 @@ class BasePage < PageFactory
 
     def general_ledger_pending_entries
       element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
-
+      action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
     end
 
     def notes_and_attachments
@@ -171,6 +171,7 @@ class BasePage < PageFactory
       element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
       action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
       action(:download_file) { |l=0, b| b.download_file(l).click }
+
     end
 
     def route_log
@@ -182,6 +183,10 @@ class BasePage < PageFactory
       action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+
+      action(:pending_action_annotation) { |i=0, b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[(1+(i*2))][4].text }
+      value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
+      value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"

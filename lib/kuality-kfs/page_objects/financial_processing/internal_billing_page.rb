@@ -6,7 +6,6 @@ class InternalBillingPage < FinancialProcessingPage
   accounting_lines_for_capitalization
   create_capital_assets
   modify_capital_assets
-
   ad_hoc_recipients
 
   #accounting_lines_income_expense

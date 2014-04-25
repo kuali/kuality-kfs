@@ -6,7 +6,6 @@ class AdvanceDepositPage < FinancialProcessingPage
   #need to make
   accounting_lines_for_capitalization
   modify_capital_assets
-
   ad_hoc_recipients
 
 #Advance Deposits

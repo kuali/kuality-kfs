@@ -215,8 +215,6 @@ class FinancialProcessingPage < KFSBasePage
       #on advanced deposit and general error correction
     end
 
-
-
     def ad_hoc_recipients
       element(:ad_hoc_person) { |b| b.frm.text_field(name: 'newAdHocRoutePerson.id') }
       element(:ad_hoc_person_action_requested) { |b| b.frm.select(name: 'newAdHocRoutePerson.actionRequested') }

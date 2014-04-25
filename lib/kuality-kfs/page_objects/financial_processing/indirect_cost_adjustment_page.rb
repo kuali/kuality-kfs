@@ -2,7 +2,6 @@ class IndirectCostAdjustmentPage < FinancialProcessingPage
 
   financial_document_detail
   accounting_lines
-
   ad_hoc_recipients
 
 #accounting_lines_grant_reciept

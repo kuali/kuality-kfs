@@ -7,7 +7,7 @@ class KFSBasePage < BasePage
   tab_buttons
   error_messages
   route_log
-  general_ledger_pending_entries
   notes_and_attachments
+  general_ledger_pending_entries
 
 end
