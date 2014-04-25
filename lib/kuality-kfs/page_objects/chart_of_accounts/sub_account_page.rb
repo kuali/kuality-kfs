@@ -1,11 +1,4 @@
-class SubAccountPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class SubAccountPage < KFSBasePage
 
   #Edit Sub-Account Code
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }

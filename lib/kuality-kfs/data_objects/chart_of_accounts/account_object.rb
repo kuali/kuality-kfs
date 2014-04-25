@@ -15,7 +15,7 @@ class AccountObject < KFSDataObject
 
     defaults = {
         description:                       random_alphanums(40, 'AFT'),
-        chart_code:                        'IT', #TODO grab this from config file
+        chart_code:                        get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         number:                            random_alphanums(7),
         name:                              random_alphanums(10),
         organization_code:                          '01G0',
@@ -62,16 +62,6 @@ class AccountObject < KFSDataObject
                      :account_expiration_date,
                      :indirect_cost_recovery_chart_of_accounts_code, :indirect_cost_recovery_account_number,
                      :indirect_cost_recovery_account_line_percent, :indirect_cost_recovery_active_indicator
-    end
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
     end
   end
 end

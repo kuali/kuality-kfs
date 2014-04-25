@@ -1,11 +1,4 @@
-class ObjectCodeGlobalPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class ObjectCodeGlobalPage < KFSBasePage
 
   element(:object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCode') }
   element(:object_code_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeName') }
@@ -16,7 +9,7 @@ class ObjectCodeGlobalPage < BasePage
   element(:cg_reporting_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.cgReportingCode') }
   element(:object_sub_type_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectSubTypeCode') }
   element(:suny_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.sunyObjectCode') }
-  element(:financial_object_code_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeDescr') }
+  element(:financial_object_code_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.financialObjectCodeDescr') }
   element(:historical_financial_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.historicalFinancialObjectCode') }
 
   element(:active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.financialObjectActiveIndicator') }

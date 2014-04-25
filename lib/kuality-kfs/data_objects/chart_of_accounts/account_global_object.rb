@@ -56,7 +56,7 @@ class AccountGlobalObject < KFSDataObject
   end
 
   def add_multiple_accounting_lines
-    if !@add_multiple_accounting_lines.nil?
+    unless @add_multiple_accounting_lines.nil?
       on(AccountGlobalPage).add_multiple_accounting_lines
       on AccountGlobalLookupPage do |page|
         page.account_number.fit @search_account_number

@@ -1,11 +1,4 @@
-class AccountPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class AccountPage < KFSBasePage
 
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountNumber') }
@@ -26,9 +19,9 @@ class AccountPage < BasePage
   element(:manager_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountManagerUser.principalName') }
   element(:budget_record_level_code) { |b| b.frm.select(name: 'document.newMaintainableObject.budgetRecordingLevelCode') }
   element(:sufficient_funds_code) { |b| b.frm.select(name: 'document.newMaintainableObject.accountSufficientFundsCode') }
-  element(:expense_guideline_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountExpenseGuidelineText') }
-  element(:income_guideline_txt) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountIncomeGuidelineText') }
-  element(:purpose_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.accountGuideline.accountPurposeText') }
+  element(:expense_guideline_text) { |b| b.frm.textarea(name: 'document.newMaintainableObject.accountGuideline.accountExpenseGuidelineText') }
+  element(:income_guideline_txt) { |b| b.frm.textarea(name: 'document.newMaintainableObject.accountGuideline.accountIncomeGuidelineText') }
+  element(:purpose_text) { |b| b.frm.textarea(name: 'document.newMaintainableObject.accountGuideline.accountPurposeText') }
   element(:closed) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.closed') }
   element(:continuation_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.continuationFinChrtOfAcctCd') }
   element(:continuation_account_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.continuationAccountNumber') }

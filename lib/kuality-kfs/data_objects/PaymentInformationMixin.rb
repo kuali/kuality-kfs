@@ -12,29 +12,33 @@ module PaymentInformationMixin
   alias :vendor_payee? :vendor_payee
   def default_payment_information_lines(opts={})
     {
-      payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
-      check_amount:        '100.00',
-      #due_date:            '',
-      #other_considerations_check_enclosure:    '',
-      #other_considerations_special_handling:   '',
-      #other_considerations_w9_completed:       '',
-      #other_considerations_exception_attached: '',
-      #other_considerations_immediate_payment_indicator: '',
-      payment_method:              'P - Check/ACH',#'F - Foreign Draft',
-      #documentation_location_code: '',
-      check_stub_text:             'test, Check Stub',
-      address_type_description:    'TX - TAX',
-      vendor_payee:                true
+        payment_reason_code: 'B - Reimbursement for Out-of-Pocket Expenses',
+        check_amount:        '100.00',
+        #due_date:            '',
+        #other_considerations_check_enclosure:    '',
+        #other_considerations_special_handling:   '',
+        #other_considerations_w9_completed:       '',
+        #other_considerations_exception_attached: '',
+        #other_considerations_immediate_payment_indicator: '',
+        payment_method:              'P - Check/ACH',#'F - Foreign Draft',
+        #documentation_location_code: '',
+        check_stub_text:             'test, Check Stub',
+        address_type_description:    'TX - TAX',
+        vendor_payee:                true
     }.merge(opts)
   end
 
   def post_create
     super
-    on (PaymentInformationTab) {|tab| fill_in_payment_info(tab) unless @payee_id.nil?}
+    on (PaymentInformationTab) do |tab|
+      unless @payee_id.nil?
+        choose_payee
+        fill_in_payment_info(tab)
+      end
+    end
   end
 
   def fill_in_payment_info(tab)
-    choose_payee
     # These are returned to the page by choose_payee
     @payment_reason_code = tab.payment_reason_code
     @payee_name = tab.payee_name
@@ -67,26 +71,23 @@ module PaymentInformationMixin
       end
 
       plookup.search
-      plookup.results_table.rows.length.should == 2 if (@payee_id.eql?('map3') && !vendor_payee?)
       plookup.return_value(@payee_id)
     end
-    if vendor_payee?
-      on VendorAddressLookup do |valookup|
-        valookup.address_1.fit @address_1 unless @address_1.nil?
-        valookup.address_2.fit @address_2 unless @address_2.nil?
-        valookup.city.fit @city unless @city.nil?
-        valookup.state.fit @state unless @state.nil?
-        valookup.country.fit @country unless @country.nil?
-        valookup.postal_code.fit @postal_code unless @postal_code.nil?
-        valookup.address_type.fit @address_type_description unless @address_type_description.nil?
 
-        valookup.search
-        valookup.return_value_links.first.click
+      if on(Lookups).on_a_lookup? && (on(Lookups).lookup_title == 'Vendor Address Lookup')
+        on VendorAddressLookup do |valookup|
+          valookup.address_1.fit @address_1 unless @address_1.nil?
+          valookup.address_2.fit @address_2 unless @address_2.nil?
+          valookup.city.fit @city unless @city.nil?
+          valookup.state.fit @state unless @state.nil?
+          valookup.country.fit @country unless @country.nil?
+          valookup.postal_code.fit @postal_code unless @postal_code.nil?
+          valookup.address_type.fit @address_type_description unless @address_type_description.nil?
+
+          valookup.search
+          valookup.return_value_links.first.click
+        end
       end
     end
-  end
 
-  def change_default_check_amount
-    on (PaymentInformationTab) {|tab| fill_out tab,  :check_amount}
-  end
 end

@@ -1,11 +1,4 @@
-class OrganizationPage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class OrganizationPage < KFSBasePage
 
   element(:chart_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }

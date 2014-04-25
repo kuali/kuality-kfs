@@ -1,9 +1,10 @@
 class JournalVoucherObject < KFSDataObject
 
-  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
-
   include VoucherLinesMixin
-  alias add_target_line add_source_line
+  alias :add_target_line :add_source_line
+  alias :import_target_lines :import_source_lines
+
+  DOC_INFO = { label: 'Journal Voucher Document', type_code: 'JV' }
 
   attr_accessor :organization_document_number, :explanation,
                 :accounting_period,
@@ -25,16 +26,6 @@ class JournalVoucherObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :organization_document_number, :explanation
-    end
-  end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
     end
   end
 

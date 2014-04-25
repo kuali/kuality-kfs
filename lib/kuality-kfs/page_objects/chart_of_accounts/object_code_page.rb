@@ -1,11 +1,4 @@
-class ObjectCodePage < BasePage
-
-  document_header_elements
-  description_field
-  global_buttons
-  tiny_buttons
-  tab_buttons
-  error_messages
+class ObjectCodePage < KFSBasePage
 
   element(:fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
@@ -22,7 +15,7 @@ class ObjectCodePage < BasePage
   #CU item
   element(:suny_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.sunyObjectCode') }
 
-  element(:financial_object_code_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.financialObjectCodeDescr') }
+  element(:financial_object_code_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.extension.financialObjectCodeDescr') }
   element(:cg_reporting_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.cgReportingCode') }
   element(:historical_financial_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.historicalFinancialObjectCode') }
   element(:active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.active') }

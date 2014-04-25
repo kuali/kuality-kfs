@@ -50,40 +50,9 @@ class AdvanceDepositObject < KFSDataObject
 #      page.modify_asset
     end
   end
-  #
-  #def view
-  #  @browser.goto "#{$base_url}financialAdvanceDeposit.do?methodToCall=docHandler&docId=#{@document_id}&command=displayDocSearchView"
-  #end
-
-  #def view
-  #  visit(MainPage).doc_search
-  #  on DocumentSearch do |page|
-  #    page.document_id_field.when_present.fit @document_id
-  #    page.search
-  #    page.open_item(@document_id)
-  #  end
-  #  on(AdvancedDepositPage)
-  #end
-
-  def view
-    visit(MainPage).doc_search
-    on DocumentSearch do |search|
-      search.document_type.fit ''
-      search.document_id.fit @document_id
-      search.search
-      search.open_doc @document_id
-    end
-  end
 
   # The next few lines override the normal add_line operations to map
   # them to the single accounting line type on this document.
-  #def add_source_line(al)
-  #  @accounting_lines[:source].add(al.merge({type: :source}))
-  #end
-  #def add_source_line(type, al)
-  #  add_source_line(al)
-  #end
-  #alias :add_line :add_source_line
   alias :add_target_line :add_source_line
 
 end

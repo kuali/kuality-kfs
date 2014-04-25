@@ -1,7 +1,8 @@
-class GroupObject < DataObject
+class GroupObject < DataFactory
 
   include Navigation
   include StringFactory
+  include GlobalConfig
 
   attr_accessor :id, :namespace, :name, :type,
                 :principal_name, :assignees
