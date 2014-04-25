@@ -10,7 +10,7 @@ class AccountObject < KFSDataObject
                 :indirect_cost_recovery_chart_of_accounts_code, :indirect_cost_recovery_account_number, :indirect_cost_recovery_account_line_percent,
                 :indirect_cost_recovery_active_indicator
 
-                    def initialize(browser, opts={})
+  def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
