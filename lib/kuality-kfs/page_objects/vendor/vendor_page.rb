@@ -11,15 +11,6 @@ class VendorPage < KFSBasePage
   element(:tax_number_type_none) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE') }
   element(:ownership) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorOwnershipCode') }
   element(:w9_received) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorW9ReceivedIndicator') }
-  element(:address_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAddressTypeCode') }
-  element(:address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorLine1Address') }
-  element(:address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorLine2Address') }
-  element(:city) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorCityName') }
-  element(:state) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorStateCode') }
-  element(:zipcode) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorZipCode') }
-  element(:country) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorCountryCode') }
-  element(:default_address) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorDefaultAddressIndicator') }
-  action(:add_address) { |b| b.frm.button(id: /methodToCall.addLine.vendorAddresses/m).click }
   element(:supplier_diversity) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorHeader.vendorSupplierDiversities.vendorSupplierDiversityCode') }
   action(:add_supplier_diversity) { |b| b.frm.button(id: /methodToCall.addLine.vendorHeader.vendorSupplierDiversities/m).click }
   element(:contract_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractName') }
@@ -36,17 +27,8 @@ class VendorPage < KFSBasePage
   element(:vendor_b2b_indicator) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorB2bIndicator') }
   element(:contract_campus_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorCampusCode') }
   action(:add_vendor_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
-  element(:address_type_1) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAddressTypeCode') }
   element(:contract_name_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorContracts[0].vendorContractName') }
   value(:supplier_diversity_code_1) { |b| b.frm.span(id: 'document.newMaintainableObject.vendorHeader.vendorSupplierDiversities[0].vendorSupplierDiversityCode.div').text }
-
-  element(:updated_address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine1Address') }
-  element(:updated_phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneTypeCode') }
-  element(:updated_address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorLine2Address') }
-  element(:updated_phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneNumber') }
-  element(:updated_address_attention) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[0].vendorAttentionName') }
-  element(:updated_phone_ext) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorPhoneNumbers[0].vendorPhoneExtensionNumber') }
-  element(:updated_2nd_address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorAddresses[1].vendorLine2Address') }
 
   # Phone Tab
   element(:phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneTypeCode') }
@@ -55,9 +37,12 @@ class VendorPage < KFSBasePage
   element(:phone_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.active') }
   action(:add_phone_number) { |b| b.frm.button(id: /methodToCall.addLine.vendorPhoneNumbers/m).click }
   action(:update_phone_type) { |i=0, b| b.frm.select(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].vendorPhoneTypeCode") }
-  element(:update_phone_number) { |i=0, b| b.frm.text_field(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].vendorPhoneNumber") }
-  element(:update_phone_extension) { |i=0, b| b.frm.text_field(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].vendorPhoneExtensionNumber") }
-  element(:update_phone_active_indicator) { |i=0, b| b.frm.checkbox(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].active") }
+  alias_method :updated_phone_type, :update_phone_type
+  action(:update_phone_number) { |i=0, b| b.frm.text_field(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].vendorPhoneNumber") }
+  alias_method :updated_phone_number, :update_phone_number
+  action(:update_phone_extension) { |i=0, b| b.frm.text_field(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].vendorPhoneExtensionNumber") }
+  alias_method :updated_phone_ext, :update_phone_extension
+  action(:update_phone_active_indicator) { |i=0, b| b.frm.checkbox(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].active") }
   action(:delete_phone_number) { |i=0, b| b.frm.button(id: "methodToCall.deleteLine.vendorPhoneNumbers.(!!.line#{i}").click }
   action(:pull_existing_phone) do |i, b|
     {
@@ -68,6 +53,67 @@ class VendorPage < KFSBasePage
     }
   end
   value(:current_phone_number_count) { |b| b.frm.div(id: 'tab-VendorPhoneNumber-div').spans(class: 'left', text: /Phone Numbers/m).length - 1 }
+
+  # Address Tab
+  action(:add_address) { |b| b.frm.button(id: /methodToCall.addLine.vendorAddresses/m).click }
+
+  element(:address_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAddressTypeCode') }
+  element(:address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorLine1Address') }
+  element(:address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorLine2Address') }
+
+  element(:city) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorCityName') }
+  element(:state) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorStateCode') }
+  element(:zipcode) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorZipCode') }
+  element(:province) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAddressInternationalProvinceName') }
+  element(:country) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorCountryCode') }
+  element(:address_attention) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAttentionName') }
+  element(:address_url) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorBusinessToBusinessUrlAddress') }
+  element(:fax) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorFaxNumber') }
+  element(:email) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAddressEmailAddress') }
+  element(:default_address) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorDefaultAddressIndicator') }
+  element(:address_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorAddresses.active') }
+
+  element(:update_address_type) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode") }
+  alias_method :address_type_1, :update_address_type
+
+  element(:update_address_1) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine1Address") }
+  alias_method :updated_address_1, :update_address_1
+  element(:update_address_2) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine2Address") }
+  alias_method :updated_address_2, :update_address_2
+  value(:updated_2nd_address_2) { |b| b.update_address_2(1) }
+
+  element(:update_city) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCityName") }
+  element(:update_state) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorStateCode") }
+  element(:update_zipcode) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorZipCode") }
+  element(:update_province) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName") }
+  element(:update_country) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCountryCode") }
+  element(:update_address_attention) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAttentionName") }
+  alias_method :updated_address_attention, :update_address_attention
+  element(:update_address_url) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress") }
+  element(:update_fax) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber") }
+  element(:update_email) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress") }
+  element(:update_default_address) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator") }
+  element(:update_address_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorAddresses[#{i}].active") }
+
+  action(:pull_existing_address) do |i, b|
+    {
+        type:           b.update_address_type(i).selected_options.first.text,
+        address_1:      b.update_address_1(i).text.strip,
+        address_2:      b.update_address_2(i).text.strip,
+        city:           b.update_city(i).text.strip,
+        state:          b.update_state(i).text.strip,
+        postal_code:    b.update_zipcode(i).text.strip,
+        province:       b.update_province(i).text.strip,
+        country:        b.update_country(i).selected_options.first.text,
+        attention:      b.update_address_attention(i).text.strip,
+        url:            b.update_address_url(i).text.strip,
+        fax:            b.update_fax(i).text.strip,
+        email:          b.update_email(i).text.strip,
+        set_as_default: b.update_default_address(i).text.strip,
+        active:         yesno2setclear(b.update_address_active_indicator(i).value)
+    }
+  end
+  value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').spans(class: 'left', text: /Address/m).length - 1 }
 
   element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
 
@@ -86,16 +132,6 @@ class VendorPage < KFSBasePage
       ownership:   b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorOwnershipCode.div').text.strip,
       w9_received: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorW9ReceivedIndicator.div').text.strip,
       w9_received_date: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.extension.vendorW9ReceivedDate.div').text.strip,
-      # TODO: Create an AddressLineObject >_<*
-      # address_type:     b.frm.span(id: '').text.strip,
-      # address_1: b.frm.span(id: '').text.strip,
-      # address_2: b.frm.span(id: '').text.strip,
-      # city:      b.frm.span(id: '').text.strip,
-      # state:     b.frm.span(id: '').text.strip,
-      # zipcode:   b.frm.span(id: '').text.strip,
-      # country:   b.frm.span(id: '').text.strip,
-      # default_address:           b.frm.span(id: '').text.strip,
-      # method_of_po_transmission: b.frm.span(id: '').text.strip,
       # TODO: Create an SupplierDiversityLineObject >_<*
       # supplier_diversity:        b.frm.span(id: '').text.strip,
       # supplier_diversity_expiration_date: b.frm.span(id: '').text.strip,
@@ -138,6 +174,7 @@ class VendorPage < KFSBasePage
       health_offsite_catering_lic_req:      b.frm.span(id: '').text.strip,
       insurance_requirements_complete:      b.frm.span(id: '').text.strip,
       insurance_requirement_indicator:      b.frm.span(id: '').text.strip,
+      # TODO: Find a way to pull Addresses in during #absorb
       # TODO: Find a way to pull Phone Numbers in during #absorb
       # TODO: Find a way to pull Notes and Attachments in during #absorb
       # TODO: Find a way to pull Search Aliases in during #absorb

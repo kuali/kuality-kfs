@@ -2,7 +2,7 @@ class VendorObject < KFSDataObject
 
   attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name , :vendor_type, :foreign,
                 :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none, :ownership, :w9_received,  :w9_received_date,
-                :address_type, :address_1, :address_2, :city, :state, :zipcode, :country, :default_address, :method_of_po_transmission,
+                :default_payment_method,
                 :supplier_diversity, :supplier_diversity_expiration_date,
                 :contract_name, :contract_description, :contract_begin_date, :contract_end_date, :contract_extension_date,
                 :po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code,
@@ -11,33 +11,25 @@ class VendorObject < KFSDataObject
                 :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-                :address_type_1, :supplier_diversity_code_1, :contract_name_1,
-                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext,
-                :search_aliases, :phone_numbers
+                :supplier_diversity_code_1, :contract_name_1,
+                :search_aliases, :phone_numbers, :addresses
 
   def defaults
     super.merge(
     {
-        vendor_type:                'PO - PURCHASE ORDER',
-        vendor_name:                'Keith, inc',
-        foreign:                    'No',
-        tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-        tax_number_type_ssn:        :set,
-        ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
-        w9_received:                'Yes',
-        w9_received_date:           yesterday[:date_w_slashes],
-        address_type:               'PO - PURCHASE ORDER',
-        address_1:                  '6655 Sunset BLvd',
-        city:                       'Denver',
-        state:                      'CO',
-        zipcode:                    '91190',
-        country:                    'United States',
-        default_address:            'Yes',
-        method_of_po_transmission:  'US MAIL',
-        supplier_diversity:         'HUBZONE',
-        supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
-        search_aliases:             collection('SearchAliasLineObject'),
-        phone_numbers:              collection('PhoneLineObject')
+      vendor_type:                'PO - PURCHASE ORDER',
+      vendor_name:                'Keith, inc',
+      foreign:                    'No',
+      tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
+      tax_number_type_ssn:        :set,
+      ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
+      w9_received:                'Yes',
+      w9_received_date:           yesterday[:date_w_slashes],
+      supplier_diversity:         'HUBZONE',
+      supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
+      search_aliases:             collection('SearchAliasLineObject'),
+      phone_numbers:              collection('PhoneLineObject'),
+      addresses:                  collection('AddressLineObject')
     })
   end
 
@@ -52,11 +44,10 @@ class VendorObject < KFSDataObject
 
       fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name,
                      :vendor_first_name, :foreign, :tax_number, :tax_number_type_fein,
-                     :tax_number_type_ssn, :ownership, :w9_received, :w9_received_date
+                     :tax_number_type_ssn, :ownership, :w9_received, :w9_received_date,
+                     :default_payment_method
 
-      fill_out page, :address_type, :address_1, :address_2, :city, :state, :zipcode,
-                     :country, :default_address, :method_of_po_transmission
-      page.add_address
+      @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
 
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
 
@@ -65,6 +56,12 @@ class VendorObject < KFSDataObject
       fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
 
     end
+  end
+
+  def update_line_objects_from_page!
+    super
+    @phone_numbers.update_from_page!
+    @addresses.update_from_page!
   end
 
   def absorb(target={})

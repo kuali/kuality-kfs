@@ -79,6 +79,10 @@ class KFSDataObject < DataFactory
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
+  def update_line_objects_from_page!
+    @notes_and_attachments_tab.update_from_page!
+  end
+
   def absorb(target={})
     on KFSBasePage do |b|
       update_options({

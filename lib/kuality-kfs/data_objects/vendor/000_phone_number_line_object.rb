@@ -18,21 +18,21 @@ class PhoneLineObject < DataFactory
     # For now, this only supports Vendor. We'll need to refactor appropriately
     # if any other object needs this collection.
     on VendorPage do |vp|
-      vp.phone_type.fit   @type
-      vp.phone_number.fit @number
-      vp.phone_extension.fit @extension
-      vp.phone_active_indicator.send(@active) unless @active.nil?
+      vp.phone_type.fit             @type
+      vp.phone_number.fit           @number
+      vp.phone_extension.fit        @extension
+      vp.phone_active_indicator.fit @active
       fill_out_extended_attributes
       vp.add_phone_number
     end
   end
 
   def edit(opts={})
-    on(VendorPage) do |vp|
-      vp.update_phone_type(@line_number).fit opts[:type] unless opts[:type].nil?
-      vp.update_phone_number(@line_number).fit opts[:number] unless opts[:number].nil?
-      vp.update_phone_extension(@line_number).fit opts[:extension] unless opts[:extension].nil?
-      vp.update_phone_active_indicator(@line_number).send(opts[:active]) unless opts[:active].nil?
+    on VendorPage do |vp|
+      vp.update_phone_type(@line_number).fit             opts[:type]
+      vp.update_phone_number(@line_number).fit           opts[:number]
+      vp.update_phone_extension(@line_number).fit        opts[:extension]
+      vp.update_phone_active_indicator(@line_number).fit opts[:active]
     end
     update_options(opts)
   end
@@ -41,21 +41,14 @@ class PhoneLineObject < DataFactory
     on(VendorPage).delete_phone_number @line_number
   end
 
-  def extended_create_mappings
-    # This needs to return a hash of additional mappings used for create
-    Hash.new
-  end
-
-  def extended_update_mappings
-    # This needs to return a hash of additional mappings used for update
-    Hash.new
-  end
-
   def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
-    # You'll probably need to use the provided @target value to generate the
-    # proper symbols.
   end
+
+  def update_extended_attributes(opts = {})
+    # Override this method if you have site-specific extended attributes.
+  end
+  alias_method :edit_extended_attributes, :update_extended_attributes
 
 end
 

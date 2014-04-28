@@ -33,21 +33,14 @@ class SearchAliasLineObject < DataFactory
     on(VendorPage).delete_search_alias @line_number
   end
 
-  def extended_create_mappings
-    # This needs to return a hash of additional mappings used for create
-    Hash.new
-  end
-
-  def extended_update_mappings
-    # This needs to return a hash of additional mappings used for update
-    Hash.new
-  end
-
   def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
-    # You'll probably need to use the provided @target value to generate the
-    # proper symbols.
   end
+
+  def update_extended_attributes(opts = {})
+    # Override this method if you have site-specific extended attributes.
+  end
+  alias_method :edit_extended_attributes, :update_extended_attributes
 
 end
 

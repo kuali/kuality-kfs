@@ -5,15 +5,15 @@ class NotesAndAttachmentsLineObject < DataFactory
 
   attr_accessor   :line_number,
                   :note_text, :notification_recipient, :file,
-                  :immediate_add, :immediate_attach
+                  :immediate_add, :immediate_attach, :immediate_fyi
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-                 immediate_add: true,
+                 immediate_add:    true,
                  immediate_attach: true,
-                 immediate_fyi: true
+                 immediate_fyi:    true
                }
 
     set_options(defaults.merge(opts))
@@ -63,27 +63,14 @@ class NotesAndAttachmentsLineObject < DataFactory
     on(KFSBasePage).delete_note @line_number
   end
 
-  def extended_create_mappings
-    # This needs to return a hash of additional mappings used for create
-    Hash.new
-  end
-
-  def extended_update_mappings
-    # This needs to return a hash of additional mappings used for update
-    Hash.new
-  end
-
   def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
-    # You'll probably need to use the provided @target value to generate the
-    # proper symbols.
   end
 
   def update_extended_attributes(opts = {})
     # Override this method if you have site-specific extended attributes.
-    # You'll probably need to use the provided @target value to generate the
-    # proper symbols.
   end
+  alias_method :edit_extended_attributes, :update_extended_attributes
 
   def fill_out_extended_attributes_for_send(opts = {})
     # Override this method if you have site-specific extended attributes.
