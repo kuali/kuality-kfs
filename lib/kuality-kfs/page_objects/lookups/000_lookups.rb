@@ -22,6 +22,16 @@ class Lookups < BasePage
   element(:lookup_title) { |b| b.frm.div(id: /headerarea/).h1.text }
   action(:on_a_lookup?) { |b| b.lookup_title.include?('Lookup') }
 
+  action(:wait_for_search_results) do |attempts=30, b|
+    while b.no_result_table_returned? && attempts > 0
+      # Wait a bit and check, may be having timing issues.
+      sleep 1
+      attempts -= 1
+      b.search
+    end
+    raise StandardError.new('No results returned from the lookup!') if b.no_result_table_returned?
+  end
+
   class << self
 
     def document_facets

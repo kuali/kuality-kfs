@@ -2,8 +2,6 @@ class IndirectCostAdjustmentPage < FinancialProcessingPage
 
   financial_document_detail
   accounting_lines
-
-  general_ledger_pending_entries
   ad_hoc_recipients
 
 #accounting_lines_grant_reciept

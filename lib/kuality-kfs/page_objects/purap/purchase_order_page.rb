@@ -1,10 +1,7 @@
 class PurchaseOrderPage <  KFSBasePage
 
-  # element(:explanation) { |b| b.textarea(name: 'document.documentHeader.explanation') }
-  # element(:organization_document_number) { |b| b.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
-
   element(:posting_year) { |b| b.select(name: 'document.postingYear') }
-#PURCHASSE ORDER DETAIL
+  #PURCHASSE ORDER DETAIL
   element(:payment_request_positive_approval_required) { |b| b.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
   alias_method :approval_required, :payment_request_positive_approval_required
 
@@ -16,12 +13,12 @@ class PurchaseOrderPage <  KFSBasePage
 
   element(:item_assigned_to_trade_in_indicator) { |b| b.checkbox(name: 'newPurchasingItemLine.itemAssignedToTradeInIndicator') }
 
-#STATUS CHANGES
+  #STATUS CHANGES
   element(:waiting_on_none) { |b| b.radio(title: 'Waiting on Additional Info - None') }
   element(:waiting_on_department) { |b| b.radio(title: 'Waiting on Additional Info - Department') }
   element(:waiting_on_vendor) { |b| b.radio(title: 'Waiting on Additional Info - Vendor') }
 
-#DELIVERY
+  #DELIVERY
   element(:delivery_address_2) { |b| b.text_field(name: 'document.deliveryBuildingLine2Address') }
   element(:delivery_room) { |b| b.text_field(name: 'document.deliveryBuildingRoomNumber') }
 
@@ -32,7 +29,7 @@ class PurchaseOrderPage <  KFSBasePage
   element(:date_required_reason) { |b| b.select(name: 'document.deliveryRequiredDateReasonCode') }
   element(:delivery_instruction) { |b| b.text_field(name: 'document.deliveryInstructionText') }
 
-#VENDOR ADDRESS
+  #VENDOR ADDRESS
 
   element(:vendor_name) { |b| b.text_field(name: 'document.vendorName') }
   alias_method :vendor, :vendor_name
@@ -48,7 +45,7 @@ class PurchaseOrderPage <  KFSBasePage
   element(:vendor_country) { |b| b.select(name: 'document.vendorCountryCode') }
   action(:vendor_search) { |b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.vnd.businessobject.VendorDetail!!\)/m).click }
 
-#VENDOR INFO
+  #VENDOR INFO
   element(:vendor_choice) { |b| b.select(name: 'document.purchaseOrderVendorChoiceCode') }
   element(:vendor_customer_number) { |b| b.text_field(name: 'document.vendorCustomerNumber') }
   element(:notes_to_vendor) { |b| b.text_field(name: 'document.vendorNoteText') }
@@ -62,7 +59,7 @@ class PurchaseOrderPage <  KFSBasePage
   element(:vendor_stipulation) { |b| b.text_field(name: 'newPurchaseOrderVendorStipulationLine.vendorStipulationDescription') }
   action(:vendor_add_stipulation) { |b| b.table(summary: 'Stipulations &amp; Info Section').button(name: 'methodToCall.addStipulation').click }
 
-#ITEMS
+  #ITEMS
   element(:item_type) { |b| b.select(name: 'newPurchasingItemLine.itemTypeCode') }
   element(:item_quantity) { |b| b.text_field(name: 'newPurchasingItemLine.itemQuantity') }
   element(:item_unit_of_measure) { |b| b.text_field(name: 'newPurchasingItemLine.itemUnitOfMeasureCode') }
@@ -76,7 +73,7 @@ class PurchaseOrderPage <  KFSBasePage
 
   action(:item_add) { |b| b.table(summary: 'Items Section').button(name: 'methodToCall.addItem').click }
 
-#ADDED ITEM
+  #ADDED ITEM
   action(:current_item_type) { |l=0, b| b.select(name: "document.item[#{l}].itemTypeCode") }
   action(:current_item_quantity) { |l=0, b| b.text_field(name: "document.item[#{l}].itemQuantity") }
   action(:current_item_unit_of_measure) { |l=0, b| b.text_field(name: "document.item[#{l}].itemUnitOfMeasureCode") }
@@ -88,7 +85,7 @@ class PurchaseOrderPage <  KFSBasePage
   action(:current_item_assigned_to_trade_in) { |l=0, b| b.checkbox(name: "document.item[#{l}].itemAssignedToTradeInIndicator") }
   action(:current_item_delete) { |l=0, b| b.button(name: "methodToCall.deleteItem.line#{l}").click }
 
-#ACCOUNTING LINES
+  #ACCOUNTING LINES
   action(:chart_code) { |l=0, b| b.select(name: "document.item[#{l}].newSourceLine.chartOfAccountsCode") }
   alias_method :chart, :chart_code
   action(:account_number) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
@@ -122,7 +119,7 @@ class PurchaseOrderPage <  KFSBasePage
   action(:old_amount) { |l=0, b| b.text_field(name: "document.item[#{l}].sourceAccountingLine[#{l}].amount") }
   alias_method :old_amt, :old_amount
 
-#PAYMENT INFO
+  #PAYMENT INFO
   element(:begin_date) { |b| b.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:end_date) { |b| b.text_field(name: 'document.purchaseOrderEndDate') }
   element(:recurring_payment_amount) { |b| b.text_field(name: 'document.recurringPaymentAmount') }
@@ -144,7 +141,14 @@ class PurchaseOrderPage <  KFSBasePage
   element(:institution_contact_email_address) { |b| b.text_field(name: 'document.institutionContactEmailAddress') }
   element(:pp_total_cannot_exceed) { |b| b.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  # TODO : there should have a purap page for shared purap page element.
-  action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+
+  #VIEW RELATED DOCUMENTS
+  action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
+  alias_method :show_view_related_documents, :show_related_documents
+  action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
+
+  value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
+  action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
+  action(:open_purchase_order_number) { |po_num, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK', text: po_num).click; b.use_new_tab; b.close_parents }
 
 end
