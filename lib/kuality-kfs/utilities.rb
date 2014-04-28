@@ -32,6 +32,10 @@ module Utilities
     get(snake_case(document))
   end
 
+  def document_object_of(klass)
+    klass.to_s.gsub(/(?<=[a-z])(?=[A-Z])/, ' ').gsub(/Object$/, '')
+  end
+
   def object_class_for(document)
     Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Object")
   end

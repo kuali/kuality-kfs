@@ -4,7 +4,6 @@ class VendorObject < KFSDataObject
                 :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none, :ownership, :w9_received,  :w9_received_date,
                 :address_type, :address_1, :address_2, :city, :state, :zipcode, :country, :default_address, :method_of_po_transmission,
                 :supplier_diversity, :supplier_diversity_expiration_date,
-                :attachment_file_name, :note_text, :attach_notes_file,
                 :contract_name, :contract_description, :contract_begin_date, :contract_end_date, :contract_extension_date,
                 :po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code,
                 :contract_manager_code, :b2b_contract_indicator, :contract_po_limit,:contract_campus_code,
@@ -12,9 +11,9 @@ class VendorObject < KFSDataObject
                 :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-                :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1,
+                :address_type_1, :supplier_diversity_code_1, :contract_name_1,
                 :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext,
-                :search_aliases
+                :search_aliases, :phone_numbers
 
   def defaults
     super.merge(
@@ -37,9 +36,8 @@ class VendorObject < KFSDataObject
         method_of_po_transmission:  'US MAIL',
         supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
-        attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT'),
-        search_aliases:             collection('SearchAliasLineObject')
+        search_aliases:             collection('SearchAliasLineObject'),
+        phone_numbers:              collection('PhoneLineObject')
     })
   end
 
@@ -52,11 +50,12 @@ class VendorObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name, :vendor_first_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
-               :ownership, :w9_received, :w9_received_date
+      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name,
+                     :vendor_first_name, :foreign, :tax_number, :tax_number_type_fein,
+                     :tax_number_type_ssn, :ownership, :w9_received, :w9_received_date
 
-      fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,
-               :country, :default_address, :method_of_po_transmission
+      fill_out page, :address_type, :address_1, :address_2, :city, :state, :zipcode,
+                     :country, :default_address, :method_of_po_transmission
       page.add_address
 
       fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
@@ -66,6 +65,11 @@ class VendorObject < KFSDataObject
       fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
 
     end
+  end
+
+  def absorb(target={})
+    super
+    update_options(on(VendorPage).send("#{target.to_s}_vendor_data"))
   end
 
 end
