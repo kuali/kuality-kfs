@@ -126,7 +126,7 @@ class BasePage < PageFactory
       # Note: Use this when the link itself is the text you want to match
       action(:open_item) { |match, b| b.item_row(match).link(text: /#{match}/).click; b.use_new_tab; b.close_parents }
       # Note: Use this to open link when the item_row for link does not exist
-      # action(:open_item_link) { |match, p| p.results_table.link(text: /#{match}/m).click; p.use_new_tab; p.close_parents }
+      action(:open_item_link) { |lnk, p| p.results_table.link(text: "#{lnk}").click; p.use_new_tab; p.close_parents }
       action(:delete_item) { |match, p| p.item_row(match).link(text: 'delete').click; p.use_new_tab; p.close_parents }
 
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
@@ -145,8 +145,8 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
-      # action(:select_random_link_in_2nd_column) { |l=1, b| b.frm.table(id: 'row')[rand(b.frm.table(id: 'row').to_a.length - 1) + 1][l].link.click; b.use_new_tab; b.close_parents }
-      action(:select_link_item) { |l, b| b.results_table.link(text: "#{l}").click; b.use_new_tab; b.close_parents }
+
+      # action(:select_linked_item) { |l, b| b.results_table.link(text: "#{l}").click; b.use_new_tab; b.close_parents }
 
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
