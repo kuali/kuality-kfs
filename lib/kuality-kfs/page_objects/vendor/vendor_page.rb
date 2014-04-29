@@ -97,23 +97,23 @@ class VendorPage < KFSBasePage
 
   action(:pull_existing_address) do |i, b|
     {
-        type:           b.update_address_type(i).selected_options.first.text,
-        address_1:      b.update_address_1(i).text.strip,
-        address_2:      b.update_address_2(i).text.strip,
-        city:           b.update_city(i).text.strip,
-        state:          b.update_state(i).text.strip,
-        postal_code:    b.update_zipcode(i).text.strip,
-        province:       b.update_province(i).text.strip,
-        country:        b.update_country(i).selected_options.first.text,
-        attention:      b.update_address_attention(i).text.strip,
-        url:            b.update_address_url(i).text.strip,
-        fax:            b.update_fax(i).text.strip,
-        email:          b.update_email(i).text.strip,
-        set_as_default: b.update_default_address(i).text.strip,
-        active:         yesno2setclear(b.update_address_active_indicator(i).value)
+      type:           b.update_address_type(i).selected_options.first.text,
+      address_1:      b.update_address_1(i).value,
+      address_2:      b.update_address_2(i).value,
+      city:           b.update_city(i).value,
+      state:          b.update_state(i).value,
+      postal_code:    b.update_zipcode(i).value,
+      province:       b.update_province(i).value,
+      country:        b.update_country(i).selected_options.first.text,
+      attention:      b.update_address_attention(i).value,
+      url:            b.update_address_url(i).value,
+      fax:            b.update_fax(i).value,
+      email:          b.update_email(i).value,
+      set_as_default: b.update_default_address(i).selected_options.first.text,
+      active:         yesno2setclear(b.update_address_active_indicator(i).value)
     }
   end
-  value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').spans(class: 'left', text: /Address/m).length - 1 }
+  value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').spans(class: 'left', text: /Address [(]/m).length }
 
   element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
 
