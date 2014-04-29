@@ -119,16 +119,20 @@ class BasePage < PageFactory
       action(:edit_first_item) { |b| b.frm.link(text: 'edit').click; b.use_new_tab; b.close_parents }
 
       action(:item_row) { |match, b| b.results_table.row(text: /#{match}/m) }
+
       # Note: Use this when you need to click the "open" link on the target row
       action(:open) { |match, p| p.results_table.row(text: /#{match}/m).link(text: 'open').click; p.use_new_tab; p.close_parents }
+
       # Note: Use this when the link itself is the text you want to match
       action(:open_item) { |match, b| b.item_row(match).link(text: /#{match}/).click; b.use_new_tab; b.close_parents }
+      # Note: Use this to open link when the item_row for link does not exist
+      # action(:open_item_link) { |match, p| p.results_table.link(text: /#{match}/m).click; p.use_new_tab; p.close_parents }
       action(:delete_item) { |match, p| p.item_row(match).link(text: 'delete').click; p.use_new_tab; p.close_parents }
 
       action(:return_value) { |match, p| p.item_row(match).link(text: 'return value').click }
       action(:select_item) { |match, p| p.item_row(match).link(text: 'select').click }
       action(:return_random) { |b| b.return_value_links[rand(b.return_value_links.length)].click; b.use_new_tab; b.close_parents }
-      action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
+      action(:return_random_row) { |b| b.results_table.rows[1..-1].sample }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
@@ -141,10 +145,14 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
+      # action(:select_random_link_in_2nd_column) { |l=1, b| b.frm.table(id: 'row')[rand(b.frm.table(id: 'row').to_a.length - 1) + 1][l].link.click; b.use_new_tab; b.close_parents }
+      action(:select_link_item) { |l, b| b.results_table.link(text: "#{l}").click; b.use_new_tab; b.close_parents }
+
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
       value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned
+
 
     end
 
