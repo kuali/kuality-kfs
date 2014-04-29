@@ -73,27 +73,27 @@ class VendorPage < KFSBasePage
   element(:default_address) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorDefaultAddressIndicator') }
   element(:address_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorAddresses.active') }
 
-  element(:update_address_type) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode") }
+  action(:update_address_type) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode") }
   alias_method :address_type_1, :update_address_type
 
-  element(:update_address_1) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine1Address") }
+  action(:update_address_1) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine1Address") }
   alias_method :updated_address_1, :update_address_1
-  element(:update_address_2) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine2Address") }
+  action(:update_address_2) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine2Address") }
   alias_method :updated_address_2, :update_address_2
   value(:updated_2nd_address_2) { |b| b.update_address_2(1) }
 
-  element(:update_city) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCityName") }
-  element(:update_state) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorStateCode") }
-  element(:update_zipcode) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorZipCode") }
-  element(:update_province) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName") }
-  element(:update_country) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCountryCode") }
-  element(:update_address_attention) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAttentionName") }
+  action(:update_city) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCityName") }
+  action(:update_state) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorStateCode") }
+  action(:update_zipcode) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorZipCode") }
+  action(:update_province) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName") }
+  action(:update_country) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCountryCode") }
+  action(:update_address_attention) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAttentionName") }
   alias_method :updated_address_attention, :update_address_attention
-  element(:update_address_url) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress") }
-  element(:update_fax) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber") }
-  element(:update_email) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress") }
-  element(:update_default_address) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator") }
-  element(:update_address_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorAddresses[#{i}].active") }
+  action(:update_address_url) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress") }
+  action(:update_fax) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber") }
+  action(:update_email) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress") }
+  action(:update_default_address) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator") }
+  action(:update_address_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorAddresses[#{i}].active") }
 
   action(:pull_existing_address) do |i, b|
     {
@@ -114,6 +114,56 @@ class VendorPage < KFSBasePage
     }
   end
   value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').spans(class: 'left', text: /Address [(]/m).length }
+
+  # Contact Tab
+  action(:add_contact) { |b| b.frm.button(id: /methodToCall.addLine.vendorContacts/m).click }
+
+  element(:new_contact_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactTypeCode') }
+  element(:new_contact_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactName') }
+  element(:new_contact_email) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactEmailAddress') }
+  element(:new_contact_address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorLine1Address') }
+  element(:new_contact_address_2) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorLine2Address') }
+  element(:new_contact_city) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorCityName') }
+  element(:new_contact_state) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorStateCode') }
+  element(:new_contact_zipcode) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorZipCode') }
+  element(:new_contact_province) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorAddressInternationalProvinceName') }
+  element(:new_contact_country) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContacts.vendorCountryCode') }
+  element(:new_contact_attention) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorAttentionName') }
+  element(:new_contact_comments) { |b| b.frm.textarea(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactCommentText') }
+  element(:new_contact_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorContacts.active') }
+
+  action(:update_contact_type) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactTypeCode") }
+  action(:update_contact_name) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactName") }
+  action(:update_contact_email) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactEmailAddress") }
+  action(:update_contact_address_1) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorLine1Address") }
+  action(:update_contact_address_2) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorLine2Address") }
+  action(:update_contact_city) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorCityName") }
+  action(:update_contact_state) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorStateCode") }
+  action(:update_contact_zipcode) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorZipCode") }
+  action(:update_contact_province) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorAddressInternationalProvinceName") }
+  action(:update_contact_country) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorCountryCode") }
+  action(:update_contact_attention) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorAttentionName") }
+  action(:update_contact_comments) { |i=0, b| b.frm.textarea(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactCommentText") }
+  action(:update_contact_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorContacts[#{i}].active") }
+
+  action(:pull_existing_contact) do |i, b|
+    {
+        type:           b.update_contact_type(i).selected_options.first.text,
+        name:           b.update_contact_name(i).value,
+        email:          b.update_contact_email(i).value,
+        address_1:      b.update_contact_address_1(i).value,
+        address_2:      b.update_contact_address_2(i).value,
+        city:           b.update_contact_city(i).value,
+        state:          b.update_contact_state(i).value,
+        postal_code:    b.update_contact_zipcode(i).value,
+        province:       b.update_contact_province(i).value,
+        country:        b.update_contact_country(i).selected_options.first.text,
+        attention:      b.update_contact_attention(i).value,
+        comments:       b.update_contact_comments(i).value,
+        active:         yesno2setclear(b.update_contact_active_indicator(i).value)
+    }
+  end
+  value(:current_contacts_count) { |b| b.frm.div(id: 'tab-Contact-div').spans(class: 'left', text: /Contact [(]/m).length }
 
   element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
 
@@ -145,14 +195,6 @@ class VendorPage < KFSBasePage
       # contract_name_1:           b.frm.span(id: '').text.strip,
       # contract_po_limit:      b.frm.span(id: '').text.strip,
       # contract_campus_code:   b.frm.span(id: '').text.strip,
-      # TODO: Create an AddressLineObject >_<*
-      # address_type_1:            b.frm.span(id: '').text.strip,
-      # updated_address_1:         b.frm.span(id: '').text.strip,
-      # updated_address_2:         b.frm.span(id: '').text.strip,
-      # updated_address_attention: b.frm.span(id: '').text.strip,
-      # updated_phone_type:        b.frm.span(id: '').text.strip,
-      # updated_phone_number:      b.frm.span(id: '').text.strip,
-      # updated_phone_ext:         b.frm.span(id: '').text.strip,
       po_cost_source_code:     b.frm.span(id: '').text.strip,
       vendor_pmt_terms_code:   b.frm.span(id: '').text.strip,
       vendor_shipping_pmt_terms_code: b.frm.span(id: '').text.strip,

@@ -12,7 +12,7 @@ class VendorObject < KFSDataObject
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
                 :supplier_diversity_code_1, :contract_name_1,
-                :search_aliases, :phone_numbers, :addresses
+                :search_aliases, :phone_numbers, :addresses, :contacts
 
   def defaults
     super.merge(
@@ -29,7 +29,8 @@ class VendorObject < KFSDataObject
       supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
       search_aliases:             collection('SearchAliasLineObject'),
       phone_numbers:              collection('PhoneLineObject'),
-      addresses:                  collection('AddressLineObject')
+      addresses:                  collection('AddressLineObject'),
+      contacts:                   collection('ContactLineObject')
     })
   end
 
