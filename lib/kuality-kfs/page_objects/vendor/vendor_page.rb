@@ -11,21 +11,78 @@ class VendorPage < KFSBasePage
   element(:tax_number_type_none) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE') }
   element(:ownership) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorOwnershipCode') }
   element(:w9_received) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorW9ReceivedIndicator') }
-  element(:contract_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractName') }
-  element(:contract_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractDescription') }
-  element(:contract_begin_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractBeginningDate') }
-  element(:contract_end_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractEndDate') }
-  element(:contract_po_limit) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.organizationAutomaticPurchaseOrderLimit') }
-  element(:contract_manager_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.contractManagerCode') }
-  element(:po_cost_source_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.purchaseOrderCostSourceCode') }
-  element(:b2b_contract_indicator) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorB2bIndicator') }
-  element(:vendor_pmt_terms_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorPaymentTermsCode') }
-  element(:vendor_shipping_pmt_terms_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorShippingPaymentTermsCode') }
-  element(:vendor_shipping_title_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorShippingTitleCode') }
-  element(:vendor_b2b_indicator) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorB2bIndicator') }
-  element(:contract_campus_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorCampusCode') }
-  action(:add_vendor_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
-  element(:contract_name_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorContracts[0].vendorContractName') }
+
+  # Contracts Tab
+  action(:add_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
+  action(:delete_contract) { |i=0, b| b.frm.button(id: "methodToCall.deleteLine.vendorContracts.(!!.line#{i}").click }
+  action(:show_contracts) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabContracts').click }
+
+  element(:new_contract_number) { |b| warn 'VendorPage#new_contract_number does not return a value! Please implement this method if you need it!'; '' }
+  alias_method :contract_number, :new_contract_number
+  element(:new_contract_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractName') }
+  alias_method :contract_name, :new_contract_name
+  element(:new_contract_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractDescription') }
+  alias_method :contract_description, :new_contract_description
+  element(:new_contract_campus_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorCampusCode') }
+  alias_method :contract_campus_code, :new_contract_campus_code
+  element(:new_contract_begin_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractBeginningDate') }
+  alias_method :contract_begin_date, :new_contract_begin_date
+  element(:new_contract_end_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractEndDate') }
+  alias_method :contract_end_date, :new_contract_end_date
+  element(:new_contract_manager) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.contractManagerCode') }
+  alias_method :contract_manager, :new_contract_manager
+  element(:new_contract_po_cost_source) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.purchaseOrderCostSourceCode') }
+  alias_method :contract_po_cost_source, :new_contract_po_cost_source
+  element(:new_b2b_contract_indicator) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorB2bIndicator') }
+  alias_method :b2b_contract_indicator, :new_b2b_contract_indicator
+  element(:new_contract_payment_terms) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorPaymentTermsCode') }
+  alias_method :contract_payment_terms, :new_contract_payment_terms
+  element(:new_contract_shipping_terms) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorShippingPaymentTermsCode') }
+  alias_method :contract_shipping_terms, :new_contract_shipping_terms
+  element(:new_contract_shipping_title) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContracts.vendorShippingTitleCode') }
+  alias_method :contract_shipping_title, :new_contract_shipping_title
+  element(:new_contract_extension_option_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.vendorContractExtensionDate') }
+  alias_method :contract_extension_option_date, :new_contract_extension_option_date
+  element(:new_contract_default_apo_limit) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContracts.organizationAutomaticPurchaseOrderLimit') }
+  alias_method :contract_default_apo_limit, :new_contract_default_apo_limit
+  element(:new_contract_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorContracts.active') }
+  alias_method :contract_active_indicator, :new_contract_active_indicator
+
+  value(:update_contract_number) { |i=0, b| b.span(id: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractGeneratedIdentifier.div").text.strip }
+  action(:update_contract_name) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractName") }
+  action(:update_contract_description) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractDescription") }
+  action(:update_contract_campus_code) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorCampusCode") }
+  action(:update_contract_begin_date) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractBeginningDate") }
+  action(:update_contract_end_date) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractEndDate") }
+  action(:update_contract_manager) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].contractManagerCode") }
+  action(:update_contract_po_cost_source) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].purchaseOrderCostSourceCode") }
+  action(:update_b2b_contract_indicator) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorB2bIndicator") }
+  action(:update_contract_payment_terms) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorPaymentTermsCode") }
+  action(:update_contract_shipping_terms) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorShippingPaymentTermsCode") }
+  action(:update_contract_shipping_title) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorShippingTitleCode") }
+  action(:update_contract_extension_option_date) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractExtensionDate") }
+  action(:update_contract_default_apo_limit) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].organizationAutomaticPurchaseOrderLimit") }
+  action(:update_contract_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorContracts[#{i}].active") }
+
+  action(:pull_existing_contract) do |i=0, b|
+    {
+        number:                b.update_contract_number(i),
+        name:                  b.update_contract_name(i).value.strip,
+        description:           b.update_contract_description(i).value.strip,
+        campus_code:           b.update_contract_campus_code(i).selected_options.first.value,
+        begin_date:            b.update_contract_begin_date(i).value.strip,
+        end_date:              b.update_contract_end_date(i).value.strip,
+        manager:               b.update_contract_manager(i).selected_options.first.text,
+        po_cost_source:        b.update_contract_po_cost_source(i).selected_options.first.text,
+        b2b:                   b.update_b2b_contract_indicator(i).selected_options.first.text,
+        payment_terms:         b.update_contract_payment_terms(i).selected_options.first.text,
+        shipping_terms:        b.update_contract_shipping_terms(i).selected_options.first.text,
+        shipping_title:        b.update_contract_shipping_title(i).selected_options.first.text,
+        extension_option_date: b.update_contract_extension_option_date(i).value.strip,
+        default_apo_limit:     b.update_contract_default_apo_limit(i).value.strip,
+        active:                yesno2setclear(b.update_contract_active_indicator(i).value)
+    }
+  end
 
   # Phone Tab
   action(:show_phone_numbers) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabVendorPhoneNumber').click }
@@ -42,7 +99,7 @@ class VendorPage < KFSBasePage
   alias_method :updated_phone_ext, :update_phone_extension
   action(:update_phone_active_indicator) { |i=0, b| b.frm.checkbox(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].active") }
   action(:delete_phone_number) { |i=0, b| b.frm.button(id: "methodToCall.deleteLine.vendorPhoneNumbers.(!!.line#{i}").click }
-  action(:pull_existing_phone) do |i, b|
+  action(:pull_existing_phone) do |i=0, b|
     {
       type:      b.update_phone_type(i).selected_options.first.text,
       number:    b.update_phone_number(i).value.strip,
@@ -182,10 +239,6 @@ class VendorPage < KFSBasePage
       ownership:   b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorOwnershipCode.div').text.strip,
       w9_received: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorW9ReceivedIndicator.div').text.strip,
       w9_received_date: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.extension.vendorW9ReceivedDate.div').text.strip,
-      # TODO: Create an SupplierDiversityLineObject >_<*
-      # supplier_diversity:        b.frm.span(id: '').text.strip,
-      # supplier_diversity_expiration_date: b.frm.span(id: '').text.strip,
-      # supplier_diversity_code_1: b.frm.span(id: '').text.strip,
       # TODO: Create an ContractLineObject >_<*
       # contract_name:        b.frm.span(id: '').text.strip,
       # contract_description: b.frm.span(id: '').text.strip,
@@ -195,12 +248,12 @@ class VendorPage < KFSBasePage
       # contract_name_1:           b.frm.span(id: '').text.strip,
       # contract_po_limit:      b.frm.span(id: '').text.strip,
       # contract_campus_code:   b.frm.span(id: '').text.strip,
-      po_cost_source_code:     b.frm.span(id: '').text.strip,
-      vendor_pmt_terms_code:   b.frm.span(id: '').text.strip,
-      vendor_shipping_pmt_terms_code: b.frm.span(id: '').text.strip,
-      vendor_shipping_title_code:     b.frm.span(id: '').text.strip,
-      contract_manager_code:  b.frm.span(id: '').text.strip,
-      b2b_contract_indicator: b.frm.span(id: '').text.strip,
+      # b2b_contract_indicator: b.frm.span(id: '').text.strip,
+      # contract_manager_code:  b.frm.span(id: '').text.strip,
+      # po_cost_source_code:     b.frm.span(id: '').text.strip,
+      # vendor_pmt_terms_code:   b.frm.span(id: '').text.strip,
+      # vendor_shipping_pmt_terms_code: b.frm.span(id: '').text.strip,
+      # vendor_shipping_title_code:     b.frm.span(id: '').text.strip,
       general_liability_coverage_amt:    b.frm.span(id: '').text.strip,
       general_liability_expiration_date: b.frm.span(id: '').text.strip,
       automobile_liability_coverage_amt: b.frm.span(id: '').text.strip,
@@ -216,6 +269,7 @@ class VendorPage < KFSBasePage
       health_offsite_catering_lic_req:      b.frm.span(id: '').text.strip,
       insurance_requirements_complete:      b.frm.span(id: '').text.strip,
       insurance_requirement_indicator:      b.frm.span(id: '').text.strip,
+      # TODO: Find a way to pull SupplierDiversities in during #absorb, by implementing #original_vendor_extended_data in the kuality-kfs-cu project
       # TODO: Find a way to pull Addresses in during #absorb
       # TODO: Find a way to pull Phone Numbers in during #absorb
       # TODO: Find a way to pull Notes and Attachments in during #absorb
