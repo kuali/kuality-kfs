@@ -1,22 +1,13 @@
 class VendorObject < KFSDataObject
 
   attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name , :vendor_type, :foreign,
-                :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none, :ownership, :w9_received,  :w9_received_date,
-                :default_payment_method,
-
-                #:contract_name, :contract_description, :contract_begin_date, :contract_end_date, :contract_extension_date,
-
-                #:po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code,
-
-                #:contract_manager_code, :b2b_contract_indicator, :contract_po_limit,:contract_campus_code,
-
+                :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
+                :ownership, :w9_received,  :w9_received_date, :default_payment_method,
                 :general_liability_coverage_amt, :general_liability_expiration_date, :automobile_liability_coverage_amt,
                 :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-
-                #:contract_name_1,
-
+                # == Collections ==
                 :search_aliases, :phone_numbers, :addresses, :contacts, :contracts,
                 :supplier_diversities # FIXME: Move to kuality-kfs-cu project
 
@@ -56,9 +47,6 @@ class VendorObject < KFSDataObject
 
       @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
       @supplier_diversities.add Hash.new # FIXME: Move to kuality-kfs-cu project
-      #fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
-
-      page.add_supplier_diversity
 
       fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
 
