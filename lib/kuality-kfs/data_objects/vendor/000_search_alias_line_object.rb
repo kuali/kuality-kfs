@@ -52,6 +52,7 @@ class SearchAliasLineObjectCollection < LineObjectCollection
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
+      lines.expand_all
       unless lines.current_search_alias_count.zero?
         (0..(lines.current_search_alias_count - 1)).to_a.collect!{ |i|
           lines.pull_existing_search_alias(i).merge(pull_extended_existing_search_alias(i))

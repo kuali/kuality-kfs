@@ -29,10 +29,10 @@ class PhoneLineObject < DataFactory
 
   def edit(opts={})
     on VendorPage do |vp|
-      vp.update_phone_type(@line_number).fit             opts[:type]
-      vp.update_phone_number(@line_number).fit           opts[:number]
-      vp.update_phone_extension(@line_number).fit        opts[:extension]
-      vp.update_phone_active_indicator(@line_number).fit opts[:active]
+      vp.update_phone_type(@line_number).fit             opts[:type] unless opts[:type].nil?
+      vp.update_phone_number(@line_number).fit           opts[:number] unless opts[:number].nil?
+      vp.update_phone_extension(@line_number).fit        opts[:extension] unless opts[:extension].nil?
+      vp.update_phone_active_indicator(@line_number).fit opts[:active] unless opts[:active].nil?
     end
     update_options(opts)
   end
@@ -58,9 +58,9 @@ class PhoneLineObjectCollection < LineObjectCollection
 
   def update_from_page!
     on VendorPage do |lines|
-      lines.expand_all
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
+      lines.expand_all
       unless lines.current_phone_number_count.zero?
         (0..(lines.current_phone_number_count - 1)).to_a.collect!{ |i|
           lines.pull_existing_phone(i).merge(pull_extended_existing_phone(i))

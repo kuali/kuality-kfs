@@ -42,26 +42,26 @@ class ContactLineObject < DataFactory
 
   def edit(opts={})
     on VendorPage do |vp|
-      vp.update_contact_type(@line_number).fit             opts[:type]
-      vp.update_contact_name(@line_number).fit             opts[:name]
-      vp.update_contact_email(@line_number).fit            opts[:email]
-      vp.update_contact_address_1(@line_number).fit        opts[:address_1]
-      vp.update_contact_address_2(@line_number).fit        opts[:address_2]
-      vp.update_contact_city(@line_number).fit             opts[:city]
-      vp.update_contact_state(@line_number).fit            opts[:state]
-      vp.update_contact_zipcode(@line_number).fit          opts[:postal_code]
-      vp.update_contact_province(@line_number).fit         opts[:province]
-      vp.update_contact_country(@line_number).fit          opts[:country]
-      vp.update_contact_attention(@line_number).fit        opts[:attention]
-      vp.update_contact_comments(@line_number).fit         opts[:comments]
-      vp.update_contact_active_indicator(@line_number).fit opts[:active]
+      vp.update_contact_type(@line_number).fit             opts[:type] unless opts[:type].nil?
+      vp.update_contact_name(@line_number).fit             opts[:name] unless opts[:name].nil?
+      vp.update_contact_email(@line_number).fit            opts[:email] unless opts[:email].nil?
+      vp.update_contact_address_1(@line_number).fit        opts[:address_1] unless opts[:address_1].nil?
+      vp.update_contact_address_2(@line_number).fit        opts[:address_2] unless opts[:address_2].nil?
+      vp.update_contact_city(@line_number).fit             opts[:city] unless opts[:city].nil?
+      vp.update_contact_state(@line_number).fit            opts[:state] unless opts[:state].nil?
+      vp.update_contact_zipcode(@line_number).fit          opts[:postal_code] unless opts[:postal_code].nil?
+      vp.update_contact_province(@line_number).fit         opts[:province] unless opts[:province].nil?
+      vp.update_contact_country(@line_number).fit          opts[:country] unless opts[:country].nil?
+      vp.update_contact_attention(@line_number).fit        opts[:attention] unless opts[:attention].nil?
+      vp.update_contact_comments(@line_number).fit         opts[:comments] unless opts[:comments].nil?
+      vp.update_contact_active_indicator(@line_number).fit opts[:active] unless opts[:active].nil?
     end
     update_options(opts)
     update_extended_attributes(opts)
   end
 
   def delete
-    raise NoMethodError, 'There is no way to delete an address from a Vendor. Perhaps you have a site-specific extension?'
+    raise NoMethodError, 'There is no way to delete a Contact from a Vendor. Perhaps you have a site-specific extension?'
   end
 
   def fill_out_extended_attributes
@@ -81,9 +81,9 @@ class ContactLineObjectCollection < LineObjectCollection
 
   def update_from_page!
     on VendorPage do |lines|
-      lines.expand_all
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
+      lines.expand_all
       unless lines.current_contacts_count.zero?
         (0..(lines.current_contacts_count - 1)).to_a.collect!{ |i|
           lines.pull_existing_contact(i).merge(pull_extended_existing_contact(i))

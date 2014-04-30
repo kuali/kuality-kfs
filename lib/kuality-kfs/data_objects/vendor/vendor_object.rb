@@ -3,7 +3,6 @@ class VendorObject < KFSDataObject
   attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name , :vendor_type, :foreign,
                 :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none, :ownership, :w9_received,  :w9_received_date,
                 :default_payment_method,
-                :supplier_diversity, :supplier_diversity_expiration_date,
                 :contract_name, :contract_description, :contract_begin_date, :contract_end_date, :contract_extension_date,
                 :po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code,
                 :contract_manager_code, :b2b_contract_indicator, :contract_po_limit,:contract_campus_code,
@@ -11,8 +10,9 @@ class VendorObject < KFSDataObject
                 :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-                :supplier_diversity_code_1, :contract_name_1,
-                :search_aliases, :phone_numbers, :addresses, :contacts
+                :contract_name_1,
+                :search_aliases, :phone_numbers, :addresses, :contacts,
+                :supplier_diversities # FIXME: Move to kuality-kfs-cu project
 
   def defaults
     super.merge(
@@ -25,12 +25,11 @@ class VendorObject < KFSDataObject
       ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
       w9_received:                'Yes',
       w9_received_date:           yesterday[:date_w_slashes],
-      supplier_diversity:         'HUBZONE',
-      supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
       search_aliases:             collection('SearchAliasLineObject'),
       phone_numbers:              collection('PhoneLineObject'),
       addresses:                  collection('AddressLineObject'),
-      contacts:                   collection('ContactLineObject')
+      contacts:                   collection('ContactLineObject'),
+      supplier_diversities:       collection('SupplierDiversityLineObject') # FIXME: Move to kuality-kfs-cu project
     })
   end
 
@@ -49,8 +48,8 @@ class VendorObject < KFSDataObject
                      :default_payment_method
 
       @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
-
-      fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
+      @supplier_diversities.add Hash.new # FIXME: Move to kuality-kfs-cu project
+      #fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
 
       page.add_supplier_diversity
 
@@ -63,6 +62,7 @@ class VendorObject < KFSDataObject
     super
     @phone_numbers.update_from_page!
     @addresses.update_from_page!
+    @supplier_diversities.update_from_page! # FIXME: Copy this entire method to kuality-kfs-cu project, then remove this line here
   end
 
   def absorb(target={})
