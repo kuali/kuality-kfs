@@ -41,8 +41,8 @@ class ContractLineObject < DataFactory
       vp.new_contract_default_apo_limit.fit     @default_apo_limit
       vp.new_contact_active_indicator.fit       @active
       fill_out_extended_attributes
-      vp.add_contact
-      @number = vp.update_contract_number(@line_number)
+      vp.add_contract
+      @number = vp.update_contract_number(vp.current_contracts_count - 1) # Contracts get tacked onto the end
     end
   end
 

@@ -48,7 +48,7 @@ class VendorPage < KFSBasePage
   element(:new_contract_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.vendorContracts.active') }
   alias_method :contract_active_indicator, :new_contract_active_indicator
 
-  value(:update_contract_number) { |i=0, b| b.span(id: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractGeneratedIdentifier.div").text.strip }
+  value(:update_contract_number) { |i=0, b| b.frm.span(id: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractGeneratedIdentifier.div").text.strip }
   action(:update_contract_name) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractName") }
   action(:update_contract_description) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorContractDescription") }
   action(:update_contract_campus_code) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorCampusCode") }
@@ -83,6 +83,7 @@ class VendorPage < KFSBasePage
         active:                yesno2setclear(b.update_contract_active_indicator(i).value)
     }
   end
+  value(:current_contracts_count) { |b| b.frm.div(id: 'tab-Contracts-div').spans(class: 'left', text: /Contract [(]/m).length }
 
   # Phone Tab
   action(:show_phone_numbers) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabVendorPhoneNumber').click }
@@ -107,7 +108,7 @@ class VendorPage < KFSBasePage
       active:    yesno2setclear(b.update_phone_active_indicator(i).value)
     }
   end
-  value(:current_phone_number_count) { |b| b.frm.div(id: 'tab-VendorPhoneNumber-div').spans(class: 'left', text: /Phone Numbers/m).length - 1 }
+  value(:current_phone_number_count) { |b| b.frm.div(id: 'tab-VendorPhoneNumber-div').spans(class: 'left', text: /Phone Numbers [(]/m).length }
 
   # Address Tab
   action(:add_address) { |b| b.frm.button(id: /methodToCall.addLine.vendorAddresses/m).click }
