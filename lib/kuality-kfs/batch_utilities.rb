@@ -42,12 +42,93 @@ module BatchUtilities
       end
     end
   end
+
+  # TODO : Following batch jobs are commented out for testing
+
   def run_auto_approve_preq(wait_for_completion = false)
-    run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
+    puts 'run_auto_approve_preq'
+    #run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
   end
 
   def run_fax_pending_doc(wait_for_completion = false)
-    run_unscheduled_job('faxPendingDocumentJob', wait_for_completion)
+    puts 'run_fax_pending_doc'
+    #run_unscheduled_job('faxPendingDocumentJob', wait_for_completion)
   end
+
+  def run_receiving_payment_request(wait_for_completion = false)
+    puts 'run_receiving_payment_request'
+    #run_unscheduled_job('receivingPaymentRequestJob', wait_for_completion)
+  end
+
+  def run_electronic_invoice_extract(wait_for_completion = false)
+    puts 'run_electronic_invoice_extract'
+    #run_unscheduled_job('electronicInvoiceExtractJob', wait_for_completion)
+  end
+
+  def run_pur_pre_disburse_extract(wait_for_completion = false)
+    puts 'run_pur_pre_disburse_extract'
+    #run_unscheduled_job('purchasingPreDisbursementExtractJob', wait_for_completion)
+  end
+
+  def run_pur_pre_disburse_immediate_extract(wait_for_completion = false)
+    puts 'run_pur_pre_disburse_immediate_extract'
+    #run_unscheduled_job('purchasingPreDisbursementImmediatesExtractJob', wait_for_completion)
+  end
+
+  def run_approve_line_item_receiving(wait_for_completion = false)
+    puts 'run_approve_line_item_receiving'
+    #run_unscheduled_job('approveLineItemReceivingJob', wait_for_completion)
+  end
+
+  def run_auto_close_recurring_order(wait_for_completion = false)
+    puts 'run_auto_close_recurring_order'
+    #run_unscheduled_job('autoCloseRecurringOrdersJob', wait_for_completion)
+  end
+
+  def run_pdp_load_payment(wait_for_completion = false)
+    puts 'run_pdp_load_payment'
+    #run_unscheduled_job('pdpLoadPaymentsJob', wait_for_completion)
+  end
+
+  def run_pdp_extract_ach_payment(wait_for_completion = false)
+    puts 'run_pdp_extract_ach_payment'
+    #run_unscheduled_job('pdpExtractAchPaymentsJob', wait_for_completion)
+  end
+
+  def run_pdp_extract_check(wait_for_completion = false)
+    puts 'run_pdp_extract_check'
+    #run_unscheduled_job('pdpExtractChecksJob', wait_for_completion)
+  end
+
+  def run_pdp_extract_canceled_check(wait_for_completion = false)
+    puts 'run_pdp_extract_canceled_check'
+    #run_unscheduled_job('pdpExtractCanceledChecksJob', wait_for_completion)
+  end
+
+  def run_pdp_send_ach_advice_notification(wait_for_completion = false)
+    puts 'run_pdp_send_ach_advice_notification'
+    #run_unscheduled_job('pdpSendAchAdviceNotificationsJob', wait_for_completion)
+  end
+
+  def run_pdp_cancel_and_paid(wait_for_completion = false)
+    puts 'run_pdp_cancel_and_paid'
+    #run_unscheduled_job('processPdpCancelsAndPaidJob', wait_for_completion)
+  end
+
+  def run_pdp_extract_gl_transaction(wait_for_completion = false)
+    puts 'run_pdp_extract_gl_transaction'
+    #run_unscheduled_job('pdpExtractGlTransactionsStepJob', wait_for_completion)
+  end
+
+  def run_pdp_load_fed_reserve_bank_data(wait_for_completion = false)
+    puts 'run_pdp_load_fed_reserve_bank_data'
+    #run_unscheduled_job('pdpLoadFederalReserveBankDataJob', wait_for_completion)
+  end
+
+  def run_pdp_clear_pending_transaction(wait_for_completion = false)
+    puts 'run_pdp_clear_pending_transaction'
+    #run_unscheduled_job('pdpClearPendingTransactionsJob', wait_for_completion)
+  end
+
 
 end
