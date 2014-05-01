@@ -155,6 +155,11 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
+      element(:show_notes_and_attachments_button) { |b| b.frm.input(id: 'tab-NotesandAttachments-imageToggle') }
+      alias_method :hide_notes_and_attachments_button, :show_notes_and_attachments_button
+      element(:notes_and_attachments_count) { |b| b.show_notes_and_attachments_button.title.gsub(/.*\((\d+)\)$/, '\1').to_i }
+      action(:show_notes_and_attachments) { |b| b.show_notes_and_attachments_button.click }
+      action(:hide_notes_and_attachments) { |b| b.hide_notes_and_attachments.click }
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
       action(:delete_note) { |l=0,b| b.frm.button(name: "methodToCall.deleteBONote.line#{l}").click }
@@ -177,19 +182,45 @@ class BasePage < PageFactory
 
     def route_log
       element(:route_log_iframe) { |b| b.frm.iframe(name: 'routeLogIFrame') }
+      element(:show_route_log_button) { |b| b.frm.div(id: 'workarea').input(id: 'tab-RouteLog-imageToggle') }
+      alias_method :hide_route_log_button, :show_route_log_button
+      value(:route_log_shown?) { |b| b.show_route_log_button.title.match(/close Route Log/m) }
+      value(:route_log_hidden?) { |b| b.show_route_log_button.title.match(/open Route Log/m) }
+      action(:show_route_log) { |b| b.show_route_log_button.click }
+      alias_method :hide_route_log, :show_route_log
+
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
       value(:actions_taken) { |b| (b.actions_taken_table.rows.collect{ |row| row[1].text }.compact.uniq).reject{ |action| action==''} }
       element(:pnd_act_req_table) { |b| b.route_log_iframe.div(id: 'tab-PendingActionRequests-div').table }
-      value(:pnd_act_req_table_action) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:action)] }
-      value(:pnd_act_req_table_multi_action) { |r=1, s=0, b| b.pnd_act_req_table[r].tables[s].tds[b.pnd_act_req_table.keyed_column_index(:action)] }
-      value(:pnd_act_req_table_requested_of) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:requested_of)] }
-      value(:pnd_act_req_table_multi_requested_of) { |r=1, s=0, b| b.pnd_act_req_table[r].tables[s].tds[b.pnd_act_req_table.keyed_column_index(:requested_of)] }
-      value(:pnd_act_req_table_time_date) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:time_date)] }
-      value(:pnd_act_req_table_multi_time_date) { |r=1, s=0, b| b.pnd_act_req_table[r].tables[s].tds[b.pnd_act_req_table.keyed_column_index(:time_date)] }
-      value(:pnd_act_req_table_annotation) { |r=1, b| b.pnd_act_req_table[r].tds[b.pnd_act_req_table.keyed_column_index(:annotation)] }
-      value(:pnd_act_req_table_multi_annotation) { |r=1, s=0, b| b.pnd_act_req_table[r].tables[s].tds[b.pnd_act_req_table.keyed_column_index(:annotation)] }
+
+      element(:show_pending_action_requests_button) { |b| b.input(id: 'tab-PendingActionRequests-imageToggle') }
+      alias_method :hide_pending_action_requests_button, :show_pending_action_requests_button
+      value(:pending_action_requests_shown?) { |b| b.show_pending_action_requests_button.title.match(/close Pending Action Requests/m) }
+      value(:pending_action_requests_hidden?) { |b| b.show_pending_action_requests_button.title.match(/open Pending Action Requests/m) }
+      action(:show_pending_action_requests) { |b| b.show_pending_action_requests_button.click }
+      alias_method :hide_pending_action_requests, :show_pending_action_requests
+
+      element(:show_pending_action_requests_in_action_list_button) { |b| b.pnd_act_req_table.image(title: 'show') }
+      element(:hide_pending_action_requests_in_action_list_button) { |b| b.pnd_act_req_table.image(title: 'hide') }
+      value(:pending_action_requests_in_action_list_shown?) { |b| b.hide_pending_action_requests_in_action_list_button.exists? }
+      value(:pending_action_requests_in_action_list_hidden?) { |b| b.show_pending_action_requests_in_action_list_button.exists? }
+      action(:show_pending_action_requests_in_action_list) { |b| b.show_pending_action_requests_in_action_list_button.click }
+      action(:hide_pending_action_requests_in_action_list) { |b| b.hide_pending_action_requests_in_action_list_button.click }
+
+      value(:pnd_act_req_table_action) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:action)] }
+      value(:pnd_act_req_table_requested_of) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:requested_of)] }
+      value(:pnd_act_req_table_time_date) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:time_date)] }
+      value(:pnd_act_req_table_annotation) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:annotation)] }
+
+      element(:pnd_act_req_table_sub) { |b| b.pnd_act_req_table.table }
+      element(:pnd_act_req_table_multi) { |b| b.pnd_act_req_table_sub.table }
+      value(:pnd_act_req_table_multi_action) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:action)] }
+      value(:pnd_act_req_table_multi_requested_of) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:requested_of)] }
+      value(:pnd_act_req_table_multi_time_date) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:time_date)] }
+      value(:pnd_act_req_table_multi_annotation) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:annotation)] }
+
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
-      action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
+      action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
 

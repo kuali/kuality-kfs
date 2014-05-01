@@ -170,7 +170,7 @@ class VendorPage < KFSBasePage
       active:         yesno2setclear(b.update_address_active_indicator(i).value.strip)
     }
   end
-  value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').spans(class: 'left', text: /Address [(]/m).length }
+  value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').inputs(alt: /(close|open) Address [(]/m).length }
 
   # Contact Tab
   action(:add_contact) { |b| b.frm.button(id: /methodToCall.addLine.vendorContacts/m).click }
