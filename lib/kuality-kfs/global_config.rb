@@ -14,11 +14,11 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
-  def get_parameter_values(namespace_code, parameter_name)
+  def get_parameter_values(namespace_code, parameter_name, component_code='All')
     paramKey = ParameterKeyType.new()
     paramKey.setApplicationId('KFS')
     paramKey.setNamespaceCode(namespace_code)
-    paramKey.setComponentCode('All')
+    paramKey.setComponentCode(component_code)
     paramKey.setName(parameter_name)
     @@parameter_values = parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
