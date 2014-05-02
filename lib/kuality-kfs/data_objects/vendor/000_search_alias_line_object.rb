@@ -48,14 +48,14 @@ class SearchAliasLineObjectCollection < LineObjectCollection
 
   contains SearchAliasLineObject
 
-  def update_from_page!
+  def update_from_page!(target=:new)
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
       unless lines.current_search_alias_count.zero?
         (0..(lines.current_search_alias_count - 1)).to_a.collect!{ |i|
-          lines.pull_existing_search_alias(i).merge(pull_extended_existing_search_alias(i))
+          pull_existing_search_alias(i).merge(pull_extended_existing_search_alias(i))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
@@ -65,11 +65,36 @@ class SearchAliasLineObjectCollection < LineObjectCollection
     end
   end
 
+  # @return [Hash] The return values of attributes for the given line
+  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The known line values
+  def pull_existing_search_alias(i=0, target=:new)
+    pulled_search_alias = Hash.new
+
+    on VendorPage do |vp|
+      case target
+        when :old
+          pulled_search_alias = {
+              name:   vp.search_alias_name(i),
+              active: yesno2setclear(vp.search_alias_active(i))
+          }
+        when :new
+          pulled_search_alias = {
+              name:   vp.search_alias_name(i),
+              active: yesno2setclear(vp.search_alias_active(i))
+          }
+      end
+    end
+
+    pulled_search_alias
+  end
+
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
   # @return [Hash] The known line values
-  def pull_extended_existing_search_alias(i=0)
+  def pull_extended_existing_search_alias(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

@@ -79,14 +79,14 @@ class ContactLineObjectCollection < LineObjectCollection
 
   contains ContactLineObject
 
-  def update_from_page!
+  def update_from_page!(target=:new)
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
       unless lines.current_contacts_count.zero?
         (0..(lines.current_contacts_count - 1)).to_a.collect!{ |i|
-          lines.pull_existing_contact(i).merge(pull_extended_existing_contact(i))
+          pull_existing_contact(i).merge(pull_extended_existing_contact(i))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
@@ -96,11 +96,58 @@ class ContactLineObjectCollection < LineObjectCollection
     end
   end
 
+  # @return [Hash] The return values of attributes for the given line
+  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The known line values
+  def pull_existing_contact(i=0, target=:new)
+    pulled_contact = Hash.new
+
+    on VendorPage do |vp|
+      case target
+        when :old
+          pulled_contact = {
+            type:           vp.update_contact_type(i).selected_options.first.text.strip,
+            name:           vp.update_contact_name(i).value.strip,
+            email:          vp.update_contact_email(i).value.strip,
+            address_1:      vp.update_contact_address_1(i).value.strip,
+            address_2:      vp.update_contact_address_2(i).value.strip,
+            city:           vp.update_contact_city(i).value.strip,
+            state:          vp.update_contact_state(i).value.strip,
+            postal_code:    vp.update_contact_zipcode(i).value.strip,
+            province:       vp.update_contact_province(i).value.strip,
+            country:        vp.update_contact_country(i).selected_options.first.text,
+            attention:      vp.update_contact_attention(i).value.strip,
+            comments:       vp.update_contact_comments(i).value.strip,
+            active:         yesno2setclear(vp.update_contact_active_indicator(i).value.strip)
+          }
+        when :new
+          pulled_contact = {
+            type:           vp.update_contact_type(i).selected_options.first.text.strip,
+            name:           vp.update_contact_name(i).value.strip,
+            email:          vp.update_contact_email(i).value.strip,
+            address_1:      vp.update_contact_address_1(i).value.strip,
+            address_2:      vp.update_contact_address_2(i).value.strip,
+            city:           vp.update_contact_city(i).value.strip,
+            state:          vp.update_contact_state(i).value.strip,
+            postal_code:    vp.update_contact_zipcode(i).value.strip,
+            province:       vp.update_contact_province(i).value.strip,
+            country:        vp.update_contact_country(i).selected_options.first.text,
+            attention:      vp.update_contact_attention(i).value.strip,
+            comments:       vp.update_contact_comments(i).value.strip,
+            active:         yesno2setclear(vp.update_contact_active_indicator(i).value.strip)
+          }
+      end
+    end
+
+    pulled_contact
+  end
+
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
   # @return [Hash] The known line values
-  def pull_extended_existing_contact(i=0)
+  def pull_extended_existing_contact(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

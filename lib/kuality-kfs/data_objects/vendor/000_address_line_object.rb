@@ -91,14 +91,14 @@ class AddressLineObjectCollection < LineObjectCollection
 
   contains AddressLineObject
 
-  def update_from_page!
+  def update_from_page!(target=:new)
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
       unless lines.current_address_count.zero?
         (0..(lines.current_address_count - 1)).to_a.collect!{ |i|
-          lines.pull_existing_address(i).merge(pull_extended_existing_address(i))
+          pull_existing_address(i).merge(pull_extended_existing_address(i))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
@@ -108,11 +108,60 @@ class AddressLineObjectCollection < LineObjectCollection
     end
   end
 
+  # @return [Hash] The return values of attributes for the given line
+  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The known line values
+  def pull_existing_address(i=0, target=:new)
+    pulled_address = Hash.new
+
+    on VendorPage do |vp|
+      case target
+        when :old
+          pulled_address = {
+            type:           vp.update_address_type(i).selected_options.first.text.strip,
+            address_1:      vp.update_address_1(i).value.strip,
+            address_2:      vp.update_address_2(i).value.strip,
+            city:           vp.update_city(i).value.strip,
+            state:          vp.update_state(i).value.strip,
+            postal_code:    vp.update_zipcode(i).value.strip,
+            province:       vp.update_province(i).value.strip,
+            country:        vp.update_country(i).selected_options.first.text.strip,
+            attention:      vp.update_address_attention(i).value.strip,
+            url:            vp.update_address_url(i).value.strip,
+            fax:            vp.update_fax(i).value.strip,
+            email:          vp.update_email(i).value.strip,
+            set_as_default: vp.update_default_address(i).selected_options.first.text,
+            active:         yesno2setclear(vp.update_address_active_indicator(i).value.strip)
+          }
+        when :new
+          pulled_address = {
+            type:           vp.update_address_type(i).selected_options.first.text.strip,
+            address_1:      vp.update_address_1(i).value.strip,
+            address_2:      vp.update_address_2(i).value.strip,
+            city:           vp.update_city(i).value.strip,
+            state:          vp.update_state(i).value.strip,
+            postal_code:    vp.update_zipcode(i).value.strip,
+            province:       vp.update_province(i).value.strip,
+            country:        vp.update_country(i).selected_options.first.text.strip,
+            attention:      vp.update_address_attention(i).value.strip,
+            url:            vp.update_address_url(i).value.strip,
+            fax:            vp.update_fax(i).value.strip,
+            email:          vp.update_email(i).value.strip,
+            set_as_default: vp.update_default_address(i).selected_options.first.text,
+            active:         yesno2setclear(vp.update_address_active_indicator(i).value.strip)
+          }
+      end
+    end
+
+    pulled_address
+  end
+
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
   # @return [Hash] The known line values
-  def pull_extended_existing_address(i=0)
+  def pull_extended_existing_address(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

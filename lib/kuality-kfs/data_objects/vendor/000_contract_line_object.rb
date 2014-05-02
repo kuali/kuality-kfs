@@ -87,14 +87,14 @@ class ContractLineObjectCollection < LineObjectCollection
 
   contains ContractLineObject
 
-  def update_from_page!
+  def update_from_page!(target=:new)
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
       unless lines.current_contracts_count.zero?
         (0..(lines.current_contracts_count - 1)).to_a.collect!{ |i|
-          lines.pull_existing_contract(i).merge(pull_extended_existing_contract(i))
+          pull_existing_contract(i).merge(pull_extended_existing_contract(i))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
@@ -104,11 +104,46 @@ class ContractLineObjectCollection < LineObjectCollection
     end
   end
 
+  # @return [Hash] The return values of attributes for the given line
+  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The known line values
+  def pull_existing_contract(i=0, target=:new)
+    pulled_contract = Hash.new
+
+    case target
+      when :old
+      when :new
+    end
+
+    on VendorPage do |vp|
+      pulled_contract = {
+        number:                vp.update_contract_number(i),
+        name:                  vp.update_contract_name(i).value.strip,
+        description:           vp.update_contract_description(i).value.strip,
+        campus_code:           vp.update_contract_campus_code(i).selected_options.first.value,
+        begin_date:            vp.update_contract_begin_date(i).value.strip,
+        end_date:              vp.update_contract_end_date(i).value.strip,
+        manager:               vp.update_contract_manager(i).selected_options.first.text,
+        po_cost_source:        vp.update_contract_po_cost_source(i).selected_options.first.text,
+        b2b:                   vp.update_b2b_contract_indicator(i).selected_options.first.text,
+        payment_terms:         vp.update_contract_payment_terms(i).selected_options.first.text,
+        shipping_terms:        vp.update_contract_shipping_terms(i).selected_options.first.text,
+        shipping_title:        vp.update_contract_shipping_title(i).selected_options.first.text,
+        extension_option_date: vp.update_contract_extension_option_date(i).value.strip,
+        default_apo_limit:     vp.update_contract_default_apo_limit(i).value.strip,
+        active:                yesno2setclear(vp.update_contract_active_indicator(i).value)
+      }
+    end
+
+    pulled_contract
+  end
+
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
   # @return [Hash] The known line values
-  def pull_extended_existing_contract(i=0)
+  def pull_extended_existing_contract(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

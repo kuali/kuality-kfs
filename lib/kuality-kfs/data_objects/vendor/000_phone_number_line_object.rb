@@ -56,14 +56,14 @@ class PhoneLineObjectCollection < LineObjectCollection
 
   contains PhoneLineObject
 
-  def update_from_page!
+  def update_from_page!(target=:new)
     on VendorPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
       unless lines.current_phone_number_count.zero?
         (0..(lines.current_phone_number_count - 1)).to_a.collect!{ |i|
-          lines.pull_existing_phone(i).merge(pull_extended_existing_phone(i))
+          pull_existing_phone(i).merge(pull_extended_existing_phone(i))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
@@ -73,11 +73,40 @@ class PhoneLineObjectCollection < LineObjectCollection
     end
   end
 
+  # @return [Hash] The return values of attributes for the given line
+  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The known line values
+  def pull_existing_phone(i=0, target=:new)
+    pulled_phone = Hash.new
+
+    on VendorPage do |vp|
+      case target
+        when :old
+          pulled_phone = {
+              type:      vp.update_phone_type(i).selected_options.first.text,
+              number:    vp.update_phone_number(i).value.strip,
+              extension: vp.update_phone_extension(i).value.strip,
+              active:    yesno2setclear(vp.update_phone_active_indicator(i).value)
+          }
+        when :new
+          pulled_phone = {
+              type:      vp.update_phone_type(i).selected_options.first.text,
+              number:    vp.update_phone_number(i).value.strip,
+              extension: vp.update_phone_extension(i).value.strip,
+              active:    yesno2setclear(vp.update_phone_active_indicator(i).value)
+          }
+      end
+    end
+
+    pulled_phone
+  end
+
   # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Watir::Browser] b The current browser object
+  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
   # @return [Hash] The known line values
-  def pull_extended_existing_phone(i=0)
+  def pull_extended_existing_phone(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.

@@ -64,25 +64,6 @@ class VendorPage < KFSBasePage
   action(:update_contract_default_apo_limit) { |i=0, b| b.frm.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].organizationAutomaticPurchaseOrderLimit") }
   action(:update_contract_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorContracts[#{i}].active") }
 
-  action(:pull_existing_contract) do |i=0, b|
-    {
-        number:                b.update_contract_number(i),
-        name:                  b.update_contract_name(i).value.strip,
-        description:           b.update_contract_description(i).value.strip,
-        campus_code:           b.update_contract_campus_code(i).selected_options.first.value,
-        begin_date:            b.update_contract_begin_date(i).value.strip,
-        end_date:              b.update_contract_end_date(i).value.strip,
-        manager:               b.update_contract_manager(i).selected_options.first.text,
-        po_cost_source:        b.update_contract_po_cost_source(i).selected_options.first.text,
-        b2b:                   b.update_b2b_contract_indicator(i).selected_options.first.text,
-        payment_terms:         b.update_contract_payment_terms(i).selected_options.first.text,
-        shipping_terms:        b.update_contract_shipping_terms(i).selected_options.first.text,
-        shipping_title:        b.update_contract_shipping_title(i).selected_options.first.text,
-        extension_option_date: b.update_contract_extension_option_date(i).value.strip,
-        default_apo_limit:     b.update_contract_default_apo_limit(i).value.strip,
-        active:                yesno2setclear(b.update_contract_active_indicator(i).value)
-    }
-  end
   value(:current_contracts_count) { |b| b.frm.div(id: 'tab-Contracts-div').spans(class: 'left', text: /Contract [(]/m).length }
 
   # Phone Tab
@@ -100,14 +81,7 @@ class VendorPage < KFSBasePage
   alias_method :updated_phone_ext, :update_phone_extension
   action(:update_phone_active_indicator) { |i=0, b| b.frm.checkbox(id: "document.newMaintainableObject.vendorPhoneNumbers[#{i}].active") }
   action(:delete_phone_number) { |i=0, b| b.frm.button(id: "methodToCall.deleteLine.vendorPhoneNumbers.(!!.line#{i}").click }
-  action(:pull_existing_phone) do |i=0, b|
-    {
-      type:      b.update_phone_type(i).selected_options.first.text,
-      number:    b.update_phone_number(i).value.strip,
-      extension: b.update_phone_extension(i).value.strip,
-      active:    yesno2setclear(b.update_phone_active_indicator(i).value)
-    }
-  end
+
   value(:current_phone_number_count) { |b| b.frm.div(id: 'tab-VendorPhoneNumber-div').spans(class: 'left', text: /Phone Numbers [(]/m).length }
 
   # Address Tab
@@ -152,24 +126,6 @@ class VendorPage < KFSBasePage
   action(:update_default_address) { |i=0, b| b.frm.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator") }
   action(:update_address_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorAddresses[#{i}].active") }
 
-  action(:pull_existing_address) do |i, b|
-    {
-      type:           b.update_address_type(i).selected_options.first.text.strip,
-      address_1:      b.update_address_1(i).value.strip,
-      address_2:      b.update_address_2(i).value.strip,
-      city:           b.update_city(i).value.strip,
-      state:          b.update_state(i).value.strip,
-      postal_code:    b.update_zipcode(i).value.strip,
-      province:       b.update_province(i).value.strip,
-      country:        b.update_country(i).selected_options.first.text.strip,
-      attention:      b.update_address_attention(i).value.strip,
-      url:            b.update_address_url(i).value.strip,
-      fax:            b.update_fax(i).value.strip,
-      email:          b.update_email(i).value.strip,
-      set_as_default: b.update_default_address(i).selected_options.first.text,
-      active:         yesno2setclear(b.update_address_active_indicator(i).value.strip)
-    }
-  end
   value(:current_address_count) { |b| b.frm.div(id: 'tab-Address-div').inputs(alt: /(close|open) Address [(]/m).length }
 
   # Contact Tab
@@ -204,23 +160,6 @@ class VendorPage < KFSBasePage
   action(:update_contact_comments) { |i=0, b| b.frm.textarea(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactCommentText") }
   action(:update_contact_active_indicator) { |i=0, b| b.frm.checkbox(name: "document.newMaintainableObject.vendorContacts[#{i}].active") }
 
-  action(:pull_existing_contact) do |i, b|
-    {
-        type:           b.update_contact_type(i).selected_options.first.text.strip,
-        name:           b.update_contact_name(i).value.strip,
-        email:          b.update_contact_email(i).value.strip,
-        address_1:      b.update_contact_address_1(i).value.strip,
-        address_2:      b.update_contact_address_2(i).value.strip,
-        city:           b.update_contact_city(i).value.strip,
-        state:          b.update_contact_state(i).value.strip,
-        postal_code:    b.update_contact_zipcode(i).value.strip,
-        province:       b.update_contact_province(i).value.strip,
-        country:        b.update_contact_country(i).selected_options.first.text,
-        attention:      b.update_contact_attention(i).value.strip,
-        comments:       b.update_contact_comments(i).value.strip,
-        active:         yesno2setclear(b.update_contact_active_indicator(i).value.strip)
-    }
-  end
   value(:current_contacts_count) { |b| b.frm.div(id: 'tab-Contact-div').spans(class: 'left', text: /Contact [(]/m).length }
 
   element(:hidden_tax_number) { |b| b.frm.hidden(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
@@ -240,21 +179,6 @@ class VendorPage < KFSBasePage
       ownership:   b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorOwnershipCode.div').text.strip,
       w9_received: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorW9ReceivedIndicator.div').text.strip,
       w9_received_date: b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.extension.vendorW9ReceivedDate.div').text.strip,
-      # TODO: Create an ContractLineObject >_<*
-      # contract_name:        b.frm.span(id: '').text.strip,
-      # contract_description: b.frm.span(id: '').text.strip,
-      # contract_begin_date:  b.frm.span(id: '').text.strip,
-      # contract_end_date:    b.frm.span(id: '').text.strip,
-      # contract_extension_date: b.frm.span(id: '').text.strip,
-      # contract_name_1:           b.frm.span(id: '').text.strip,
-      # contract_po_limit:      b.frm.span(id: '').text.strip,
-      # contract_campus_code:   b.frm.span(id: '').text.strip,
-      # b2b_contract_indicator: b.frm.span(id: '').text.strip,
-      # contract_manager_code:  b.frm.span(id: '').text.strip,
-      # po_cost_source_code:     b.frm.span(id: '').text.strip,
-      # vendor_pmt_terms_code:   b.frm.span(id: '').text.strip,
-      # vendor_shipping_pmt_terms_code: b.frm.span(id: '').text.strip,
-      # vendor_shipping_title_code:     b.frm.span(id: '').text.strip,
       general_liability_coverage_amt:    b.frm.span(id: '').text.strip,
       general_liability_expiration_date: b.frm.span(id: '').text.strip,
       automobile_liability_coverage_amt: b.frm.span(id: '').text.strip,
@@ -320,12 +244,7 @@ class VendorPage < KFSBasePage
   action(:search_alias_name) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').span(id: "document.newMaintainableObject.vendorAliases[#{i}].vendorAliasName.div").text.strip }
   element(:new_search_alias_active) { |b| b.frm.checkbox(id: 'document.newMaintainableObject.add.vendorAliases.active') }
   element(:new_search_alias_name) { |b| b.frm.text_field(id: 'document.newMaintainableObject.add.vendorAliases.vendorAliasName') }
-  action(:pull_existing_search_alias) do |i=0, b|
-    {
-      name:   b.search_alias_name(i),
-      active: yesno2setclear(b.search_alias_active(i))
-    }
-  end
+
   value(:current_search_alias_count) { |b| b.frm.div(id: 'tab-SearchAlias-div').spans(class: 'left', text: /Search Alias [(]/m).length }
 
 end

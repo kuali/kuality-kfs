@@ -53,18 +53,19 @@ class VendorObject < KFSDataObject
     end
   end
 
-  def update_line_objects_from_page!
+  def update_line_objects_from_page!(target=:new)
     super
-    @phone_numbers.update_from_page!
-    @addresses.update_from_page!
-    @contacts.update_from_page!
-    @contracts.update_from_page!
-    @supplier_diversities.update_from_page! # FIXME: Copy this entire method to kuality-kfs-cu project, then remove this line here
+    @phone_numbers.update_from_page!(target)
+    @addresses.update_from_page!(target)
+    @contacts.update_from_page!(target)
+    @contracts.update_from_page!(target)
+    @supplier_diversities.update_from_page!(target) # FIXME: Copy this entire method to kuality-kfs-cu project, then remove this line here
   end
 
-  def absorb(target={})
+  def absorb(target=:new)
     super
     update_options(on(VendorPage).send("#{target.to_s}_vendor_data"))
+    update_line_objects_from_page!(target)
   end
 
 end
