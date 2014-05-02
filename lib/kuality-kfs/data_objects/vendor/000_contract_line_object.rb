@@ -104,10 +104,9 @@ class ContractLineObjectCollection < LineObjectCollection
     end
   end
 
-  # @return [Hash] The return values of attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
-  # @return [Hash] The known line values
+  # @param [Symbol] target Which contract to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The return values of attributes for the given line
   def pull_existing_contract(i=0, target=:new)
     pulled_contract = Hash.new
 
@@ -139,10 +138,9 @@ class ContractLineObjectCollection < LineObjectCollection
     pulled_contract
   end
 
-  # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
-  # @return [Hash] The known line values
+  # @param [Symbol] target Which contract to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The return values of attributes for the given line
   def pull_extended_existing_contract(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the

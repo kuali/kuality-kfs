@@ -25,7 +25,7 @@ class SearchAliasLineObject < DataFactory
 
   def edit(opts={})
     raise ArgumentError, 'Search Alias Names cannot be updated, only deleted!' unless opts[:name].nil?
-    on(VendorPage).search_alias_active(@line_number).fit opts[:active] unless opts[:active].nil?
+    on(VendorPage).update_search_alias_active(@line_number).fit opts[:active] unless opts[:active].nil?
     update_options(opts)
   end
 
@@ -65,10 +65,9 @@ class SearchAliasLineObjectCollection < LineObjectCollection
     end
   end
 
-  # @return [Hash] The return values of attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
-  # @return [Hash] The known line values
+  # @param [Symbol] target Which search alias to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The return values of attributes for the given line
   def pull_existing_search_alias(i=0, target=:new)
     pulled_search_alias = Hash.new
 
@@ -76,13 +75,13 @@ class SearchAliasLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_search_alias = {
-              name:   vp.search_alias_name(i),
-              active: yesno2setclear(vp.search_alias_active(i))
+            name:   vp.search_alias_name(i),
+            active: yesno2setclear(vp.search_alias_active(i))
           }
         when :new
           pulled_search_alias = {
-              name:   vp.search_alias_name(i),
-              active: yesno2setclear(vp.search_alias_active(i))
+            name:   vp.search_alias_name(i),
+            active: yesno2setclear(vp.search_alias_active(i))
           }
       end
     end
@@ -90,10 +89,9 @@ class SearchAliasLineObjectCollection < LineObjectCollection
     pulled_search_alias
   end
 
-  # @return [Hash] The return values of extended attributes for the given line
   # @param [Fixnum] i The line number to look for (zero-based)
-  # @param [Symbol] target Which address to pull from (most useful during a copy action). Defaults to :new
-  # @return [Hash] The known line values
+  # @param [Symbol] target Which search alias to pull from (most useful during a copy action). Defaults to :new
+  # @return [Hash] The return values of attributes for the given line
   def pull_extended_existing_search_alias(i=0, target=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
