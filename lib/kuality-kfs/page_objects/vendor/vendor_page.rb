@@ -1,21 +1,36 @@
 class VendorPage < KFSBasePage
 
-  element(:vendor_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorName') }
-  element(:vendor_last_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorLastName') }
-  element(:vendor_first_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorFirstName') }
-  element(:vendor_type) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorTypeCode') }
-  element(:foreign) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorForeignIndicator') }
-  element(:tax_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
-  element(:tax_number_type_fein) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeFEIN') }
-  element(:tax_number_type_ssn) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeSSN') }
-  element(:tax_number_type_none) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE') }
-  element(:ownership) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorOwnershipCode') }
-  element(:w9_received) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorW9ReceivedIndicator') }
+  element(:new_vendor_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorName') }
+  alias_method :vendor_name, :new_vendor_name
+  element(:new_vendor_last_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorLastName') }
+  alias_method :vendor_last_name, :new_vendor_last_name
+  element(:new_vendor_first_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorFirstName') }
+  alias_method :vendor_first_name, :new_vendor_first_name
+  element(:new_vendor_type) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorTypeCode') }
+  alias_method :vendor_type, :new_vendor_type
+  element(:new_foreign) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorForeignIndicator') }
+  alias_method :foreign, :new_foreign
+  element(:new_tax_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
+  alias_method :tax_number, :new_tax_number
+  element(:new_tax_number_type_fein) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeFEIN') }
+  alias_method :tax_number_type_fein, :new_tax_number_type_fein
+  element(:new_tax_number_type_ssn) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeSSN') }
+  alias_method :tax_number_type_ssn, :new_tax_number_type_ssn
+  element(:new_tax_number_type_none) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE') }
+  alias_method :tax_number_type_none, :new_tax_number_type_none
+  element(:new_ownership) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorOwnershipCode') }
+  alias_method :ownership, :new_ownership
+  element(:new_w9_received) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorW9ReceivedIndicator') }
+  alias_method :w9_received, :new_w9_received
 
   # Contracts Tab
   action(:add_contract) { |b| b.frm.button(id: /methodToCall.addLine.vendorContracts/m).click }
   action(:delete_contract) { |i=0, b| b.frm.button(id: "methodToCall.deleteLine.vendorContracts.(!!.line#{i}").click }
-  action(:show_contracts) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabContracts').click }
+  action(:show_contracts_button) { |b| b.frm.button(id: 'tab-Contracts-imageToggle') }
+  value(:contracts_tab_shown?) { |b| b.show_contracts_button.title.match(/close Contracts/m) }
+  value(:contracts_tab_hidden?) { |b| !b.contracts_tab_shown? }
+  action(:show_contracts) { |b| b.show_contracts_button.click }
+  alias_method :hide_contracts, :show_contracts
 
   element(:new_contract_number) { |b| warn 'VendorPage#new_contract_number does not return a value! Please implement this method if you need it!'; '' }
   alias_method :contract_number, :new_contract_number
@@ -67,7 +82,13 @@ class VendorPage < KFSBasePage
   value(:current_contracts_count) { |b| b.frm.div(id: 'tab-Contracts-div').spans(class: 'left', text: /Contract [(]/m).length }
 
   # Phone Tab
-  action(:show_phone_numbers) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabVendorPhoneNumber').click }
+  action(:show_phone_numbers_button) { |b| b.frm.button(id: 'tab-CustomerNumber-imageToggle') }
+  value(:phone_numbers_tab_shown?) { |b| b.show_phone_numbers_button.title.match(/close Customer Number/m) }
+  value(:phone_numbers_tab_hidden?) { |b| !b.phone_numbers_tab_shown? }
+  action(:show_phone_numbers) { |b| b.show_phone_numbers_button.click }
+  alias_method :hide_phone_numbers, :show_phone_numbers
+
+
   element(:phone_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneTypeCode') }
   element(:phone_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneNumber') }
   element(:phone_extension) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorPhoneNumbers.vendorPhoneExtensionNumber') }
@@ -86,7 +107,11 @@ class VendorPage < KFSBasePage
 
   # Address Tab
   action(:add_address) { |b| b.frm.button(id: /methodToCall.addLine.vendorAddresses/m).click }
-  action(:show_addresses) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabAddress').click }
+  action(:show_addresses_button) { |b| b.frm.button(id: 'tab-Address-imageToggle') }
+  value(:addresses_tab_shown?) { |b| b.show_addresses_button.title.match(/close Address/m) }
+  value(:addresses_tab_hidden?) { |b| !b.addresses_tab_shown? }
+  action(:show_addresses) { |b| b.show_addresses_button.click }
+  alias_method :hide_addresses, :show_addresses
 
   element(:address_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorAddressTypeCode') }
   element(:address_1) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorAddresses.vendorLine1Address') }
@@ -130,7 +155,11 @@ class VendorPage < KFSBasePage
 
   # Contact Tab
   action(:add_contact) { |b| b.frm.button(id: /methodToCall.addLine.vendorContacts/m).click }
-  action(:show_contacts) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabContact').click }
+  action(:show_contacts_button) { |b| b.frm.button(id: 'tab-Contact-imageToggle') }
+  value(:contacts_tab_shown?) { |b| b.show_contacts_button.title.match(/close Customer Number/m) }
+  value(:contacts_tab_hidden?) { |b| !b.contacts_tab_shown? }
+  action(:show_contacts) { |b| b.show_contacts_button.click }
+  alias_method :hide_contacts, :show_contacts
 
   element(:new_contact_type) { |b| b.frm.select(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactTypeCode') }
   element(:new_contact_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.vendorContacts.vendorContactName') }
@@ -238,8 +267,14 @@ class VendorPage < KFSBasePage
 
   # Search Alias
   action(:add_search_alias) { |b| b.frm.button(id: 'methodToCall.addLine.vendorAliases.(!!org.kuali.kfs.vnd.businessobject.VendorAlias!!)').click }
-  action(:show_search_aliases) { |b| b.frm.button(name: 'methodToCall.toggleTab.tabSearchAlias').click }
   action(:delete_search_alias) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').button(id: "methodToCall.deleteLine.vendorAliases.(!!.line#{i}").click }
+
+  action(:show_search_aliases_button) { |b| b.frm.button(id: 'tab-SearchAlias-imageToggle') }
+  value(:search_aliases_tab_shown?) { |b| b.show_search_aliases_button.title.match(/close Search Alias/m) }
+  value(:search_aliases_tab_hidden?) { |b| !b.search_aliases_tab_shown? }
+  action(:show_search_aliases) { |b| b.show_search_aliases_button.click }
+  alias_method :hide_contacts, :show_search_aliases
+
   action(:search_alias_active) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').checkbox(id: "document.newMaintainableObject.vendorAliases[#{i}].active").value }
   action(:search_alias_name) { |i=0, b| b.frm.div(id: 'tab-SearchAlias-div').span(id: "document.newMaintainableObject.vendorAliases[#{i}].vendorAliasName.div").text.strip }
   element(:new_search_alias_active) { |b| b.frm.checkbox(id: 'document.newMaintainableObject.add.vendorAliases.active') }
