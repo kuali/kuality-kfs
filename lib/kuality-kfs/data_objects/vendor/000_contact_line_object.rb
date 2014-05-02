@@ -106,19 +106,19 @@ class ContactLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_contact = {
-            type:           vp.update_contact_type(i).selected_options.first.text.strip,
-            name:           vp.update_contact_name(i).value.strip,
-            email:          vp.update_contact_email(i).value.strip,
-            address_1:      vp.update_contact_address_1(i).value.strip,
-            address_2:      vp.update_contact_address_2(i).value.strip,
-            city:           vp.update_contact_city(i).value.strip,
-            state:          vp.update_contact_state(i).value.strip,
-            postal_code:    vp.update_contact_zipcode(i).value.strip,
-            province:       vp.update_contact_province(i).value.strip,
-            country:        vp.update_contact_country(i).selected_options.first.text,
-            attention:      vp.update_contact_attention(i).value.strip,
-            comments:       vp.update_contact_comments(i).value.strip,
-            active:         yesno2setclear(vp.update_contact_active_indicator(i).value.strip)
+            type:           vp.old_contact_type(i),
+            name:           vp.old_contact_name(i),
+            email:          vp.old_contact_email(i),
+            address_1:      vp.old_contact_address_1(i),
+            address_2:      vp.old_contact_address_2(i),
+            city:           vp.old_contact_city(i),
+            state:          vp.old_contact_state(i),
+            postal_code:    vp.old_contact_zipcode(i),
+            province:       vp.old_contact_province(i),
+            country:        vp.old_contact_country(i),
+            attention:      vp.old_contact_attention(i),
+            comments:       vp.old_contact_comments(i),
+            active:         yesno2setclear(vp.old_contact_active_indicator(i))
           }
         when :new
           pulled_contact = {

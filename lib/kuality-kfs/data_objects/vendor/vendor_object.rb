@@ -1,17 +1,9 @@
 class VendorObject < KFSDataObject
 
-  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name , :vendor_type, :foreign,
-                :tax_number,
+  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name ,
+                :vendor_type, :foreign, :tax_number,
                 :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                 :ownership, :w9_received,
-                # == Cornell-specific ==
-                :w9_received_date, :default_payment_method,
-                :general_liability_coverage_amt, :general_liability_expiration_date, :automobile_liability_coverage_amt,
-                :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
-                :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
-                :cornell_additional_ins_ind, :health_offsite_catering_lic_req,
-                :insurance_requirements_complete,
-                :insurance_requirement_indicator,
                 # == Collections ==
                 :search_aliases, :phone_numbers, :addresses, :contacts, :contracts
 
@@ -35,17 +27,16 @@ class VendorObject < KFSDataObject
   def build
     visit(MainPage).vendor
     on(VendorLookupPage).create_new
-
     on VendorPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name,
-                     :vendor_first_name, :foreign, :tax_number,
+      fill_out page, :description,
+                     :vendor_name, :vendor_last_name, :vendor_first_name ,
+                     :vendor_type, :foreign, :tax_number,
                      :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
-                     :ownership, :w9_received, :w9_received_date,
-                     :default_payment_method
+                     :ownership, :w9_received
 
       @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
 

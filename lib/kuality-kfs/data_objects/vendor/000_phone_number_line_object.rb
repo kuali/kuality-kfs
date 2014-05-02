@@ -83,10 +83,10 @@ class PhoneLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_phone = {
-              type:      vp.update_phone_type(i).selected_options.first.text,
-              number:    vp.update_phone_number(i).value.strip,
-              extension: vp.update_phone_extension(i).value.strip,
-              active:    yesno2setclear(vp.update_phone_active_indicator(i).value)
+              type:      vp.old_phone_type(i),
+              number:    vp.old_phone_number(i),
+              extension: vp.old_phone_extension(i),
+              active:    yesno2setclear(vp.old_phone_active_indicator(i))
           }
         when :new
           pulled_phone = {

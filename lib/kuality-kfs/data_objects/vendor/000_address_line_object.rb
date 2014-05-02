@@ -118,20 +118,20 @@ class AddressLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_address = {
-            type:           vp.update_address_type(i).selected_options.first.text.strip,
-            address_1:      vp.update_address_1(i).value.strip,
-            address_2:      vp.update_address_2(i).value.strip,
-            city:           vp.update_city(i).value.strip,
-            state:          vp.update_state(i).value.strip,
-            postal_code:    vp.update_zipcode(i).value.strip,
-            province:       vp.update_province(i).value.strip,
-            country:        vp.update_country(i).selected_options.first.text.strip,
-            attention:      vp.update_address_attention(i).value.strip,
-            url:            vp.update_address_url(i).value.strip,
-            fax:            vp.update_fax(i).value.strip,
-            email:          vp.update_email(i).value.strip,
-            set_as_default: vp.update_default_address(i).selected_options.first.text,
-            active:         yesno2setclear(vp.update_address_active_indicator(i).value.strip)
+            type:           vp.old_address_type(i),
+            address_1:      vp.old_address_1(i),
+            address_2:      vp.old_address_2(i),
+            city:           vp.old_city(i),
+            state:          vp.old_state(i),
+            postal_code:    vp.old_zipcode(i),
+            province:       vp.old_province(i),
+            country:        vp.old_country(i),
+            attention:      vp.old_address_attention(i),
+            url:            vp.old_address_url(i),
+            fax:            vp.old_fax(i),
+            email:          vp.old_email(i),
+            set_as_default: vp.old_default_address(i),
+            active:         yesno2setclear(vp.old_address_active_indicator(i))
           }
         when :new
           pulled_address = {

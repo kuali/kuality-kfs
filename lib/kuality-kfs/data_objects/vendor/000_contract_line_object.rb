@@ -110,29 +110,45 @@ class ContractLineObjectCollection < LineObjectCollection
   def pull_existing_contract(i=0, target=:new)
     pulled_contract = Hash.new
 
-    case target
-      when :old
-      when :new
-    end
-
     on VendorPage do |vp|
-      pulled_contract = {
-        number:                vp.update_contract_number(i),
-        name:                  vp.update_contract_name(i).value.strip,
-        description:           vp.update_contract_description(i).value.strip,
-        campus_code:           vp.update_contract_campus_code(i).selected_options.first.value,
-        begin_date:            vp.update_contract_begin_date(i).value.strip,
-        end_date:              vp.update_contract_end_date(i).value.strip,
-        manager:               vp.update_contract_manager(i).selected_options.first.text,
-        po_cost_source:        vp.update_contract_po_cost_source(i).selected_options.first.text,
-        b2b:                   vp.update_b2b_contract_indicator(i).selected_options.first.text,
-        payment_terms:         vp.update_contract_payment_terms(i).selected_options.first.text,
-        shipping_terms:        vp.update_contract_shipping_terms(i).selected_options.first.text,
-        shipping_title:        vp.update_contract_shipping_title(i).selected_options.first.text,
-        extension_option_date: vp.update_contract_extension_option_date(i).value.strip,
-        default_apo_limit:     vp.update_contract_default_apo_limit(i).value.strip,
-        active:                yesno2setclear(vp.update_contract_active_indicator(i).value)
-      }
+      case target
+        when :old
+          pulled_contract = {
+            number:                vp.old_contract_number(i),
+            name:                  vp.old_contract_name(i),
+            description:           vp.old_contract_description(i),
+            campus_code:           vp.old_contract_campus_code(i),
+            begin_date:            vp.old_contract_begin_date(i),
+            end_date:              vp.old_contract_end_date(i),
+            manager:               vp.old_contract_manager(i),
+            po_cost_source:        vp.old_contract_po_cost_source(i),
+            b2b:                   vp.old_b2b_contract_indicator(i),
+            payment_terms:         vp.old_contract_payment_terms(i),
+            shipping_terms:        vp.old_contract_shipping_terms(i),
+            shipping_title:        vp.old_contract_shipping_title(i),
+            extension_option_date: vp.old_contract_extension_option_date(i),
+            default_apo_limit:     vp.old_contract_default_apo_limit(i),
+            active:                yesno2setclear(vp.old_contract_active_indicator(i))
+          }
+        when :new
+          pulled_contract = {
+            number:                vp.update_contract_number(i),
+            name:                  vp.update_contract_name(i).value.strip,
+            description:           vp.update_contract_description(i).value.strip,
+            campus_code:           vp.update_contract_campus_code(i).selected_options.first.value,
+            begin_date:            vp.update_contract_begin_date(i).value.strip,
+            end_date:              vp.update_contract_end_date(i).value.strip,
+            manager:               vp.update_contract_manager(i).selected_options.first.text,
+            po_cost_source:        vp.update_contract_po_cost_source(i).selected_options.first.text,
+            b2b:                   vp.update_b2b_contract_indicator(i).selected_options.first.text,
+            payment_terms:         vp.update_contract_payment_terms(i).selected_options.first.text,
+            shipping_terms:        vp.update_contract_shipping_terms(i).selected_options.first.text,
+            shipping_title:        vp.update_contract_shipping_title(i).selected_options.first.text,
+            extension_option_date: vp.update_contract_extension_option_date(i).value.strip,
+            default_apo_limit:     vp.update_contract_default_apo_limit(i).value.strip,
+            active:                yesno2setclear(vp.update_contract_active_indicator(i).value)
+          }
+      end
     end
 
     pulled_contract

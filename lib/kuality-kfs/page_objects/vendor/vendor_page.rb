@@ -109,6 +109,7 @@ class VendorPage < KFSBasePage
   action(:update_contract_shipping_title) { |i=0, b| b.contracts_tab.select(name: "document.newMaintainableObject.vendorContracts[#{i}].vendorShippingTitleCode") }
   action(:update_contract_default_apo_limit) { |i=0, b| b.contracts_tab.text_field(name: "document.newMaintainableObject.vendorContracts[#{i}].organizationAutomaticPurchaseOrderLimit") }
   action(:update_contract_active_indicator) { |i=0, b| b.contracts_tab.checkbox(name: "document.newMaintainableObject.vendorContracts[#{i}].active") }
+
   value(:old_contract_number) { |i=0, b| b.contracts_tab.span(id: "document.oldMaintainableObject.vendorContracts[#{i}].vendorContractGeneratedIdentifier.div").text.strip }
   action(:old_contract_name) { |i=0, b| b.contracts_tab.span(id: "document.oldMaintainableObject.vendorContracts[#{i}].vendorContractName.div").text.strip }
   action(:old_contract_description) { |i=0, b| b.contracts_tab.span(id: "document.oldMaintainableObject.vendorContracts[#{i}].vendorContractDescription.div").text.strip }
@@ -194,7 +195,7 @@ class VendorPage < KFSBasePage
   element(:default_address) { |b| b.addresses_tab.select(name: 'document.newMaintainableObject.add.vendorAddresses.vendorDefaultAddressIndicator') }
   alias_method :new_default_address, :default_address
   element(:address_active_indicator) { |b| b.addresses_tab.checkbox(name: 'document.newMaintainableObject.add.vendorAddresses.active') }
-  alias_method :new_address_active_indicator, :old_address_active_indicator
+  alias_method :new_address_active_indicator, :address_active_indicator
 
   action(:update_address_type) { |i=0, b| b.addresses_tab.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode") }
   alias_method :address_type_1, :update_address_type

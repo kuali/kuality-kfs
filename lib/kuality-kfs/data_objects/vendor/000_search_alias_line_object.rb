@@ -75,8 +75,8 @@ class SearchAliasLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_search_alias = {
-            name:   vp.search_alias_name(i),
-            active: yesno2setclear(vp.search_alias_active(i))
+            name:   vp.old_search_alias_name(i),
+            active: yesno2setclear(vp.old_search_alias_active(i))
           }
         when :new
           pulled_search_alias = {
