@@ -18,8 +18,8 @@ class KFSDataObject < DataFactory
 
   def defaults
     {
-      description:                random_alphanums(40, 'AFT'),
-      notes_and_attachments_tab:  collection('NotesAndAttachmentsLineObject')
+      description:               random_alphanums(40, 'AFT'),
+      notes_and_attachments_tab: collection('NotesAndAttachmentsLineObject')
     }
   end
 
