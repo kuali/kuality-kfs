@@ -114,11 +114,11 @@ module GlobalConfig
     random_letters(10)
   end
   def get_random_state_code()
-    state = get_kuali_business_object('KR-NS','State','countryCode=US')
+    state = get_kuali_business_object('location','State','countryCode=US')
     account_info['code']
   end
   def get_random_postal_code(state)
-    state = get_kuali_business_object('KR-NS','PostalCode',"stateCode=NY")
+    state = get_kuali_business_object('location','PostalCode',"stateCode=NY")
     account_info['code']
   end
 end
