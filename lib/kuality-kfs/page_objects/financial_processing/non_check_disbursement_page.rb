@@ -1,6 +1,5 @@
 class NonCheckDisbursementPage < FinancialProcessingPage
 
-  document_overview
   financial_document_detail
   accounting_lines
 

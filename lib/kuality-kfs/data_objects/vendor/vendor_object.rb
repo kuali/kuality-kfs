@@ -12,7 +12,8 @@ class VendorObject < KFSDataObject
                 :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
                 :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
                 :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-                :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1
+                :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1,
+                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext
 
   def initialize(browser, opts={})
     @browser = browser
@@ -38,7 +39,7 @@ class VendorObject < KFSDataObject
         supplier_diversity:         'HUBZONE',
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT'),
+        note_text:                  random_alphanums(20, 'AFT')
     }
     set_options(defaults.merge(opts))
   end
@@ -52,7 +53,7 @@ class VendorObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      fill_out page, :description, :vendor_type, :vendor_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
+      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name, :vendor_first_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
                :ownership, :w9_received, :w9_received_date
 
       fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,

@@ -26,6 +26,7 @@ class PaymentInformationTab < FinancialProcessingPage
   element(:payment_method) { |b| b.frm.select(id: 'document.disbVchrPaymentMethodCode') }
   element(:check_stub_text) { |b| b.frm.text_field(id: 'document.disbVchrCheckStubText') }
   element(:documentation_location_code) { |b| b.frm.select(id: 'document.disbursementVoucherDocumentationLocationCode') }
+  value(:payee_id_value) { |b| b.frm.table(summary: 'Payment Section')[1][1].text }
   value(:address_1_value) { |b| b.frm.table(summary: 'Payment Section')[3][1].text }
   value(:address_2_value) { |b| b.frm.table(summary: 'Payment Section')[3][3].text }
   value(:city_value) { |b| b.frm.table(summary: 'Payment Section')[4][1].text }

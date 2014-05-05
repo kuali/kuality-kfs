@@ -73,23 +73,21 @@ module PaymentInformationMixin
       plookup.search
       plookup.return_value(@payee_id)
     end
-    if vendor_payee?
-      on VendorAddressLookup do |valookup|
-        valookup.address_1.fit @address_1 unless @address_1.nil?
-        valookup.address_2.fit @address_2 unless @address_2.nil?
-        valookup.city.fit @city unless @city.nil?
-        valookup.state.fit @state unless @state.nil?
-        valookup.country.fit @country unless @country.nil?
-        valookup.postal_code.fit @postal_code unless @postal_code.nil?
-        valookup.address_type.fit @address_type_description unless @address_type_description.nil?
 
-        valookup.search
-        valookup.return_value_links.first.click
+      if on(Lookups).on_a_lookup? && (on(Lookups).lookup_title == 'Vendor Address Lookup')
+        on VendorAddressLookup do |valookup|
+          valookup.address_1.fit @address_1 unless @address_1.nil?
+          valookup.address_2.fit @address_2 unless @address_2.nil?
+          valookup.city.fit @city unless @city.nil?
+          valookup.state.fit @state unless @state.nil?
+          valookup.country.fit @country unless @country.nil?
+          valookup.postal_code.fit @postal_code unless @postal_code.nil?
+          valookup.address_type.fit @address_type_description unless @address_type_description.nil?
+
+          valookup.search
+          valookup.return_value_links.first.click
+        end
       end
     end
-  end
 
-  def change_default_check_amount
-    on (PaymentInformationTab) {|tab| fill_out tab,  :check_amount}
-  end
 end

@@ -3,12 +3,14 @@ class DisbursementVoucherObject < KFSDataObject
   include PaymentInformationMixin
   include AccountingLinesMixin
   alias :add_target_line :add_source_line
+  alias :import_target_lines :import_source_lines
 
   DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
 
   attr_accessor :organization_document_number, :explanation,
                 :contact_name, :phone_number, :email_address,
-                :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
+                :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type,
+                :car_mileage, :car_mileage_reimb_amt, :per_diem_start_date
 
   def initialize(browser, opts={})
     @browser = browser

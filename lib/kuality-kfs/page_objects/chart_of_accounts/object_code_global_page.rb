@@ -9,7 +9,7 @@ class ObjectCodeGlobalPage < KFSBasePage
   element(:cg_reporting_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.cgReportingCode') }
   element(:object_sub_type_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectSubTypeCode') }
   element(:suny_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.sunyObjectCode') }
-  element(:financial_object_code_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeDescr') }
+  element(:financial_object_code_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.financialObjectCodeDescr') }
   element(:historical_financial_object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.historicalFinancialObjectCode') }
 
   element(:active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.financialObjectActiveIndicator') }

@@ -1,15 +1,11 @@
 class AdvanceDepositPage < FinancialProcessingPage
 
-  document_overview
   financial_document_detail
   accounting_lines
 
   #need to make
   accounting_lines_for_capitalization
   modify_capital_assets
-
-  general_ledger_pending_entries
-  notes_and_attachments
   ad_hoc_recipients
 
 #Advance Deposits

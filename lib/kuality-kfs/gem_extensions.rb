@@ -2,12 +2,20 @@ module Watir
   module Container
     def frm
       case
-        when frame(id: 'iframeportlet').exist?
-          frame(id: 'iframeportlet')
-        when frame(id: /easyXDM_default\d+_provider/).frame(id: 'iframeportlet').exist?
-          frame(id: /easyXDM_default\d+_provider/).frame(id: 'iframeportlet')
-        when frame(id: /easyXDM_default\d+_provider/).exist?
-          frame(id: /easyXDM_default\d+_provider/)
+        when iframe(id: 'iframeportlet').exist?
+          iframe(id: 'iframeportlet')
+        when iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').exist?
+          begin
+            if iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet').exists?
+              iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet')
+            else
+              iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet')
+            end
+          rescue
+            iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet')
+          end
+        when iframe(id: /easyXDM_default\d+_provider/).exist?
+          iframe(id: /easyXDM_default\d+_provider/)
         else
           self
       end
@@ -74,6 +82,17 @@ module Watir
       self.trs[1..(self.trs.length-1)]
     end
   end
+
+  class TextFieldLocator
+
+    def validate_element(element)
+      if element.tag_name.downcase == 'textarea'
+        warn "Locating textareas with '#text_field' is deprecated. Please, use '#textarea' method instead for element with id='#{element.attribute('id')}', class='#{element.attribute('class')}', name='#{element.attribute('name')}'"
+      end
+      super
+    end
+
+  end # TextFieldLocator
 
 end
 

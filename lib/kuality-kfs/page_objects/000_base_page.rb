@@ -1,6 +1,7 @@
 class BasePage < PageFactory
 
   include Utilities
+  include GlobalConfig
 
   # These constants can be used with switches to add modularity to object create methods.
   KNOWN_BUTTONS = {
@@ -15,7 +16,8 @@ class BasePage < PageFactory
     disapprove:        'disapprove',
     send_notification: 'send notification',
     recall:            'Recall current document',
-    error_correction:  'error correction'
+    error_correction:  'error correction',
+    fyi:           'fyi'
   }
 
   def self.available_buttons
@@ -46,7 +48,7 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: 'headerarea').h1.text }
+      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
       element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
@@ -55,22 +57,28 @@ class BasePage < PageFactory
       alias_method :disposition, :initiator
       value(:last_updated) {|p| p.headerinfo_table[1][3].text }
       alias_method :created, :last_updated
+      value(:requisition_id) { |p| p.headerinfo_table[2][1].text }
+      value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
+      alias_method :po_doc_status, :requisition_status
+      value(:po_number) { |p| p.headerinfo_table[2][1].text }
+      value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
     end
 
     def description_field
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
+      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
 
     def organization_facets
       element(:organization_name) { |b| b.frm.text_field(name: 'organizationName') }
       element(:organization_code) { |b| b.frm.text_field(name: 'organizationCode') }
-      element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
       element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
     end
 
     def global_buttons
       glbl 'blanket approve', 'close', 'cancel', 'reload', 'copy', 'Copy current document',
-           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document'
+           'approve', 'disapprove', 'submit', 'Send Notification', 'Recall current document','fyi', 'Calculate'
       action(:save) { |b| b.frm.button(name: 'methodToCall.save', title: 'save').click }
       action(:error_correction) { |b| b.frm.button(name: 'methodToCall.correct', title: 'Create error correction document from current document').click }
       action(:edit) { |b| b.edit_button.click }
@@ -129,23 +137,45 @@ class BasePage < PageFactory
       p_value(:docs_with_status) { |status, b| array = []; (b.results_table.rows.find_all{|row| row[1].text==status}).each { |row| array << row[0].text }; array }
 
       action(:select_monthly_item){ |obj_code, monthly_number, p| p.frm.link(href: /financialObjectCode=#{obj_code}(.*?)universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
+      action(:single_entry_monthly_item){ |monthly_number, p| p.frm.link(href: /universityFiscalPeriodCode=#{monthly_number}/).click; p.use_new_tab; p.close_parents }
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
+      value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
+      alias_method :no_result_table_returned?, :no_result_table_returned
+
+    end
+
+    def general_ledger_pending_entries
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+      action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
     end
 
     def notes_and_attachments
-      element(:note_text) { |b| b.frm.text_field(name: 'newNote.noteText') }
+      element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
+      action(:delete_note) { |l=0,b| b.frm.button(name: "methodToCall.deleteBONote.line#{l}").click }
+      action(:send_note_fyi) { |l=0,b| b.frm.button(name: "methodToCall.sendNoteWorkflowNotification.line#{l}").click }
+      action(:notification_recipient) { |l=0,b| b.frm.text_field(id: "document.note[#{l}].adHocRouteRecipient.id") }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+      element(:attachment_type) { |b| b.frm.select(name: 'newNote.attachment.attachmentTypeCode') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
+      element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }
+
+      #viewing document where changes have been made
+      element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
+      element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
+      element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
+      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      action(:download_file) { |l=0, b| b.download_file(l).click }
+
     end
 
     def route_log
-      element(:route_log_iframe) { |b| b.frm.frame(name: 'routeLogIFrame') }
+      element(:route_log_iframe) { |b| b.frm.iframe(name: 'routeLogIFrame') }
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
       value(:actions_taken) { |b| (b.actions_taken_table.rows.collect{ |row| row[1].text }.compact.uniq).reject{ |action| action==''} }
       element(:pnd_act_req_table) { |b| b.route_log_iframe.div(id: 'tab-PendingActionRequests-div').table }
@@ -153,6 +183,10 @@ class BasePage < PageFactory
       action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+
+      action(:pending_action_annotation) { |i=0, b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[(1+(i*2))][4].text }
+      value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
+      value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
