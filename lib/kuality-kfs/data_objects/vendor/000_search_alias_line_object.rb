@@ -80,8 +80,8 @@ class SearchAliasLineObjectCollection < LineObjectCollection
           }
         when :new
           pulled_search_alias = {
-            name:   vp.search_alias_name(i),
-            active: yesno2setclear(vp.search_alias_active(i))
+            name:   vp.update_search_alias_name(i),
+            active: yesno2setclear(vp.update_search_alias_active(i))
           }
       end
     end
