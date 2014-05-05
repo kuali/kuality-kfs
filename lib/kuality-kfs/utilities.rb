@@ -54,7 +54,7 @@ module Utilities
         '09'
       when 'APR', 'Apr', 'April'
         '10'
-      when 'MAY', 'May',
+      when 'MAY', 'May'
         '11'
       when 'JUN', 'Jun', 'June'
         '12'
