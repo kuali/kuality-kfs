@@ -60,6 +60,8 @@ class BasePage < PageFactory
       value(:requisition_id) { |p| p.headerinfo_table[2][1].text }
       value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
       alias_method :po_doc_status, :requisition_status
+      value(:po_number) { |p| p.headerinfo_table[2][1].text }
+      value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
     end
 
     def description_field
@@ -142,7 +144,7 @@ class BasePage < PageFactory
 
       action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
 
-      element(:no_result_table_returned) {|b| b.frm.divs(id: 'lookup')[0].parent.text.include?('No values match this search.') }
+      value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned
 
       #action(:find_header_index) { |text_match, b| b.frm.results_table.ths.each { |t| puts t.text.to_s + 'la la la la la' + i.to_s; i += 1  }
@@ -161,6 +163,7 @@ class BasePage < PageFactory
       action(:send_note_fyi) { |l=0,b| b.frm.button(name: "methodToCall.sendNoteWorkflowNotification.line#{l}").click }
       action(:notification_recipient) { |l=0,b| b.frm.text_field(id: "document.note[#{l}].adHocRouteRecipient.id") }
       element(:notes_tab) { |b| b.div(id: 'tab-NotesandAttachments-div') }
+      element(:attachment_type) { |b| b.frm.select(name: 'newNote.attachment.attachmentTypeCode') }
 
       element(:attach_notes_file) { |b| b.frm.file_field(name: 'attachmentFile') }
       element(:notes_table) { |b| b.frm.table(summary: 'view/add notes') }

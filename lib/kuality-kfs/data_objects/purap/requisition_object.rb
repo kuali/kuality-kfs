@@ -1,10 +1,8 @@
 class RequisitionObject < KFSDataObject
 
-  DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-
-  attr_accessor :item_account_number, :item_object_code, :item_catalog_number,
-                :item_description, :item_unit_cost, :item_quantity, :item_uom,
-                :attachment_file_name, :building_address, :requestor_phone
+  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
+  attr_accessor :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
+                :delivery_instructions, :vendor_notes
 
   def initialize(browser, opts={})
     @browser = browser
@@ -43,6 +41,7 @@ class RequisitionObject < KFSDataObject
       page.item_add_account_line
 
       page.requestor_phone.fit @requestor_phone
+      page.delivery_phone_number.fit @requestor_phone
       #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
