@@ -9,7 +9,7 @@ class PhoneLineObject < DataFactory
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { name: random_alphanums(40, 'AFT'), active: :set }
+    defaults = { active: :set }
 
     set_options(defaults.merge(opts))
   end
@@ -63,7 +63,7 @@ class PhoneLineObjectCollection < LineObjectCollection
       lines.expand_all
       unless lines.current_phone_number_count.zero?
         (0..(lines.current_phone_number_count - 1)).to_a.collect!{ |i|
-          pull_existing_phone(i).merge(pull_extended_existing_phone(i))
+          pull_existing_phone(i, target).merge(pull_extended_existing_phone(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)

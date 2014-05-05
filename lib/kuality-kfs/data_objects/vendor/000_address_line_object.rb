@@ -98,7 +98,7 @@ class AddressLineObjectCollection < LineObjectCollection
       lines.expand_all
       unless lines.current_address_count.zero?
         (0..(lines.current_address_count - 1)).to_a.collect!{ |i|
-          pull_existing_address(i).merge(pull_extended_existing_address(i))
+          pull_existing_address(i, target).merge(pull_extended_existing_address(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)

@@ -12,12 +12,46 @@ class VendorPage < KFSBasePage
   alias_method :new_foreign, :foreign
   element(:tax_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorHeader.vendorTaxNumber') }
   alias_method :new_tax_number, :tax_number
-  element(:tax_number_type_fein) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeFEIN') }
+
+  value(:new_tax_number_type) { |b| b.frm.input(name: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCode').parent.tds[1].text.strip }
+  element(:tax_number_type_fein) do |b|
+    if b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeFEIN').exists?
+      b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeFEIN')
+    else
+      if b.new_tax_number_type == 'FEIN'
+        :set
+      else
+        :clear
+      end
+    end
+  end
   alias_method :new_tax_number_type_fein, :tax_number_type_fein
-  element(:tax_number_type_ssn) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeSSN') }
+  element(:tax_number_type_ssn) do |b|
+    if b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeSSN').exists?
+      b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeSSN')
+    else
+      if b.new_tax_number_type == 'SSN'
+        :set
+      else
+        :clear
+      end
+    end
+  end
   alias_method :new_tax_number_type_ssn, :tax_number_type_ssn
-  element(:tax_number_type_none) {|b| b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE') }
+  element(:tax_number_type_none) do |b|
+    b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE')
+    if b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE').exists?
+      b.frm.radio(id: 'document.newMaintainableObject.vendorHeader.vendorTaxTypeCodeNONE')
+    else
+      if b.new_tax_number_type == 'NONE'
+        :set
+      else
+        :clear
+      end
+    end
+  end
   alias_method :new_tax_number_type_none, :tax_number_type_none
+
   element(:ownership) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorOwnershipCode') }
   alias_method :new_ownership, :ownership
   element(:w9_received) { |b| b.frm.select(name: 'document.newMaintainableObject.vendorHeader.vendorW9ReceivedIndicator') }
@@ -33,22 +67,14 @@ class VendorPage < KFSBasePage
   element(:old_foreign) { |b| b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorForeignIndicator.div').text.strip }
   element(:old_tax_number) do |b|
     otn = ''
-    if b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorTaxNumber.div').exists?
-      otn = b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorTaxNumber.div').text.strip
+    if b.hidden_tax_number.exists?
+      otn = b.hidden_tax_number.parent.tds[0].text.strip
     else
-      otn = b.frm.input(name: 'document.oldMaintainableObject.vendorHeader.vendorTaxNumber').parent.text.strip
+      otn = b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorTaxNumber.div').text.strip
     end
     otn
   end
-  element(:old_tax_number_type) do |b|
-    otnt = ''
-    if b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorTaxTypeCode.div').exists?
-      otnt = b.frm.span(id: 'document.oldMaintainableObject.vendorHeader.vendorTaxTypeCode.div').text.strip
-    else
-      otnt = b.frm.td(name: 'document.oldMaintainableObject.vendorHeader.vendorTaxTypeCode').parent.text.strip
-    end
-    otnt
-  end
+  element(:old_tax_number_type) { |b| b.frm.input(name: 'document.oldMaintainableObject.vendorHeader.vendorTaxTypeCode').parent.tds[0].text.strip }
   element(:old_tax_number_type_fein) { |b| (b.old_tax_number_type == 'FEIN') ? :set : :clear }
   element(:old_tax_number_type_ssn) { |b| (b.old_tax_number_type == 'SSN') ? :set : :clear }
   element(:old_tax_number_type_none) { |b| (b.old_tax_number_type == 'NONE') ? :set : :clear }
@@ -217,20 +243,20 @@ class VendorPage < KFSBasePage
   action(:update_default_address) { |i=0, b| b.addresses_tab.select(name: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator") }
   action(:update_address_active_indicator) { |i=0, b| b.addresses_tab.checkbox(name: "document.newMaintainableObject.vendorAddresses[#{i}].active") }
 
-  action(:old_address_type) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode.div").text.strip }
-  action(:old_address_1) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine1Address.div").text.strip }
-  action(:old_address_2) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine2Address.div").text.strip }
-  action(:old_city) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCityName.div").text.strip }
-  action(:old_state) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorStateCode.div").text.strip }
-  action(:old_zipcode) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorZipCode.div").text.strip }
-  action(:old_province) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName.div").text.strip }
-  action(:old_country) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCountryCode.div").text.strip }
-  action(:old_address_attention) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAttentionName.div").text.strip }
-  action(:old_address_url) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress.div").text.strip }
-  action(:old_fax) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber.div").text.strip }
-  action(:old_email) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress.div").text.strip }
-  action(:old_default_address) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator.div").text.strip }
-  action(:old_address_active_indicator) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].active.div").text.strip }
+  action(:old_address_type) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode.div").text.strip }
+  action(:old_address_1) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorLine1Address.div").text.strip }
+  action(:old_address_2) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorLine2Address.div").text.strip }
+  action(:old_city) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorCityName.div").text.strip }
+  action(:old_state) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorStateCode.div").text.strip }
+  action(:old_zipcode) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorZipCode.div").text.strip }
+  action(:old_province) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName.div").text.strip }
+  action(:old_country) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorCountryCode.div").text.strip }
+  action(:old_address_attention) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorAttentionName.div").text.strip }
+  action(:old_address_url) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress.div").text.strip }
+  action(:old_fax) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber.div").text.strip }
+  action(:old_email) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress.div").text.strip }
+  action(:old_default_address) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator.div").text.strip }
+  action(:old_address_active_indicator) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].active.div").text.strip }
 
   # Contact Tab
   element(:contacts_tab) { |b| b.frm.div(id: 'tab-Contact-div') }
@@ -283,19 +309,19 @@ class VendorPage < KFSBasePage
   action(:update_contact_comments) { |i=0, b| b.contacts_tab.textarea(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactCommentText") }
   action(:update_contact_active_indicator) { |i=0, b| b.contacts_tab.checkbox(name: "document.newMaintainableObject.vendorContacts[#{i}].active") }
 
-  action(:old_contact_type) { |i=0, b| b.contacts_tab.select(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactTypeCode.div").text.strip }
-  action(:old_contact_name) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactName.div").text.strip }
-  action(:old_contact_email) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactEmailAddress.div").text.strip }
-  action(:old_contact_address_1) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorLine1Address.div").text.strip }
-  action(:old_contact_address_2) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorLine2Address.div").text.strip }
-  action(:old_contact_city) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorCityName.div").text.strip }
-  action(:old_contact_state) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorStateCode.div").text.strip }
-  action(:old_contact_zipcode) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorZipCode.div").text.strip }
-  action(:old_contact_province) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorAddressInternationalProvinceName.div").text.strip }
-  action(:old_contact_country) { |i=0, b| b.contacts_tab.select(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorCountryCode.div").text.strip }
-  action(:old_contact_attention) { |i=0, b| b.contacts_tab.text_field(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorAttentionName.div").text.strip }
-  action(:old_contact_comments) { |i=0, b| b.contacts_tab.textarea(name: "document.newMaintainableObject.vendorContacts[#{i}].vendorContactCommentText.div").text.strip }
-  action(:old_contact_active_indicator) { |i=0, b| b.contacts_tab.checkbox(name: "document.newMaintainableObject.vendorContacts[#{i}].active.div").text.strip }
+  action(:old_contact_type) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorContactTypeCode.div").text.strip }
+  action(:old_contact_name) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorContactName.div").text.strip }
+  action(:old_contact_email) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorContactEmailAddress.div").text.strip }
+  action(:old_contact_address_1) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorLine1Address.div").text.strip }
+  action(:old_contact_address_2) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorLine2Address.div").text.strip }
+  action(:old_contact_city) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorCityName.div").text.strip }
+  action(:old_contact_state) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorStateCode.div").text.strip }
+  action(:old_contact_zipcode) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorZipCode.div").text.strip }
+  action(:old_contact_province) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorAddressInternationalProvinceName.div").text.strip }
+  action(:old_contact_country) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorCountryCode.div").text.strip }
+  action(:old_contact_attention) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorAttentionName.div").text.strip }
+  action(:old_contact_comments) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].vendorContactCommentText.div").text.strip }
+  action(:old_contact_active_indicator) { |i=0, b| b.contacts_tab.span(id: "document.oldMaintainableObject.vendorContacts[#{i}].active.div").text.strip }
 
   # Search Alias
   element(:search_alias_tab) { |b| b.frm.div(id: 'tab-SearchAlias-div') }
@@ -317,7 +343,7 @@ class VendorPage < KFSBasePage
   action(:update_search_alias_active) { |i=0, b| b.search_alias_tab.checkbox(id: "document.newMaintainableObject.vendorAliases[#{i}].active").value }
   action(:update_search_alias_name) { |i=0, b| b.search_alias_tab.span(id: "document.newMaintainableObject.vendorAliases[#{i}].vendorAliasName.div").text.strip }
 
-  action(:old_search_alias_active) { |i=0, b| b.search_alias_tab.span(id: "document.oldMaintainableObject.vendorAliases[#{i}].active").text.strip }
+  action(:old_search_alias_active) { |i=0, b| b.search_alias_tab.span(id: "document.oldMaintainableObject.vendorAliases[#{i}].active.div").text.strip }
   action(:old_search_alias_name) { |i=0, b| b.search_alias_tab.span(id: "document.oldMaintainableObject.vendorAliases[#{i}].vendorAliasName.div").text.strip }
 
 end

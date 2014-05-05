@@ -1,6 +1,6 @@
 class VendorObject < KFSDataObject
 
-  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name ,
+  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name,
                 :vendor_type, :foreign, :tax_number,
                 :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                 :ownership, :w9_received,
@@ -9,18 +9,18 @@ class VendorObject < KFSDataObject
 
   def defaults
     super.merge({
-      vendor_type:                'PO - PURCHASE ORDER',
-      vendor_name:                'Keith, inc',
-      foreign:                    'No',
-      tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-      tax_number_type_ssn:        :set,
-      ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
-      w9_received:                'Yes',
-      search_aliases:             collection('SearchAliasLineObject'),
-      phone_numbers:              collection('PhoneLineObject'),
-      addresses:                  collection('AddressLineObject'),
-      contacts:                   collection('ContactLineObject'),
-      contracts:                  collection('ContractLineObject')
+      vendor_type:         'PO - PURCHASE ORDER',
+      vendor_name:         'Keith, inc',
+      foreign:             'No',
+      tax_number:          "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
+      tax_number_type_ssn: :set,
+      ownership:           'INDIVIDUAL/SOLE PROPRIETOR',
+      w9_received:         'Yes',
+      search_aliases:      collection('SearchAliasLineObject'),
+      phone_numbers:       collection('PhoneLineObject'),
+      addresses:           collection('AddressLineObject'),
+      contacts:            collection('ContactLineObject'),
+      contracts:           collection('ContractLineObject')
     })
   end
 
@@ -33,15 +33,12 @@ class VendorObject < KFSDataObject
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
       fill_out page, :description,
-                     :vendor_name, :vendor_last_name, :vendor_first_name ,
+                     :vendor_name, :vendor_last_name, :vendor_first_name,
                      :vendor_type, :foreign, :tax_number,
                      :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                      :ownership, :w9_received
 
       @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
-
-      fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
-
     end
   end
 
@@ -51,10 +48,13 @@ class VendorObject < KFSDataObject
     @addresses.update_from_page!(target)
     @contacts.update_from_page!(target)
     @contracts.update_from_page!(target)
+    @search_aliases.update_from_page!(target)
+    update_extended_line_objects_from_page!(target)
   end
 
   def absorb(target=:new)
     super
+    on(VendorPage).expand_all
     case target
       when :new; update_options(pull_new_vendor_data)
       when :old; update_options(pull_old_vendor_data)

@@ -23,9 +23,13 @@ class KFSDataObject < DataFactory
     }
   end
 
+  def extended_defaults
+    Hash.new
+  end
+
   def initialize(browser, opts={})
     @browser = browser
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(extended_defaults).merge(opts))
   end
 
   def create
@@ -81,11 +85,13 @@ class KFSDataObject < DataFactory
 
   def update_line_objects_from_page!(target=:new); end
 
+  def update_extended_line_objects_from_page!(target=:new); end
+
   def absorb(target={})
     on KFSBasePage do |b|
       update_options({
         document_id: b.document_id,
-        description: b.description
+        description: b.description.value
       })
     end
   end

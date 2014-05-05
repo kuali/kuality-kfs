@@ -94,7 +94,7 @@ class ContractLineObjectCollection < LineObjectCollection
       lines.expand_all
       unless lines.current_contracts_count.zero?
         (0..(lines.current_contracts_count - 1)).to_a.collect!{ |i|
-          pull_existing_contract(i).merge(pull_extended_existing_contract(i))
+          pull_existing_contract(i, target).merge(pull_extended_existing_contract(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)

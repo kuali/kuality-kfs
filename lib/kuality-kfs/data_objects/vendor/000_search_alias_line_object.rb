@@ -55,7 +55,7 @@ class SearchAliasLineObjectCollection < LineObjectCollection
       lines.expand_all
       unless lines.current_search_alias_count.zero?
         (0..(lines.current_search_alias_count - 1)).to_a.collect!{ |i|
-          pull_existing_search_alias(i).merge(pull_extended_existing_search_alias(i))
+          pull_existing_search_alias(i, target).merge(pull_extended_existing_search_alias(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)

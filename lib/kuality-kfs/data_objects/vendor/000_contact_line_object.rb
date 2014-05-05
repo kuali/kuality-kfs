@@ -86,7 +86,7 @@ class ContactLineObjectCollection < LineObjectCollection
       lines.expand_all
       unless lines.current_contacts_count.zero?
         (0..(lines.current_contacts_count - 1)).to_a.collect!{ |i|
-          pull_existing_contact(i).merge(pull_extended_existing_contact(i))
+          pull_existing_contact(i, target).merge(pull_extended_existing_contact(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
