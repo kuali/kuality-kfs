@@ -66,7 +66,7 @@ module Utilities
         '03'
       when 'OCT', 'Oct', 'October'
         '04'
-      when 'NOV', 'Nov', 'December'
+      when 'NOV', 'Nov', 'November'
         '05'
       when 'DEC', 'Dec', 'December'
         '06'
