@@ -2,7 +2,7 @@ class BudgetAdjustmentObject < KFSDataObject
 
   include BudgetAdjustmentLinesMixin
 
-  attr_accessor  :fdd_year
+  attr_accessor  :fdd_year, :cb_start_amount, :bb_start_amount
 
   DOC_INFO = { label: 'Budget Adjustment', type_code: 'BA' }
 
@@ -20,7 +20,7 @@ class BudgetAdjustmentObject < KFSDataObject
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(20, 'AFT') }.merge!(default_accounting_lines)
+    defaults = { description: random_alphanums(20, 'AFT')  }.merge!(default_accounting_lines)
 
     set_options(defaults.merge(opts))
   end
