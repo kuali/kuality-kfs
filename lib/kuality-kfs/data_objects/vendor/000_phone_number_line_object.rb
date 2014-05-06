@@ -18,7 +18,7 @@ class PhoneLineObject < DataFactory
     # For now, this only supports Vendor. We'll need to refactor appropriately
     # if any other object needs this collection.
     on VendorPage do |vp|
-      vp.phone_type.fit             @type
+      vp.phone_type.pick!           @type
       vp.phone_number.fit           @number
       vp.phone_extension.fit        @extension
       vp.phone_active_indicator.fit @active
@@ -29,10 +29,10 @@ class PhoneLineObject < DataFactory
 
   def edit(opts={})
     on VendorPage do |vp|
-      vp.update_phone_type(@line_number).fit             opts[:type] unless opts[:type].nil?
-      vp.update_phone_number(@line_number).fit           opts[:number] unless opts[:number].nil?
-      vp.update_phone_extension(@line_number).fit        opts[:extension] unless opts[:extension].nil?
-      vp.update_phone_active_indicator(@line_number).fit opts[:active] unless opts[:active].nil?
+      vp.update_phone_type(@line_number).pick!           opts[:type]
+      vp.update_phone_number(@line_number).fit           opts[:number]
+      vp.update_phone_extension(@line_number).fit        opts[:extension]
+      vp.update_phone_active_indicator(@line_number).fit opts[:active]
     end
     update_options(opts)
   end

@@ -22,7 +22,7 @@ class ContactLineObject < DataFactory
     # For now, this only supports Vendor. We'll need to refactor appropriately
     # if any other object needs this collection.
     on VendorPage do |vp|
-      vp.new_contact_type.fit             @type
+      vp.new_contact_type.pick!           @type
       vp.new_contact_name.fit             @name
       vp.new_contact_email.fit            @email
       vp.new_contact_address_1.fit        @address_1
@@ -31,7 +31,7 @@ class ContactLineObject < DataFactory
       vp.new_contact_state.fit            @state
       vp.new_contact_zipcode.fit          @postal_code
       vp.new_contact_province.fit         @province
-      vp.new_contact_country.fit          @country
+      vp.new_contact_country.pick!        @country
       vp.new_contact_attention.fit        @attention
       vp.new_contact_comments.fit         @comments
       vp.new_contact_active_indicator.fit @active
@@ -42,19 +42,19 @@ class ContactLineObject < DataFactory
 
   def edit(opts={})
     on VendorPage do |vp|
-      vp.update_contact_type(@line_number).fit             opts[:type] unless opts[:type].nil?
-      vp.update_contact_name(@line_number).fit             opts[:name] unless opts[:name].nil?
-      vp.update_contact_email(@line_number).fit            opts[:email] unless opts[:email].nil?
-      vp.update_contact_address_1(@line_number).fit        opts[:address_1] unless opts[:address_1].nil?
-      vp.update_contact_address_2(@line_number).fit        opts[:address_2] unless opts[:address_2].nil?
-      vp.update_contact_city(@line_number).fit             opts[:city] unless opts[:city].nil?
-      vp.update_contact_state(@line_number).fit            opts[:state] unless opts[:state].nil?
-      vp.update_contact_zipcode(@line_number).fit          opts[:postal_code] unless opts[:postal_code].nil?
-      vp.update_contact_province(@line_number).fit         opts[:province] unless opts[:province].nil?
-      vp.update_contact_country(@line_number).fit          opts[:country] unless opts[:country].nil?
-      vp.update_contact_attention(@line_number).fit        opts[:attention] unless opts[:attention].nil?
-      vp.update_contact_comments(@line_number).fit         opts[:comments] unless opts[:comments].nil?
-      vp.update_contact_active_indicator(@line_number).fit opts[:active] unless opts[:active].nil?
+      vp.update_contact_type(@line_number).pick!           opts[:type]
+      vp.update_contact_name(@line_number).fit             opts[:name]
+      vp.update_contact_email(@line_number).fit            opts[:email]
+      vp.update_contact_address_1(@line_number).fit        opts[:address_1]
+      vp.update_contact_address_2(@line_number).fit        opts[:address_2]
+      vp.update_contact_city(@line_number).fit             opts[:city]
+      vp.update_contact_state(@line_number).fit            opts[:state]
+      vp.update_contact_zipcode(@line_number).fit          opts[:postal_code]
+      vp.update_contact_province(@line_number).fit         opts[:province]
+      vp.update_contact_country(@line_number).pick!        opts[:country]
+      vp.update_contact_attention(@line_number).fit        opts[:attention]
+      vp.update_contact_comments(@line_number).fit         opts[:comments]
+      vp.update_contact_active_indicator(@line_number).fit opts[:active]
     end
     update_options(opts)
     update_extended_attributes(opts)
