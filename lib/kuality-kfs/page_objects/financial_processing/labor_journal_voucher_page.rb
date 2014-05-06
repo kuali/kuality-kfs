@@ -1,0 +1,3 @@
+class LaborJournalVoucherPage < JournalVoucherPage
+
+end
