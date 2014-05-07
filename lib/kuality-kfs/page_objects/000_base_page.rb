@@ -222,11 +222,9 @@ class BasePage < PageFactory
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
       action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
-      action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+      value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
 
-      action(:pending_action_annotation) { |i=0, b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[(1+(i*2))][4].text }
-      value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
-      value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
+      value(:pending_action_annotation) { |i=0, b| b.pnd_act_req_table[(1+(i*2))][4].text }
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
