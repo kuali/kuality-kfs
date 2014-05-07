@@ -47,6 +47,11 @@ module GlobalConfig
       @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_first_principal_id_for_role(name_space, role_name))
     end
   end
+  def get_principal_name_for_role(name_space, role_name)
+    principal_names = Array.new
+    role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
+    principal_names
+  end
   #def get_random_principal_name_for_role(name_space, role_name)
   #  @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
   #

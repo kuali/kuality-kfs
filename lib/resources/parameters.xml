@@ -186,4 +186,41 @@
     <column name="PARM_DESC_TXT" value="nongrant account for testing"/>
     <column name="EVAL_OPRTR_CD" value="A"/>
   </insert>
+  <insert tableName="KRCR_PARM_T">
+    <column name="NMSPC_CD" value="KFS-AFTEST"/>
+    <column name="CMPNT_CD" value="All"/>
+    <column name="PARM_NM" value="PO_BASE_ORG_REVIEW_100K"/>
+    <column name="APPL_ID" value="KFS"/>
+    <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+    <column name="VER_NBR" value="1"/>
+    <column name="PARM_TYP_CD" value="VALID"/>
+    <column name="VAL" value="cj242,mgw3,twr2"/>
+    <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 100K for testing"/>
+    <column name="EVAL_OPRTR_CD" value="A"/>
+  </insert>
+  <insert tableName="KRCR_PARM_T">
+    <column name="NMSPC_CD" value="KFS-AFTEST"/>
+    <column name="CMPNT_CD" value="All"/>
+    <column name="PARM_NM" value="PO_BASE_ORG_REVIEW_500K"/>
+    <column name="APPL_ID" value="KFS"/>
+    <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+    <column name="VER_NBR" value="1"/>
+    <column name="PARM_TYP_CD" value="VALID"/>
+    <column name="VAL" value="jmd11"/>
+    <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 500K for testing"/>
+    <column name="EVAL_OPRTR_CD" value="A"/>
+  </insert>
+  <insert tableName="KRCR_PARM_T">
+    <column name="NMSPC_CD" value="KFS-AFTEST"/>
+    <column name="CMPNT_CD" value="All"/>
+    <column name="PARM_NM" value="PO_BASE_ORG_REVIEW_5M"/>
+    <column name="APPL_ID" value="KFS"/>
+    <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+    <column name="VER_NBR" value="1"/>
+    <column name="PARM_TYP_CD" value="VALID"/>
+    <column name="VAL" value="jmd11"/>
+    <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 5M for testing"/>
+    <column name="EVAL_OPRTR_CD" value="A"/>
+  </insert>
+
 </databaseChangeLog>
