@@ -50,16 +50,6 @@ module BatchUtilities
     #run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
   end
 
-  def run_fax_pending_doc(wait_for_completion = false)
-    puts 'run_fax_pending_doc'
-    #run_unscheduled_job('faxPendingDocumentJob', wait_for_completion)
-  end
-
-  def run_receiving_payment_request(wait_for_completion = false)
-    puts 'run_receiving_payment_request'
-    #run_unscheduled_job('receivingPaymentRequestJob', wait_for_completion)
-  end
-
   def run_electronic_invoice_extract(wait_for_completion = false)
     puts 'run_electronic_invoice_extract'
     #run_unscheduled_job('electronicInvoiceExtractJob', wait_for_completion)
@@ -73,11 +63,6 @@ module BatchUtilities
   def run_pur_pre_disburse_immediate_extract(wait_for_completion = false)
     puts 'run_pur_pre_disburse_immediate_extract'
     #run_unscheduled_job('purchasingPreDisbursementImmediatesExtractJob', wait_for_completion)
-  end
-
-  def run_approve_line_item_receiving(wait_for_completion = false)
-    puts 'run_approve_line_item_receiving'
-    #run_unscheduled_job('approveLineItemReceivingJob', wait_for_completion)
   end
 
   def run_auto_close_recurring_order(wait_for_completion = false)
