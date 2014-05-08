@@ -1,0 +1,5 @@
+class FormatSummaryLookupPage < Lookups
+
+
+
+end

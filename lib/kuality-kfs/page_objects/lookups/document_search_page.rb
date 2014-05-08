@@ -85,6 +85,8 @@ class DocumentSearch < Lookups
   action(:search_account_number) { |b| b.frm.button(title: 'Search Account Number').click }
   action(:search_ledger_document_type) { |b| b.frm.button(title: 'Search Ledger Document Type').click }
 
+  element(:lookup_div) { |b| b.frm.div(id: 'lookup') }
+
   # action(:select_doc_id_with_po_number) { |purchase_number, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
   # action(:select_doc_id_with_po_number) { |purchase_number, b| b.frm.table(id: 'row', class: 'datatable-100').rows.each_with_index {|row, index| (b.link(index-1).clickb.use_new_tab; b.close_parents) if row.a(text: purchase_number).exists?;  } }
 

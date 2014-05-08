@@ -1,4 +1,5 @@
 config.yml
+.DS_Store
 directory.yml
 /test.rb
 *test.rb
