@@ -222,5 +222,17 @@
     <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 5M for testing"/>
     <column name="EVAL_OPRTR_CD" value="A"/>
   </insert>
+  <insert tableName="KRCR_PARM_T">
+    <column name="NMSPC_CD" value="KFS-AFTEST"/>
+    <column name="CMPNT_CD" value="All"/>
+    <column name="PARM_NM" value="REQS_ANIMAL_REVIEW_10100000"/>
+    <column name="APPL_ID" value="KFS"/>
+    <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+    <column name="VER_NBR" value="1"/>
+    <column name="PARM_TYP_CD" value="VALID"/>
+    <column name="VAL" value="asc266,mmb32,jw335,lmp32"/>
+    <column name="PARM_DESC_TXT" value="commodity 10100000 animal review group for testing"/>
+    <column name="EVAL_OPRTR_CD" value="A"/>
+  </insert>
 
 </databaseChangeLog>
