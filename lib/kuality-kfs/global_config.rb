@@ -11,8 +11,11 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
-  def parameter_service
-    @@parameter_service ||= ksb_client.getParameterService()
+  def state_service
+    @@state_service ||= ksb_client.getStateService()
+  end
+  def postal_code_service
+    @@postal_code_service ||= ksb_client.getPostalCodeService()
   end
   def get_parameter_values(namespace_code, parameter_name)
     raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
@@ -114,12 +117,21 @@ module GlobalConfig
     random_letters(10)
   end
   def get_random_state_code()
-    state = get_kuali_business_object('location','State','countryCode=US')
-    account_info['code']
+    states = state_service.findAllStatesInCountry('US')
+    states.get_state.to_a.sample.get_code
   end
   def get_random_postal_code(state)
-    state = get_kuali_business_object('location','PostalCode',"stateCode=NY")
-    account_info['code']
+    if state.nil?
+      state_to_search = 'NY'
+    else
+      state_to_search = state
+    end
+    postal_codes = postal_code_service.findAllPostalCodesInCountry('US')
+    if state_to_search == '*'
+      postal_codes.get_postal_code.to_a.sample.code
+    else
+      postal_codes.get_postal_code.to_a.find_all{ |postal_code| postal_code.state_code == state_to_search}.sample.code
+    end
   end
 end
 

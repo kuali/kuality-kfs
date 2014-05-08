@@ -17,7 +17,7 @@ class GroupObject < DataFactory
       assignees:   collection('GrAssignees')
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_GROUP)).merge(opts))
   end
 
   def create

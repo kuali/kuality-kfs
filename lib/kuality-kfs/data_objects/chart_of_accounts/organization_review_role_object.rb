@@ -17,7 +17,7 @@ class OrganizationReviewRoleObject < KFSDataObject
         action_type_code:       'FYI',
         action_policy_code:     'FIRST'
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ORGANIZATION_REVIEW_ROLE)).merge(opts))
   end
 
   def build

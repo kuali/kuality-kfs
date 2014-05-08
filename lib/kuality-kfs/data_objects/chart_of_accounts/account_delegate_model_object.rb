@@ -18,7 +18,7 @@ class AccountDelegateModelObject < KFSDataObject
       active_indicator:                     :set,
       active:                               :set
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ACCOUNT_DELEGATE_MODEL)).merge(opts))
   end
 
   def build

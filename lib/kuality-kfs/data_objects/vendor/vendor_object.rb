@@ -41,7 +41,8 @@ class VendorObject < KFSDataObject
         attachment_file_name:       'vendor_attachment_test.png',
         note_text:                  random_alphanums(20, 'AFT')
     }
-    set_options(defaults.merge(opts))
+
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR)).merge(opts))
   end
 
   def build

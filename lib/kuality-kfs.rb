@@ -5,7 +5,6 @@ require 'xmlsimple'
 require 'java'
 require "#{File.dirname(__FILE__)}/ext/ksb-client.jar"
 
-java_import "java.util.Random"
 java_import "edu.cornell.ksbclient.KSBServiceClient"
 java_import "org.kuali.rice.kim.v2_0.IdentityService"
 java_import "org.kuali.rice.kim.v2_0.RoleService"

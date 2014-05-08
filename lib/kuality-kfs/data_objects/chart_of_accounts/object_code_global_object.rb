@@ -31,7 +31,6 @@ class ObjectCodeGlobalObject < KFSDataObject
         press: :save
     }
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_OBJECT_CODE_GLOBAL)).merge(opts))
-    #TODO - replicate this throughout!
   end
 
   def build

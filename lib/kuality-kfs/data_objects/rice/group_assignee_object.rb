@@ -13,7 +13,7 @@ class GroupAssigneeObject < DataFactory
       type_code: 'Principal'
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_GROUP_ASSIGNEE)).merge(opts))
     requires :member_identifier
   end
 

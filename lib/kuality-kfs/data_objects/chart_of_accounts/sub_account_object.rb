@@ -17,7 +17,7 @@ class SubAccountObject < KFSDataObject
         name:                 random_alphanums(10),
         press:                :save
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_SUB_ACCOUNT)).merge(opts))
   end
 
   def build

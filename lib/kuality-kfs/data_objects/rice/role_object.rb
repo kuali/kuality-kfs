@@ -27,7 +27,7 @@ class RoleObject < DataFactory
         #delegations:      collection('Delegation')
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ROLE)).merge(opts))
   end
 
   def create

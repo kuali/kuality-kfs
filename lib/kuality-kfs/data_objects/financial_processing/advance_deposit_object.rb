@@ -29,7 +29,7 @@ class AdvanceDepositObject < KFSDataObject
               new_deposit_amount: '100' }
     ]}.merge!(default_accounting_lines)
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ADVANCE_DEPOSIT)).merge(opts))
   end
 
   def build

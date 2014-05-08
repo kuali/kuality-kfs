@@ -135,7 +135,7 @@ class UserObject < DataFactory
                end
     options = USERS[@user_name].nil? ? defaults : USERS[@user_name].merge(opts)
 
-    set_options options
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_USER)))
     @rolez.each { |role| role[:user_name]=@user_name; @roles << make(UserRoleObject, role) } unless @rolez.nil?
     @rolez=nil
 

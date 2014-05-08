@@ -36,7 +36,7 @@ class AccountGlobalObject < KFSDataObject
         press:                                  :save
 
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ACCOUNT_GLOBAL)).merge(opts))
   end
 
   def build
