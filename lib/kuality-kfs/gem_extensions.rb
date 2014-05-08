@@ -56,7 +56,7 @@ module Watir
 
     # @return [Array] An array of associative keys matching the text of the Table#header_row.
     def header_keys
-      header_row.cells.collect { |x| snake_case(x.text.strip).to_sym }
+      header_row.cells.collect { |x| snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').to_sym }
     end
 
     # @param [Symbol] key The key in the Table#header_row associated with the desired column.

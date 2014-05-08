@@ -175,8 +175,13 @@ class BasePage < PageFactory
       element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
       element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
       element(:attach_notes_file_1) { |b| b.download_file_button(0) } # FIXME: Remove once all references are gone.
-      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      element(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
       action(:download_file) { |l=0, b| b.download_file(l).click }
+      alias_method :submitted_attached_file_file, :download_file
+      value(:submitted_note_text) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:note_text)].text }
+      value(:submitted_author) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:author)].text }
+      value(:submitted_posted_timestamp) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:posted_timestamp)].text }
+      value(:submitted_attached_file_name) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:attached_file)].text }
 
     end
 
