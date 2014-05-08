@@ -12,14 +12,5 @@ class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
   #modify_capital_assests
 
-
-
-
-
-  #general_ledger_pending_entries
-
-
-
-
 end
 #DistributionOfIncomeAndExpensePage = DistributionIncomeExpensePage

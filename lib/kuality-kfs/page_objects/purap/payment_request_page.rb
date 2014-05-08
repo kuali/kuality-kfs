@@ -1,14 +1,21 @@
 class PaymentRequestPage < KFSBasePage
 
-  element(:purchase_order) { |b| b.frm.text_field(name: 'document.purchaseOrderIdentifier') }
-  element(:invoice_number) { |b| b.frm.text_field(name: 'document.invoiceNumber') }
-  element(:invoice_date) { |b| b.frm.text_field(name: 'document.invoiceDate') }
-  element(:vendor_invoice_amount) { |b| b.frm.text_field(name: 'document.vendorInvoiceAmount') }
+  element(:vendor_address_1) { |b| b.frm.text_field(name: 'document.vendorLine1Address') }
+  element(:pay_date) { |b| b.frm.text_field(name: 'document.paymentRequestPayDate') }
 
-  action(:special_handling_instructions) { |line_1_2_3=1, b| b.frm.text_field(name: "document.specialHandlingInstructionLine#{line_1_2_3}Text") }
-#Or if you prefer to not pass in a value
-  element(:special_handling_instructions_1) { |b| b.frm.text_field(name: 'document.specialHandlingInstructionLine1Text') }
-  element(:special_handling_instructions_2) { |b| b.frm.text_field(name: 'document.specialHandlingInstructionLine2Text') }
-  element(:special_handling_instructions_3) { |b| b.frm.text_field(name: 'document.specialHandlingInstructionLine3Text') }
+  action(:item_qty_invoiced) { | i=0, b| b.frm.text_field(name: "document.item[#{i}].itemQuantity") }
+  action(:item_calculate) { | i=0, b| b.frm.button(name: /methodToCall.recalculateItemAccountsAmounts.line#{i}./).click }
+
+  # TODO : there should have a purap page for shared purap page element.
+  #action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
+  #GLPE (General Ledger Pending Entries)
+  #action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+
+  # Tax Tab
+  element(:income_class_code) { |b| b.frm.select(id: 'document.taxClassificationCode') }
+  element(:federal_tax_pct) { |b| b.frm.text_field(id: 'document.taxFederalPercent') }
+  element(:state_tax_pct) { |b| b.frm.text_field(id: 'document.taxStatePercent') }
+  element(:postal_country_code) { |b| b.frm.select(id: 'document.taxCountryCode') }
+
 
 end
