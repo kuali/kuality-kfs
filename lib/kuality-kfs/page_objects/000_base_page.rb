@@ -155,6 +155,7 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
+      # == Notes and Attachments Tab ==
       element(:show_notes_and_attachments_button) { |b| b.frm.input(id: 'tab-NotesandAttachments-imageToggle') }
       alias_method :hide_notes_and_attachments_button, :show_notes_and_attachments_button
       element(:notes_and_attachments_count) { |b| b.show_notes_and_attachments_button.title.gsub(/.*\((\d+)\)$/, '\1').to_i }
@@ -182,6 +183,21 @@ class BasePage < PageFactory
       value(:submitted_author) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:author)].text }
       value(:submitted_posted_timestamp) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:posted_timestamp)].text }
       value(:submitted_attached_file_name) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:attached_file)].text }
+
+      # == Notes Tab ==
+      element(:show_ro_notes_button) { |b| b.frm.input(id: 'tab-Notes-imageToggle') }
+      alias_method :hide_ro_notes_button, :show_ro_notes_button
+      element(:ro_notes_count) { |b| b.frm.inputs(id: /^tab-\d+-imageToggle$/m, alt: /^(close|open) Notes$/m).length }
+      action(:show_ro_notes) { |b| b.show_ro_notes_button.click }
+      action(:hide_ro_notes) { |b| b.hide_ro_notes_button.click }
+
+      element(:ro_notes_tab) { |b| b.frm.div(id: 'tab-Notes-div').table }
+      element(:ro_note) { |i=0, b| b.ro_notes_tab[i].tables(class: 'datatable')[1] }
+      value(:ro_note_note_text) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].noteText.div").text.strip }
+      value(:ro_note_posted_datetime_stamp) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].notePostedTimestamp.div").text.strip }
+      value(:ro_note_principal_name) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].authorUniversal.principalName.div").text.strip }
+      element(:ro_note_attached_file) { |i=0, b| b.ro_note(i).tr(text: /Attached File/m).td }
+      value(:ro_note_has_attached_file?) { |i=0, b| b.ro_note_attached_file(i).link(text: /Download Attachment/m).exists? }
 
     end
 

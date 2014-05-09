@@ -1,5 +1,7 @@
 class VendorPage < KFSBasePage
 
+  value(:vendor_number) { |b| b.frm.span(id: 'document.newMaintainableObject.vendorNumber.div').text.strip }
+  alias_method :new_vendor_number, :vendor_number
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorName') }
   alias_method :new_vendor_name, :vendor_name
   element(:vendor_last_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.vendorLastName') }

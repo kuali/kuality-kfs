@@ -1,6 +1,6 @@
 class VendorObject < KFSDataObject
 
-  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name,
+  attr_accessor :vendor_number, :vendor_name, :vendor_last_name, :vendor_first_name,
                 :vendor_type, :foreign, :tax_number,
                 :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                 :ownership, :w9_received,
@@ -68,7 +68,8 @@ class VendorObject < KFSDataObject
     pulled_vendor = Hash.new
     on VendorPage do |vp|
       pulled_vendor = {
-        vendor_name: vp.old_vendor_name,
+        vendor_number: vp.old_vendor_number,
+        vendor_name:   vp.old_vendor_name,
         vendor_last_name:  vp.old_vendor_last_name,
         vendor_first_name: vp.old_vendor_first_name,
         vendor_type: vp.old_vendor_type,
@@ -89,6 +90,7 @@ class VendorObject < KFSDataObject
     pulled_vendor = Hash.new
     on VendorPage do |vp|
       pulled_vendor = {
+          vendor_number: vp.new_vendor_number,
           vendor_name: vp.new_vendor_name.value.strip,
           vendor_last_name:  vp.new_vendor_last_name.value.strip,
           vendor_first_name: vp.new_vendor_first_name.value.strip,

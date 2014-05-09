@@ -113,5 +113,17 @@
       <column name="PARM_DESC_TXT" value="Default petty cash vendor id for automated functional testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="DEFAULT_VENDOR_NUMBER"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="27015-0"/>
+      <column name="PARM_DESC_TXT" value="Default Vendor number to use when editing a Vendor during automated functional testing."/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
   </changeSet>
 </databaseChangeLog>
