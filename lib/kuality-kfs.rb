@@ -1,7 +1,4 @@
 require 'test-factory'
-require 'rubygems'
-require 'mechanize'
-require 'xmlsimple'
 require 'java'
 require "#{File.dirname(__FILE__)}/ext/ksb-client.jar"
 
@@ -11,6 +8,8 @@ java_import "org.kuali.rice.kim.v2_0.RoleService"
 java_import "org.kuali.rice.core.v2_0.StringMapEntryListType"
 java_import "org.kuali.rice.kim.v2_0.EntityType"
 java_import "org.kuali.rice.core.v2_0.ParameterKeyType"
+java_import "org.kuali.rice.location.v2_0.StateService"
+java_import "org.kuali.rice.location.v2_0.PostalCodeService"
 
 cwd = File.symlink?(__FILE__) ? File.dirname(File.readlink(__FILE__)) : File.dirname(__FILE__)
 Dir["#{cwd}/kuality-kfs/*.rb"].alphabetize.each {|f| require f }
