@@ -11,7 +11,7 @@ class IndirectCostAdjustmentObject < KFSDataObject
 
     defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_INDIRECT_COST_ADJUSTMENT)).merge(opts))
   end
 
   def build

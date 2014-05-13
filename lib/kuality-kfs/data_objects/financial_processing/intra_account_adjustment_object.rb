@@ -11,7 +11,7 @@ class IntraAccountAdjustmentObject < KFSDataObject
 
     defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_INTRA_ACCOUNT_ADJUSTMENT)).merge(opts))
   end
 
   def build
@@ -27,8 +27,8 @@ class IntraAccountAdjustmentObject < KFSDataObject
   def default_accounting_lines(opts={})
     super(opts).merge(
       initial_lines: [{
-                          account_number: '1258322', #TODO get from config
-                          object: '4420', #TODO get from config
+                          account_number: get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNTING_LINE_ACCOUNT_NUMBER),
+                          object: get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNTING_LINE_OBJECT_CODE),
                           amount: '100'
                       }])
   end
