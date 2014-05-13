@@ -1,4 +1,4 @@
-class PurchaseOrderPage <  KFSBasePage
+class PurchaseOrderAmendmentPage <  KFSBasePage
 
   element(:posting_year) { |b| b.select(name: 'document.postingYear') }
   #PURCHASSE ORDER DETAIL
@@ -153,5 +153,6 @@ class PurchaseOrderPage <  KFSBasePage
 
   # amend PO
   action(:amendPo) { |b| b.frm.button(name: 'methodToCall.amendPo').click }
+
 
 end
