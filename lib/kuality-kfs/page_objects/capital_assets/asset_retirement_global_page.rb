@@ -1,0 +1,4 @@
+class AssetRetirementGlobalPage < KFSBasePage
+
+
+end
