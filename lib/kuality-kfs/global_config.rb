@@ -79,7 +79,16 @@ module GlobalConfig
        @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
     end
   end
-
+  def get_principal_name_for_role(name_space, role_name)
+    principal_names = Array.new
+    role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
+    principal_names
+  end
+  def get_principal_name_for_group(group_id)
+    principal_names = Array.new
+    get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
+    principal_names
+  end
   # def get_kuali_business_objects(namespace_code, object_type, identifiers)
   #   # Create new mechanize agent and hit the main page
   #   # then login once directed to CUWA
