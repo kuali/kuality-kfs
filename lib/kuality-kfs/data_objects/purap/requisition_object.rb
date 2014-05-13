@@ -41,6 +41,7 @@ class RequisitionObject < KFSDataObject
       page.item_add_account_line
 
       page.requestor_phone.fit @requestor_phone
+      page.delivery_phone_number.fit @requestor_phone
       #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
