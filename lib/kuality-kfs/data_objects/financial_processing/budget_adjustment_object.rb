@@ -11,8 +11,8 @@ class BudgetAdjustmentObject < KFSDataObject
         initial_lines: [{
                             type:           :source,
                             chart_code:     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-                            account_number: '1258322',#TODO config?
-                            object:         '4480',#TODO config?
+                            account_number: '1258322', #TODO replace with bootstrap data
+                            object:         '4480',    #TODO replace with bootstrap data
                             current_amount: '10000'
                         }])
   end

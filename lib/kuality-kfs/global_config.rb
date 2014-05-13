@@ -17,6 +17,9 @@ module GlobalConfig
   def postal_code_service
     @@postal_code_service ||= ksb_client.getPostalCodeService()
   end
+  def parameter_service
+    @@parameter_service ||= ksb_client.getParameterService()
+  end
   def get_parameter_values(namespace_code, parameter_name)
     raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
     raise ArgumentError, 'parameter_name missing' if parameter_name.to_s == ''
@@ -26,15 +29,15 @@ module GlobalConfig
     paramKey.setNamespaceCode(namespace_code)
     paramKey.setComponentCode('All')
     paramKey.setName(parameter_name)
-    @@parameter_values = parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
+    parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
   def get_aft_parameter_values(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)
   end
   def get_aft_parameter_values_as_hash(parameter_name)
     h = {}
-    get_parameter_values('KFS-AFTEST', parameter_name).each do |kay_val_pair|
-      k,v = kay_val_pair.split('=')
+    get_parameter_values('KFS-AFTEST', parameter_name).each do |key_val_pair|
+      k,v = key_val_pair.split('=')
       h[k] = v
     end
     h
@@ -106,9 +109,9 @@ module GlobalConfig
   #   end
   # end
   #
-  # def perform_university_login(page)
-  #   #do nothing - override this in the university project
-  # end
+  def perform_university_login(page)
+    #do nothing - override this in the university project
+  end
 
   def get_generic_address_1()
     "#{rand(1..9999)} Evergreen Terrace"

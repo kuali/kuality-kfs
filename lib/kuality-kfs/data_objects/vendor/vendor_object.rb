@@ -29,14 +29,14 @@ class VendorObject < KFSDataObject
         w9_received:                'Yes',
         w9_received_date:           yesterday[:date_w_slashes],
         address_type:               'PO - PURCHASE ORDER',
-        address_1:                  '6655 Sunset BLvd', #TODO genericize
-        city:                       'Denver', #TODO genericize
-        state:                      'CO', #TODO genericize
-        zipcode:                    '91190', #TODO genericize
+        address_1:                  get_generic_address_1,
+        city:                       get_generi_city,
+        state:                      get_random_state_code,
+        zipcode:                    get_random_postal_code,
         country:                    'United States',
         default_address:            'Yes',
-        method_of_po_transmission:  'US MAIL', #TODO cornell mod?
-        supplier_diversity:         'HUBZONE', #TODO lookup random value
+        method_of_po_transmission:  'US MAIL', #TODO replace with bootstrap data
+        supplier_diversity:         'HUBZONE', #TODO replace with bootstrap data
         supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
         attachment_file_name:       'vendor_attachment_test.png',
         note_text:                  random_alphanums(20, 'AFT')

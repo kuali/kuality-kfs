@@ -18,7 +18,7 @@ class AccountObject < KFSDataObject
         chart_code:                        get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         number:                            random_alphanums(7),
         name:                              random_alphanums(10),
-        organization_code:                 '01G0',#TODO config?
+        organization_code:                 '01G0',  #TODO replace with bootstrap data
         campus_code:                       get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_CODE),
         effective_date:                    '01/01/2010',
         postal_code:                       get_random_postal_code('*'),
@@ -26,20 +26,20 @@ class AccountObject < KFSDataObject
         state:                             get_random_state_code,
         address:                           get_generic_address_1,
         type_code:                         get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_TYPE_CODE),
-        sub_fund_group_code:               'ADMSYS',#TODO config?
-        higher_ed_funct_code:              '4000',#TODO config?
-        restricted_status_code:            'U - Unrestricted',#TODO config?
+        sub_fund_group_code:               'ADMSYS', #TODO replace with bootstrap data
+        higher_ed_funct_code:              '4000',   #TODO replace with bootstrap data
+        restricted_status_code:            'U - Unrestricted',  #TODO replace with bootstrap data
         fo_principal_name:                 get_aft_parameter_value(ParameterConstants::DEFAULT_FISCAL_OFFICER),
         supervisor_principal_name:         get_aft_parameter_value(ParameterConstants::DEFAULT_SUPERVISOR),
         manager_principal_name:            get_aft_parameter_value(ParameterConstants::DEFAULT_MANAGER),
-        budget_record_level_code:          'C - Consolidation',#TODO config?
-        sufficient_funds_code:             'C - Consolidation',#TODO config?
+        budget_record_level_code:          'C - Consolidation', #TODO replace with bootstrap data
+        sufficient_funds_code:             'C - Consolidation', #TODO replace with bootstrap data
         expense_guideline_text:            'expense guideline text',
         income_guideline_txt:              'incomde guideline text',
         purpose_text:                      'purpose text',
         income_stream_financial_cost_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         income_stream_account_number:      get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
-        labor_benefit_rate_cat_code:       'CC',#TODO config?
+        labor_benefit_rate_cat_code:       'CC',    #TODO replace with bootstrap data
         account_expiration_date:           '',
         press:                             :save
     }
