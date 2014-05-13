@@ -8,8 +8,8 @@ module GlobalConfig
   def identity_service
     @@identity_service ||= ksb_client.getIdentityService()
   end
-  def parameter_service
-    @@parameter_service ||= ksb_client.getParameterService()
+  def group_service
+    @@group_service ||= ksb_client.getGroupService()
   end
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
@@ -27,6 +27,12 @@ module GlobalConfig
   end
   def get_aft_parameter_value(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
+  end
+  def get_group_member_principal_ids(group_id)
+    group_service.getMemberPrincipalIds(group_id).getPrincipalId()
+  end
+  def get_group_members(group_id)
+    group_service.getMembersOfGroup(group_id).getMember()
   end
   def get_first_principal_id_for_role(name_space, role_name)
     role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().get(0)
@@ -50,6 +56,11 @@ module GlobalConfig
   def get_principal_name_for_role(name_space, role_name)
     principal_names = Array.new
     role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
+    principal_names
+  end
+  def get_principal_name_for_group(group_id)
+    principal_names = Array.new
+    get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
     principal_names
   end
   #def get_random_principal_name_for_role(name_space, role_name)
