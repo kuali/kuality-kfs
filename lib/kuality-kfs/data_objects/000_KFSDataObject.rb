@@ -1,26 +1,49 @@
 class KFSDataObject < DataFactory
 
   include DateFactory
-  include StringFactory
+  include Utilities
   include GlobalConfig
 
   attr_accessor :document_id, :description, :press,
                 :notes_and_attachments_tab
 
-
   # Hooks:
+  def self.default_attributes
+    []
+  end
+
+  def self.required_attributes
+    [:description]
+  end
+
+  def defaults
+    {
+      description:               random_alphanums(40, 'AFT'),
+      notes_and_attachments_tab: collection('NotesAndAttachmentsLineObject')
+    }
+  end
+
+  def extended_defaults
+    Hash.new
+  end
+
+  def initialize(browser, opts={})
+    @browser = browser
+    set_options(defaults.merge(extended_defaults).merge(opts))
+  end
+
   def create
     pre_create
     build
     fill_out_extended_attributes
     post_create
 
-    page_klass = Kernel.const_get(self.class.to_s.gsub(/(.*)Object$/,'\1Page'))
-    on page_klass do |page|
+    on page_class_for(document_object_of(self.class)) do |page|
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
     end
+
   rescue Watir::Exception::UnknownObjectException => uoe
     unless uoe.message.match(/:title=>"Create a new record", :tag_name=>"a"/).nil?
       raise ArgumentError, '"Create New" button was not found on this page. ' <<
@@ -32,17 +55,45 @@ class KFSDataObject < DataFactory
     raise uoe
   end
 
-  def pre_create
+  def pre_create; end
+
+  def build; end
+
+  def fill_out_required_attributes
+    on page_class_for(self.class.to_s) do |page|
+      page.expand_all
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      fill_out page, *self.class.required_attributes
+    end
   end
 
-  def build
+  def fill_out_optional_attributes
+    on page_class_for(self.class.to_s) do |page|
+      page.expand_all
+      page.description.focus
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      fill_out page, *(self.class.attributes - self.class.required_attributes - [:press, :document_id, :notes_and_attachments_tab])
+    end
   end
 
-  def fill_out_extended_attributes(attribute_group=nil)
-  end
+  def fill_out_extended_attributes(attribute_group=nil); end
 
   def post_create
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
+  end
+
+  def update_line_objects_from_page!(target=:new); end
+
+  def update_extended_line_objects_from_page!(target=:new); end
+
+  def absorb(target={})
+    on KFSBasePage do |b|
+      update_options({
+        document_id: b.document_id,
+        description: b.description.value
+      })
+    end
   end
 
   def save
