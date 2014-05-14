@@ -373,7 +373,7 @@
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="fiscal_year=2014;reports_to_object_code=A000;object_type_code=ES;level_code=BADJ;object_sub_type_code=BI;cg_reporting_code=06SM;budget_aggregation_code=L"/>
+      <column name="VAL" value="fiscal_year=2014;reports_to_object_code=A000;object_type_code=ES;level_code=BADJ;object_sub_type_code=OE;cg_reporting_code=06SM;budget_aggregation_code=L"/>
       <column name="PARM_DESC_TXT" value="Defaults for the Object Code object"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
