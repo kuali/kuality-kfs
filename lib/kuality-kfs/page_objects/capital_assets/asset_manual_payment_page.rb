@@ -19,7 +19,7 @@ class AssetManualPaymentPage < KFSBasePage
   # Asset Information
 
   # ACCOUNTING_LINE
-  element(:po_number) { |b| b.frm.text_field(name: 'newSourceLine.purchaseOrderNumber') }
+  element(:search_po_number) { |b| b.frm.text_field(name: 'newSourceLine.purchaseOrderNumber') }
   element(:req_number) { |b| b.frm.text_field(name: 'newSourceLine.requisitionNumber') }
   element(:origin) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialSystemOriginationCode') }
   action(:search_origin) { |b| b.frm.button(title: 'Search Origin').click }

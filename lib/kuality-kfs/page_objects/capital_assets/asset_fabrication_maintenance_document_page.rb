@@ -29,7 +29,7 @@ class AssetFabricationMaintenanceDocumentPage < KFSBasePage
   #ORGANIZATION INFORMATION - NEW
   element(:organization_inventory_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationInventoryName') }
   element(:asset_representative_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetRepresentative.principalName') }
-  element(:asset_representative.name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetRepresentative.name') }
+  element(:asset_representative_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetRepresentative.name') }
   element(:organization_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetOrganization.organizationText') }
   element(:organization_asset_type_identifier) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetOrganization.organizationAssetTypeIdentifier') }
 
