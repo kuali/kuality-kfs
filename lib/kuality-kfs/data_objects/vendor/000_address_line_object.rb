@@ -2,6 +2,7 @@ class AddressLineObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
   attr_accessor   :line_number,
                   :type,
@@ -19,7 +20,7 @@ class AddressLineObject < DataFactory
       address_1:      get_generic_address_1,
       city:           get_generic_city,
       state:          get_random_state_code,
-      postal_code:    get_random_postal_code,
+      postal_code:    get_random_postal_code('NY'),
       country:        'United States',
       set_as_default: 'Yes',
       active:         :set

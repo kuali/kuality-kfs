@@ -2,6 +2,7 @@ class ContactLineObject < DataFactory
 
   include DateFactory
   include StringFactory
+  include GlobalConfig
 
   attr_accessor   :line_number,
                   :type, :name, :email,
