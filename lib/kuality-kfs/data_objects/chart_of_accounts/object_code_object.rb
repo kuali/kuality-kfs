@@ -20,7 +20,8 @@ class ObjectCodeObject < KFSDataObject
 
   def initialize(browser, opts={})
     @browser = browser
-
+    puts get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME).inspect
+    puts get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_OBJECT_CODE).inspect
     defaults = {
         description: random_alphanums(20, ' AFT'),
         fiscal_year:   '2014',          #TODO replace with bootstrap data
@@ -31,7 +32,7 @@ class ObjectCodeObject < KFSDataObject
         reports_to_object_code: 'A000', #TODO replace with bootstrap data
         object_type_code: 'ES',         #TODO replace with bootstrap data
         level_code:    'BADJ',          #TODO replace with bootstrap data
-        object_sub_type_code: 'BI',     #TODO replace with bootstrap data
+        object_sub_type_code: 'OE',     #TODO replace with bootstrap data
         financial_object_code_description: random_alphanums(30, 'AFT'),
         cg_reporting_code:      '06SM', #TODO replace with bootstrap data
         budget_aggregation_code: 'L',   #TODO replace with bootstrap data
