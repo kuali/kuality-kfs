@@ -522,4 +522,5 @@
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
   </changeSet>
+
 </databaseChangeLog>

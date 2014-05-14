@@ -7,6 +7,36 @@ class VendorObject < KFSDataObject
                 # == Collections ==
                 :search_aliases, :phone_numbers, :addresses, :contacts, :contracts
 
+  def initialize(browser, opts={})
+    @browser = browser
+
+    defaults = {
+        description:                random_alphanums(40, 'AFT'),
+        vendor_type:                'PO - PURCHASE ORDER',
+        vendor_name:                'Keith, inc',
+        foreign:                    'No',
+        tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
+        tax_number_type_ssn:        :set,
+        ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
+        w9_received:                'Yes',
+        w9_received_date:           yesterday[:date_w_slashes],
+        address_type:               'PO - PURCHASE ORDER',
+        address_1:                  get_generic_address_1,
+        city:                       get_generi_city,
+        state:                      get_random_state_code,
+        zipcode:                    get_random_postal_code,
+        country:                    'United States',
+        default_address:            'Yes',
+        method_of_po_transmission:  'US MAIL', #TODO replace with bootstrap data
+        supplier_diversity:         'HUBZONE', #TODO replace with bootstrap data
+        supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
+        attachment_file_name:       'vendor_attachment_test.png',
+        note_text:                  random_alphanums(20, 'AFT')
+    }
+
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR)).merge(opts))
+  end
+  
   def defaults
     super.merge({
       vendor_type:         'PO - PURCHASE ORDER',
