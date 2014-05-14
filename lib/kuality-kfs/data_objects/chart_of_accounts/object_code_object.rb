@@ -20,8 +20,6 @@ class ObjectCodeObject < KFSDataObject
 
   def initialize(browser, opts={})
     @browser = browser
-    puts get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME).inspect
-    puts get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_OBJECT_CODE).inspect
     defaults = {
         description: random_alphanums(20, ' AFT'),
         fiscal_year:   '2014',          #TODO replace with bootstrap data
