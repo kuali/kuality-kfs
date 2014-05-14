@@ -16,10 +16,10 @@ class AddressLineObject < DataFactory
 
     defaults = {
       type:           'PO - PURCHASE ORDER',
-      address_1:      '6655 Sunset BLvd',
-      city:           'Denver',
-      state:          'CO',
-      postal_code:    '91190',
+      address_1:      get_generic_address_1,
+      city:           get_generic_city,
+      state:          get_random_state_code,
+      postal_code:    get_random_postal_code,
       country:        'United States',
       set_as_default: 'Yes',
       active:         :set
