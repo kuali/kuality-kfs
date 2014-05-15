@@ -1,7 +1,6 @@
 class AssetManualPaymentPage < KFSBasePage
 
-  # document_overview
-  # financial_document_detail
+  # accounting_lines
 
   # ASSET ALLOCATION
   element(:asset_allocation) { |b| b.frm.select(name: 'allocationCode') }

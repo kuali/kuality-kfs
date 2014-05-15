@@ -1,6 +1,5 @@
 class PreAssetTaggingPage < KFSBasePage
 
-
   #Edit Pre-Asset Tagging
   element(:purchase_order_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.purchaseOrderNumber') }
   element(:item_line_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.itemLineNumber') }
@@ -18,7 +17,7 @@ class PreAssetTaggingPage < KFSBasePage
   element(:organization_inventory_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationInventoryName') }
   element(:asset_representative_principal_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.personUniversal.principalName') }
   element(:organization_text) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationText') }
-  element(:purchase_order_line_item_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.assetTopsDescription') }
+  element(:purchase_order_line_item_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.assetTopsDescription') }
   element(:pretag_create_date) { |b| b.frm.text_field(name: 'document.newMaintainableObject.pretagCreateDate') }
 
   element(:pretag_active_indicator) { |b| b.frm.div(id: 'tab-EditPreAssetTagging-div').checkbox(name: 'document.newMaintainableObject.active') }

@@ -7,9 +7,8 @@ class AssetFabricationMaintenanceDocumentPage < KFSBasePage
 
   element(:asset_condition) { |b| b.frm.select(name: 'document.newMaintainableObject.conditionCode') }
 
-  element(:asset_description) { |b| b.frm.text_field(name: 'document.newMaintainableObject.capitalAssetDescription') }
+  element(:asset_description) { |b| b.frm.textarea(name: 'document.newMaintainableObject.capitalAssetDescription') }
   element(:asset_type_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.capitalAssetTypeCode') }
-  element(:service_rate_indicator) { |b| b.frm.text_field(name: 'document.newMaintainableObject.extension.serviceRateIndicator') }
 
   #NEW - ON CAMPUS
   element(:on_campus_campus) { |b| b.frm.text_field(name: 'document.newMaintainableObject.campusCode') }

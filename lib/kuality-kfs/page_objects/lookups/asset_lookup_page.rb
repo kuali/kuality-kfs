@@ -29,9 +29,6 @@ class AssetLookupPage < Lookups
   element(:old_tag_number) { |b| b.frm.text_field(name: 'oldTagNumber') }
   element(:organization_tag_number) { |b| b.frm.text_field(name: 'assetOrganization.organizationTagNumber') }
 
-  element(:service_rate_indicator_yes) { |b| b.frm.radio(id: 'extension.serviceRateIndicatorYes') }
-  element(:service_rate_indicator_no) { |b| b.frm.radio(id: 'extension.serviceRateIndicatorNo') }
-  element(:service_rate_indicator_both) { |b| b.frm.radio(id: 'extension.serviceRateIndicatorBoth') }
 
   element(:total_cost) { |b| b.frm.text_field(name: 'totalCostAmount') }
   element(:payment_sequence_number) { |b| b.frm.text_field(name: 'assetPayments.paymentSequenceNumber') }
