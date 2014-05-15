@@ -1,5 +1,5 @@
 class LedgerBalanceLookupPage < Lookups
-  element(:fiscal_year) { |b| b.frm.text_field(name: 'universityFiscalYear') }
+  fiscal_year_facets
   element(:monthly_boxes) { |b| b.frm.checkboxes(name: /^selectedObjId/m) }
   element(:month_box) { |month='July', b| b.frm.checkbox(name: /^selectedObjId/m, title: "#{month}") }
 

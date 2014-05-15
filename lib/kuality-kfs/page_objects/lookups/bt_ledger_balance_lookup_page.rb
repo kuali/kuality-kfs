@@ -1,9 +1,7 @@
 class BtLedgerBalanceLookupPage < LedgerBalanceLookupPage
 
-  element(:chart_code) { |b| b.frm.text_field(name: 'chartOfAccountsCode') }
-  element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
-  element(:sub_account_number) { |b| b.frm.text_field(name: 'subAccountNumber') }
-
+  account_facets
+  subaccount_facets
 
   action(:search_fiscal_year) { |b| b.frm.button(title: 'Search Fiscal Year').click }
   action(:search_chart_code) { |b| b.frm.button(title: 'Search Chart Code').click }
