@@ -10,7 +10,7 @@ class BenefitExpenseTransferObject < KFSDataObject
 
     defaults = {
         description:    random_alphanums(20, 'AFT'),
-        import_chart_code: 'IT',
+        import_chart_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         import_account_number: 'G398338'
     }
 
