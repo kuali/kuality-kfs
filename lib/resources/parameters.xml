@@ -1,7 +1,13 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srb55" id="KFSUPGRADE-857" failOnError="false">
-    <comment>Parameters for AFT</comment>
-    <insert tableName="KRCR_NMSPC_T">
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	 <changeSet author="srb55" id="KFSUPGRADE-857" failOnError="false">
+		<comment>Parameters for AFT</comment>
+                <insert tableName="KRCR_NMSPC_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="NM" value="KFS Automated Testing Parameters"/>
@@ -152,18 +158,6 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="DEFAULT_ORGANIZATION_CODE"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="0001"/>
-      <column name="PARM_DESC_TXT" value="Default organization code for automated functional testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="DEFAULT_INCOME_STREAM_ACCOUNT_NUMBER"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
@@ -272,18 +266,6 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_REGULAR_COMMODITY"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="14111703"/>
-      <column name="PARM_DESC_TXT" value="non-sensitive commodity for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="REQS_FOREIGN_VENDOR"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
@@ -291,18 +273,6 @@
       <column name="PARM_TYP_CD" value="VALID"/>
       <column name="VAL" value="39210-0"/>
       <column name="PARM_DESC_TXT" value="foreigh vendor for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_NONB2B_VENDOR"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="27015-0"/>
-      <column name="PARM_DESC_TXT" value="nonb2b vendor for testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
     <insert tableName="KRCR_PARM_T">
@@ -416,18 +386,6 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_SENSITIVE_COMMODITY"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="10100000"/>
-      <column name="PARM_DESC_TXT" value="sensitive commodity for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="REQS_REGULAR_COMMODITY"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
@@ -440,18 +398,6 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_FOREIGN_VENDOR"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="39210-0"/>
-      <column name="PARM_DESC_TXT" value="foreigh vendor for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="REQS_NONB2B_VENDOR"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
@@ -459,30 +405,6 @@
       <column name="PARM_TYP_CD" value="VALID"/>
       <column name="VAL" value="27015-0"/>
       <column name="PARM_DESC_TXT" value="nonb2b vendor for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_GRANT_ACCOUNT"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="1278003"/>
-      <column name="PARM_DESC_TXT" value="grant account for testing"/>
-      <column name="EVAL_OPRTR_CD" value="A"/>
-    </insert>
-    <insert tableName="KRCR_PARM_T">
-      <column name="NMSPC_CD" value="KFS-AFTEST"/>
-      <column name="CMPNT_CD" value="All"/>
-      <column name="PARM_NM" value="REQS_NONGRANT_ACCOUNT"/>
-      <column name="APPL_ID" value="KFS"/>
-      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
-      <column name="VER_NBR" value="1"/>
-      <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="1093603"/>
-      <column name="PARM_DESC_TXT" value="nongrant account for testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
     <insert tableName="KRCR_PARM_T">
@@ -509,6 +431,5 @@
       <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 500K for testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
-  </changeSet>
-
+      </changeSet>
 </databaseChangeLog>
