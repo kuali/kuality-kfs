@@ -20,14 +20,14 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
-  def get_parameter_values(namespace_code, parameter_name)
+  def get_parameter_values(namespace_code, parameter_name, component_code='All')
     raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
     raise ArgumentError, 'parameter_name missing' if parameter_name.to_s == ''
 
     paramKey = ParameterKeyType.new()
     paramKey.setApplicationId('KFS')
     paramKey.setNamespaceCode(namespace_code)
-    paramKey.setComponentCode('All')
+    paramKey.setComponentCode(component_code)
     paramKey.setName(parameter_name)
     parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
