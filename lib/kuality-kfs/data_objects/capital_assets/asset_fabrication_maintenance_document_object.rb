@@ -27,11 +27,9 @@ class AssetFabricationMaintenanceDocumentObject < KFSDataObject
 
       #Fabrication Information New
       fill_out page, :estimated_fabrication_completion_date, :fabrication_estimated_total_amount,
-               :years_expected_to_retain_asset_once_fabrication_is_complete
-
-      fill_out page, :on_campus_building_code, :on_campus_building_room_number
+               :years_expected_to_retain_asset_once_fabrication_is_complete,
+               :on_campus_building_code, :on_campus_building_room_number
     end
   end
-
 
 end #class
