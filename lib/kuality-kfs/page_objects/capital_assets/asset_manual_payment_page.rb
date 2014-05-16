@@ -25,7 +25,7 @@ class AssetManualPaymentPage < KFSBasePage
   element(:doc_number) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialDocumentNumber') }
   element(:doc_type) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialDocumentTypeCode') }
   element(:posted_date) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialDocumentPostedDate') }
-  action(:fiscal_year) { |b| b.frm.link(title: /^show inquiry for Accounting Period University Fiscal Year=/).click }
+  action(:show_fiscal_year) { |b| b.frm.link(title: /^show inquiry for Accounting Period University Fiscal Year=/).click }
   value(:fiscal_year_value) { |b| b.frm.link(title: /^show inquiry for Accounting Period University Fiscal Year=/).text }
 
 end

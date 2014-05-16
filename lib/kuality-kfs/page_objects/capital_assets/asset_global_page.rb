@@ -30,7 +30,7 @@ class AssetGlobalPage < KFSBasePage
   element(:off_campus_country) { |b| b.select(name: 'document.newMaintainableObject.add.assetSharedDetails.offCampusCountryCode') }
   element(:quantity_of_assets_to_be_created) { |b| b.text_field(name: 'document.newMaintainableObject.add.assetSharedDetails.locationQuantity') }
 
-  action(:asset_location_add) { |b| b.button(id: /^methodToCall\.addLine\.assetSharedDetails/).click }
+  action(:add_asset_location) { |b| b.button(id: /^methodToCall\.addLine\.assetSharedDetails/).click }
 
   #ADD PAYMENTS - NEW ASSET PAYMENT
   element(:new_payment_chart_code) { |b| b.select(name: 'document.newMaintainableObject.add.assetPaymentDetails.chartOfAccountsCode') }
@@ -48,5 +48,5 @@ class AssetGlobalPage < KFSBasePage
   element(:new_payment_posted_date) { |b| b.text_field(name: 'document.newMaintainableObject.add.assetPaymentDetails.expenditureFinancialDocumentPostedDate') }
   element(:new_payment_amount) { |b| b.text_field(name: 'document.newMaintainableObject.add.assetPaymentDetails.amount') }
 
-  action(:new_payment_add) { |b| b.button(id: /^methodToCall\.addLine\.assetPaymentDetails/).click }
+  action(:add_new_payment) { |b| b.button(id: /^methodToCall\.addLine\.assetPaymentDetails/).click }
 end

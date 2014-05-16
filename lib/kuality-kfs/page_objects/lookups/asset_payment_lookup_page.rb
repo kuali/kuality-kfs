@@ -1,18 +1,21 @@
 class AssetPaymentLookupPage < Lookups
 
+  subaccount_facets
+  financial_object_facets
+
+  document_facets
+  project_facets
   element(:tag_number) { |b| b.frm.text_field(name: 'asset.campusTagNumber') }
   element(:asset_number) { |b| b.frm.text_field(name: 'capitalAssetNumber') }
   element(:purchase_order_number) { |b| b.frm.text_field(name: 'purchaseOrderNumber') }
   element(:requisition_number) { |b| b.frm.text_field(name: 'requisitionNumber') }
   element(:document_type) { |b| b.frm.text_field(name: 'financialDocumentTypeCode') }
-  element(:document_number) { |b| b.frm.text_field(name: 'documentNumber') }
+
   element(:chart_code) { |b| b.frm.text_field(name: 'account.chartOfAccountsCode') }
   element(:organization_code) { |b| b.frm.text_field(name: 'account.organizationCode') }
+
   element(:account_number) { |b| b.frm.text_field(name: 'accountNumber') }
-  element(:sub_account) { |b| b.frm.text_field(name: 'subAccountNumber') }
-  element(:object_code) { |b| b.frm.text_field(name: 'financialObjectCode') }
-  element(:sub_object_code) { |b| b.frm.text_field(name: 'financialSubObjectCode') }
-  element(:project_code) { |b| b.frm.text_field(name: 'projectCode') }
+
   element(:organization_reference_id) { |b| b.frm.text_field(name: 'organizationReferenceId') }
   element(:fiscal_year) { |b| b.frm.text_field(name: 'financialDocumentPostingYear') }
 
@@ -24,7 +27,7 @@ class AssetPaymentLookupPage < Lookups
   element(:in_service_date_to) { |b| b.frm.text_field(name: 'asset.capitalAssetInServiceDate') }
   element(:amount) { |b| b.frm.text_field(name: 'accountChargeAmount') }
   element(:total_cost) { |b| b.frm.text_field(name: 'asset.totalCostAmount') }
-  element(:campus) { |b| b.frm.text_field(name: 'asset.campusCode') }
+  element(:asset_campus_code) { |b| b.frm.text_field(name: 'asset.campusCode') }
   element(:building_code) { |b| b.frm.text_field(name: 'asset.buildingCode') }
   element(:asset_status_code) { |b| b.frm.text_field(name: 'asset.inventoryStatusCode') }
   element(:asset_type_code) { |b| b.frm.text_field(name: 'asset.capitalAssetTypeCode') }

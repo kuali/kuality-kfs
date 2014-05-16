@@ -29,7 +29,7 @@ class PreAssetTaggingPage < KFSBasePage
   element(:government_tag) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.pretagDetails.governmentTagNumber') }
   element(:national_stock_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.pretagDetails.nationalStockNumber') }
 
-  element(:campus) { |b| b.frm.select(name: 'document.newMaintainableObject.add.pretagDetails.campusCode') }
+  element(:campus_code) { |b| b.frm.select(name: 'document.newMaintainableObject.add.pretagDetails.campusCode') }
 
   element(:building_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.pretagDetails.buildingCode') }
   element(:building_room_number) { |b| b.frm.text_field(name: 'document.newMaintainableObject.add.pretagDetails.buildingRoomNumber') }

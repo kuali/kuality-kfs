@@ -7,10 +7,7 @@ class PreAssetTaggingObject < KFSDataObject
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description:    random_alphanums(20, 'AFT')
-
-    }
-
+    defaults = { description:    random_alphanums(20, 'AFT') }
     set_options(defaults.merge(opts))
   end
 

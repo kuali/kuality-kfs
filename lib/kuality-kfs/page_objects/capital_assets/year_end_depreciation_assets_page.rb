@@ -10,6 +10,6 @@ class YearEndDepreciationAssetsPage < KFSBasePage
 
   element(:new_asset_active_indicator) { |b| b.frm.checkbox(name: 'document.newMaintainableObject.add.assetYearEndDepreciationDetails.active') }
 
-  action(:new_asset_add) { |b| b.frm.button(id: /^methodToCall\.addLine\.assetYearEndDepreciationDetails/).click  }
+  action(:add_new_asset) { |b| b.frm.button(id: /^methodToCall\.addLine\.assetYearEndDepreciationDetails/).click  }
 
 end
