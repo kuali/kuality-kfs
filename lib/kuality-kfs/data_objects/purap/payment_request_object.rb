@@ -11,7 +11,7 @@ class PaymentRequestObject < KFSDataObject
         attachment_file_name:       'happy_path_invoice.png'
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PAYMENT_REQUEST)).merge(opts))
   end
 
 

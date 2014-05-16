@@ -13,7 +13,7 @@ class RoleAssigneeObject < DataFactory
         unit_number: '000001'
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ROLE_ASSIGNEE)).merge(opts))
     requires :member_identifier
   end
 

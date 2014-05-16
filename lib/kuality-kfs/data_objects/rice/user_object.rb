@@ -79,9 +79,9 @@ end # UserYamlCollection
 class UserObject < DataFactory
 
   include Foundry
-  #include DataFactory
   include Navigation
   include StringFactory
+  include GlobalConfig
 
   attr_accessor :user_name, :principal_id,
                 :first_name, :last_name,
@@ -135,7 +135,7 @@ class UserObject < DataFactory
                end
     options = USERS[@user_name].nil? ? defaults : USERS[@user_name].merge(opts)
 
-    set_options options
+    set_options(options.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_USER)))
     @rolez.each { |role| role[:user_name]=@user_name; @roles << make(UserRoleObject, role) } unless @rolez.nil?
     @rolez=nil
 

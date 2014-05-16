@@ -18,32 +18,32 @@ class AccountObject < KFSDataObject
         chart_code:                        get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
         number:                            random_alphanums(7),
         name:                              random_alphanums(10),
-        organization_code:                          '01G0',
-        campus_code:                       'IT - Ithaca', #TODO grab this from config file
+        organization_code:                 '01G0',  #TODO replace with bootstrap data
+        campus_code:                       get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_CODE),
         effective_date:                    '01/01/2010',
-        postal_code:                       '14853', #TODO grab this from config file
-        city:                              'Ithaca', #TODO grab this from config file
-        state:                             'NY', #TODO grab this from config file
-        address:                           'Cornell University', #TODO grab this from config file
-        type_code:                         'CC - Contract College', #TODO grab this from config file
-        sub_fund_group_code:                'ADMSYS',
-        higher_ed_funct_code:              '4000',
-        restricted_status_code:            'U - Unrestricted',
-        fo_principal_name:                 'dh273',
-        supervisor_principal_name:         'ccs1',
-        manager_principal_name:            'aap98',
-        budget_record_level_code:          'C - Consolidation',
-        sufficient_funds_code:             'C - Consolidation',
+        postal_code:                       get_random_postal_code('*'),
+        city:                              get_generic_city,
+        state:                             get_random_state_code,
+        address:                           get_generic_address_1,
+        type_code:                         get_aft_parameter_value(ParameterConstants::DEFAULT_CAMPUS_TYPE_CODE),
+        sub_fund_group_code:               'ADMSYS', #TODO replace with bootstrap data
+        higher_ed_funct_code:              '4000',   #TODO replace with bootstrap data
+        restricted_status_code:            'U - Unrestricted',  #TODO replace with bootstrap data
+        fo_principal_name:                 get_aft_parameter_value(ParameterConstants::DEFAULT_FISCAL_OFFICER),
+        supervisor_principal_name:         get_aft_parameter_value(ParameterConstants::DEFAULT_SUPERVISOR),
+        manager_principal_name:            get_aft_parameter_value(ParameterConstants::DEFAULT_MANAGER),
+        budget_record_level_code:          'C - Consolidation', #TODO replace with bootstrap data
+        sufficient_funds_code:             'C - Consolidation', #TODO replace with bootstrap data
         expense_guideline_text:            'expense guideline text',
         income_guideline_txt:              'incomde guideline text',
         purpose_text:                      'purpose text',
-        income_stream_financial_cost_code: 'IT - Ithaca Campus',
-        income_stream_account_number:      '1000710',
-        labor_benefit_rate_cat_code:       'CC',
+        income_stream_financial_cost_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        income_stream_account_number:      get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
+        labor_benefit_rate_cat_code:       'CC',    #TODO replace with bootstrap data
         account_expiration_date:           '',
         press:                             :save
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ACCOUNT)).merge(opts))
   end
 
   def build

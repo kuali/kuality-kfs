@@ -1,72 +1,116 @@
 class VendorObject < KFSDataObject
 
-  attr_accessor :vendor_name, :vendor_last_name, :vendor_first_name , :vendor_type, :foreign,
-                :tax_number,  :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none, :ownership, :w9_received,  :w9_received_date,
-                :address_type, :address_1, :address_2, :city, :state, :zipcode, :country, :default_address, :method_of_po_transmission,
-                :supplier_diversity, :supplier_diversity_expiration_date,
-                :attachment_file_name, :note_text, :attach_notes_file,
-                :contract_name, :contract_description, :contract_begin_date, :contract_end_date, :contract_extension_date,
-                :po_cost_source_code, :vendor_pmt_terms_code, :vendor_shipping_pmt_terms_code, :vendor_shipping_title_code,
-                :contract_manager_code, :b2b_contract_indicator, :contract_po_limit,:contract_campus_code,
-                :general_liability_coverage_amt, :general_liability_expiration_date, :automobile_liability_coverage_amt,
-                :insurance_req_complete, :automobile_liability_expiration_date, :workman_liability_coverage_amt,:workman_liability_expiration_date,
-                :excess_liability_umb_amt, :excess_liability_umb_expiration_date, :health_offset_lic_expiration_date, :insurance_note,
-                :cornell_additional_ins_ind, :health_offsite_catering_lic_req,  :insurance_requirements_complete, :insurance_requirement_indicator,
-                :address_type_1, :supplier_diversity_code_1, :attach_notes_file_1, :contract_name_1,
-                :updated_address_1, :updated_phone_type,:updated_address_2, :updated_phone_number,:updated_address_attention, :updated_phone_ext
+  attr_accessor :vendor_number, :vendor_name, :vendor_last_name, :vendor_first_name,
+                :vendor_type, :foreign, :tax_number,
+                :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
+                :ownership, :w9_received,
+                # == Collections ==
+                :search_aliases, :phone_numbers, :addresses, :contacts, :contracts
 
-  def initialize(browser, opts={})
-    @browser = browser
-
-    defaults = {
-        description:                random_alphanums(40, 'AFT'),
-        vendor_type:                'PO - PURCHASE ORDER',
-        vendor_name:                'Keith, inc',
-        foreign:                    'No',
-        tax_number:                 "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-        tax_number_type_ssn:        :set,
-        ownership:                  'INDIVIDUAL/SOLE PROPRIETOR',
-        w9_received:                'Yes',
-        w9_received_date:           yesterday[:date_w_slashes],
-        address_type:               'PO - PURCHASE ORDER',
-        address_1:                  '6655 Sunset BLvd',
-        city:                       'Denver',
-        state:                      'CO',
-        zipcode:                    '91190',
-        country:                    'United States',
-        default_address:            'Yes',
-        method_of_po_transmission:  'US MAIL',
-        supplier_diversity:         'HUBZONE',
-        supplier_diversity_expiration_date: tomorrow[:date_w_slashes],
-        attachment_file_name:       'vendor_attachment_test.png',
-        note_text:                  random_alphanums(20, 'AFT')
-    }
-    set_options(defaults.merge(opts))
+  def defaults
+    super.merge({
+      vendor_type:         'PO - PURCHASE ORDER',
+      vendor_name:         'Keith, inc',
+      foreign:             'No',
+      tax_number:          "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
+      tax_number_type_ssn: :set,
+      ownership:           'INDIVIDUAL/SOLE PROPRIETOR',
+      w9_received:         'Yes',
+      search_aliases:      collection('SearchAliasLineObject'),
+      phone_numbers:       collection('PhoneLineObject'),
+      addresses:           collection('AddressLineObject'),
+      contacts:            collection('ContactLineObject'),
+      contracts:           collection('ContractLineObject')
+    }).merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR))
   end
 
   def build
     visit(MainPage).vendor
     on(VendorLookupPage).create_new
-
     on VendorPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      fill_out page, :description, :vendor_type, :vendor_name,:vendor_last_name, :vendor_first_name, :foreign, :tax_number ,  :tax_number_type_fein , :tax_number_type_ssn,
-               :ownership, :w9_received, :w9_received_date
+      fill_out page, :description,
+                     :vendor_name, :vendor_last_name, :vendor_first_name,
+                     :vendor_type, :foreign, :tax_number,
+                     :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
+                     :ownership, :w9_received
 
-      fill_out page,  :address_type, :address_1, :address_2, :city, :state, :zipcode,
-               :country, :default_address, :method_of_po_transmission
-      page.add_address
-
-      fill_out page, :supplier_diversity, :supplier_diversity_expiration_date
-
-      page.add_supplier_diversity
-
-      fill_out page, :insurance_requirements_complete, :cornell_additional_ins_ind
-
+      @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
     end
+  end
+
+  def update_line_objects_from_page!(target=:new)
+    super
+    @phone_numbers.update_from_page!(target)
+    @addresses.update_from_page!(target)
+    @contacts.update_from_page!(target)
+    @contracts.update_from_page!(target)
+    @search_aliases.update_from_page!(target)
+    update_extended_line_objects_from_page!(target)
+  end
+
+  def absorb(target=:new)
+    super
+    on(VendorPage).expand_all
+    case target
+      when :new; update_options(pull_new_vendor_data)
+      when :old; update_options(pull_old_vendor_data)
+    end
+
+    update_line_objects_from_page!(target)
+  end
+
+  # @return [Hash] The return values of attributes for the old Vendor
+  def pull_old_vendor_data
+    pulled_vendor = Hash.new
+    on VendorPage do |vp|
+      pulled_vendor = {
+        vendor_number: vp.old_vendor_number,
+        vendor_name:   vp.old_vendor_name,
+        vendor_last_name:  vp.old_vendor_last_name,
+        vendor_first_name: vp.old_vendor_first_name,
+        vendor_type: vp.old_vendor_type,
+        foreign:     vp.old_foreign,
+        tax_number:  vp.old_tax_number,
+        tax_number_type_fein: vp.old_tax_number_type_fein,
+        tax_number_type_ssn:  vp.old_tax_number_type_ssn,
+        tax_number_type_none: vp.old_tax_number_type_none,
+        ownership:   vp.old_ownership,
+        w9_received: vp.old_w9_received
+      }
+    end
+    pulled_vendor.merge(pull_vendor_extended_data(:old))
+  end
+
+  # @return [Hash] The return values of attributes for the new Vendor
+  def pull_new_vendor_data
+    pulled_vendor = Hash.new
+    on VendorPage do |vp|
+      pulled_vendor = {
+          vendor_number: vp.new_vendor_number,
+          vendor_name: vp.new_vendor_name.value.strip,
+          vendor_last_name:  vp.new_vendor_last_name.value.strip,
+          vendor_first_name: vp.new_vendor_first_name.value.strip,
+          vendor_type: vp.new_vendor_type.value.strip,
+          foreign:     vp.new_foreign.selected_options.first.text.strip,
+          tax_number:  vp.new_tax_number.value.strip,
+          tax_number_type_fein: vp.new_tax_number_type_fein.value.strip,
+          tax_number_type_ssn:  vp.new_tax_number_type_ssn.value.strip,
+          tax_number_type_none: vp.new_tax_number_type_none.value.strip,
+          ownership:   vp.new_ownership.selected_options.first.text.strip,
+          w9_received: vp.new_w9_received.selected_options.first.text.strip
+      }
+    end
+    pulled_vendor.merge(pull_vendor_extended_data(:new))
+  end
+
+  # @return [Hash] The return values of extended attributes for the old Vendor
+  # @param [Symbol] target The set of Vendor data to pull in
+  def pull_vendor_extended_data(target=:new)
+    Hash.new
   end
 
 end

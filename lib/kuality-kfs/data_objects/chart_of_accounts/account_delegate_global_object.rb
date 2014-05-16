@@ -9,11 +9,11 @@ class AccountDelegateGlobalObject < KFSDataObject
     defaults = {
         description:    random_alphanums(20, 'AFT'),
         doc_type:       'KFST',
-        principal_name: 'dh273', #TODO paramter
-        chart_code:     'IT - Ithaca Campus', #TODO paramter
-        account_number: '1000710' #TODO paramter
+        principal_name: get_aft_parameter_value(ParameterConstants::DEFAULT_FISCAL_OFFICER),
+        chart_code:     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        account_number: get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER)
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ACCOUNT_DELEGATE_GLOBAL)).merge(opts))
   end
 
   def build

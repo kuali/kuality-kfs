@@ -32,6 +32,10 @@ module Utilities
     get(snake_case(document))
   end
 
+  def document_object_of(klass)
+    klass.to_s.gsub(/(?<=[a-z])(?=[A-Z])/, ' ').gsub(/Object$/, '')
+  end
+
   def object_class_for(document)
     Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Object")
   end
@@ -76,6 +80,17 @@ module Utilities
         # if the conversion is good.
         fail ArgumentError, 'Bad Fiscal Period conversion!' if month.length == 3
         fiscal_period_conversion(month[:MON]) # This may throw other errors, but that's ok.
+    end
+  end
+
+  def yesno2setclear(value)
+    case value.to_s.upcase
+      when 'YES', 'ON'
+        :set
+      when 'NO', 'OFF'
+        :clear
+      else
+        nil
     end
   end
 

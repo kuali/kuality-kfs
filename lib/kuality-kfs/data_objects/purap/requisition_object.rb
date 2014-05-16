@@ -10,16 +10,16 @@ class RequisitionObject < KFSDataObject
     defaults = {
         description:    random_alphanums(40, 'AFT'),
         item_quantity: '1000',
-        item_catalog: '10121800',
+        item_catalog: random_alphanums(7, 'AFT'),
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
-        item_uom: 'BX',
+        item_uom: 'BX',#TODO grab randome from service
         attachment_file_name:       'happy_path_reqs.png',
         building_address: 'random',
         requestor_phone: rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_REQUISITION)).merge(opts))
   end
 
   def build

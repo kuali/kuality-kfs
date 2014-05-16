@@ -107,6 +107,10 @@ class Lookups < BasePage
       element(:active_yes) { |b| b.frm.radio(id: 'activeYes') }
       element(:active_no) { |b| b.frm.radio(id: 'activeNo') }
       element(:active_both) { |b| b.frm.radio(id: 'activeBoth') }
+      element(:active_indicator) { |b| b.frm.radios(name: 'activeIndicator') }
+      element(:active_indicator_yes) { |b| b.frm.radio(id: 'activeIndicatorYes') }
+      element(:active_indicator_no) { |b| b.frm.radio(id: 'activeIndicatorNo') }
+      element(:active_indicator_both) { |b| b.frm.radio(id: 'activeIndicatorBoth') }
     end
 
     def submit_to_cams_radios
