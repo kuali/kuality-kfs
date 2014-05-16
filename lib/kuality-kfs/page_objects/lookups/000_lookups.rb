@@ -49,6 +49,10 @@ class Lookups < BasePage
       closed_radios
     end
 
+    def assets_facets
+
+    end
+
     def subaccount_facets
       element(:sub_account_number) { |b| b.frm.text_field(name: 'subAccountNumber') }
     end
@@ -107,6 +111,12 @@ class Lookups < BasePage
       element(:active_indicator_yes) { |b| b.frm.radio(id: 'activeIndicatorYes') }
       element(:active_indicator_no) { |b| b.frm.radio(id: 'activeIndicatorNo') }
       element(:active_indicator_both) { |b| b.frm.radio(id: 'activeIndicatorBoth') }
+    end
+
+    def submit_to_cams_radios
+      element(:submit_to_cams_yes) { |b| b.frm.radio(id: 'activityStatusCodeYes') }
+      element(:submit_to_cams_no) { |b| b.frm.radio(id: 'activityStatusCodeNo') }
+      element(:submit_to_cams_both) { |b| b.frm.radio(id: 'activityStatusCodeBoth') }
     end
 
     def reference_document_facets

@@ -431,5 +431,29 @@
       <column name="PARM_DESC_TXT" value="po base org  reviewer for amount GE 500K for testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
-      </changeSet>
+    <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULT_BT_ACCOUNT_NUMBER"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="G398338"/>
+         <column name="PARM_DESC_TXT" value="default transfer from account number of BT for testing"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULT_ST_EMPL_ID"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="1013939"/>
+         <column name="PARM_DESC_TXT" value="default emplid of ST for testing"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+     </changeSet>
 </databaseChangeLog>
