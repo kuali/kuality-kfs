@@ -91,7 +91,7 @@
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="css1"/>
+      <column name="VAL" value="jcs28"/>
       <column name="PARM_DESC_TXT" value="Default supervisor for automated functional testing"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
