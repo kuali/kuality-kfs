@@ -250,6 +250,14 @@ class BasePage < PageFactory
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
 
       value(:pending_action_annotation) { |i=0, b| b.pnd_act_req_table[(1+(i*2))][4].text }
+      action(:first_pending_approve) do |b|
+        (1..b.pnd_act_req_table.rows.length - 2).each do |i|
+          if b.pnd_act_req_table[i][1].text.include?('APPROVE')
+            b.pnd_act_req_table[i][2].links[0].click
+          end
+        end
+
+      end
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
