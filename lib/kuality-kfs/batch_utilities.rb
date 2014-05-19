@@ -115,5 +115,39 @@ module BatchUtilities
     #run_unscheduled_job('pdpClearPendingTransactionsJob', wait_for_completion)
   end
 
+  def run_labor_enterprise_feed(wait_for_completion = false)
+    puts 'run_labor_enterprise_feed'
+    run_unscheduled_job('laborEnterpriseFeedJob', wait_for_completion)
+  end
+
+  def run_labor_nightly_out(wait_for_completion = false)
+    puts 'run_labor_nightly_out'
+    run_unscheduled_job('laborNightlyOutJob', wait_for_completion)
+  end
+
+  def run_labor_scrubber(wait_for_completion = false)
+    puts 'run_labor_scrubber'
+    run_unscheduled_job('laborScrubberJob', wait_for_completion)
+  end
+
+  def run_labor_poster(wait_for_completion = false)
+    puts 'run_labor_poster'
+    run_unscheduled_job('laborPosterJob', wait_for_completion)
+  end
+
+  def run_labor_balance(wait_for_completion = false)
+    puts 'run_labor_balance'
+    run_unscheduled_job('laborBalancingJob', wait_for_completion)
+  end
+
+  def run_labor_feed(wait_for_completion = false)
+    puts 'run_labor_feed'
+    run_unscheduled_job('laborFeedJob', wait_for_completion)
+  end
+
+  def run_labor_clear_pending_entries(wait_for_completion = false)
+    puts 'run_labor_clear_pending_entries'
+    run_unscheduled_job('clearLaborPendingEntriesJob', wait_for_completion)
+  end
 
 end
