@@ -11,11 +11,11 @@ class AccountDelegateObject < KFSDataObject
       chart_code:           get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
       number:               random_alphanums(7),
       doc_type_name:        'IB',
-      principal_name:       'dh273', #TODO config this
-      start_date:           '01/01/2014',
+      principal_name:       get_random_principal_name_for_role('KFS-SYS', 'User'),
+      start_date:           '01/01/2014', #TODO change to be first day of current fiscal year
       press:                :save
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ACCOUNT_DELEGATE)).merge(opts))
   end
 
   def build

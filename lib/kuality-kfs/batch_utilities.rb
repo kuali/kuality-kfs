@@ -47,7 +47,7 @@ module BatchUtilities
 
   def run_auto_approve_preq(wait_for_completion = false)
     puts 'run_auto_approve_preq'
-    #run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
+    run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
   end
 
   def run_electronic_invoice_extract(wait_for_completion = false)

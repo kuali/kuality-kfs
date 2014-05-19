@@ -10,14 +10,14 @@ class OrganizationReviewRoleObject < KFSDataObject
 
     defaults = {
         description:            random_alphanums(40, 'AFT'),
-        chart_code:             'IT - Ithaca Campus', #TODO grab this from config file
-        organization_code:               '017D', #TODO grab this from config file
+        chart_code:             get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        organization_code:      get_aft_parameter_value(ParameterConstants::DEFAULT_ORGANIZATION_CODE),
         doc_type:               'KFST',
         review_types:           'B',
         action_type_code:       'FYI',
         action_policy_code:     'FIRST'
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ORGANIZATION_REVIEW_ROLE)).merge(opts))
   end
 
   def build

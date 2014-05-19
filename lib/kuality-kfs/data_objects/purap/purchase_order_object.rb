@@ -17,7 +17,7 @@ class PurchaseOrderObject < KFSDataObject
         attachment_file_name:       'happy_path_reqs.png',
     }
 
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PURCHASE_ORDER)).merge(opts))
   end
 
   #def build
