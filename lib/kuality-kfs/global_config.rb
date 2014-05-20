@@ -38,7 +38,7 @@ module GlobalConfig
     h = {}
     get_parameter_values('KFS-AFTEST', parameter_name).each do |key_val_pair|
       k,v = key_val_pair.split('=')
-      h[k] = v
+      h[k.to_sym] = v
     end
     h
   end
