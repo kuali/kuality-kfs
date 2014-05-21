@@ -78,6 +78,7 @@ class FinancialProcessingPage < KFSBasePage
       action(:delete_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
       action(:balance_inquiry_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click }
       action(:refresh_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.refresh.line#{l}.anchoraccountingSourceAnchor").click }
+      action(:copy_source_accounting_line) { |l=0, b| b.frm.button(name: "methodToCall.copyAccountingLine.line#{l}.anchoraccountingSourceAnchor").click }
 
       #ACCOUNTING LINES TO/INCREASE
       element(:target_chart_code) { |b| b.frm.select(name: 'newTargetLine.chartOfAccountsCode') }

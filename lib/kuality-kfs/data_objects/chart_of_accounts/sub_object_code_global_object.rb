@@ -11,21 +11,21 @@ class SubObjectCodeGlobalObject < KFSDataObject
 
     defaults = {
         description:                    random_alphanums(40, 'AFT'),
-        new_chart_code:                 'IT - Ithaca Campus', #TODO grab this from config file
-        organization_document_number:   '1000710', #TODO get from config
+        new_chart_code:                 get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        organization_document_number:   get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         new_fiscal_year:                '2014',
         new_sub_object_code:            'tst',
         new_sub_object_code_name:       random_alphanums(20, 'AFT'),
         new_sub_object_code_short_name: random_alphanums(5, 'ATF'),
-        noc_fiscal_year:                '2014',
-        noc_chart_code:                 'IT - Ithaca Campus', #TODO grab this from config file
-        noc_object_code:                '1000',
-        na_chart_code:                  'IT - Ithaca Campus', #TODO grab this from config file
-        na_account_number:              '1000710',
+        noc_fiscal_year:                '2014', #TODO replace with bootstrap data
+        noc_chart_code:                 get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        noc_object_code:                '1000', #TODO replace with bootstrap data
+        na_chart_code:                  get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+        na_account_number:              get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         press:                          :save
 
     }
-    set_options(defaults.merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_SUB_ACCOUNT_CODE_GLOBAL)).merge(opts))
   end
 
   def build

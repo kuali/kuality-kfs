@@ -149,6 +149,8 @@ class BasePage < PageFactory
 
       #action(:find_header_index) { |text_match, b| b.frm.results_table.ths.each { |t| puts t.text.to_s + 'la la la la la' + i.to_s; i += 1  }
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
+      
+      action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
     end
 
     def general_ledger_pending_entries
@@ -157,6 +159,12 @@ class BasePage < PageFactory
     end
 
     def notes_and_attachments
+      # == Notes and Attachments Tab ==
+      element(:show_notes_and_attachments_button) { |b| b.frm.input(id: 'tab-NotesandAttachments-imageToggle') }
+      alias_method :hide_notes_and_attachments_button, :show_notes_and_attachments_button
+      element(:notes_and_attachments_count) { |b| b.show_notes_and_attachments_button.title.gsub(/.*\((\d+)\)$/, '\1').to_i }
+      action(:show_notes_and_attachments) { |b| b.show_notes_and_attachments_button.click }
+      action(:hide_notes_and_attachments) { |b| b.hide_notes_and_attachments.click }
       element(:note_text) { |b| b.frm.textarea(name: 'newNote.noteText') }
       action(:add_note) { |b| b.frm.button(title: 'Add a Note').click }
       action(:delete_note) { |l=0,b| b.frm.button(name: "methodToCall.deleteBONote.line#{l}").click }
@@ -171,26 +179,77 @@ class BasePage < PageFactory
       #viewing document where changes have been made
       element(:account_line_changed_text) { |b| b.td(class: 'datacell center', text: /^Accounting Line changed from:/) }
       element(:send_to_vendor) { |b| b.frm.select(name: 'newNote.noteTopicText') }
-      element(:attach_notes_file_1) { |b| b.frm.button(name: 'methodToCall.downloadBOAttachment.attachment[0]') }
-      action(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
+      element(:attach_notes_file_1) { |b| b.download_file_button(0) } # FIXME: Remove once all references are gone.
+      element(:download_file_button) { |l=0, b| b.frm.button(name: "methodToCall.downloadBOAttachment.attachment[#{l}]") }
       action(:download_file) { |l=0, b| b.download_file(l).click }
+      alias_method :submitted_attached_file_file, :download_file
+      value(:submitted_note_text) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:note_text)].text }
+      value(:submitted_author) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:author)].text }
+      value(:submitted_posted_timestamp) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:posted_timestamp)].text }
+      value(:submitted_attached_file_name) { |l=0, b| b.notes_table[2+l][b.notes_table.keyed_column_index(:attached_file)].text }
+
+      # == Notes Tab ==
+      element(:show_ro_notes_button) { |b| b.frm.input(id: 'tab-Notes-imageToggle') }
+      alias_method :hide_ro_notes_button, :show_ro_notes_button
+      element(:ro_notes_count) { |b| b.frm.inputs(id: /^tab-\d+-imageToggle$/m, alt: /^(close|open) Notes$/m).length }
+      action(:show_ro_notes) { |b| b.show_ro_notes_button.click }
+      action(:hide_ro_notes) { |b| b.hide_ro_notes_button.click }
+
+      element(:ro_notes_tab) { |b| b.frm.div(id: 'tab-Notes-div').table }
+      element(:ro_note) { |i=0, b| b.ro_notes_tab[i].tables(class: 'datatable')[1] }
+      value(:ro_note_note_text) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].noteText.div").text.strip }
+      value(:ro_note_posted_datetime_stamp) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].notePostedTimestamp.div").text.strip }
+      value(:ro_note_principal_name) { |i=0, b| b.ro_note(i).span(id: "boNotes[#{i}].authorUniversal.principalName.div").text.strip }
+      element(:ro_note_attached_file) { |i=0, b| b.ro_note(i).tr(text: /Attached File/m).td }
+      value(:ro_note_has_attached_file?) { |i=0, b| b.ro_note_attached_file(i).link(text: /Download Attachment/m).exists? }
 
     end
 
     def route_log
       element(:route_log_iframe) { |b| b.frm.iframe(name: 'routeLogIFrame') }
+      element(:show_route_log_button) { |b| b.frm.div(id: 'workarea').input(id: 'tab-RouteLog-imageToggle') }
+      alias_method :hide_route_log_button, :show_route_log_button
+      value(:route_log_shown?) { |b| b.show_route_log_button.title.match(/close Route Log/m) }
+      value(:route_log_hidden?) { |b| b.show_route_log_button.title.match(/open Route Log/m) }
+      action(:show_route_log) { |b| b.show_route_log_button.click }
+      alias_method :hide_route_log, :show_route_log
+
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
       value(:actions_taken) { |b| (b.actions_taken_table.rows.collect{ |row| row[1].text }.compact.uniq).reject{ |action| action==''} }
       element(:pnd_act_req_table) { |b| b.route_log_iframe.div(id: 'tab-PendingActionRequests-div').table }
+
+      element(:show_pending_action_requests_button) { |b| b.input(id: 'tab-PendingActionRequests-imageToggle') }
+      alias_method :hide_pending_action_requests_button, :show_pending_action_requests_button
+      value(:pending_action_requests_shown?) { |b| b.show_pending_action_requests_button.title.match(/close Pending Action Requests/m) }
+      value(:pending_action_requests_hidden?) { |b| b.show_pending_action_requests_button.title.match(/open Pending Action Requests/m) }
+      action(:show_pending_action_requests) { |b| b.show_pending_action_requests_button.click }
+      alias_method :hide_pending_action_requests, :show_pending_action_requests
+
+      element(:show_pending_action_requests_in_action_list_button) { |b| b.pnd_act_req_table.image(title: 'show') }
+      element(:hide_pending_action_requests_in_action_list_button) { |b| b.pnd_act_req_table.image(title: 'hide') }
+      value(:pending_action_requests_in_action_list_shown?) { |b| b.hide_pending_action_requests_in_action_list_button.exists? }
+      value(:pending_action_requests_in_action_list_hidden?) { |b| b.show_pending_action_requests_in_action_list_button.exists? }
+      action(:show_pending_action_requests_in_action_list) { |b| b.show_pending_action_requests_in_action_list_button.click }
+      action(:hide_pending_action_requests_in_action_list) { |b| b.hide_pending_action_requests_in_action_list_button.click }
+
+      value(:pnd_act_req_table_action) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:action)] }
+      value(:pnd_act_req_table_requested_of) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:requested_of)] }
+      value(:pnd_act_req_table_time_date) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:time_date)] }
+      value(:pnd_act_req_table_annotation) { |r=1, b| b.pnd_act_req_table[r][b.pnd_act_req_table.keyed_column_index(:annotation)] }
+
+      element(:pnd_act_req_table_sub) { |b| b.pnd_act_req_table.table }
+      element(:pnd_act_req_table_multi) { |b| b.pnd_act_req_table_sub.table }
+      value(:pnd_act_req_table_multi_action) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:action)] }
+      value(:pnd_act_req_table_multi_requested_of) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:requested_of)] }
+      value(:pnd_act_req_table_multi_time_date) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:time_date)] }
+      value(:pnd_act_req_table_multi_annotation) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:annotation)] }
+
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
-      action(:show_future_action_requests) { |b| b.route_log_iframe.h2(text: 'Future Action Requests').parent.parent.image(title: 'show').click }
+      action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
-      action(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+      value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
       action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }
       action(:multiple_link_first_approver){ |b| b.pnd_act_req_table[2].table.table[1][2].a.click}
-      action(:pending_action_annotation) { |i=0, b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[(1+(i*2))][4].text }
-      value(:pending_action_annotation_1) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[1][4].text }
-      value(:pending_action_annotation_2) { |b| b.iframe(id: 'routeLogIFrame').div(id: 'tab-PendingActionRequests-div').table[3][4].text }
 
       value(:new_user) do |b|
         new_user = ''
@@ -204,6 +263,15 @@ class BasePage < PageFactory
         new_user
       end
 
+      value(:pending_action_annotation) { |i=0, b| b.pnd_act_req_table[(1+(i*2))][4].text }
+      action(:first_pending_approve) do |b|
+        (1..b.pnd_act_req_table.rows.length - 2).each do |i|
+          if b.pnd_act_req_table[i][1].text.include?('APPROVE')
+            b.pnd_act_req_table[i][2].links[0].click
+          end
+        end
+
+      end
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
