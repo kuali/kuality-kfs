@@ -248,8 +248,30 @@ class BasePage < PageFactory
       action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
+      action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }
+      action(:multiple_link_first_approver){ |b| b.pnd_act_req_table[2].table.table[1][2].a.click}
+
+      value(:new_user) do |b|
+        new_user = ''
+        if (b.frm.div(id: 'tab-Overview-div').tables[0][1].text.include?('Principal Name:'))
+          new_user = b.frm.div(id: 'tab-Overview-div').tables[0][1].tds[0].text
+        else
+          # TODO : this is for group.  any other alternative ?
+          mbr_tr = b.frm.select(id: 'document.members[0].memberTypeCode').parent.parent.parent
+          new_user = mbr_tr[4].text
+        end
+        new_user
+      end
 
       value(:pending_action_annotation) { |i=0, b| b.pnd_act_req_table[(1+(i*2))][4].text }
+      action(:first_pending_approve) do |b|
+        (1..b.pnd_act_req_table.rows.length - 2).each do |i|
+          if b.pnd_act_req_table[i][1].text.include?('APPROVE')
+            b.pnd_act_req_table[i][2].links[0].click
+          end
+        end
+
+      end
     end
 
     # Gathers all errors on the page and puts them in an array called "errors"
