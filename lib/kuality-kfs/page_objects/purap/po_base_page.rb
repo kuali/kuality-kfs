@@ -70,7 +70,7 @@ class PurchaseOrderBasePage <  KFSBasePage
 
       element(:item_catalog_number) { |b| b.text_field(name: 'newPurchasingItemLine.itemCatalogNumber') }
       element(:item_commodity_code) { |b| b.text_field(name: 'newPurchasingItemLine.purchasingCommodityCode') }
-      element(:item_description) { |b| b.text_field(name: 'newPurchasingItemLine.itemDescription') }
+      element(:item_description) { |b| b.textarea(name: 'newPurchasingItemLine.itemDescription') }
       element(:item_unit_cost) { |b| b.text_field(name: 'newPurchasingItemLine.itemUnitPrice') }
       action(:item_assigned_to_trade_in) { |l=0,b| b.checkbox(name: "document.item[#{l}].itemAssignedToTradeInIndicator") }
 
@@ -89,22 +89,22 @@ class PurchaseOrderBasePage <  KFSBasePage
       action(:current_item_delete) { |l=0, b| b.button(name: "methodToCall.deleteItem.line#{l}").click }
 
       #ACCOUNTING LINES
-      action(:chart_code) { |l=0, b| b.select(name: "document.item[#{l}].newSourceLine.chartOfAccountsCode") }
+      element(:chart_code) { |l=0, b| b.select(name: "document.item[#{l}].newSourceLine.chartOfAccountsCode") }
       alias_method :chart, :chart_code
-      action(:account_number) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
-      action(:sub_account) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.subAccountNumber") }
-      action(:object_code) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.financialObjectCode") }
+      element(:account_number) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
+      element(:sub_account) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.subAccountNumber") }
+      element(:object_code) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.financialObjectCode") }
       alias_method :object, :object_code
 
-      action(:sub_object_code) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.financialSubObjectCode") }
+      element(:sub_object_code) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.financialSubObjectCode") }
       alias_method :sub_object, :sub_object_code
 
-      action(:project) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.projectCode") }
-      action(:organization_reference_id) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.organizationReferenceId") }
+      element(:project) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.projectCode") }
+      element(:organization_reference_id) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.organizationReferenceId") }
       alias_method :org_ref_id, :organization_reference_id
 
-      action(:percent) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.accountLinePercent") }
-      action(:amount) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.amount") }
+      element(:percent) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.accountLinePercent") }
+      element(:amount) { |l=0, b| b.text_field(name: "document.item[#{l}].newSourceLine.amount") }
       alias_method :amt, :amount
       action(:add_account) { |l=0, b| b.button(name: "methodToCall.insertSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
 
