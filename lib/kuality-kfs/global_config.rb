@@ -1,4 +1,7 @@
 module GlobalConfig
+  require 'mechanize'
+  require 'xmlsimple'
+
   def ksb_client
     @@ksb_client ||= KSBServiceClient.new()
   end
@@ -89,35 +92,35 @@ module GlobalConfig
     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
     principal_names
   end
-  # def get_kuali_business_objects(namespace_code, object_type, identifiers)
-  #   # Create new mechanize agent and hit the main page
-  #   # then login once directed to CUWA
-  #   agent = Mechanize.new
-  #   page = agent.get($base_url)
-  #
-  #   #First we need to hit up the weblogin form and get our selves a cookie
-  #   perform_university_login(page)
-  #
-  #   #now lets backdoor
-  #   agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
-  #   #TODO fix
-  #   #finally make the request to the data object page
-  #   page = agent.get($base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
-  #   #TODO fix
-  #
-  #   #pares the XML into a hash
-  #   XmlSimple.xml_in(page.body)
-  # end
-  #
-  # def get_kuali_business_object(namespace_code, object_type, identifiers)
-  #   business_objects = get_kuali_business_objects(namespace_code, object_type, identifiers)
-  #   if business_objects.size > 1
-  #     business_objects
-  #   else
-  #     business_objects.values[0].sample
-  #   end
-  # end
-  #
+  def get_kuali_business_objects(namespace_code, object_type, identifiers)
+    # Create new mechanize agent and hit the main page
+    # then login once directed to CUWA
+    agent = Mechanize.new
+    page = agent.get($base_url)
+
+    #First we need to hit up the weblogin form and get our selves a cookie
+    perform_university_login(page)
+
+    #now lets backdoor
+    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
+    #TODO fix
+    #finally make the request to the data object page
+    page = agent.get($base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
+    #TODO fix
+
+    #pares the XML into a hash
+    XmlSimple.xml_in(page.body)
+  end
+
+  def get_kuali_business_object(namespace_code, object_type, identifiers)
+    business_objects = get_kuali_business_objects(namespace_code, object_type, identifiers)
+    if business_objects.size > 1
+      business_objects
+    else
+      business_objects.values[0].sample
+    end
+  end
+
   def perform_university_login(page)
     #do nothing - override this in the university project
   end
