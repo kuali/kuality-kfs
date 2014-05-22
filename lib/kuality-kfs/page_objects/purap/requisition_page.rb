@@ -177,9 +177,11 @@ class RequisitionPage < KFSBasePage
   action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
   alias_method :show_view_related_documents, :show_related_documents
   action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
+  action(:close_related_documents) { |b| b.frm.button(alt: 'close View Related Documents').click }
 
   value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
   value(:po_unapprove) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s[1].font.text }
+  element(:view_related_doc) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s }
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
 
 end

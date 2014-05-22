@@ -2,7 +2,7 @@ class RequisitionObject < KFSDataObject
 
   #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
   attr_accessor :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
-                :delivery_instructions, :vendor_notes
+                :delivery_instructions, :vendor_notes, :item_commodity_code
 
   def initialize(browser, opts={})
     @browser = browser
