@@ -17,7 +17,7 @@ class BasePage < PageFactory
     send_notification: 'send notification',
     recall:            'Recall current document',
     error_correction:  'error correction',
-    fyi:           'fyi'
+    fyi:               'fyi'
   }
 
   def self.available_buttons
@@ -213,12 +213,14 @@ class BasePage < PageFactory
       value(:route_log_hidden?) { |b| b.show_route_log_button.title.match(/open Route Log/m) }
       action(:show_route_log) { |b| b.show_route_log_button.click }
       alias_method :hide_route_log, :show_route_log
+      element(:refresh_route_log_button) { |b| b.route_log_iframe.div(class: 'lookupcreatenew', title: 'Refresh').image(alt: 'refresh') }
+      action(:refresh_route_log) { |b| b.refresh_route_log_button.click }
 
       element(:actions_taken_table) { |b| b.route_log_iframe.div(id: 'tab-ActionsTaken-div').table }
       value(:actions_taken) { |b| (b.actions_taken_table.rows.collect{ |row| row[1].text }.compact.uniq).reject{ |action| action==''} }
       element(:pnd_act_req_table) { |b| b.route_log_iframe.div(id: 'tab-PendingActionRequests-div').table }
 
-      element(:show_pending_action_requests_button) { |b| b.input(id: 'tab-PendingActionRequests-imageToggle') }
+      element(:show_pending_action_requests_button) { |b| b.route_log_iframe.input(id: 'tab-PendingActionRequests-imageToggle') }
       alias_method :hide_pending_action_requests_button, :show_pending_action_requests_button
       value(:pending_action_requests_shown?) { |b| b.show_pending_action_requests_button.title.match(/close Pending Action Requests/m) }
       value(:pending_action_requests_hidden?) { |b| b.show_pending_action_requests_button.title.match(/open Pending Action Requests/m) }
