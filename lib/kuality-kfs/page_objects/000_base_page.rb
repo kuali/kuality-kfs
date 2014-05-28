@@ -94,6 +94,7 @@ class BasePage < PageFactory
       action(:administration_tab) { |b| b.link(title: 'Administration').click }
 
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
+      action(:collapse_all) { |b| b.frm.button(name: 'methodToCall.hideAllTabs').click }
     end
 
     def tiny_buttons
@@ -255,7 +256,7 @@ class BasePage < PageFactory
 
       value(:new_user) do |b|
         new_user = ''
-        if (b.frm.div(id: 'tab-Overview-div').tables[0][1].text.include?('Principal Name:'))
+        if b.frm.div(id: 'tab-Overview-div').tables[0][1].text.include?('Principal Name:')
           new_user = b.frm.div(id: 'tab-Overview-div').tables[0][1].tds[0].text
         else
           # TODO : this is for group.  any other alternative ?
