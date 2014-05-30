@@ -12,8 +12,8 @@ class VendorObject < KFSDataObject
       vendor_type:         'PO - PURCHASE ORDER',
       vendor_name:         'Keith, inc',
       foreign:             'No',
-      tax_number:          "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-      tax_number_type_ssn: :set,
+      tax_number:          random_tax_number,
+      tax_number_type_ssn: :set, # If this default is changed, you must update #sync_tax_number_type
       ownership:           'INDIVIDUAL/SOLE PROPRIETOR',
       w9_received:         'Yes',
       search_aliases:      collection('SearchAliasLineObject'),
@@ -31,6 +31,8 @@ class VendorObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+
+      sync_tax_number_type
 
       fill_out page, :description,
                      :vendor_name, :vendor_last_name, :vendor_first_name,
@@ -111,6 +113,33 @@ class VendorObject < KFSDataObject
   # @param [Symbol] target The set of Vendor data to pull in
   def pull_vendor_extended_data(target=:new)
     Hash.new
+  end
+
+  private
+
+  # We want the tax number types to either be :set or :clear, but only one can
+  # be :set at a time since this is a radio. This should update the other two
+  # when one is set.
+  def sync_tax_number_type
+    # The first time through, the default value is @tax_number_type_ssn == :set
+    # and the others set to nil. After that, everything should be synched.
+    if @tax_number_type_fein.nil? || @tax_number_type_none.nil?
+      raise ArgumentError 'Only one Tax Number Type can be :set at a time!' if (@tax_number_type_fein == :set && @tax_number_type_ssn == :set) ||
+                                                                               (@tax_number_type_fein == :set && @tax_number_type_none == :set) ||
+                                                                               (@tax_number_type_ssn == :set && @tax_number_type_none == :set)
+    end
+
+    # We rely on that knowledge of the default to choose the setting here.
+    if @tax_number_type_fein == :set
+      @tax_number_type_ssn = :clear
+      @tax_number_type_none = :clear
+    elsif @tax_number_type_ssn == :set
+      @tax_number_type_fein = :clear
+      @tax_number_type_none = :clear
+    elsif @tax_number_type_none == :set
+      @tax_number_type_ssn = :clear
+      @tax_number_type_fein = :clear
+    end
   end
 
 end
