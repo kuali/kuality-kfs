@@ -157,7 +157,7 @@ class PurchaseOrderBasePage <  KFSBasePage
       value(:glpe_message) { |b| b.div(id: 'tab-GeneralLedgerPendingEntries-div').td.div(align: 'center').text }
 
       # amend PO
-      action(:amendPo) { |b| b.frm.button(name: 'methodToCall.amendPo').click }
+      action(:amend_po) { |b| b.frm.button(name: 'methodToCall.amendPo').click }
     end
   end
 
