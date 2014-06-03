@@ -14,7 +14,7 @@ class PurchaseOrderObject < KFSDataObject
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
         item_uom: 'BX',
-        attachment_file_name:       'happy_path_reqs.png',
+        attachment_file_name:       'happy_path_reqs.png'
     }
 
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PURCHASE_ORDER)).merge(opts))
