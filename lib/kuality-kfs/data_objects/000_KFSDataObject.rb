@@ -18,7 +18,7 @@ class KFSDataObject < DataFactory
 
   def defaults
     {
-      description:               random_alphanums(40, 'AFT'),
+      description:               random_alphanums(37, 'AFT'),
       notes_and_attachments_tab: collection('NotesAndAttachmentsLineObject')
     }
   end
@@ -83,7 +83,9 @@ class KFSDataObject < DataFactory
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end
 
-  def update_line_objects_from_page!(target=:new); end
+  def update_line_objects_from_page!(target=:new)
+    update_extended_line_objects_from_page!(target)
+  end
 
   def update_extended_line_objects_from_page!(target=:new); end
 

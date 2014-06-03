@@ -1,11 +1,15 @@
 class VendorObject < KFSDataObject
 
+  include AddressLinesMixin
+  include PhoneNumberLinesMixin
+  include ContactLinesMixin
+  include ContractLinesMixin
+  include SearchAliasLinesMixin
+
   attr_accessor :vendor_number, :vendor_name, :vendor_last_name, :vendor_first_name,
                 :vendor_type, :foreign, :tax_number,
                 :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
-                :ownership, :w9_received,
-                # == Collections ==
-                :search_aliases, :phone_numbers, :addresses, :contacts, :contracts
+                :ownership, :w9_received
 
   def defaults
     super.merge({
@@ -15,13 +19,13 @@ class VendorObject < KFSDataObject
       tax_number:          random_tax_number,
       tax_number_type_ssn: :set, # If this default is changed, you must update #sync_tax_number_type
       ownership:           'INDIVIDUAL/SOLE PROPRIETOR',
-      w9_received:         'Yes',
-      search_aliases:      collection('SearchAliasLineObject'),
-      phone_numbers:       collection('PhoneLineObject'),
-      addresses:           collection('AddressLineObject'),
-      contacts:            collection('ContactLineObject'),
-      contracts:           collection('ContractLineObject')
-    }).merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR))
+      w9_received:         'Yes'
+    }).merge(default_addresses)
+      .merge(default_contacts)
+      .merge(default_contracts)
+      .merge(default_phone_numbers)
+      .merge(default_search_aliases)
+      .merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR))
   end
 
   def build
@@ -39,19 +43,7 @@ class VendorObject < KFSDataObject
                      :vendor_type, :foreign, :tax_number,
                      :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                      :ownership, :w9_received
-
-      @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
     end
-  end
-
-  def update_line_objects_from_page!(target=:new)
-    super
-    @phone_numbers.update_from_page!(target)
-    @addresses.update_from_page!(target)
-    @contacts.update_from_page!(target)
-    @contracts.update_from_page!(target)
-    @search_aliases.update_from_page!(target)
-    update_extended_line_objects_from_page!(target)
   end
 
   def absorb(target=:new)
@@ -117,28 +109,19 @@ class VendorObject < KFSDataObject
 
   private
 
-  # We want the tax number types to either be :set or :clear, but only one can
+  # We want the tax number types to either be :set or nil but only one can
   # be :set at a time since this is a radio. This should update the other two
   # when one is set.
   def sync_tax_number_type
-    # The first time through, the default value is @tax_number_type_ssn == :set
-    # and the others set to nil. After that, everything should be synched.
-    if @tax_number_type_fein.nil? || @tax_number_type_none.nil?
-      raise ArgumentError 'Only one Tax Number Type can be :set at a time!' if (@tax_number_type_fein == :set && @tax_number_type_ssn == :set) ||
-                                                                               (@tax_number_type_fein == :set && @tax_number_type_none == :set) ||
-                                                                               (@tax_number_type_ssn == :set && @tax_number_type_none == :set)
-    end
-
-    # We rely on that knowledge of the default to choose the setting here.
     if @tax_number_type_fein == :set
-      @tax_number_type_ssn = :clear
-      @tax_number_type_none = :clear
+      @tax_number_type_ssn = nil
+      @tax_number_type_none = nil
     elsif @tax_number_type_ssn == :set
-      @tax_number_type_fein = :clear
-      @tax_number_type_none = :clear
+      @tax_number_type_fein = nil
+      @tax_number_type_none = nil
     elsif @tax_number_type_none == :set
-      @tax_number_type_ssn = :clear
-      @tax_number_type_fein = :clear
+      @tax_number_type_ssn = nil
+      @tax_number_type_fein = nil
     end
   end
 
