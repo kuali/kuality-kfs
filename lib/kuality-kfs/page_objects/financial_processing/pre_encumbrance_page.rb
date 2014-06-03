@@ -18,10 +18,6 @@ class PreEncumbrancePage < FinancialProcessingPage
   element(:encumbrance_org_ref_id) { |b| b.frm.text_field(name: 'newSourceLine.organizationReferenceId') }
   element(:encumbrance_amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
   element(:encumbrance_line_description) { |b| b.frm.text_field(name: 'newSourceLine.financialDocumentLineDescription') }
-  element(:encumbrance_auto_disencumber_type) { |b| b.frm.select(name: 'newSourceLine.autoDisEncumberType') }
-  element(:encumbrance_count) { |b| b.frm.text_field(name: 'newSourceLine.partialTransactionCount') }
-  element(:encumbrance_start_date) { |b| b.frm.text_field(name: 'newSourceLine.startDate') }
-  element(:encumbrance_partial_amount) { |b| b.frm.text_field(name: 'newSourceLine.partialAmount') }
 
   action(:add_encumbrance_line) { |b| b.frm.button(alt: 'Add Encumbrance Accounting Line').click }
   #DISENCUMBRANCE
@@ -36,7 +32,6 @@ class PreEncumbrancePage < FinancialProcessingPage
 
   element(:disencumbrance_amount) { |b| b.frm.text_field(name: 'newTargetLine.amount') }
   element(:disencumbrance_reference_number) { |b| b.frm.text_field(name: 'newTargetLine.referenceNumber') }
-  element(:disencumbrance_line_description) { |b| b.frm.text_field(name: 'newTargetLine.financialDocumentLineDescription') }
 
   action(:add_disencumbrance_line) { |b| b.frm.button(alt: 'Add Disencumbrance Accounting Line').click }
 end
