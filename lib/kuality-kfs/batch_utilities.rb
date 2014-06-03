@@ -150,4 +150,25 @@ module BatchUtilities
     run_unscheduled_job('clearLaborPendingEntriesJob', wait_for_completion)
   end
 
+  def run_nightly_out(wait_for_completion = false)
+    puts 'run_nightly_out'
+    run_unscheduled_job('nightlyOutJob', wait_for_completion)
+  end
+
+  def run_poster(wait_for_completion = false)
+    puts 'run_poster'
+    run_unscheduled_job('posterJob', wait_for_completion)
+  end
+
+  def run_clear_pending_entries(wait_for_completion = false)
+    puts 'run_clear_pending_entries'
+    run_unscheduled_job('clearPendingEntriesJob', wait_for_completion)
+  end
+
+  def run_cab_extract(wait_for_completion = false)
+    puts 'run_cab_extract'
+    run_unscheduled_job('cabExtractJob', wait_for_completion)
+  end
+
+
 end

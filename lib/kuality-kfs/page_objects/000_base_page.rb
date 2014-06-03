@@ -151,6 +151,7 @@ class BasePage < PageFactory
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
+      action(:process) { |match, p| p.item_row(match).link(text: 'process').click }
     end
 
     def general_ledger_pending_entries
