@@ -260,6 +260,21 @@ class VendorPage < KFSBasePage
   action(:old_default_address) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator.div").text.strip }
   action(:old_address_active_indicator) { |i=0, b| b.addresses_tab.span(id: "document.oldMaintainableObject.vendorAddresses[#{i}].active.div").text.strip }
 
+  action(:readonly_address_type) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressTypeCode.div").text.strip }
+  action(:readonly_address_1) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine1Address.div").text.strip }
+  action(:readonly_address_2) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorLine2Address.div").text.strip }
+  action(:readonly_city) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCityName.div").text.strip }
+  action(:readonly_state) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorStateCode.div").text.strip }
+  action(:readonly_zipcode) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorZipCode.div").text.strip }
+  action(:readonly_province) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressInternationalProvinceName.div").text.strip }
+  action(:readonly_country) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorCountryCode.div").text.strip }
+  action(:readonly_address_attention) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAttentionName.div").text.strip }
+  action(:readonly_address_url) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorBusinessToBusinessUrlAddress.div").text.strip }
+  action(:readonly_fax) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorFaxNumber.div").text.strip }
+  action(:readonly_email) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorAddressEmailAddress.div").text.strip }
+  action(:readonly_default_address) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].vendorDefaultAddressIndicator.div").text.strip }
+  action(:readonly_address_active_indicator) { |i=0, b| b.addresses_tab.span(id: "document.newMaintainableObject.vendorAddresses[#{i}].active.div").text.strip }
+
   # Contact Tab
   element(:contacts_tab) { |b| b.frm.div(id: 'tab-Contact-div') }
   value(:current_contacts_count) { |b| b.contacts_tab.spans(class: 'left', text: /Contact [(]/m).length }

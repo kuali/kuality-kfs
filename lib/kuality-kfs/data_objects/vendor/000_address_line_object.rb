@@ -151,6 +151,25 @@ class AddressLineObjectCollection < LineObjectCollection
             set_as_default: vp.update_default_address(i).selected_options.first.text,
             active:         yesno2setclear(vp.update_address_active_indicator(i).value.strip)
           }
+        when :readonly
+          pulled_address = {
+              type:           vp.readonly_address_type(i),
+              address_1:      vp.readonly_address_1(i),
+              address_2:      vp.readonly_address_2(i),
+              city:           vp.readonly_city(i),
+              state:          vp.readonly_state(i),
+              postal_code:    vp.readonly_zipcode(i),
+              province:       vp.readonly_province(i),
+              country:        vp.readonly_country(i),
+              attention:      vp.readonly_address_attention(i),
+              url:            vp.readonly_address_url(i),
+              fax:            vp.readonly_fax(i),
+              email:          vp.readonly_email(i),
+              set_as_default: vp.readonly_default_address(i),
+              active:         yesno2setclear(vp.readonly_address_active_indicator(i))
+          }
+        else
+          raise ArgumentError, "AddressLineObject does not know how to pull the provided existing address type (#{target})!"
       end
     end
 

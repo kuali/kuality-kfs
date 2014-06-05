@@ -248,7 +248,10 @@ class BasePage < PageFactory
       value(:pnd_act_req_table_multi_annotation) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:annotation)] }
 
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
-      action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
+      action(:show_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=true&showNotes=false/m) }
+      action(:show_future_action_requests) { |b| b.show_future_action_requests_button.click }
+      action(:hide_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=false&showNotes=false/m) }
+      action(:hide_future_action_requests) { |b| b.hide_future_action_requests_button.click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
       action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }

@@ -131,7 +131,7 @@ end
 
 class Cucumber::Ast::Table
   def to_data_object_attr
-    Hash[rows_hash.map{ |k, v| [StringFactory.damballa(k), v] }]
+    Hash[rows_hash.map{ |k, v| [StringFactory.damballa(k), (v == 'nil' ? nil : v)] }]
   end
 end
 
