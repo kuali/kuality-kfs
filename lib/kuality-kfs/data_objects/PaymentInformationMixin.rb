@@ -20,7 +20,7 @@ module PaymentInformationMixin
         #other_considerations_w9_completed:       '',
         #other_considerations_exception_attached: '',
         #other_considerations_immediate_payment_indicator: '',
-        payment_method:              'P - Check/ACH',#'F - Foreign Draft',
+        payment_method:              'P - ACH/CHECK',#'F - Foreign Draft',
         #documentation_location_code: '',
         check_stub_text:             'test, Check Stub',
         address_type_description:    'TX - TAX',
