@@ -86,6 +86,8 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
+      action(:void_order) { |b| b.frm.button(title: 'Void PO').click }
+
     end
 
     def tab_buttons
