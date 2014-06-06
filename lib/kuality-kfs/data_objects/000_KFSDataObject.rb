@@ -8,14 +8,6 @@ class KFSDataObject < DataFactory
                 :notes_and_attachments_tab
 
   # Hooks:
-  def self.default_attributes
-    []
-  end
-
-  def self.required_attributes
-    [:description]
-  end
-
   def defaults
     {
       description:               random_alphanums(37, 'AFT'),
@@ -58,24 +50,6 @@ class KFSDataObject < DataFactory
   def pre_create; end
 
   def build; end
-
-  def fill_out_required_attributes
-    on page_class_for(self.class.to_s) do |page|
-      page.expand_all
-      page.description.focus
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, *self.class.required_attributes
-    end
-  end
-
-  def fill_out_optional_attributes
-    on page_class_for(self.class.to_s) do |page|
-      page.expand_all
-      page.description.focus
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, *(self.class.attributes - self.class.required_attributes - [:press, :document_id, :notes_and_attachments_tab])
-    end
-  end
 
   def fill_out_extended_attributes(attribute_group=nil); end
 
