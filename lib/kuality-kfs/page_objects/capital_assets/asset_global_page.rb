@@ -32,6 +32,11 @@ class AssetGlobalPage < KFSBasePage
 
   action(:add_asset_location) { |b| b.button(id: /^methodToCall\.addLine\.assetSharedDetails/).click }
 
+  element(:asset_campus) { |l=0, b| b.text_field(name: "document.newMaintainableObject.assetSharedDetails[#{l}].campusCode") }
+  element(:asset_building_code) { |l=0, b| b.text_field(name: "document.newMaintainableObject.assetSharedDetails[#{l}].buildingCode") }
+  element(:asset_building_room_number) { |l=0, b| b.text_field(name: "document.newMaintainableObject.assetSharedDetails[#{l}].buildingRoomNumber") }
+
+
   #ADD PAYMENTS - NEW ASSET PAYMENT
   element(:new_payment_chart_code) { |b| b.select(name: 'document.newMaintainableObject.add.assetPaymentDetails.chartOfAccountsCode') }
   element(:new_payment_account_number) { |b| b.text_field(name: 'document.newMaintainableObject.add.assetPaymentDetails.accountNumber') }
