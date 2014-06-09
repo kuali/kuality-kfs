@@ -86,6 +86,8 @@ class BasePage < PageFactory
       action(:delete_selected) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.deletePerson').click }
       element(:send_button) { |b| b.frm.button(class: 'globalbuttons', name: 'methodToCall.sendNotification', title: 'send') }
       action(:send_fyi) { |b| b.send_button.click }
+      action(:void_order) { |b| b.frm.button(title: 'Void PO').click }
+
     end
 
     def tab_buttons
@@ -94,6 +96,7 @@ class BasePage < PageFactory
       action(:administration_tab) { |b| b.link(title: 'Administration').click }
 
       action(:expand_all) { |b| b.frm.button(name: 'methodToCall.showAllTabs').click }
+      action(:collapse_all) { |b| b.frm.button(name: 'methodToCall.hideAllTabs').click }
     end
 
     def tiny_buttons
@@ -247,7 +250,10 @@ class BasePage < PageFactory
       value(:pnd_act_req_table_multi_annotation) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:annotation)] }
 
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
-      action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
+      element(:show_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=true&showNotes=false/m) }
+      action(:show_future_action_requests) { |b| b.show_future_action_requests_button.click }
+      element(:hide_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=false&showNotes=false/m) }
+      action(:hide_future_action_requests) { |b| b.hide_future_action_requests_button.click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
       action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }
@@ -255,7 +261,7 @@ class BasePage < PageFactory
 
       value(:new_user) do |b|
         new_user = ''
-        if (b.frm.div(id: 'tab-Overview-div').tables[0][1].text.include?('Principal Name:'))
+        if b.frm.div(id: 'tab-Overview-div').tables[0][1].text.include?('Principal Name:')
           new_user = b.frm.div(id: 'tab-Overview-div').tables[0][1].tds[0].text
         else
           # TODO : this is for group.  any other alternative ?
