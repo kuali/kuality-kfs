@@ -154,8 +154,10 @@ class PurchaseOrderBasePage <  KFSBasePage
       action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
       action(:open_purchase_order_number) { |po_num, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK', text: po_num).click; b.use_new_tab; b.close_parents }
 
+      value(:glpe_message) { |b| b.div(id: 'tab-GeneralLedgerPendingEntries-div').td.div(align: 'center').text }
+
       # amend PO
-      action(:amendPo) { |b| b.frm.button(name: 'methodToCall.amendPo').click }
+      action(:amend_po) { |b| b.frm.button(name: 'methodToCall.amendPo').click }
     end
   end
 

@@ -155,5 +155,3 @@ module GlobalConfig
     end
   end
 end
-
-World(GlobalConfig)
