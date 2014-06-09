@@ -1,27 +1,31 @@
 class VendorObject < KFSDataObject
 
+  include AddressLinesMixin
+  include PhoneNumberLinesMixin
+  include ContactLinesMixin
+  include ContractLinesMixin
+  include SearchAliasLinesMixin
+
   attr_accessor :vendor_number, :vendor_name, :vendor_last_name, :vendor_first_name,
                 :vendor_type, :foreign, :tax_number,
                 :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
-                :ownership, :w9_received,
-                # == Collections ==
-                :search_aliases, :phone_numbers, :addresses, :contacts, :contracts
+                :ownership, :w9_received
 
   def defaults
     super.merge({
       vendor_type:         'PO - PURCHASE ORDER',
       vendor_name:         'Keith, inc',
       foreign:             'No',
-      tax_number:          "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}",
-      tax_number_type_ssn: :set,
+      tax_number:          random_tax_number,
+      tax_number_type_ssn: :set, # If this default is changed, you must update #sync_tax_number_type
       ownership:           'INDIVIDUAL/SOLE PROPRIETOR',
-      w9_received:         'Yes',
-      search_aliases:      collection('SearchAliasLineObject'),
-      phone_numbers:       collection('PhoneLineObject'),
-      addresses:           collection('AddressLineObject'),
-      contacts:            collection('ContactLineObject'),
-      contracts:           collection('ContractLineObject')
-    }).merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR))
+      w9_received:         'Yes'
+    }).merge(default_addresses)
+      .merge(default_contacts)
+      .merge(default_contracts)
+      .merge(default_phone_numbers)
+      .merge(default_search_aliases)
+      .merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_VENDOR))
   end
 
   def build
@@ -32,24 +36,14 @@ class VendorObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
+      sync_tax_number_type
+
       fill_out page, :description,
                      :vendor_name, :vendor_last_name, :vendor_first_name,
                      :vendor_type, :foreign, :tax_number,
                      :tax_number_type_fein, :tax_number_type_ssn, :tax_number_type_none,
                      :ownership, :w9_received
-
-      @addresses.add Hash.new # Need to send in an empty Hash so it'll just throw in whatever the default AddressLineObject is
     end
-  end
-
-  def update_line_objects_from_page!(target=:new)
-    super
-    @phone_numbers.update_from_page!(target)
-    @addresses.update_from_page!(target)
-    @contacts.update_from_page!(target)
-    @contracts.update_from_page!(target)
-    @search_aliases.update_from_page!(target)
-    update_extended_line_objects_from_page!(target)
   end
 
   def absorb(target=:new)
@@ -111,6 +105,24 @@ class VendorObject < KFSDataObject
   # @param [Symbol] target The set of Vendor data to pull in
   def pull_vendor_extended_data(target=:new)
     Hash.new
+  end
+
+  private
+
+  # We want the tax number types to either be :set or nil but only one can
+  # be :set at a time since this is a radio. This should update the other two
+  # when one is set.
+  def sync_tax_number_type
+    if @tax_number_type_fein == :set
+      @tax_number_type_ssn = nil
+      @tax_number_type_none = nil
+    elsif @tax_number_type_ssn == :set
+      @tax_number_type_fein = nil
+      @tax_number_type_none = nil
+    elsif @tax_number_type_none == :set
+      @tax_number_type_ssn = nil
+      @tax_number_type_fein = nil
+    end
   end
 
 end
