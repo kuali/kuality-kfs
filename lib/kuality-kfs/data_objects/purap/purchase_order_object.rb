@@ -20,31 +20,5 @@ class PurchaseOrderObject < KFSDataObject
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PURCHASE_ORDER)).merge(opts))
   end
 
-  #def build
-  #  visit(MainPage).purchase_orders
-  #  on DocumentSearch do |page|
-  #    page.requisition_number.fit :requisition_id
-  #    page.search
-  #    #click link where po number exists
-  #    page.select_doc_id_with_po_number('290716')
-  #
-  #  end
-  #
-  #
-  #  on PurchaseOrderPage do |page|
-  #    page.expand_all
-  #    page.description.focus
-  #    page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-  #
-  #
-  #    @requisition_id = page.requisition_id
-  #    #FOR DEBUGGING
-  #    puts 'is the req number'
-  #    puts @requisition_id
-  #    puts 'was the req number'
-  #    puts @document_id
-  #
-  #  end
-  #end
 
 end #class
