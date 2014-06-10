@@ -157,11 +157,16 @@ class RequisitionPage < KFSBasePage
   element(:asset_note) { |b| b.frm.textarea(name: 'document.purchasingCapitalAssetSystems[0].capitalAssetNoteText') }
   element(:asset_system_description) { |b| b.frm.textarea(name: 'document.purchasingCapitalAssetSystems[0].capitalAssetSystemDescription') }
 #TODO different type/state selection has different manufacturer/model_number tag name
+#  'document.purchasingCapitalAssetItems[0].purchasingCapitalAssetSystem.capitalAssetManufacturerName'
+#  'document.purchasingCapitalAssetSystems[0].capitalAssetManufacturerName'
+
   element(:manufacturer) { |l=0, b| b.frm.text_field(name: /\[#{l}\](.[a-zA-Z]+)?.capitalAssetManufacturerName/, title: 'Manufacturer') }
   element(:model_number) { |l=0, b| b.frm.text_field(name: /\[#{l}\](.[a-zA-Z]+)?.capitalAssetModelDescription/, title: 'Model Number') }
   element(:asset_number) { |b| b.frm.text_field(name: 'document.purchasingCapitalAssetSystems[0].capitalAssetCountAssetNumber') }
   element(:transaction_type_code) { |b| b.frm.select(name: 'document.purchasingCapitalAssetItems[0].capitalAssetTransactionTypeCode') }
   action(:same_as_vendor) { |b| b.frm.button(alt: 'Manufacturer Same as Vendor').click }
+  element(:add_asset_number) { |b| b.frm.text_field(name: 'document.purchasingCapitalAssetItems[0].newPurchasingItemCapitalAssetLine.capitalAssetNumber') }
+  action(:add_asset) { |b| b.frm.button(alt: 'Insert an Item Capital Asset').click }
 
 #PAYMENT INFO
   element(:recurring_payment_type) { |b| b.frm.select(name: 'document.recurringPaymentTypeCode') }
