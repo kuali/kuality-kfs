@@ -55,6 +55,6 @@ class AssetGlobalPage < KFSBasePage
 
   action(:add_new_payment) { |b| b.button(id: /^methodToCall\.addLine\.assetPaymentDetails/).click }
 
-  element(:asset_number) { |b| b.frm.span(id: 'document.newMaintainableObject.assetSharedDetails[0].assetGlobalUniqueDetails[0].capitalAssetNumber.div').text.strip }
+  value(:asset_number) { |b| b.frm.span(id: 'document.newMaintainableObject.assetSharedDetails[0].assetGlobalUniqueDetails[0].capitalAssetNumber.div').text.strip }
 
 end
