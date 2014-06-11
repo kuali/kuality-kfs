@@ -61,6 +61,7 @@ class BasePage < PageFactory
       value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
       alias_method :po_doc_status, :requisition_status
       value(:po_number) { |p| p.headerinfo_table[2][1].text }
+      value(:preq_id) { |p| p.headerinfo_table[2][1].text }
       value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
     end
 
@@ -154,6 +155,7 @@ class BasePage < PageFactory
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
+      action(:process) { |match, p| p.item_row(match).link(text: 'process').click ; p.use_new_tab; p.close_parents}
     end
 
     def general_ledger_pending_entries
