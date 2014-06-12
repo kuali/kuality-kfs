@@ -14,16 +14,51 @@ class ShopCartPage < EShopPage
   element(:supplier_lines) { |b| b.shopping_cart.td(class: 'ForegroundPanel').tables(class: 'Panel', text: /^(?!\s*$).+/m) }
   element(:supplier_line_for) { |s, b|
     b.shopping_cart.td(class: 'ForegroundPanel')
-                   .table(class: 'Panel', text: /^(?!\s*$).+/m)
+                   .link(class: 'SupplierName', text: /#{s}/m).exist?.should
+    b.shopping_cart.td(class: 'ForegroundPanel')
                    .link(class: 'SupplierName', text: /#{s}/m)
                    .parent.parent.parent.parent
                    .parent.parent.parent.parent
   }
   element(:line_items_table_for) { |s, b| b.supplier_line_for(s).tr(id: /^LineItemSixPack/m).parent.parent }
-  element(:line_items_for) { |s, b| b.line_items_table_for(s).rows.to_a.keep_if{ |r| !r.text.empty? } }
+  value(:line_items_for) { |s, b| b.line_items_table_for(s).rows.to_a.keep_if{ |r| !r.text.empty? }[1..-1] }
+  value(:line_item_values) { |s, l, b|
+    h = Hash[ b.line_items_table_for(s).header_keys
+               .keep_if{ |k| k != :'' }
+               .zip( b.line_items_for(s)[l].tds.to_a
+                      .keep_if{ |r| !r.text.empty? }
+                      .collect{ |td| td.text } )
+             ]
+    h.merge({
+              quantity: {
+                value: b.update_product_quantity(s, h[:catalog_no]).value,
+                unit: h[:quantity]
+              },
+              size_packaging: {
+                size: h[:size_packaging].split(/\n/)[0],
+                packaging: h[:size_packaging].split(/\n/)[1]
+              },
+              checkboxes:          b.line_items_for(s)[l].checkbox(name: /^LineCheckbox/m).checked?,
+              product_description: h[:product_description].gsub(/[ ]+more info\.\.\.$/m, ''),
+              ext_price: {
+                value: h[:ext_price].split(' ')[0],
+                unit: h[:ext_price].split(' ')[1]
+              }
+            })
+  }
   action(:update_product_quantity) { |s, catalog_num, b|
-    b.line_items_for(s).td(class: 'LineSixPack', text: catalog_num).parent.parent.parent.text_field(name: /^Req_ProductHdrQuantity/m)
+    b.line_items_table_for(s).td(class: 'LineSixPack', text: /#{catalog_num}/m)
+                             .parent.parent.parent
+                             .text_field(name: /^Req_ProductHdrQuantity/m)
   }
 
+  action(:delete_product) { |s, i, b|
+    b.line_items_for(s)[i].checkbox(name: /^LineCheckbox/m).set
+    b.bulk_action_dropdown.pick! 'Remove Selected Items'
+    b.bulk_action_go.click
+  }
+
+  element(:bulk_action_dropdown) { |b| b.shopping_cart.span(id: 'LineActions').select }
+  element(:bulk_action_go) { |b| b.shopping_cart.span(id: 'LineActions').parent.button(class: 'ButtonReq', value: 'Go') }
 
 end
