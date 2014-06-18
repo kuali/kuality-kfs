@@ -46,7 +46,6 @@ module BatchUtilities
   # TODO : Following batch jobs are commented out for testing
 
   def run_auto_approve_preq(wait_for_completion = false)
-    puts 'run_auto_approve_preq'
     run_unscheduled_job('autoApprovePaymentRequestsJob', wait_for_completion, 120)
   end
 
@@ -116,38 +115,48 @@ module BatchUtilities
   end
 
   def run_labor_enterprise_feed(wait_for_completion = false)
-    puts 'run_labor_enterprise_feed'
     run_unscheduled_job('laborEnterpriseFeedJob', wait_for_completion)
   end
 
   def run_labor_nightly_out(wait_for_completion = false)
-    puts 'run_labor_nightly_out'
     run_unscheduled_job('laborNightlyOutJob', wait_for_completion)
   end
 
   def run_labor_scrubber(wait_for_completion = false)
-    puts 'run_labor_scrubber'
     run_unscheduled_job('laborScrubberJob', wait_for_completion)
   end
 
   def run_labor_poster(wait_for_completion = false)
-    puts 'run_labor_poster'
     run_unscheduled_job('laborPosterJob', wait_for_completion)
   end
 
   def run_labor_balance(wait_for_completion = false)
-    puts 'run_labor_balance'
     run_unscheduled_job('laborBalancingJob', wait_for_completion)
   end
 
   def run_labor_feed(wait_for_completion = false)
-    puts 'run_labor_feed'
     run_unscheduled_job('laborFeedJob', wait_for_completion)
   end
 
   def run_labor_clear_pending_entries(wait_for_completion = false)
-    puts 'run_labor_clear_pending_entries'
     run_unscheduled_job('clearLaborPendingEntriesJob', wait_for_completion)
   end
+
+  def run_nightly_out(wait_for_completion = false)
+    run_unscheduled_job('nightlyOutJob', wait_for_completion)
+  end
+
+  def run_poster(wait_for_completion = false)
+    run_unscheduled_job('posterJob', wait_for_completion)
+  end
+
+  def run_clear_pending_entries(wait_for_completion = false)
+    run_unscheduled_job('clearPendingEntriesJob', wait_for_completion)
+  end
+
+  def run_cab_extract(wait_for_completion = false)
+    run_unscheduled_job('cabExtractJob', wait_for_completion)
+  end
+
 
 end

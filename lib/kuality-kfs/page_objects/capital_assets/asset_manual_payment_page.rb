@@ -1,6 +1,6 @@
 class AssetManualPaymentPage < KFSBasePage
 
-  # accounting_lines
+  #accounting_lines
 
   # ASSET ALLOCATION
   element(:asset_allocation) { |b| b.frm.select(name: 'allocationCode') }
@@ -27,5 +27,15 @@ class AssetManualPaymentPage < KFSBasePage
   element(:posted_date) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialDocumentPostedDate') }
   action(:show_fiscal_year) { |b| b.frm.link(title: /^show inquiry for Accounting Period University Fiscal Year=/).click }
   value(:fiscal_year_value) { |b| b.frm.link(title: /^show inquiry for Accounting Period University Fiscal Year=/).text }
+
+
+  element(:chart_code) { |b| b.frm.select(name: 'newSourceLine.chartOfAccountsCode') }
+  element(:account_number) { |b| b.frm.text_field(name: 'newSourceLine.accountNumber') }
+  element(:object) { |b| b.frm.text_field(name: 'newSourceLine.financialObjectCode') }
+  element(:amount) { |b| b.frm.text_field(name: 'newSourceLine.amount') }
+  element(:post_date) { |b| b.frm.text_field(name: 'newSourceLine.expenditureFinancialDocumentPostedDate') }
+
+  action(:add_acct_line) { |b| b.frm.button(alt: 'Add Source Accounting Line').click }
+  action(:update_amount) { |i=0, b| b.frm.text_field(name: "document.sourceAccountingLines[#{i}].amount") }
 
 end

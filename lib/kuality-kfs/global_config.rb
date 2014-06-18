@@ -23,6 +23,9 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
+  def workflow_document_service
+    @@workflow_document_service ||= ksb_client.getWorkflowDocumentService()
+  end
   def get_parameter_values(namespace_code, parameter_name, component_code='All')
     raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
     raise ArgumentError, 'parameter_name missing' if parameter_name.to_s == ''
@@ -110,12 +113,13 @@ module GlobalConfig
 
     #pares the XML into a hash
     XmlSimple.xml_in(page.body)
+    #TODO - tony - cleanthisup()
   end
 
   def get_kuali_business_object(namespace_code, object_type, identifiers)
     business_objects = get_kuali_business_objects(namespace_code, object_type, identifiers)
-    if business_objects.size > 1
-      business_objects
+    if business_objects.values[0].nil?
+      raise RuntimeError, 'get_kuali_business_objects returned no objects'
     else
       business_objects.values[0].sample
     end
@@ -153,5 +157,17 @@ module GlobalConfig
     else
       postal_codes.get_postal_code.to_a.find_all{ |postal_code| postal_code.state_code == state_to_search}.sample.code
     end
+  end
+  def get_workflow_actions_taken(document_number)
+    workflow_document_service.getActionsTaken(document_number)
+  end
+  def get_workflow_action_requests(document_number)
+    workflow_document_service.getAllActionRequests(document_number)
+  end
+  def get_previous_route_node_names(document_number)
+    workflow_document_service.getPreviousRouteNodeNames(document_number)
+  end
+  def get_root_action_requests(document_number)
+    workflow_document_service.getRootActionRequests(document_number)
   end
 end

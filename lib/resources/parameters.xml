@@ -467,6 +467,42 @@
          <column name="PARM_DESC_TXT" value="Defaults for the PURCHASE ORDER AMENDMENT"/>
          <column name="EVAL_OPRTR_CD" value="A"/>
        </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="REQS_EX_OBJECT_CODE"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="6540"/>
+         <column name="PARM_DESC_TXT" value="Reqs EX object code for testing"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="REQS_CA_OBJECT_CODE"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="3630"/>
+         <column name="PARM_DESC_TXT" value="Reqs CA object code for testing"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULTS_FOR_ASSET_GLOBAL"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="asset_type_code=019;asset_campus=IT"/>
+         <column name="PARM_DESC_TXT" value="Defaults for the Asset Global object"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
 
 	<modifySql dbms="mysql">
 		<replace replace="sys_guid()" with="uuid()" />
