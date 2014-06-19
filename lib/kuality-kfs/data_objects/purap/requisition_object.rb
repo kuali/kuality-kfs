@@ -1,7 +1,16 @@
 class RequisitionObject < KFSDataObject
 
   DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-  attr_accessor :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
+  attr_accessor :payment_request_positive_approval_required,
+                # == Delivery Tab (Incomplete) ==
+                :building_address,
+                # == Items Tab (To be replaced by Items Line Object/Collection Module)==
+                :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom,
+                # == Additional Institutional Info Tab (Incomplete)==
+                :requestor_phone,
+
+
+                  :attachment_file_name,
                 :delivery_instructions, :vendor_notes, :item_commodity_code
 
   def initialize(browser, opts={})
