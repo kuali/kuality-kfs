@@ -1,6 +1,9 @@
 class ShopCartPage < EShopPage
 
   element(:shopping_cart) { |b| b.frm.form(name: 'DocumentEditForm') }
+  element(:cart_name) { |b| b.shopping_cart.text_field(name: 'Cart_CartName') }
+  element(:cart_description) { |b| b.shopping_cart.text_field(name: 'Cart_Description') }
+
   action(:save_shopping_cart) { |b| b.shopping_cart.button(class: 'ButtonReq', value: 'Save').click }
   action(:submit_shopping_cart) { |b| b.shopping_cart.td(id: 'CartOverlayRefId').button(text: 'Submit').click }
   value(:cart_status_message) { |b| b.shopping_cart.button(class: 'ButtonReq', value: 'Save').parent.span(class: 'FieldOpt').text }
@@ -12,6 +15,10 @@ class ShopCartPage < EShopPage
   action(:add_note_to_cart) { |n, b| b.add_note_link.click if b.add_note_link.exists?; b.add_note_textarea.fit(n); b.save_shopping_cart }
 
   element(:supplier_lines) { |b| b.shopping_cart.td(class: 'ForegroundPanel').tables(class: 'Panel', text: /^(?!\s*$).+/m) }
+  value(:suppliers) { |b| b.shopping_cart.td(class: 'ForegroundPanel')
+                                         .links(class: 'SupplierName')
+                                         .to_a
+                                         .collect{ |l| l.text } }
   element(:supplier_line_for) { |s, b|
     b.shopping_cart.td(class: 'ForegroundPanel')
                    .link(class: 'SupplierName', text: /#{s}/m).exist?.should
@@ -21,7 +28,9 @@ class ShopCartPage < EShopPage
                    .parent.parent.parent.parent
   }
   element(:line_items_table_for) { |s, b| b.supplier_line_for(s).tr(id: /^LineItemSixPack/m).parent.parent }
-  value(:line_items_for) { |s, b| b.line_items_table_for(s).rows.to_a.keep_if{ |r| !r.text.empty? }[1..-1] }
+  value(:all_line_items_for) { |s, b| b.line_items_table_for(s).rows.to_a.keep_if{ |r| !r.text.empty? }[1..-1] }
+  value(:supplier_subtotal_for) { |s, b| r = b.all_line_items_for(s)[-1].text.strip.split(' '); {value: r[-2], unit: r[-1]} }
+  value(:line_items_for) { |s, b| b.all_line_items_for(s)[0..-2] } # This is removes the supplier subtotal line
   value(:line_item_values) { |s, l, b|
     h = Hash[ b.line_items_table_for(s).header_keys
                .keep_if{ |k| k != :'' }
@@ -46,10 +55,11 @@ class ShopCartPage < EShopPage
               }
             })
   }
+  value(:current_product_count) { |s, b| b.line_items_for(s).length }
   action(:update_product_quantity) { |s, catalog_num, b|
-    b.line_items_table_for(s).td(class: 'LineSixPack', text: /#{catalog_num}/m)
-                             .parent.parent.parent
-                             .text_field(name: /^Req_ProductHdrQuantity/m)
+    b.shopping_cart.td(class: 'LineSixPack', text: /#{catalog_num}/m)
+                   .parent
+                   .text_field(name: /^Req_ProductHdrQuantity/m)
   }
 
   action(:delete_product) { |s, i, b|
