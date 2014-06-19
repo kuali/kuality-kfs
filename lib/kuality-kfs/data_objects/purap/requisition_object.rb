@@ -1,7 +1,7 @@
 class RequisitionObject < KFSDataObject
 
-  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-  attr_accessor :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
+  DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
+  attr_accessor :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
                 :delivery_instructions, :vendor_notes, :item_commodity_code
 
   def initialize(browser, opts={})
@@ -29,7 +29,7 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      add_random_building_address(page) if @building_address == 'random'
+      add_random_building_address if @building_address == 'random'
 
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
@@ -62,17 +62,19 @@ class RequisitionObject < KFSDataObject
     end
   end
 
-  def add_random_building_address(page)
-    page.building_search
-    on BuildingLookupPage do |page|
-      page.search
-      page.return_random
-    end
-    page.room_search
-    on RoomLookupPage do |page|
-      page.search
-      page.return_random
-    end
+  def add_random_building_address
+    on(RequisitionPage).building_search
+    on(BuildingLookupPage).search_and_return_random
+    # on BuildingLookupPage do |page|
+    #   page.search
+    #   page.return_random
+    # end
+    on(RequisitionPage).room_search
+    on(RoomLookupPage).search_and_return_random
+    # on RoomLookupPage do |page|
+    #   page.search
+    #   page.return_random
+    # end
   end
 
 end #class

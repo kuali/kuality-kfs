@@ -135,6 +135,8 @@ class BasePage < PageFactory
       action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
+      action(:search_and_return_random) { |b| b.search; b.return_random }
+
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 

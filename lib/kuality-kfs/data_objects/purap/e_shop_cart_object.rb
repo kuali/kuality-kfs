@@ -6,7 +6,7 @@ class EShopCartObject < DataFactory
 
   attr_accessor :cart_name, :cart_description, :business_purpose,
                 # == Collections ==
-                :items # items is a hash of ProductLineCollections, keyed on (snake_case'd) supplier name
+                :items # items is a hash of ProductLineCollections, keyed on supplier name
 
   # Hooks:
   def defaults
@@ -45,11 +45,12 @@ class EShopCartObject < DataFactory
 
   def fill_out_extended_attributes(attribute_group=nil); end
 
-  def post_create;  end
+  def post_create; end
 
   def update_extended_line_objects_from_page!; end
+  alias_method :absorb_items_extensions!, :update_extended_line_objects_from_page!
 
-  def absorb
+  def absorb!
     on ShopCartPage do |scp|
       update_options({
                        cart_name:        scp.cart_name.value.strip,
@@ -57,6 +58,7 @@ class EShopCartObject < DataFactory
                        business_purpose: (scp.add_note_link.exists? ? nil : scp.add_note_textarea.value.strip)
                      })
       absorb_items!
+      absorb_items_extensions!
     end
   end
 
@@ -85,6 +87,7 @@ class EShopCartObject < DataFactory
       scp.add_note_link.click if scp.add_note_link.exists?
       scp.add_note_textarea.fit note
       scp.save_shopping_cart
+      scp.cart_status_message.should == 'Cart was saved successfully'
       @business_purpose = note
     end
   end
@@ -94,5 +97,4 @@ class EShopCartObject < DataFactory
     on(EShopPage).goto_cart
   end
 
-
-end #class
+end
