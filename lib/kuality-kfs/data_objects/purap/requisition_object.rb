@@ -4,28 +4,30 @@ class RequisitionObject < KFSDataObject
   attr_accessor :payment_request_positive_approval_required,
                 # == Delivery Tab (Incomplete) ==
                 :building_address,
+                :delivery_instructions, # When does this actually get set?
                 # == Items Tab (To be replaced by Items Line Object/Collection Module)==
-                :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom,
+                :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :item_commodity_code,
                 # == Additional Institutional Info Tab (Incomplete)==
                 :requestor_phone,
+                # == Vendor Tab (Incomplete) ==
+                :vendor_notes
 
-
-                  :attachment_file_name,
-                :delivery_instructions, :vendor_notes, :item_commodity_code
+                #:attachment_file_name,
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        description:    random_alphanums(40, 'AFT'),
+        building_address: 'random',
+        requestor_phone:   rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s, # Use random phone number utility
+        #attachment_file_name:       'happy_path_reqs.png',
+
+        # == Item ==
         item_quantity: '1000',
         item_catalog: random_alphanums(7, 'AFT'),
         item_description: random_alphanums(15, 'AFT Item'),
         item_unit_cost: '9.9',
-        item_uom: 'BX',#TODO grab randome from service
-        attachment_file_name:       'happy_path_reqs.png',
-        building_address: 'random',
-        requestor_phone: rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s
+        item_uom: 'BX', #TODO grab randome from service
     }
 
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_REQUISITION)).merge(opts))
