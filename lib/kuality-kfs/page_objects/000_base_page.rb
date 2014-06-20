@@ -61,7 +61,10 @@ class BasePage < PageFactory
       value(:requisition_status) { |p| p.headerinfo_table[2][3].text }
       alias_method :po_doc_status, :requisition_status
       value(:po_number) { |p| p.headerinfo_table[2][1].text }
+      value(:preq_id) { |p| p.headerinfo_table[2][1].text }
       value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
+      # TODO : in maint page 'header', in AssetManualPayment page 'headerarea'.  Move to base ?
+      value(:header_title) { |b| b.frm.div(id: /^header/).text }
     end
 
     def description_field
@@ -156,6 +159,7 @@ class BasePage < PageFactory
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
+      action(:process) { |match, p| p.item_row(match).link(text: 'process').click ; p.use_new_tab; p.close_parents}
     end
 
     def general_ledger_pending_entries
@@ -252,7 +256,10 @@ class BasePage < PageFactory
       value(:pnd_act_req_table_multi_annotation) { |r=1, b| b.pnd_act_req_table_multi[r][b.pnd_act_req_table_multi.keyed_column_index(:annotation)] }
 
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
-      action(:show_future_action_requests) { |b| b.future_actions_table.image(title: 'show').click }
+      element(:show_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=true&showNotes=false/m) }
+      action(:show_future_action_requests) { |b| b.show_future_action_requests_button.click }
+      element(:hide_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=false&showNotes=false/m) }
+      action(:hide_future_action_requests) { |b| b.hide_future_action_requests_button.click }
       element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
       action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }
