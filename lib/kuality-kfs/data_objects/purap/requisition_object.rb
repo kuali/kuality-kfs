@@ -18,7 +18,7 @@ class RequisitionObject < KFSDataObject
     @browser = browser
 
     defaults = {
-        building_address: 'random',
+        building_address: '::random::',
         requestor_phone:   rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s, # Use random phone number utility
         #attachment_file_name:       'happy_path_reqs.png',
 
@@ -40,7 +40,7 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
-      add_random_building_address if @building_address == 'random'
+      add_random_building_address if @building_address == '::random::'
 
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
@@ -51,7 +51,7 @@ class RequisitionObject < KFSDataObject
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
 
-      page.requestor_phone.fit @requestor_phone
+      page.requestor_phone.fit       @requestor_phone
       page.delivery_phone_number.fit @requestor_phone
       #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
@@ -69,7 +69,7 @@ class RequisitionObject < KFSDataObject
       page.vendor_number.wait_until_present
       page.vendor_number.fit vendor_num
       page.search
-      page.return_value(vendor_num)
+      page.return_value vendor_num
     end
   end
 
