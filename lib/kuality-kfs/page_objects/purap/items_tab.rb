@@ -74,9 +74,9 @@ class ItemsTab < PageFactory
   value(:result_assigned_to_trade_in) { |l=0, b| b.items_table[result_line_index_for(l)][10] }
 
   #ITEM ACCOUNTING LINES
-  action(:add_accounting_line) { |i=0, b| b.frm.button(name: "methodToCall.insertSourceLine.line#{i}.anchoraccountingSourceAnchor").click }
-  action(:delete_accounting_line) { |i=0, l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{i}:#{l}.anchoraccountingSourceAnchor").click }
-  action(:balance_inquiry_accounting_line) { |i=0, l=0, b|
+  action(:add_item_accounting_line) { |i=0, b| b.frm.button(name: "methodToCall.insertSourceLine.line#{i}.anchoraccountingSourceAnchor").click }
+  action(:delete_item_accounting_line) { |i=0, l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{i}:#{l}.anchoraccountingSourceAnchor").click }
+  action(:balance_inquiry_item_accounting_line) { |i=0, l=0, b|
     b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line:#{i}:#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click
   }
 
