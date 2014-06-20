@@ -73,20 +73,36 @@ class ItemsTab < PageFactory
   value(:result_restricted) { |l=0, b| b.items_table[result_line_index_for(l)][9] }
   value(:result_assigned_to_trade_in) { |l=0, b| b.items_table[result_line_index_for(l)][10] }
 
-  # #ITEM ACCOUNTING LINES
-  # action(:item_account_number) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
-  # action(:item_sub_account) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.subAccountNumber") }
-  # action(:item_object) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.financialObjectCode") }
-  # alias_method :item_object_code, :item_object
-  #
-  # action(:item_sub_object) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.financialSubObjectCode") }
-  # action(:item_project) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.projectCode") }
-  # action(:item_org_ref_id) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.organizationReferenceId") }
-  # action(:item_percent) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.accountLinePercent") }
-  # action(:item_amount) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.amount") }
-  # action(:item_add_account_line) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').button(name: "methodToCall.insertSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
-  # element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
+  #ITEM ACCOUNTING LINES
+  action(:add_accounting_line) { |i=0, b| b.frm.button(name: "methodToCall.insertSourceLine.line#{i}.anchoraccountingSourceAnchor").click }
+  action(:delete_accounting_line) { |i=0, l=0, b| b.frm.button(name: "methodToCall.deleteSourceLine.line#{i}:#{l}.anchoraccountingSourceAnchor").click }
+  action(:balance_inquiry_accounting_line) { |i=0, l=0, b|
+    b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line:#{i}:#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click
+  }
 
+  element(:chart_code) { |i=0, b| b.frm.select(name: "document.item[#{i}].newSourceLine.chartOfAccountsCode") }
+  element(:account_number) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.accountNumber") }
+  element(:sub_account_code) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.subAccountNumber") }
+  element(:object_code) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.financialObjectCode") }
+  element(:sub_object_code) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.financialSubObjectCode") }
+  element(:project_code) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.projectCode") }
+  element(:organization_reference_id) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.organizationReferenceId") }
+  element(:line_description) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.financialDocumentLineDescription") }
+  element(:percent) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.accountLinePercent") }
+  element(:amount) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.amount") }
+  element(:account_expired_override) { |i=0, b| b.frm.checkbox(name: "document.item[#{i}].newSourceLine.accountExpiredOverride") }
+
+  element(:update_chart_code) { |i=0, l=0, b| b.frm.select(name: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode") }
+  element(:update_account_number) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber") }
+  element(:update_sub_account_code) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].subAccountNumber") }
+  element(:update_object_code) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].financialObjectCode") }
+  element(:update_sub_object_code) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].financialSubObjectCode") }
+  element(:update_project_code) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].projectCode") }
+  element(:update_organization_reference_id) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].organizationReferenceId") }
+  element(:update_line_description) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription") }
+  element(:update_percent) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent") }
+  element(:update_amount) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].amount") }
+  element(:update_account_expired_override) { |i=0, l=0, b| b.frm.checkbox(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountExpiredOverride") }
 
 end
 
