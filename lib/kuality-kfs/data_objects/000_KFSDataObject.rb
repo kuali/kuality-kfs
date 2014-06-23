@@ -53,6 +53,8 @@ class KFSDataObject < DataFactory
 
   def fill_out_extended_attributes(attribute_group=nil); end
 
+  def edit_extended_attributes(attribute_group=nil); end
+
   def post_create
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')
   end

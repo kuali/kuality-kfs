@@ -1,12 +1,14 @@
 class RequisitionObject < KFSDataObject
 
+  include ItemLinesMixin
+
   DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
   attr_accessor :payment_request_positive_approval_required,
                 # == Delivery Tab (Incomplete) ==
                 :building_address,
                 :delivery_instructions, # When does this actually get set?
                 # == Items Tab (To be replaced by Items Line Object/Collection Module)==
-                :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :item_commodity_code,
+                #:item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :item_commodity_code,
                 # == Additional Institutional Info Tab (Incomplete)==
                 :requestor_phone,
                 # == Vendor Tab (Incomplete) ==

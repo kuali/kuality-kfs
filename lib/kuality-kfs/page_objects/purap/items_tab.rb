@@ -79,6 +79,10 @@ class ItemsTab < PageFactory
   action(:balance_inquiry_item_accounting_line) { |i=0, l=0, b|
     b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line:#{i}:#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click
   }
+  value(:current_accounting_line_count) { |i=0, b|
+    r = "document.item\\[#{i}\\].sourceAccountingLine\\[\\d\\+\\].chartOfAccountsCode"
+    b.frm.selects(name: /#{r}/m).length
+  }
 
   element(:chart_code) { |i=0, b| b.frm.select(name: "document.item[#{i}].newSourceLine.chartOfAccountsCode") }
   element(:account_number) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.accountNumber") }

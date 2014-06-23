@@ -1,6 +1,8 @@
 module ItemLinesMixin
 
-  attr_accessor :items, :initial_item_lines, :immediate_import
+  attr_accessor :items,
+                :initial_item_lines,
+                :immediate_import
 
   def default_items(opts={})
     # This just makes it so we don't have to be so repetitive. It can certainly be

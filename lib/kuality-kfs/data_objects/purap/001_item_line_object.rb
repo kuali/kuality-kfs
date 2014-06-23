@@ -1,6 +1,6 @@
 class ItemLineObject < DataFactory
 
-  include AccountingLinesMixin # Need to include this to provide the inner Accounting Lines
+  include ItemAccountingLinesMixin # Need to include this to provide the inner Accounting Lines
   include Utilities
   include GlobalConfig
 
@@ -8,7 +8,8 @@ class ItemLineObject < DataFactory
                   :type, :quantity, :uom,
                   :catalog_number, :commodity_code, :description,
                   :unit_cost, :extended_cost, :restricted,
-                  :assigned_to_trade_in
+                  :assigned_to_trade_in,
+                  :e_shop_flags # TODO: e-SHOP Flags still needs to be implemented
   alias_method :restricted?, :restricted
   alias_method :assigned_to_trade_in?, :assigned_to_trade_in
 
@@ -24,16 +25,35 @@ class ItemLineObject < DataFactory
       # extended_cost:        '',
       # restricted:           '',
       # assigned_to_trade_in: ''
-    }
+    }.merge(default_accounting_lines)
   end
 
   def initialize(browser, opts={})
     @browser = browser
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ITEMS))
                         .merge(opts))
+    post_initialize
   end
 
   def create
+    pre_create
+    build
+    fill_out_extended_attributes
+    on(ItemsTab).add_item
+    post_create
+  end
+
+  def edit(opts={})
+    edit_attributes(opts)
+    edit_extended_attributes(opts)
+    update_options(opts)
+  end
+
+  def pre_create; end
+
+  def post_create; end
+
+  def build
     on ItemsTab do |page|
       page.type.pick!               @type
       page.quantity.fit             @quantity
@@ -45,13 +65,10 @@ class ItemLineObject < DataFactory
       page.extended_cost.fit        @extended_cost
       page.restricted.fit           @restricted
       page.assigned_to_trade_in.fit @assigned_to_trade_in
-
-      fill_out_extended_attributes
-      page.add_item
     end
   end
 
-  def edit(opts = {})
+  def edit_attributes(opts = {})
     on ItemsTab do |page|
       page.update_type(@line_number).pick!               opts[:type]
       page.update_quantity(@line_number).fit             opts[:quantity]
@@ -63,10 +80,7 @@ class ItemLineObject < DataFactory
       page.update_extended_cost(@line_number).fit        opts[:extended_cost]
       page.update_restricted(@line_number).fit           opts[:restricted]
       page.update_assigned_to_trade_in(@line_number).fit opts[:assigned_to_trade_in]
-
-      edit_extended_attributes
     end
-    update_options(opts)
   end
 
   def delete
@@ -83,13 +97,13 @@ class ItemLineObject < DataFactory
     Hash.new
   end
 
-  def fill_out_extended_attributes
+  def fill_out_extended_attributes(attribute_group=nil)
     # Override this method if you have site-specific extended attributes.
     # You'll probably need to use the provided @target value to generate the
     # proper symbols.
   end
 
-  def edit_extended_attributes
+  def edit_extended_attributes(attribute_group=nil)
     # Override this method if you have site-specific extended attributes.
     # You'll probably need to use the provided @target value to generate the
     # proper symbols.
