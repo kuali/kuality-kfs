@@ -36,7 +36,7 @@ class RequisitionObject < KFSDataObject
   def build
     visit(MainPage).requisition
     on RequisitionPage do |page|
-      expand_focus_and_clear(page)
+      expand_focus_and_clear page
 
       add_random_building_address if @delivery_building == '::random::'
       # TODO: Define a way to pick a non-random Delivery Building for RequisitionObject
