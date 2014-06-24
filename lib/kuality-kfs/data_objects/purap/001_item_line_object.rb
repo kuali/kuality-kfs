@@ -1,6 +1,5 @@
 class ItemLineObject < DataFactory
 
-  include ItemAccountingLinesMixin # Need to include this to provide the inner Accounting Lines
   include Utilities
   include GlobalConfig
 
@@ -14,7 +13,7 @@ class ItemLineObject < DataFactory
   alias_method :assigned_to_trade_in?, :assigned_to_trade_in
 
   def defaults
-    {
+    default_item_accounting_lines.merge({
       # type:                 '',
       quantity:             '1000',
       uom:                  'BX', # TODO: Get this from the service
@@ -25,7 +24,7 @@ class ItemLineObject < DataFactory
       # extended_cost:        '',
       # restricted:           '',
       # assigned_to_trade_in: ''
-    }.merge(default_accounting_lines)
+    })
   end
 
   def initialize(browser, opts={})
@@ -49,6 +48,8 @@ class ItemLineObject < DataFactory
     update_options(opts)
   end
 
+  def post_initialize; end
+
   def pre_create; end
 
   def post_create; end
@@ -62,7 +63,7 @@ class ItemLineObject < DataFactory
       page.commodity_code.fit       @commodity_code
       page.description.fit          @description
       page.unit_cost.fit            @unit_cost
-      page.extended_cost.fit        @extended_cost
+      #page.extended_cost.fit        @extended_cost # This is read-only
       page.restricted.fit           @restricted
       page.assigned_to_trade_in.fit @assigned_to_trade_in
     end
@@ -77,7 +78,7 @@ class ItemLineObject < DataFactory
       page.update_commodity_code(@line_number).fit       opts[:commodity_code]
       page.update_description(@line_number).fit          opts[:description]
       page.update_unit_cost(@line_number).fit            opts[:unit_cost]
-      page.update_extended_cost(@line_number).fit        opts[:extended_cost]
+      # page.update_extended_cost(@line_number).fit        opts[:extended_cost] # This is read-only
       page.update_restricted(@line_number).fit           opts[:restricted]
       page.update_assigned_to_trade_in(@line_number).fit opts[:assigned_to_trade_in]
     end
@@ -87,20 +88,8 @@ class ItemLineObject < DataFactory
     on(ItemsTab).delete_item(@line_number)
   end
 
-  def extended_create_mappings
-    # This needs to return a hash of additional mappings used for create
-    Hash.new
-  end
-
-  def extended_update_mappings
-    # This needs to return a hash of additional mappings used for update
-    Hash.new
-  end
-
-  def fill_out_extended_attributes(attribute_group=nil)
+  def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
-    # You'll probably need to use the provided @target value to generate the
-    # proper symbols.
   end
 
   def edit_extended_attributes(attribute_group=nil)
@@ -108,6 +97,9 @@ class ItemLineObject < DataFactory
     # You'll probably need to use the provided @target value to generate the
     # proper symbols.
   end
+
+  include ItemAccountingLinesMixin # Need to include this to provide the inner Accounting Lines
+
 end
 
 class ItemLineObjectCollection < LineObjectCollection
@@ -135,6 +127,7 @@ class ItemLineObjectCollection < LineObjectCollection
       }.each { |new_obj|
         # Update the stored lines
         self << (make contained_class, new_obj)
+        self.last.accounting_lines.update_from_page! target
       }
 
     end
@@ -148,18 +141,18 @@ class ItemLineObjectCollection < LineObjectCollection
       case t
         when :new
           pulled_item = {
-            type:                 b.update_type(i).selected_options.first.text.strip,
+            type:                 (b.update_type(i).exists? ? b.update_type(i) : b.result_type(i)).selected_options.first.text.strip,
             quantity:             b.update_quantity(i).value.strip,
-            uom:                  b.update_uom(i).value.strip,
-            catalog_number:       b.update_catalog_number(i).value.strip,
+            uom:                  (b.update_uom(i).exists? ? b.update_uom(i) : b.result_uom(i)).value.strip,
+            catalog_number:       (b.update_catalog_number(i).exists? ? b.update_catalog_number(i) : b.result_catalog_number(i)).value.strip,
             commodity_code:       b.update_commodity_code(i).value.strip,
-            description:          b.update_description(i).value.strip,
-            unit_cost:            b.update_unit_cost(i).value.strip,
-            extended_cost:        b.update_extended_cost(i).value.strip,
-            restricted:           yesno2setclear(b.update_restricted(i).value.strip),
-            assigned_to_trade_in: yesno2setclear(b.update_assigned_to_trade_in(i).value.strip)
-          } # TODO: Figure out how to pull in existing Accounting Lines
-        when :old
+            description:          (b.update_description(i).exists? ? b.update_description(i) : b.result_description(i)).value.strip,
+            unit_cost:            (b.update_unit_cost(i).exists? ? b.update_unit_cost(i) : b.result_unit_cost(i)).value.strip,
+            extended_cost:        (b.update_extended_cost(i).exists? ? b.update_extended_cost(i) : b.result_extended_cost(i)).value.strip,
+            restricted:           yesno2setclear((b.update_restricted(i).exists? ? b.update_restricted(i) : b.result_restricted(i)).value.strip),
+            assigned_to_trade_in: yesno2setclear((b.update_assigned_to_trade_in(i).exists? ? b.update_assigned_to_trade_in(i) : b.result_assigned_to_trade_in(i)).value.strip)
+          }
+        when :readonly, :old
           pulled_item = {
             type:                 b.result_type(i).selected_options.first.text.strip,
             quantity:             b.result_quantity(i).value.strip,
@@ -171,12 +164,12 @@ class ItemLineObjectCollection < LineObjectCollection
             extended_cost:        b.result_extended_cost(i).value.strip,
             restricted:           yesno2setclear(b.result_restricted(i).value.strip),
             assigned_to_trade_in: yesno2setclear(b.result_assigned_to_trade_in(i).value.strip)
-          } # TODO: Figure out how to pull in existing Accounting Lines
+          }
         else
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
       end
     end
-    pulled_item
+    pulled_item.compact
   end
 
   # @param [Fixnum] i The line number to look for (zero-based)

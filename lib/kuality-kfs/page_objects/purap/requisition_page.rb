@@ -7,14 +7,25 @@ class RequisitionPage < KFSBasePage
   #value(:account_distribution_method) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').td(text: 'Proportional')}
 
   #DELIVERY
-  element(:delivery_to) { |b| b.frm.text_field(name: 'document.deliveryToName') }
-  element(:delivery_phone_number) { |b| b.frm.text_field(name: 'document.deliveryToPhoneNumber') }
-  element(:delivery_email) { |b| b.frm.text_field(name: 'document.deliveryToEmailAddress') }
-  element(:delivery_address_2) { |b| b.frm.text_field(name: 'document.deliveryBuildingLine2Address') }
-  element(:delivery_date_required) { |b| b.frm.text_field(name: 'document.deliveryRequiredDate') }
-  element(:delivery_room) { |b| b.frm.text_field(name: 'document.deliveryBuildingRoomNumber') }
-  element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
-  element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
+
+  element(:delivery_tab) { |b| b.frm.table(summary: 'Final Delivery Section') }
+
+  value(:delivery_campus) { |b| b.delivery_tab.rows[0].tds[0].text.strip }
+  value(:delivery_building) { |b| b.delivery_tab.rows[1].tds[0].text.strip }
+  value(:delivery_address_1) { |b| b.delivery_tab.rows[2].tds[0].text.strip }
+  value(:delivery_city) { |b| b.delivery_tab.rows[5].tds[0].text.strip }
+  value(:delivery_state) { |b| b.delivery_tab.rows[6].tds[0].text.strip }
+  value(:delivery_postal_code) { |b| b.delivery_tab.rows[7].tds[0].text.strip }
+  value(:delivery_country) { |b| b.delivery_tab.rows[8].tds[0].text.strip }
+
+  element(:delivery_to) { |b| b.delivery_tab.text_field(name: 'document.deliveryToName') }
+  element(:delivery_phone_number) { |b| b.delivery_tab.text_field(name: 'document.deliveryToPhoneNumber') }
+  element(:delivery_email) { |b| b.delivery_tab.text_field(name: 'document.deliveryToEmailAddress') }
+  element(:delivery_address_2) { |b| b.delivery_tab.text_field(name: 'document.deliveryBuildingLine2Address') }
+  element(:delivery_date_required) { |b| b.delivery_tab.text_field(name: 'document.deliveryRequiredDate') }
+  element(:delivery_room) { |b| b.delivery_tab.text_field(name: 'document.deliveryBuildingRoomNumber') }
+  element(:delivery_date_required_reason) { |b| b.delivery_tab.select(name: 'document.deliveryRequiredDateReasonCode') }
+  element(:delivery_instructions) { |b| b.delivery_tab.textarea(name: 'document.deliveryInstructionText') }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
   action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }

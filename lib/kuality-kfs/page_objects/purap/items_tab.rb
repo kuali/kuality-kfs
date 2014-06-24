@@ -3,7 +3,7 @@ class ItemsTab < PageFactory
   include Utilities
   include GlobalConfig
 
-  element(:items_tab) { |b| b.frm.table(class: 'datatable', id: 'tab-Items-div') }
+  element(:items_tab) { |b| b.frm.div(id: 'tab-Items-div') }
   element(:items_table) { |b| b.items_tab.table(summary: 'Items Section') }
   value(:current_items_count) { |b| b.items_tab.tds(class: 'tab-subhead', text: /Item \d+/m).to_a.length }
   action(:show_items_button) { |b| b.frm.button(id: 'tab-Items-imageToggle') }
@@ -94,7 +94,6 @@ class ItemsTab < PageFactory
   element(:line_description) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.financialDocumentLineDescription") }
   element(:percent) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.accountLinePercent") }
   element(:amount) { |i=0, b| b.frm.text_field(name: "document.item[#{i}].newSourceLine.amount") }
-  element(:account_expired_override) { |i=0, b| b.frm.checkbox(name: "document.item[#{i}].newSourceLine.accountExpiredOverride") }
 
   element(:update_chart_code) { |i=0, l=0, b| b.frm.select(name: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode") }
   element(:update_account_number) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber") }
@@ -106,7 +105,17 @@ class ItemsTab < PageFactory
   element(:update_line_description) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription") }
   element(:update_percent) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent") }
   element(:update_amount) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].amount") }
-  element(:update_account_expired_override) { |i=0, l=0, b| b.frm.checkbox(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountExpiredOverride") }
+
+  element(:result_chart_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode.div").text.strip }
+  element(:result_account_number) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber.div").text.strip }
+  element(:result_sub_account_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].subAccountNumber.div").text.strip }
+  element(:result_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialObjectCode.div").text.strip }
+  element(:result_sub_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialSubObjectCode.div").text.strip }
+  element(:result_project_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].projectCode.div").text.strip }
+  element(:result_organization_reference_id) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].organizationReferenceId.div").text.strip }
+  element(:result_line_description) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription.div").text.strip }
+  element(:result_percent) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent.div").text.strip }
+  element(:result_amount) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].amount.div").text.strip }
 
 end
 
