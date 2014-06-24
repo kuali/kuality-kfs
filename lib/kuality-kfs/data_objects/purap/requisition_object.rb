@@ -18,13 +18,14 @@ class RequisitionObject < KFSDataObject
 
   def defaults
     # We'll merge the default_items so that our class defaults (specifically @initial_item_lines) override it
-    default_items.merge({
-      delivery_building: '::random::',
-      requestor_phone:   random_phone_number,
+    super.merge(default_items)
+         .merge({
+                  delivery_building: '::random::',
+                  requestor_phone:   random_phone_number,
 
-      # == Items (See ItemLinesMixin) ==
-      initial_item_lines: [Hash.new] # Add one initial item line, by default
-    })
+                  # == Items (See ItemLinesMixin) ==
+                  initial_item_lines: [Hash.new] # Add one initial item line, by default
+                })
   end
 
   def initialize(browser, opts={})
@@ -43,10 +44,11 @@ class RequisitionObject < KFSDataObject
 
       process_initial_item_lines # Necessary here because we want to calculate after adding Items/Item Accounting Lines
 
-      @delivery_phone_number = @requestor_phone if @delivery_phone_number.nil?
-      fill_out page, :delivery_phone_number, :requestor_phone
-
       page.calculate
+
+      @delivery_phone_number = @requestor_phone if @delivery_phone_number.nil?
+      fill_out page, :description, :payment_request_positive_approval_required,
+                     :delivery_phone_number, :requestor_phone
     end
   end
 
