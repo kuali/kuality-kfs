@@ -63,6 +63,8 @@ class BasePage < PageFactory
       value(:po_number) { |p| p.headerinfo_table[2][1].text }
       value(:preq_id) { |p| p.headerinfo_table[2][1].text }
       value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
+      # TODO : in maint page 'header', in AssetManualPayment page 'headerarea'.  Move to base ?
+      value(:header_title) { |b| b.frm.div(id: /^header/).text }
     end
 
     def description_field
