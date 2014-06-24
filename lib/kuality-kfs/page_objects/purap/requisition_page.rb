@@ -6,8 +6,7 @@ class RequisitionPage < KFSBasePage
   element(:payment_request_positive_approval_required) { |b| b.frm.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
   #value(:account_distribution_method) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').td(text: 'Proportional')}
 
-  # == DELIVERY ==
-
+  # == Delivery Tab ==
   element(:delivery_tab) { |b| b.frm.table(summary: 'Final Delivery Section') }
 
   value(:delivery_campus) { |b| b.delivery_tab.rows[0].tds[0].text.strip }
