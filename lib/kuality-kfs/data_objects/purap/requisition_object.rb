@@ -29,22 +29,35 @@ class RequisitionObject < KFSDataObject
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
 
+      sleep 10 #debug
+
       add_random_building_address(page) if @building_address == 'random'
+
+      sleep 20 #debug
 
       #Add Item
       fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
+
+      sleep 10 #debug
+
       page.item_add
+      sleep 10 #debug
       fill_out page, :description
 
+      sleep 10 #debug
       #Add Accounting line
       fill_out page, :item_account_number, :item_object_code, :item_percent
       page.item_add_account_line
+
+      sleep 10 #debug
 
       page.requestor_phone.fit @requestor_phone
       page.delivery_phone_number.fit @requestor_phone
       #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
       page.balance_inquiry_button.wait_until_present
       page.calculate
+
+
 
 
       # @requisition_id = page.requisition_id
@@ -68,9 +81,16 @@ class RequisitionObject < KFSDataObject
       page.search
       page.return_random
     end
+    sleep 10 #debug
+
     page.room_search
     on RoomLookupPage do |page|
+      sleep 10 #debug
+
       page.search
+
+      sleep 10 #debug
+
       page.return_random
     end
   end
