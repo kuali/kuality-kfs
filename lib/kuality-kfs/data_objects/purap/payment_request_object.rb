@@ -14,6 +14,6 @@ class PaymentRequestObject < KFSDataObject
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PAYMENT_REQUEST)).merge(opts))
   end
 
-
+  # FIXME: This PaymentRequestObject is shit.
 
 end #class

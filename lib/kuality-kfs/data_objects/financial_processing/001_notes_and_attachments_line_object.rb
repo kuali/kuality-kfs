@@ -4,7 +4,7 @@ class NotesAndAttachmentsLineObject < DataFactory
   include StringFactory
 
   attr_accessor   :line_number,
-                  :note_text, :notification_recipient, :file,
+                  :note_text, :notification_recipient, :file, :send_to_vendor,
                   :immediate_add, :immediate_attach, :immediate_fyi
 
   def initialize(browser, opts={})
@@ -21,7 +21,7 @@ class NotesAndAttachmentsLineObject < DataFactory
 
   def create
     on KFSBasePage do |page|
-      fill_out page, :note_text
+      fill_out page, :note_text, :send_to_vendor
       fill_out_extended_attributes
       attach_file @file unless @file.nil?
       page.add_note unless @immediate_add.false? || @immediate_add.nil?
