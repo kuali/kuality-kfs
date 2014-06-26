@@ -226,12 +226,14 @@ class FinancialProcessingPage < KFSBasePage
       element(:capital_asset_campus) { |i=0, j=0,  b| b.frm.select(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].campusCode") }
       element(:capital_asset_building) { |i=0, j=0,  b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingCode") }
       element(:capital_asset_room) { |i=0, j=0,  b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingRoomNumber") }
-      value(:remain_asset_amount) { |b| b.frm.table(summary: 'Capital Asset Information').tr.td.table[1][1].text.split(':')[1] }
+      #value(:remain_asset_amount) { |b| b.frm.table(summary: 'Capital Asset Information')[0][0].table[1][1].text.split(':')[1] }
+      element(:remain_asset_amount) { |b| b.frm.td(class: 'tab-subhead', text: /System Control Remainder Amount:/).text.split(':')[1] }
       value(:asset_account_number) { |b| b.frm.table(summary: 'Asset for Accounting Lines')[1][4].text.strip }
       action(:vendor_search) { |b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.vnd.businessobject.VendorDetail!!\)/m).click }
     end
     def modify_capital_assets
-      #on advanced deposit and general error correction
+      element(:capital_asset_number) { |i=0, b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetNumber") }
+      action(:redistribute_modify_amount) { |b| b.frm.button(name: 'methodToCall.redistributeModifyCapitalAssetAmount').click }
     end
 
     def ad_hoc_recipients

@@ -35,5 +35,7 @@ class AssetLookupPage < Lookups
   element(:payment_purchase_order_number) { |b| b.frm.text_field(name: 'assetPayments.purchaseOrderNumber') }
   element(:payment_document_number) { |b| b.frm.text_field(name: 'assetPayments.documentNumber') }
   element(:asset_location_type_code) { |b| b.frm.text_field(name: 'assetLocations.assetLocationTypeCode') }
+  action(:return_random_asset) { |b| b.asset_number_links[rand(b.asset_number_links.length)].click; b.use_new_tab; b.close_parents }
+  element(:asset_number_links) { |b| b.frm.links(title: /^show inquiry for Asset Asset Number/) }
 
 end

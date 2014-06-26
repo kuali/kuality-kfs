@@ -10,7 +10,7 @@ class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
   create_capital_assets
 
-  #modify_capital_assests
+  modify_capital_assets
 
 end
 #DistributionOfIncomeAndExpensePage = DistributionIncomeExpensePage
