@@ -1,7 +1,6 @@
 class ShopCatalogPage < EShopPage
 
 #REQUISITION DETAIL
-  #action(:go_button) { |b| b.frm.button(value: 'Go' ).click } #there is space after search
   element(:key_words) { |b| b.frm.text_field(id: 'Keywords', title: 'Search terms') }
   element(:search_results) { |b| b.frm.table(class: 'SearchResults') }
   action(:order_doc) { |b| b.frm.link(id: 'PHX_NAV_OrdersAndDocuments_Invoker' ).click } #there is space after search
@@ -10,7 +9,15 @@ class ShopCatalogPage < EShopPage
 
   # == These are actually on the document search page ==
   element(:date_range) { |b| b.frm.select(id: 'poAdvInput', name: 'DateRangeSelector') }
-  element(:go_button) { |b| b.frm.form(name: 'AdvancedSearchPurchaseOrdersInputForm').table.tr(id: 'AdvancedSearchButton').buttons(value: 'Go').to_a.keep_if{|btn| btn.visible?}.first } #there is space after search
+  element(:go_button) { |b|
+    b.frm.form(name: 'AdvancedSearchPurchaseOrdersInputForm')
+         .table
+         .tr(id: 'AdvancedSearchButton')
+         .buttons(value: 'Go')
+         .to_a
+         .keep_if{ |btn| btn.visible? }
+         .first # This should give you only the one true button. There are some hidden ones.
+  }
 
   action(:po_doc_row) { |match, b| b.search_results.row(text: /#{match}/m) }
   action(:return_po_value) { |match, p| p.po_doc_row(match).link(text: match).click }
