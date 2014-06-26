@@ -192,8 +192,6 @@ class RequisitionPage < KFSBasePage
   element(:reference_3) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference3Text') }
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  # action(:calculate) { |b| b.frm.button(name: 'methodToCall.calculate').click }
-
   #VIEW RELATED DOCUMENTS
   action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
   alias_method :show_view_related_documents, :show_related_documents
@@ -208,7 +206,6 @@ class RequisitionPage < KFSBasePage
   element(:purchase_order_amendment_item) {|b| b.h3(text: /Purchase Order Amendment - Doc #/).link(target: '_BLANK') }
   element(:purchase_order_amendment) {|b| b.purchase_order_amendment_item.click; b.use_new_tab; b.close_parents }
   value(:purchase_order_amendment_value) {|b| b.purchase_order_amendment_item.text }
-
 
 end
 
