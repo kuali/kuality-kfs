@@ -2,8 +2,10 @@ module ItemLinesMixin
 
   # Include this mixin at the bottom of your class definition for best results.
   # Otherwise, the methods it extends may not be defined when the mixin is evaluated.
-  def self.included mixin
-    mixin.class_eval do
+  # @param [Class] base_class Class that the mixin will be added to
+  # @return [Class] Merged Class
+  def self.included(base_class)
+    base_class.class_eval do
 
       attr_accessor :items, :initial_item_lines, :immediate_import
 
@@ -20,15 +22,21 @@ module ItemLinesMixin
       def process_initial_item_lines
         import_initial_item_lines if @immediate_import
 
-        @initial_item_lines.each{ |il| add_item_line( il.merge({line_number: @items.size}) ) unless il.has_key?(:file_name) }
-        @initial_item_lines.delete_if{ |il| !il.has_key?(:file_name) } # Remove all non-import initial lines
+        @initial_item_lines.each { |il| add_item_line( il.merge({line_number: @items.size}) ) unless il.has_key?(:file_name) }
+        @initial_item_lines.delete_if { |il| !il.has_key?(:file_name) } # Remove all non-import initial lines
 
         # At the end of the method, we should either have either no remaining initial
         # lines, or (if @immediate_import is false) only file names of files to be imported at a later time
       end
 
-      def add_item_line(al)
-        @items.add al
+      # Adds a single item to the item collection. Manually setting @line_number
+      # for the new item is necessary when you have initial accounting lines for
+      # the item because you need the Item line number to locate the Accounting
+      # Lines' creation input line. Otherwise, having the line number set when
+      # the item is added to the collection would be sufficient.
+      # @param [Hash] il All the variable values for the item to be added to the collection
+      def add_item_line(il)
+        @items.add il.merge( { line_number: @items.length } )
       end
 
       # Import from any remaining initial lines.

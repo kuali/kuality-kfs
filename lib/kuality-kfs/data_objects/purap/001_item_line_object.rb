@@ -83,7 +83,7 @@ class ItemLineObject < DataFactory
       page.update_assigned_to_trade_in(@line_number).fit opts[:assigned_to_trade_in]
     end
   end
-
+  
   def delete
     on(ItemsTab).delete_item(@line_number)
   end
