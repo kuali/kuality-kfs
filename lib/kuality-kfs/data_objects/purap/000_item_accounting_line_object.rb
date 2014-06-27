@@ -155,7 +155,7 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
       end
     end
-    pulled_item
+    pulled_item.delete_if { |k, v| v.nil? }
   end
 
   # @param [Fixnum] i The line number to look for (zero-based)

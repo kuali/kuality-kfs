@@ -47,7 +47,7 @@ class ItemsTab < PageFactory
   element(:update_commodity_code) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].purchasingCommodityCode") }
   element(:update_description) { |l=0, b| b.items_tab.textarea(id: "document.item[#{l}].itemDescription") }
   element(:update_unit_cost) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].itemUnitPrice") }
-  element(:update_extended_cost) { |l=0, b| b.items_tab.update_restricted(l).parent.tds[8].text } # This value is read-only. It'd be nice to be able to get at it without giving the index.
+  element(:update_extended_cost) { |l=0, b| b.update_quantity(l).parent.parent.tds[8].text } # This value is read-only. It'd be nice to be able to get at it without giving the index.
   element(:update_restricted) { |l=0, b| b.items_tab.checkbox(id: "document.item[#{l}].itemRestrictedIndicator") }
   element(:update_assigned_to_trade_in) { |l=0, b| b.items_tab.checkbox(id: "document.item[#{l}].itemAssignedToTradeInIndicator") }
 
@@ -62,16 +62,16 @@ class ItemsTab < PageFactory
     end
   end
 
-  value(:result_type) { |l=0, b| b.items_table[result_line_index_for(l)][1] }
-  value(:result_quantity) { |l=0, b| b.items_table[result_line_index_for(l)][2] }
-  value(:result_uom) { |l=0, b| b.items_table[result_line_index_for(l)][3] }
-  value(:result_catalog_number) { |l=0, b| b.items_table[result_line_index_for(l)][4] }
-  value(:result_commodity_code) { |l=0, b| b.items_table[result_line_index_for(l)][5] }
-  value(:result_description) { |l=0, b| b.items_table[result_line_index_for(l)][6] }
-  value(:result_unit_cost) { |l=0, b| b.items_table[result_line_index_for(l)][7] }
-  value(:result_extended_cost) { |l=0, b| b.items_table[result_line_index_for(l)][8] }
-  value(:result_restricted) { |l=0, b| b.items_table[result_line_index_for(l)][9] }
-  value(:result_assigned_to_trade_in) { |l=0, b| b.items_table[result_line_index_for(l)][10] }
+  value(:result_type) { |l=0, b| b.items_table[result_line_index_for(l)][1].text.strip }
+  value(:result_quantity) { |l=0, b| b.items_table[result_line_index_for(l)][2].text.strip }
+  value(:result_uom) { |l=0, b| b.items_table[result_line_index_for(l)][3].text.strip }
+  value(:result_catalog_number) { |l=0, b| b.items_table[result_line_index_for(l)][4].text.strip }
+  value(:result_commodity_code) { |l=0, b| b.items_table[result_line_index_for(l)][5].text.strip }
+  value(:result_description) { |l=0, b| b.items_table[result_line_index_for(l)][6].text.strip }
+  value(:result_unit_cost) { |l=0, b| b.items_table[result_line_index_for(l)][7].text.strip }
+  value(:result_extended_cost) { |l=0, b| b.items_table[result_line_index_for(l)][8].text.strip }
+  element(:result_restricted) { |l=0, b| b.items_table[result_line_index_for(l)][9] }
+  element(:result_assigned_to_trade_in) { |l=0, b| b.items_table[result_line_index_for(l)][10] }
 
   #ITEM ACCOUNTING LINES
   action(:add_item_accounting_line) { |i=0, b| b.frm.button(name: "methodToCall.insertSourceLine.line#{i}.anchoraccountingSourceAnchor").click }

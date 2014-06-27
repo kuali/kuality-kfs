@@ -53,10 +53,16 @@ module ItemLinesMixin
 
       # back up methods to be extended. Use these instead of #super in the extended methods
       alias_method :super_post_create, :post_create
+      alias_method :super_update_line_objects_from_page!, :update_line_objects_from_page!
 
       def post_create
         super_post_create
         process_initial_item_lines
+      end
+
+      def update_line_objects_from_page!(target=:new)
+        @items.update_from_page!(target)
+        super_update_line_objects_from_page!(target)
       end
 
     end

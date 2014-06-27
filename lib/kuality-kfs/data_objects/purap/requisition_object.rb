@@ -86,6 +86,75 @@ class RequisitionObject < KFSDataObject
     end
   end
 
+  def absorb(t=:new)
+    super
+    pulled_info = {}
+    on RequisitionPage do |b|
+      case t
+        when :new
+          pulled_info = {}
+        when :readonly, :old
+          pulled_info = {}
+        else
+          raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
+      end
+
+      pulled_info.merge!(pull_delivery_tab(t))
+
+    end
+    pulled_info.delete_if { |k, v| v.nil? }
+
+    update_options(pulled_info)
+    update_line_objects_from_page!(t)
+  end
+
+  def pull_delivery_tab(t=:new)
+    pulled_delivery_info = {}
+    on RequisitionPage do |b|
+      case t
+        when :new
+          pulled_delivery_info = {
+            delivery_campus:        b.delivery_campus,
+            delivery_building:      b.delivery_building,
+            delivery_address_1:     b.delivery_address_1,
+            delivery_address_2:     b.delivery_address_2.value,
+            delivery_room:          b.delivery_room.value,
+            delivery_city:          b.delivery_city,
+            delivery_state:         b.delivery_state,
+            delivery_postal_code:   b.delivery_postal_code,
+            delivery_country:       b.delivery_country,
+            delivery_to:            b.delivery_to.value,
+            delivery_phone_number:  b.delivery_phone_number.value,
+            delivery_email:         b.delivery_email.value,
+            delivery_date_required: (b.delivery_date_required.value if b.delivery_date_required.exists?),
+            delivery_date_required_reason: (b.delivery_date_required_reason.value if b.delivery_date_required_reason.exists?),
+            delivery_instructions:  (b.delivery_instructions.value if b.delivery_instructions.exists?)
+          }
+        when :readonly, :old
+          pulled_delivery_info = {
+              delivery_campus:        b.result_delivery_campus,
+              delivery_building:      b.result_delivery_building,
+              delivery_address_1:     b.result_delivery_address_1,
+              delivery_address_2:     b.result_delivery_address_2,
+              delivery_room:          b.result_delivery_room,
+              delivery_city:          b.result_delivery_city,
+              delivery_state:         b.result_delivery_state,
+              delivery_postal_code:   b.result_delivery_postal_code,
+              delivery_country:       b.result_delivery_country,
+              delivery_to:            b.result_delivery_to,
+              delivery_phone_number:  b.result_delivery_phone_number,
+              delivery_email:         b.result_delivery_email.value,
+              delivery_date_required: b.result_delivery_date_required,
+              delivery_date_required_reason: b.result_delivery_date_required_reason,
+              delivery_instructions:  b.result_delivery_instructions
+          }
+        else
+          raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
+      end
+    end
+    pulled_delivery_info.delete_if { |k, v| v.nil? }
+  end
+
   include ItemLinesMixin
 
 end #class
