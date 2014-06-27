@@ -230,6 +230,16 @@ class FinancialProcessingPage < KFSBasePage
       element(:remain_asset_amount) { |b| b.frm.td(class: 'tab-subhead', text: /System Control Remainder Amount:/).text.split(':')[1] }
       value(:asset_account_number) { |b| b.frm.table(summary: 'Asset for Accounting Lines')[1][4].text.strip }
       action(:vendor_search) { |b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.vnd.businessobject.VendorDetail!!\)/m).click }
+      action(:delete_asset) { |i=0, b| b.frm.button(id: "methodToCall.deleteCapitalAssetInfo.line#{i}.Anchor").click }
+      value(:asset_tables) { |b| b.frm.tables(summary: "Asset for Accounting Lines") }
+      value(:current_asset_count) { |b| b.asset_tables.length - 1 }
+      value(:old_capital_asset_qty) { |i=0, b| b.frm.hidden(name: "document.capitalAssetInformation[#{i}].capitalAssetQuantity") }
+      value(:old_capital_asset_type) { |i=0, b| b.frm.hidden(name: "document.capitalAssetInformation[#{i}].capitalAssetTypeCode") }
+      value(:old_capital_asset_manufacturer) { |i=0, b| b.frm.hidden(name: "document.capitalAssetInformation[#{i}].capitalAssetManufacturerName") }
+      # TODO : not sure why this is still editable when doc is FINAL
+      element(:old_capital_asset_line_amount) { |i=0, b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetLineAmount") }
+      value(:old_capital_asset_description) { |i=0, b| b.asset_tables(i+1)[2][1].text.strip } # no hidden value or span
+
     end
     def modify_capital_assets
       element(:capital_asset_number) { |i=0, b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetNumber") }
