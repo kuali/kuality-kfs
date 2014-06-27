@@ -21,7 +21,8 @@ class ShopCatalogPage < EShopPage
 
   action(:po_doc_row) { |match, b| b.search_results.row(text: /#{match}/m) }
   action(:return_po_value) { |match, p| p.po_doc_row(match).link(text: match).click }
-
+  element(:search_doc_type) { |b| b.frm.select(id: 'AdvancedSearchDocumentTypeSelector') }
+  
   # == ==
 
   # == This section is really a PO Summary page
@@ -48,4 +49,5 @@ class ShopCatalogPage < EShopPage
   element(:hosted_supplier_item_search) { |s, b| b.hosted_supplier_item_search_popup(s).input(id: "HostedSearchBox_#{b.hosted_supplier_id(s)}_so_button").click }
 
 
+  
 end
