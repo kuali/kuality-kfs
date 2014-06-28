@@ -76,11 +76,13 @@ class RequisitionObject < KFSDataObject
   end
 
   def add_random_building_address(page)
-    page.building_search
-    on BuildingLookupPage do |page|
-      page.search
-      page.return_random
+    #Need to repeat correct if Postal Code is not present as this is required.
+    return_random_building(page)
+
+    while page.postal_code_value == ' '
+      return_random_building(page)
     end
+
     sleep 10 #debug
 
     page.room_search
@@ -95,4 +97,20 @@ class RequisitionObject < KFSDataObject
     end
   end
 
+  def return_random_building(page)
+    page.building_search
+    on BuildingLookupPage do |page|
+      page.search
+      page.return_random
+    end
+  end
+
+  def return_building_without_postal_code(page)
+    page.building_search
+    on BuildingLookupPage do |page|
+      page.building_name.set 'Plantations Storage Shed 3'
+      page.search
+      page.return_random
+    end
+  end
 end #class

@@ -34,6 +34,8 @@ class RequisitionPage < KFSBasePage
 
   element(:vendor_postal_code) { |b| b.frm.text_field(name: 'document.vendorPostalCode') }
   alias_method :vendor_zipcode, :vendor_postal_code
+  value(:postal_code_value) { |b| b.frm.table(summary: 'Final Delivery Section').tr(index: 0, text: /Postal Code:/).td.text }
+
 
   element(:vendor_attention) { |b| b.frm.text_field(name: 'document.vendorAttentionName') }
   element(:vendor_customer_number) { |b| b.frm.text_field(name: 'document.vendorCustomerNumber') }
@@ -204,7 +206,7 @@ class RequisitionPage < KFSBasePage
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
 
   element(:purchase_order_amendment_item) {|b| b.h3(text: /Purchase Order Amendment - Doc #/).link(target: '_BLANK') }
-  element(:purchase_order_amendment) {|b| b.purchase_order_amendment_item.click; b.use_new_tab; b.close_parents }
+  action(:purchase_order_amendment) {|b| b.purchase_order_amendment_item.click; b.use_new_tab; b.close_parents }
   value(:purchase_order_amendment_value) {|b| b.purchase_order_amendment_item.text }
 
 end
