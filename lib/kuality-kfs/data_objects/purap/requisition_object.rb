@@ -72,18 +72,7 @@ class RequisitionObject < KFSDataObject
     on(BuildingLookupPage).search_and_return_random
     on(RequisitionPage).room_search
     on(RoomLookupPage).search_and_return_random
-    on RequisitionPage do |page|
-      # Pull the results into the object
-      @delivery_campus      = page.delivery_campus
-      @delivery_building    = page.delivery_building
-      @delivery_address_1   = page.delivery_address_1
-      @delivery_address_2   = page.delivery_address_2.value
-      @delivery_room        = page.delivery_room.value
-      @delivery_city        = page.delivery_city
-      @delivery_state       = page.delivery_state
-      @delivery_postal_code = page.delivery_postal_code
-      @delivery_country     = page.delivery_country
-    end
+    update_options pull_delivery_tab(:new)
   end
 
   def absorb(t=:new)
@@ -157,4 +146,4 @@ class RequisitionObject < KFSDataObject
 
   include ItemLinesMixin
 
-end #class
+end

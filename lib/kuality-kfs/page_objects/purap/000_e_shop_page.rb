@@ -10,4 +10,6 @@ class EShopPage < KFSBasePage
   action(:po_doc_search) { |b| b.frm.link(id: 'PHX_NAV_DocumentSearchSearch' ).click }
   action(:goto_doc_search) { |b| b.order_doc; b.po_doc_search; }
 
+  element(:search_results) { |b| b.frm.table(class: 'SearchResults') }
+
 end
