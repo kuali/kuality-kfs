@@ -1,55 +1,60 @@
 class RequisitionObject < KFSDataObject
 
-  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
-  attr_accessor :description, :item_account_number, :item_object_code, :item_catalog_number, :item_description, :item_unit_cost, :item_quantity, :item_uom, :attachment_file_name, :building_address, :requestor_phone,
-                :delivery_instructions, :vendor_notes, :item_commodity_code
+  DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
+
+  attr_accessor :payment_request_positive_approval_required,
+                # == Delivery Tab (Somewhat Incomplete) ==
+                :delivery_campus, :delivery_building,
+                :delivery_address_1, :delivery_address_2,
+                :delivery_room, :delivery_city,
+                :delivery_state, :delivery_postal_code, :delivery_country,
+                :delivery_to, :delivery_phone_number, :delivery_email,
+                :delivery_date_required, :delivery_date_required_reason,
+                :delivery_instructions, # When does this actually get set?
+                # == Additional Institutional Info Tab (Incomplete)==
+                :requestor_phone,
+                # == Vendor Tab (Incomplete) ==
+                :vendor_notes
+
+  def defaults
+    # We'll merge the default_items so that our class defaults (specifically @initial_item_lines) override it
+    super.merge(default_items)
+         .merge({
+                  delivery_building: '::random::',
+                  requestor_phone:   random_phone_number,
+
+                  # == Items (See ItemLinesMixin) ==
+                  initial_item_lines: [Hash.new] # Add one initial item line, by default
+                })
+  end
 
   def initialize(browser, opts={})
     @browser = browser
-
-    defaults = {
-        description:    random_alphanums(40, 'AFT'),
-        item_quantity: '1000',
-        item_catalog: random_alphanums(7, 'AFT'),
-        item_description: random_alphanums(15, 'AFT Item'),
-        item_unit_cost: '9.9',
-        item_uom: 'BX',#TODO grab randome from service
-        attachment_file_name:       'happy_path_reqs.png',
-        building_address: 'random',
-        requestor_phone: rand(99..999).to_s + '-' + rand(99..999).to_s + '-' + rand(999..9999).to_s
-    }
-
-    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_REQUISITION)).merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_REQUISITION))
+                        .merge(opts))
   end
 
   def build
     visit(MainPage).requisition
     on RequisitionPage do |page|
-      page.expand_all
-      page.description.focus
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      expand_focus_and_clear page
 
-      add_random_building_address(page) if @building_address == 'random'
+      add_random_building_address if @delivery_building == '::random::'
+      # TODO: Define a way to pick a non-random Delivery Building for RequisitionObject
 
-      #Add Item
-      fill_out page, :item_quantity, :item_catalog_number, :item_commodity_code, :item_description, :item_unit_cost, :item_restricted, :item_assigned, :item_uom
-      page.item_add
-      fill_out page, :description
+      process_initial_item_lines # Necessary here because we want to calculate after adding Items/Item Accounting Lines
 
-      #Add Accounting line
-      fill_out page, :item_account_number, :item_object_code, :item_percent
-      page.item_add_account_line
-
-      page.requestor_phone.fit @requestor_phone
-      page.delivery_phone_number.fit @requestor_phone
-      #wait? for balance Perform Balance Inquiry for Source Accounting Line 1
-      page.balance_inquiry_button.wait_until_present
       page.calculate
 
-
-      # @requisition_id = page.requisition_id
-      #Requisition number is created only after a successful submit
+      @delivery_phone_number = @requestor_phone if @delivery_phone_number.nil?
+      fill_out page, :description, :payment_request_positive_approval_required,
+                     :delivery_phone_number, :requestor_phone
     end
+  end
+
+  def save
+    super
+    @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save
   end
 
   def add_vendor_to_req(vendor_num)
@@ -58,21 +63,29 @@ class RequisitionObject < KFSDataObject
       page.vendor_number.wait_until_present
       page.vendor_number.fit vendor_num
       page.search
-      page.return_value(vendor_num)
+      page.return_value vendor_num
     end
   end
 
-  def add_random_building_address(page)
-    page.building_search
-    on BuildingLookupPage do |page|
-      page.search
-      page.return_random
-    end
-    page.room_search
-    on RoomLookupPage do |page|
-      page.search
-      page.return_random
+  def add_random_building_address
+    on(RequisitionPage).building_search
+    on(BuildingLookupPage).search_and_return_random
+    on(RequisitionPage).room_search
+    on(RoomLookupPage).search_and_return_random
+    on RequisitionPage do |page|
+      # Pull the results into the object
+      @delivery_campus      = page.delivery_campus
+      @delivery_building    = page.delivery_building
+      @delivery_address_1   = page.delivery_address_1
+      @delivery_address_2   = page.delivery_address_2.value
+      @delivery_room        = page.delivery_room.value
+      @delivery_city        = page.delivery_city
+      @delivery_state       = page.delivery_state
+      @delivery_postal_code = page.delivery_postal_code
+      @delivery_country     = page.delivery_country
     end
   end
+
+  include ItemLinesMixin
 
 end #class

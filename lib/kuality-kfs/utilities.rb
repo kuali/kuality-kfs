@@ -53,6 +53,11 @@ module Utilities
     "999#{rand(9)}#{rand(1..9)}#{rand(1..9999).to_s.rjust(4, '0')}"
   end
 
+  # @return [String] A randomly-generated phone number that should pass KFS's requirements for phone numbers. No other assurances.
+  def random_phone_number
+    "#{rand(99..999)}-#{rand(99..999)}-#{rand(999..9999)}"
+  end
+
   def fiscal_period_conversion(month)
     case month
       when 'JAN', 'Jan', 'January'

@@ -5,6 +5,7 @@ class NotesAndAttachmentsLineObject < DataFactory
 
   attr_accessor   :line_number,
                   :note_text, :notification_recipient, :file,
+                  :send_to_vendor, :type,
                   :immediate_add, :immediate_attach, :immediate_fyi
 
   def initialize(browser, opts={})
@@ -22,6 +23,8 @@ class NotesAndAttachmentsLineObject < DataFactory
   def create
     on KFSBasePage do |page|
       fill_out page, :note_text
+      page.send_to_vendor.fit @send_to_vendor unless @send_to_vendor.nil?
+      page.attachment_type.pick! @type unless @type.nil?
       fill_out_extended_attributes
       attach_file @file unless @file.nil?
       page.add_note unless @immediate_add.false? || @immediate_add.nil?
@@ -33,6 +36,8 @@ class NotesAndAttachmentsLineObject < DataFactory
     @note_text = opts[:note_text] unless opts[:note_text].nil?
     on KFSBasePage do |page|
       fill_out page, :note_text
+      page.send_to_vendor.fit @send_to_vendor unless @send_to_vendor.nil?
+      page.attachment_type.pick! @type unless @type.nil?
       update_extended_attributes(opts)
       attach_file opts[:file] unless opts[:file].nil? || opts[:immediate_attach].false? || opts[:immediate_attach].nil?
       page.add_note unless opts[:immediate_add].false? || opts[:immediate_add].nil?
@@ -52,8 +57,7 @@ class NotesAndAttachmentsLineObject < DataFactory
   end
 
   def attach_file(filename)
-    canonical_path = File.expand_path($file_folder+filename)
-    on(KFSBasePage).attach_notes_file.set(canonical_path)
+    on(KFSBasePage).attach_notes_file.set($file_folder+filename)
     on(KFSBasePage).attach_notes_file.value.include?(filename).true?.should
   end
 
