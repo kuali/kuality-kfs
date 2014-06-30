@@ -43,6 +43,7 @@ class CapitalAssetsTab < PageFactory
   value(:old_capital_asset_campus) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].campusCode") }
   value(:old_capital_asset_building) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingCode") }
   value(:old_capital_asset_room) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingRoomNumber") }
+  value(:asset_detail_tables) { |b| b.frm.tables(summary: "Capital Asset Information Details") }
 
 
   # modify CA

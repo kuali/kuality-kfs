@@ -29,7 +29,7 @@ class AssetLocationLineObject < DataFactory
     pre_create
     build
     fill_out_extended_attributes
-    if on(CapitalAssetsTab).asset_tables.length > 1
+    if on(CapitalAssetsTab).asset_detail_tables.length > 1
       on CapitalAssetsTab do |tab|
         tab.tag_number(@parent.parent.line_number).fit               @tag_number
         tab.capital_asset_campus(@parent.parent.line_number).fit     @capital_asset_campus
