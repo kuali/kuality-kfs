@@ -239,7 +239,12 @@ class FinancialProcessingPage < KFSBasePage
       # TODO : not sure why this is still editable when doc is FINAL
       element(:old_capital_asset_line_amount) { |i=0, b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetLineAmount") }
       value(:old_capital_asset_description) { |i=0, b| b.asset_tables(i+1)[2][1].text.strip } # no hidden value or span
-
+      action(:delete_asset_location) { |i=0, b| b.frm.button(id: "methodToCall.deleteCapitalAssetInfoDetailLine.line#{i}.Anchor").click }
+      value(:current_asset_location_count) { |i=0, b| b.b.asset_tables(i+1).table(summary: "Capital Asset Information Details").rows.length - 1 }
+      value(:old_tag_number) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].capitalAssetTagNumber") }
+      value(:old_capital_asset_campus) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].campusCode") }
+      value(:old_capital_asset_building) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingCode") }
+      value(:old_capital_asset_room) { |i=0, j=0,  b| b.frm.hidden(id: "document.capitalAssetInformation[#{i}].capitalAssetInformationDetails[#{j}].buildingRoomNumber") }
     end
     def modify_capital_assets
       element(:capital_asset_number) { |i=0, b| b.frm.text_field(id: "document.capitalAssetInformation[#{i}].capitalAssetNumber") }
