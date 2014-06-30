@@ -6,4 +6,8 @@ class EShopPage < KFSBasePage
   value(:cart_total_value) { |b| b.cart_total.split(' ')[0] }
   value(:cart_total_unit) { |b| b.cart_total.split(' ')[1] }
 
+  action(:order_doc) { |b| b.frm.link(id: 'PHX_NAV_OrdersAndDocuments_Invoker' ).click }
+  action(:po_doc_search) { |b| b.frm.link(id: 'PHX_NAV_DocumentSearchSearch' ).click }
+  action(:goto_doc_search) { |b| b.order_doc; b.po_doc_search; }
+
 end
