@@ -63,6 +63,8 @@ class BasePage < PageFactory
       value(:po_number) { |p| p.headerinfo_table[2][1].text }
       value(:preq_id) { |p| p.headerinfo_table[2][1].text }
       value(:app_doc_status) { |p| p.headerinfo_table[2][3].text }
+      # TODO : in maint page 'header', in AssetManualPayment page 'headerarea'.  Move to base ?
+      value(:header_title) { |b| b.frm.div(id: /^header/).text }
     end
 
     def description_field
@@ -136,6 +138,8 @@ class BasePage < PageFactory
       action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
+      action(:search_and_return_random) { |b| b.search; b.return_random }
+
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 
@@ -146,7 +150,7 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
-      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
+      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).when_present.click }
 
       value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned

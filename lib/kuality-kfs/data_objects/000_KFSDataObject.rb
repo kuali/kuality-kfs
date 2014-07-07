@@ -24,6 +24,12 @@ class KFSDataObject < DataFactory
     set_options(defaults.merge(extended_defaults).merge(opts))
   end
 
+  def expand_focus_and_clear(page)
+    page.expand_all
+    page.description.focus
+    page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+  end
+
   def create
     pre_create
     build
@@ -52,6 +58,8 @@ class KFSDataObject < DataFactory
   def build; end
 
   def fill_out_extended_attributes(attribute_group=nil); end
+
+  def edit_extended_attributes(attribute_group=nil); end
 
   def post_create
     @notes_and_attachments_tab = collection('NotesAndAttachmentsLineObject')

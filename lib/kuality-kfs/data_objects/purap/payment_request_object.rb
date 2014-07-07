@@ -1,19 +1,22 @@
 class PaymentRequestObject < KFSDataObject
 
-  #DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
 
-  attr_reader :description, :item_quantitiy, :item_catalog_number, :item_description, :item_unit_cost, :item_uom, :attachment_file_name
+  attr_accessor :payment_request_positive_approval_required
+
+  def defaults
+    # We'll merge the default_items so that our class defaults (specifically @initial_item_lines) override it
+    super.merge(default_items)
+         # .merge({
+         #
+         #        })
+  end
 
   def initialize(browser, opts={})
     @browser = browser
-
-    defaults = {
-        attachment_file_name:       'happy_path_invoice.png'
-    }
-
-    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PAYMENT_REQUEST)).merge(opts))
+    set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PAYMENT_REQUEST))
+                        .merge(opts))
   end
 
+  include ItemLinesMixin
 
-
-end #class
+end

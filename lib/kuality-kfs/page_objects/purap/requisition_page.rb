@@ -1,25 +1,35 @@
 class RequisitionPage < KFSBasePage
 
 
-#REQUISITION DETAIL
+  # REQUISITION DETAIL
   action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search
   element(:payment_request_positive_approval_required) { |b| b.frm.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
   #value(:account_distribution_method) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').td(text: 'Proportional')}
 
-  #DELIVERY
-  element(:delivery_to) { |b| b.frm.text_field(name: 'document.deliveryToName') }
-  element(:delivery_phone_number) { |b| b.frm.text_field(name: 'document.deliveryToPhoneNumber') }
-  element(:delivery_email) { |b| b.frm.text_field(name: 'document.deliveryToEmailAddress') }
-  element(:delivery_address_2) { |b| b.frm.text_field(name: 'document.deliveryBuildingLine2Address') }
-  element(:delivery_date_required) { |b| b.frm.text_field(name: 'document.deliveryRequiredDate') }
-  element(:delivery_room) { |b| b.frm.text_field(name: 'document.deliveryBuildingRoomNumber') }
-  element(:delivery_date_required_reason) { |b| b.frm.select(name: 'document.deliveryRequiredDateReasonCode') }
-  element(:delivery_instructions) { |b| b.frm.textarea(name: 'document.deliveryInstructionText') }
+  # == Delivery Tab ==
+  element(:delivery_tab) { |b| b.frm.table(summary: 'Final Delivery Section') }
+
+  value(:delivery_campus) { |b| b.delivery_tab.rows[0].tds[0].text.strip }
+  value(:delivery_building) { |b| b.delivery_tab.rows[1].tds[0].text.strip }
+  value(:delivery_address_1) { |b| b.delivery_tab.rows[2].tds[0].text.strip }
+  value(:delivery_city) { |b| b.delivery_tab.rows[5].tds[0].text.strip }
+  value(:delivery_state) { |b| b.delivery_tab.rows[6].tds[0].text.strip }
+  value(:delivery_postal_code) { |b| b.delivery_tab.rows[7].tds[0].text.strip }
+  value(:delivery_country) { |b| b.delivery_tab.rows[8].tds[0].text.strip }
+
+  element(:delivery_to) { |b| b.delivery_tab.text_field(name: 'document.deliveryToName') }
+  element(:delivery_phone_number) { |b| b.delivery_tab.text_field(name: 'document.deliveryToPhoneNumber') }
+  element(:delivery_email) { |b| b.delivery_tab.text_field(name: 'document.deliveryToEmailAddress') }
+  element(:delivery_address_2) { |b| b.delivery_tab.text_field(name: 'document.deliveryBuildingLine2Address') }
+  element(:delivery_date_required) { |b| b.delivery_tab.text_field(name: 'document.deliveryRequiredDate') }
+  element(:delivery_room) { |b| b.delivery_tab.text_field(name: 'document.deliveryBuildingRoomNumber') }
+  element(:delivery_date_required_reason) { |b| b.delivery_tab.select(name: 'document.deliveryRequiredDateReasonCode') }
+  element(:delivery_instructions) { |b| b.delivery_tab.textarea(name: 'document.deliveryInstructionText') }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
   action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
 
-#VENDOR
+  # == VENDOR ==
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
   alias_method :suggested_vendor, :vendor_name
   action(:vendor_name_search) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section').button(name: /org\.kuali\.kfs\.vnd\.businessobject\.VendorDetail/).when_present.click }
@@ -35,7 +45,6 @@ class RequisitionPage < KFSBasePage
   element(:vendor_postal_code) { |b| b.frm.text_field(name: 'document.vendorPostalCode') }
   alias_method :vendor_zipcode, :vendor_postal_code
   value(:postal_code_value) { |b| b.frm.table(summary: 'Final Delivery Section').tr(index: 0, text: /Postal Code:/).td.text }
-
 
   element(:vendor_attention) { |b| b.frm.text_field(name: 'document.vendorAttentionName') }
   element(:vendor_customer_number) { |b| b.frm.text_field(name: 'document.vendorCustomerNumber') }
@@ -53,9 +62,19 @@ class RequisitionPage < KFSBasePage
   element(:vendor_name_4) { |b| b.frm.text_field(name: 'document.alternate4VendorName') }
   element(:vendor_name_5) { |b| b.frm.text_field(name: 'document.alternate5VendorName') }
 
-#VENDOR - ADD ITEM
-  element(:item_type) { |b| b.frm.select(name: 'newPurchasingItemLine.itemTypeCode') }
+  # == VENDOR - ITEMS (See ItemsTab) ==
 
+  # == FREIGHT ==
+  element(:freight_description) { |b| b.frm.textarea(name: 'document.item[0].itemDescription') }
+  element(:freight_cost) { |b| b.frm.text_field(name: 'document.item[0].itemUnitPrice') }
+  element(:freight_chart) { |b| b.frm.select(name: 'document.item[1].newSourceLine.chartOfAccountsCode') }
+  element(:freight_account_number) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.accountNumber') }
+  element(:freight_sub_account) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.subAccountNumber') }
+  element(:freight_object) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.financialObjectCode') }
+  element(:freight_sub_object) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.financialSubObjectCode') }
+  element(:freight_project) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.projectCode') }
+  element(:freight_org_ref_id) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.organizationReferenceId') }
+  alias_method :freight_organization_reference_id, :freight_org_ref_id
   element(:item_quantity) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemQuantity') }
   element(:item_uom) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemUnitOfMeasureCode') }
   alias_method :item_unit_of_measure, :item_uom
@@ -90,6 +109,7 @@ class RequisitionPage < KFSBasePage
   element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
 
 
+  # == TRADE IN ==
   p_element(:added_percent) { |index=0,item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].accountLinePercent") }
 
 
@@ -128,7 +148,7 @@ class RequisitionPage < KFSBasePage
   element(:trade_in_amount) { |b| b.frm.text_field(name: 'document.item[1].newSourceLine.amount') }
   action(:trade_in_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line1.anchoraccountingSourceAnchor').click }
 
-#FULL ORDER DISCOUNT
+  # == FULL ORDER DISCOUNT ==
   element(:full_order_description) { |b| b.frm.textarea(name: 'document.item[2].itemDescription') }
   element(:full_order_cost) { |b| b.frm.text_field(name: 'document.item[2].itemUnitPrice') }
 
@@ -143,7 +163,7 @@ class RequisitionPage < KFSBasePage
   element(:full_order_amount) { |b| b.frm.text_field(name: 'document.item[2].newSourceLine.amount') }
   action(:full_order_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line2.anchoraccountingSourceAnchor').click }
 
-#MISCELLANEOUS
+  # == MISCELLANEOUS ==
   element(:misc_description) { |b| b.frm.textarea(name: 'document.item[3].itemDescription') }
   element(:misc_cost) { |b| b.frm.text_field(name: 'document.item[3].itemUnitPrice') }
   element(:misc_account_number) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.accountNumber') }
@@ -157,7 +177,7 @@ class RequisitionPage < KFSBasePage
   element(:misc_percent) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.accountLinePercent') }
   element(:misc_amount) { |b| b.frm.text_field(name: 'document.item[3].newSourceLine.amount') }
 
-#CAPITAL ASSET
+  # == CAPITAL ASSET ==
   element(:system_type) { |b| b.frm.select(name: 'document.capitalAssetSystemTypeCode') }
   element(:system_state) { |b| b.frm.select(name: 'document.capitalAssetSystemStateCode') }
   action(:select) { |b| b.frm.button(name: 'methodToCall.selectSystem').click }
@@ -176,12 +196,12 @@ class RequisitionPage < KFSBasePage
   element(:add_asset_number) { |b| b.frm.text_field(name: 'document.purchasingCapitalAssetItems[0].newPurchasingItemCapitalAssetLine.capitalAssetNumber') }
   action(:add_asset) { |b| b.frm.button(alt: 'Insert an Item Capital Asset').click }
 
-#PAYMENT INFO
+  # == PAYMENT INFO ==
   element(:recurring_payment_type) { |b| b.frm.select(name: 'document.recurringPaymentTypeCode') }
   element(:payment_from_date) { |b| b.frm.text_field(name: 'document.purchaseOrderBeginDate') }
   element(:payment_to_date) { |b| b.frm.text_field(name: 'document.purchaseOrderEndDate') }
 
-#ADDITION INFO
+  # == ADDITION INFO ==
   element(:method_of_po_transmission) { |b| b.frm.select(name: 'document.purchaseOrderTransmissionMethodCode') }
   element(:requestor_name) { |b| b.frm.text_field(name: 'document.requestorPersonName') }
   element(:requestor_phone) { |b| b.frm.text_field(name: 'document.requestorPersonPhoneNumber') }
@@ -194,7 +214,7 @@ class RequisitionPage < KFSBasePage
   element(:reference_3) { |b| b.frm.text_field(name: 'document.requisitionOrganizationReference3Text') }
   element(:po_total_limit) { |b| b.frm.text_field(name: 'document.purchaseOrderTotalLimit') }
 
-  #VIEW RELATED DOCUMENTS
+  # == VIEW RELATED DOCUMENTS ==
   action(:show_related_documents) { |b| b.frm.button(alt: 'open View Related Documents').click }
   alias_method :show_view_related_documents, :show_related_documents
   action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
