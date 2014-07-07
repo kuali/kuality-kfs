@@ -22,7 +22,7 @@ class SalaryExpenseTransferObject < KFSDataObject
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, :description, :empl_id
+      fill_out page, :description
     end
   end
 
