@@ -25,6 +25,7 @@ module ItemAccountingLinesMixin
       # @param [Hash] al Accounting Line to add to the collection.
       def add_accounting_line(al)
         @accounting_lines.add al.merge( { parent: self.accounting_lines } )
+        on(KFSBasePage).errors.should == []
       end
 
       # Note: If you're going to include this mixin in your class,

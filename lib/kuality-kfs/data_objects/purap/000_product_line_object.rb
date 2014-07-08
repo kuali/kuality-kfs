@@ -39,7 +39,7 @@ class ProductLineObject < DataFactory
 
     fill_out_extended_attributes
   end
-  alias_method :absorb, :create
+  alias_method :absorb!, :create
 
   def edit(opts={})
     on(EShopCartPage).update_product_quantity(@parent.supplier_name, @line_number).fit opts[:quantity]

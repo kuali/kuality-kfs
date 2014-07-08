@@ -52,6 +52,15 @@ class RequisitionObject < KFSDataObject
     end
   end
 
+  # Note: You'll need to update the subcollections separately.
+  def update(opts={})
+    on RequisitionPage do |page|
+      edit_fields opts, page, :description, :payment_request_positive_approval_required,
+                              :delivery_phone_number, :requestor_phone
+    end
+  end
+  alias_method :edit, :update
+
   def save
     super
     @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save
@@ -75,7 +84,7 @@ class RequisitionObject < KFSDataObject
     update_options pull_delivery_tab(:new)
   end
 
-  def absorb(t=:new)
+  def absorb!(t=:new)
     super
     pulled_info = {}
     on RequisitionPage do |b|

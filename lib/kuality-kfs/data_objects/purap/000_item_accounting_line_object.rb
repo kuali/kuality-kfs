@@ -108,8 +108,7 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       (0..(lines.current_accounting_line_count(@parent.line_number) - 1)).to_a.collect!{ |i|
-        lines.pull_existing_line_values(i, target)
-             .merge(pull_extended_existing_line_values(i, target))
+        pull_existing_line_values(i, target).merge(pull_extended_existing_line_values(i, target))
       }.each { |new_obj|
         # Update the stored lines
         self << (make contained_class, new_obj)
@@ -118,38 +117,38 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
     end
   end
 
-  # @param [Fixnum] i The Accounting Line line number to look for (zero-based)
+  # @param [Fixnum] l The Accounting Line line number to look for (zero-based)
   # @return [Hash] The return values of extended attributes for the given line
-  def pull_existing_line_values(i=0, t=:new) # TODO: ItemAccountingLineObjectCollection#pull_existing_line_values
+  def pull_existing_line_values(l=0, t=:new)
     # This will need to utilize the value of @parent.line_number to get the right line info
     pulled_item = {}
     on ItemsTab do |b|
       case t
         when :new
           pulled_item = {
-            chart_code:                b.chart_code(i).selected_options.first.text.strip,
-            account_number:            b.account_number(i).value.strip,
-            sub_account_code:          b.sub_account_code(i).value.strip,
-            object_code:               b.object_code(i).value.strip,
-            sub_object_code:           b.sub_object_code(i).value.strip,
-            project_code:              b.project_code(i).value.strip,
-            organization_reference_id: b.organization_reference_id(i).value.strip,
-            line_description:          b.line_description(i).value.strip,
-            percent:                   b.percent(i).value.strip,
-            amount:                    b.amount(i).value.strip
+            chart_code:                b.update_chart_code(@parent.line_number, l).selected_options.first.text.strip,
+            account_number:            b.update_account_number(@parent.line_number, l).value.strip,
+            sub_account_code:          b.update_sub_account_code(@parent.line_number, l).value.strip,
+            object_code:               b.update_object_code(@parent.line_number, l).value.strip,
+            sub_object_code:           b.update_sub_object_code(@parent.line_number, l).value.strip,
+            project_code:              b.update_project_code(@parent.line_number, l).value.strip,
+            organization_reference_id: b.update_organization_reference_id(@parent.line_number, l).value.strip,
+            line_description:          b.update_line_description(@parent.line_number, l).value.strip,
+            percent:                   b.update_percent(@parent.line_number, l).value.strip,
+            amount:                    b.update_amount(@parent.line_number, l).value.strip
           }
         when :old
           pulled_item = {
-            chart_code:                b.result_chart_code(i),
-            account_number:            b.result_account_number(i),
-            sub_account_code:          b.result_sub_account_code(i),
-            object_code:               b.result_object_code(i),
-            sub_object_code:           b.result_sub_object_code(i),
-            project_code:              b.result_project_code(i),
-            organization_reference_id: b.result_organization_reference_id(i),
-            line_description:          b.result_line_description(i),
-            percent:                   b.result_percent(i),
-            amount:                    b.result_amount(i)
+            chart_code:                b.result_chart_code(@parent.line_number, l),
+            account_number:            b.result_account_number(@parent.line_number, l),
+            sub_account_code:          b.result_sub_account_code(@parent.line_number, l),
+            object_code:               b.result_object_code(@parent.line_number, l),
+            sub_object_code:           b.result_sub_object_code(@parent.line_number, l),
+            project_code:              b.result_project_code(@parent.line_number, l),
+            organization_reference_id: b.result_organization_reference_id(@parent.line_number, l),
+            line_description:          b.result_line_description(@parent.line_number, l),
+            percent:                   b.result_percent(@parent.line_number, l),
+            amount:                    b.result_amount(@parent.line_number, l)
           }
         else
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
@@ -158,9 +157,9 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
     pulled_item.delete_if { |k, v| v.nil? }
   end
 
-  # @param [Fixnum] i The line number to look for (zero-based)
+  # @param [Fixnum] l The line number to look for (zero-based)
   # @return [Hash] The return values of extended attributes for the given line
-  def pull_extended_existing_line_values(i=0, t=:new)
+  def pull_extended_existing_line_values(l=0, t=:new)
     # This can be implemented for site-specific attributes. See the Hash returned in
     # the #collect! in #update_from_page! above for the kind of way to get the
     # right return value.
