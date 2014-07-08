@@ -27,7 +27,7 @@ class RequisitionPage < KFSBasePage
   element(:delivery_instructions) { |b| b.delivery_tab.textarea(name: 'document.deliveryInstructionText') }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
-  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
+  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).when_present.click }
 
   # == VENDOR ==
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
