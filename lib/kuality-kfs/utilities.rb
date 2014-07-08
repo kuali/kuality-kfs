@@ -135,28 +135,27 @@ module Utilities
   def get_object_type_of_type(type, cap_asset_allowed=false)
     case type
       when 'Expenditure', 'Passes requirements for Requisition'
-        # TODO: Add the commented out parameters
-        object_consolidations = [['COMP'], ['SCHO'], ['RSRV'], ['LBEQ'], ['INTN'], ['INVS'], ['STRN'], ['ARNE'], ['CAEQ'], ['SECU'], ['DFRM'], ['FHAS'], ['INVO']] #get_aft_parameter_values('OBJECT_CONSOLIDATIONS')
-        object_levels = [['DEPX'], ['VADJ'], ['IAIN'], ['TXLB']] #get_aft_parameter_values('OBJECT_LEVELS')
-        object_sub_types = [['BU'], ['FR'], ['ID'], ['SW'], ['TF'], ['TN'], ['LA'], ['IM'], ['EO'], ['FA']] #get_aft_parameter_values('OBJECT_SUB_TYPES')
-        object_types = [['EE'], ['EX'], ['AS']] #get_aft_parameter_values('OBJECT_TYPES')
-        valid_object_levels_by_object_type = {'AS' => [['INVT'], ['PEXP']]} #get_aft_parameter_values('VALID_OBJECT_LEVELS_BY_OBJECT_TYPE')
-        current_fiscal_year = '2015' #get_aft_parameter_values('CURRENT_FISCAL_YEAR')
+        object_consolidations = get_aft_parameter_values('REQS_OBJECT_CONSOLIDATIONS')
+        object_levels         = get_aft_parameter_values('REQS_OBJECT_LEVELS')
+        object_sub_types      = get_aft_parameter_values('REQS_OBJECT_SUB_TYPES')
+        object_types          = get_aft_parameter_values('REQS_OBJECT_TYPES')
+        valid_object_levels_by_object_type = get_aft_parameter_values_as_hash('REQS_VALID_OBJECT_LEVELS_BY_OBJECT_TYPE').inject({}) { |h, (k, v)| h[k.to_s] = v.split(','); h }
+        current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR') # '2015'
 
-        object_levels += [['CAPA'], ['CAPC']] unless cap_asset_allowed
+        object_levels += %w(CAPA CAPC) unless cap_asset_allowed
         levels = get_kuali_business_objects('KFS-COA', 'ObjectLevel', "universityFiscalYear=#{current_fiscal_year}")
         object_codes = get_kuali_business_objects('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}")
 
         object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].delete_if do |oc_hash|
-          !(object_levels.flatten & oc_hash['financialObjectLevelCode']).empty? ||
-          !(object_sub_types.flatten & oc_hash['financialObjectSubTypeCode']).empty?
+          !(object_levels & oc_hash['financialObjectLevelCode']).empty? ||
+          !(object_sub_types & oc_hash['financialObjectSubTypeCode']).empty?
         end # D
 
         object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].keep_if do |oc_hash|
-          !(object_types.flatten & oc_hash['financialObjectTypeCode']).empty? &&
+          !(object_types & oc_hash['financialObjectTypeCode']).empty? &&
           (if valid_object_levels_by_object_type.keys.any? { |k| oc_hash['financialObjectTypeCode'].include? k }
             valid_object_levels_by_object_type.values.any? { |valid_level|
-              (valid_level.flatten & oc_hash['financialObjectLevelCode']).empty?
+              (valid_level & oc_hash['financialObjectLevelCode']).empty?
             }
           else
             true
@@ -164,12 +163,12 @@ module Utilities
         end # A
 
         levels['org.kuali.kfs.coa.businessobject.ObjectLevel'].delete_if { |oc_hash|
-          !(object_consolidations.flatten & oc_hash['financialConsolidationObjectCode']).empty?
+          !(object_consolidations & oc_hash['financialConsolidationObjectCode']).empty?
         } # D
 
         object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].keep_if { |code|
           levels['org.kuali.kfs.coa.businessobject.ObjectLevel'].any? do |level|
-            !(level['financialObjectLevelCode'].flatten & code['financialObjectLevelCode'].flatten).empty?
+            !(level['financialObjectLevelCode'] & code['financialObjectLevelCode']).empty?
           end
         } # D
 
