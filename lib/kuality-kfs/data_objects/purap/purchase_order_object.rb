@@ -20,5 +20,26 @@ class PurchaseOrderObject < KFSDataObject
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PURCHASE_ORDER)).merge(opts))
   end
 
+  def view(in_eshop=false)
+    if in_eshop
+      on(EShopPage).goto_doc_search
+      on EShopAdvancedDocSearchPage do |page|
+        page.search_doc_type.fit 'Purchase Orders'
+        page.po_id.fit      @purchase_order_number
+        page.date_range.fit 'Today'
+        sleep 2
+        page.go_button.click
+      end
+    else
+      visit(MainPage).doc_search
+      on DocumentSearch do |search|
+        search.document_type.fit ''
+        search.document_id.fit   @document_id
+        search.search
+        search.wait_for_search_results
+        search.open_doc @document_id
+      end
+    end
+  end
 
 end #class
