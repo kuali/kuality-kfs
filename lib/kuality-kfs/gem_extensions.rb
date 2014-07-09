@@ -56,7 +56,13 @@ module Watir
 
     # @return [Array] An array of associative keys matching the text of the Table#header_row.
     def header_keys
-      header_row.cells.collect { |x| snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').to_sym }
+      header_row.cells.collect { |x|
+        if x.text.empty?
+          :checkboxes if x.checkbox.exists?
+        else
+          snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').gsub(/_[_]+_/, '_').to_sym
+        end
+      }
     end
 
     # @param [Symbol] key The key in the Table#header_row associated with the desired column.
@@ -126,6 +132,11 @@ class Object
   # Convenience shorthand method for comparing against true, similar to #nil?
   def true?
     self == true
+  end
+
+  # Convenience shorthand method for comparing against :set, similar to #nil?
+  def set?
+    self == :set
   end
 end
 

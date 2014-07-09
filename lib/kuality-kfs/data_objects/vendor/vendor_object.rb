@@ -46,7 +46,7 @@ class VendorObject < KFSDataObject
     end
   end
 
-  def absorb(target=:new)
+  def absorb!(target=:new)
     super
     on(VendorPage).expand_all
     case target
