@@ -14,16 +14,11 @@ class ItemLineObject < DataFactory
 
   def defaults
     default_item_accounting_lines.merge({
-      # type:                 '',
       quantity:             '1000',
       uom:                  'BX', # TODO: Get this from the service
       catalog_number:       random_alphanums(7, 'AFT'),
-      # commodity_code:       '',
       description:          random_alphanums(15, 'AFT Item'),
-      unit_cost:            '9.9' #,
-      # extended_cost:        '',
-      # restricted:           '',
-      # assigned_to_trade_in: ''
+      unit_cost:            '9.9'
     })
   end
 
@@ -169,7 +164,7 @@ class ItemLineObjectCollection < LineObjectCollection
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
       end
     end
-    pulled_item.delete_if { |k, v| v.nil? }
+    pulled_item.delete_if { |_, v| v.nil? }
   end
 
   # @param [Fixnum] i The line number to look for (zero-based)
