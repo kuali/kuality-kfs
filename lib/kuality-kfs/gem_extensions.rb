@@ -133,6 +133,11 @@ class Object
   def true?
     self == true
   end
+
+  # Convenience shorthand method for comparing against :set, similar to #nil?
+  def set?
+    self == :set
+  end
 end
 
 class Cucumber::Ast::Table

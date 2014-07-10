@@ -251,6 +251,80 @@
       <column name="PARM_DESC_TXT" value="Default Vendor number to use when editing a Vendor during automated functional testing."/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
+
+
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="CURRENT_FISCAL_YEAR"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="2015"/>
+      <column name="PARM_DESC_TXT" value="The current fiscal year to use for testing."/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="REQS_VALID_OBJECT_LEVELS_BY_OBJECT_TYPE"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="AS=INVT,PEXP"/>
+      <column name="PARM_DESC_TXT" value="Allowed object levels by object type for use on a Requisition document."/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="REQS_OBJECT_TYPES"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="EE;EX;AS"/>
+      <column name="PARM_DESC_TXT" value="Object Type(s) restricted from use on a Requisition document."/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="REQS_OBJECT_SUB_TYPES"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="BU;FR;ID;SW;TF;TN;LA;IM;EO;FA"/>
+      <column name="PARM_DESC_TXT" value="Object Sub-Type(s) restricted from use on a Requisition document."/>
+      <column name="EVAL_OPRTR_CD" value="D"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="REQS_OBJECT_LEVELS"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="DEPX;VADJ;IAIN;TXLB"/>
+      <column name="PARM_DESC_TXT" value="Object Level(s) restricted from use on a Requisition document."/>
+      <column name="EVAL_OPRTR_CD" value="D"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="REQS_OBJECT_CONSOLIDATIONS"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="COMP;SCHO;RSRV;LBEQ;INTN;INVS;STRN;ARNE; CAEQ;SECU;DFRM;FHAS;INVO"/>
+      <column name="PARM_DESC_TXT" value="Object Consolidation(s) restricted from use on a Requisition document."/>
+      <column name="EVAL_OPRTR_CD" value="D"/>
+    </insert>
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>

@@ -1,4 +1,4 @@
-class ShopCartPage < EShopPage
+class EShopCartPage < EShopPage
 
   element(:shopping_cart) { |b| b.frm.form(name: 'DocumentEditForm') }
   element(:cart_name) { |b| b.shopping_cart.text_field(name: 'Cart_CartName') }

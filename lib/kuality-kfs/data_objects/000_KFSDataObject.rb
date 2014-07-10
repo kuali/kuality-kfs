@@ -71,7 +71,7 @@ class KFSDataObject < DataFactory
 
   def update_extended_line_objects_from_page!(target=:new); end
 
-  def absorb(target={})
+  def absorb!(target={})
     on KFSBasePage do |b|
       update_options({
         document_id: b.document_id,

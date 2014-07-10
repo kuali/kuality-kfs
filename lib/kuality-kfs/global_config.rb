@@ -113,15 +113,14 @@ module GlobalConfig
     perform_university_login(page)
 
     #now lets backdoor
-    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
-    #TODO fix
+    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Technical Administrator'))
+
     #finally make the request to the data object page
-    page = agent.get($base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
-    #TODO fix
+    query = $base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers
+    page = agent.get(query)
 
     #pares the XML into a hash
     XmlSimple.xml_in(page.body)
-    #TODO - tony - cleanthisup()
   end
 
   def get_kuali_business_object(namespace_code, object_type, identifiers)
@@ -177,5 +176,11 @@ module GlobalConfig
   end
   def get_root_action_requests(document_number)
     workflow_document_service.getRootActionRequests(document_number)
+  end
+  def fetch_random_account_number
+    fetch_random_acount['accountNumber']
+  end
+  def fetch_random_acount
+    get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
   end
 end

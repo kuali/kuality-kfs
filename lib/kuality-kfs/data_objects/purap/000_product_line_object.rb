@@ -23,7 +23,7 @@ class ProductLineObject < DataFactory
   # items to this sort of collection through the shop search pages. Hence, we're
   # simply absorbing the info from the page.
   def create
-    on ShopCartPage do |scp|
+    on EShopCartPage do |scp|
       scp.update_product_quantity(@parent.supplier_name, @line_number).fit @quantity unless @quantity.nil?
 
       line = scp.line_item_values(@parent.supplier_name, @line_number)
@@ -39,16 +39,16 @@ class ProductLineObject < DataFactory
 
     fill_out_extended_attributes
   end
-  alias_method :absorb, :create
+  alias_method :absorb!, :create
 
   def edit(opts={})
-    on(ShopCartPage).update_product_quantity(@parent.supplier_name, @line_number).fit opts[:quantity]
+    on(EShopCartPage).update_product_quantity(@parent.supplier_name, @line_number).fit opts[:quantity]
     update_extended_attributes(opts)
     update_options(opts)
   end
 
   def delete
-    on(ShopCartPage).delete_product(@parent.supplier_name, @line_number)
+    on(EShopCartPage).delete_product(@parent.supplier_name, @line_number)
   end
 
   def fill_out_extended_attributes
@@ -77,7 +77,7 @@ class ProductLineObjectCollection < LineObjectCollection
   end
 
   def update_from_page!
-    on ShopCartPage do |lines|
+    on EShopCartPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
       @supplier_subtotal = 0
 
