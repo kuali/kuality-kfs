@@ -22,7 +22,7 @@ class ItemsTab < PageFactory
 
   element(:show_item_accounting_lines_button) { |l=0, b| b.items_tab.div(text: 'Accounting Lines').button(id: "tab-AccountingLines#{5+(l*2)}-imageToggle") }
   element(:item_accounting_lines_section) { |l=0, b| b.show_item_accounting_lines_button(l).parent }
-  value(:item_accounting_lines_shown?) { |l=0, b| b.show_item_accounting_lines_button(l).title.match('hide') }
+  value(:item_accounting_lines_shown?) { |l=0, b| b.show_item_accounting_lines_button(l).alt.match('hide') }
   value(:item_accounting_lines_hidden?) { |l=0, b| !b.item_accounting_lines_shown?(l) }
   action(:show_item_accounting_lines) { |l=0, b| b.show_item_accounting_lines_button(l).click }
   alias_method :hide_item_accounting_lines, :show_item_accounting_lines
