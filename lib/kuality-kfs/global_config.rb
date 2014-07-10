@@ -26,6 +26,8 @@ module GlobalConfig
   def workflow_document_service
     @@workflow_document_service ||= ksb_client.getWorkflowDocumentService()
   end
+  # Can be used to get any of the system parameters
+  # get_parameter_values('KFS-PURAP', 'B2B_TOTAL_AMOUNT_FOR_AUTO_PO', 'Requisition'
   def get_parameter_values(namespace_code, parameter_name, component_code='All')
     raise ArgumentError, 'namespace_code missing' if namespace_code.to_s == ''
     raise ArgumentError, 'parameter_name missing' if parameter_name.to_s == ''
@@ -37,9 +39,12 @@ module GlobalConfig
     paramKey.setName(parameter_name)
     parameter_service.getParameterValuesAsString(paramKey).getValue().to_a
   end
+  # Used to get any of the AFT-specific parameters - should be used with a constant, not passing in a string
+  # get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ASSET_GLOBAL)
   def get_aft_parameter_values(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)
   end
+  # same as above but ureturns a hash which is easier to work with
   def get_aft_parameter_values_as_hash(parameter_name)
     h = {}
     get_parameter_values('KFS-AFTEST', parameter_name).each do |key_val_pair|
@@ -48,12 +53,15 @@ module GlobalConfig
     end
     h
   end
+  # Same as the first one but used when you know there is only a single value in the parameter
   def get_aft_parameter_value(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
   end
+  # returns a list of principal IDs for a group
   def get_group_member_principal_ids(group_id)
     group_service.getMemberPrincipalIds(group_id).getPrincipalId()
   end
+  # returns a list of group member objects for a group
   def get_group_members(group_id)
     group_service.getMembersOfGroup(group_id).getMember()
   end
@@ -105,15 +113,14 @@ module GlobalConfig
     perform_university_login(page)
 
     #now lets backdoor
-    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Manager'))
-    #TODO fix
+    agent.get($base_url + 'portal.do?selectedTab=main&backdoorId=' + get_first_principal_name_for_role('KFS-SYS', 'Technical Administrator'))
+
     #finally make the request to the data object page
-    page = agent.get($base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers)
-    #TODO fix
+    query = $base_url + 'dataobjects/' + namespace_code + '/' + object_type + '.xml?' + identifiers
+    page = agent.get(query)
 
     #pares the XML into a hash
     XmlSimple.xml_in(page.body)
-    #TODO - tony - cleanthisup()
   end
 
   def get_kuali_business_object(namespace_code, object_type, identifiers)
@@ -169,5 +176,11 @@ module GlobalConfig
   end
   def get_root_action_requests(document_number)
     workflow_document_service.getRootActionRequests(document_number)
+  end
+  def fetch_random_account_number
+    fetch_random_acount['accountNumber']
+  end
+  def fetch_random_acount
+    get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
   end
 end

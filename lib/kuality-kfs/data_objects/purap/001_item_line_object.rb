@@ -14,16 +14,11 @@ class ItemLineObject < DataFactory
 
   def defaults
     default_item_accounting_lines.merge({
-      # type:                 '',
       quantity:             '1000',
       uom:                  'BX', # TODO: Get this from the service
       catalog_number:       random_alphanums(7, 'AFT'),
-      # commodity_code:       '',
       description:          random_alphanums(15, 'AFT Item'),
-      unit_cost:            '9.9' #,
-      # extended_cost:        '',
-      # restricted:           '',
-      # assigned_to_trade_in: ''
+      unit_cost:            '9.9'
     })
   end
 
@@ -123,7 +118,7 @@ class ItemLineObjectCollection < LineObjectCollection
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       (0..(tab.current_items_count - 1)).to_a.collect!{ |i|
-        pull_existing_items(i, target).merge(pull_extended_existing_items(i, target)) # TODO: Make sure ItemsTab#pull_existing_items works
+        pull_existing_items(i, target).merge(pull_extended_existing_items(i, target))
       }.each { |new_obj|
         # Update the stored lines
         self << (make contained_class, new_obj)
@@ -141,35 +136,35 @@ class ItemLineObjectCollection < LineObjectCollection
       case t
         when :new
           pulled_item = {
-            type:                 (b.update_type(i).exists? ? b.update_type(i) : b.result_type(i)).selected_options.first.text.strip,
+            type:                 (b.update_type(i).exists? ? b.update_type(i).selected_options.first.text.strip : b.result_type(i)),
             quantity:             b.update_quantity(i).value.strip,
-            uom:                  (b.update_uom(i).exists? ? b.update_uom(i) : b.result_uom(i)).value.strip,
-            catalog_number:       (b.update_catalog_number(i).exists? ? b.update_catalog_number(i) : b.result_catalog_number(i)).value.strip,
+            uom:                  (b.update_uom(i).exists? ? b.update_uom(i).value.strip : b.result_uom(i)),
+            catalog_number:       (b.update_catalog_number(i).exists? ? b.update_catalog_number(i).value.strip : b.result_catalog_number(i)),
             commodity_code:       b.update_commodity_code(i).value.strip,
-            description:          (b.update_description(i).exists? ? b.update_description(i) : b.result_description(i)).value.strip,
-            unit_cost:            (b.update_unit_cost(i).exists? ? b.update_unit_cost(i) : b.result_unit_cost(i)).value.strip,
-            extended_cost:        (b.update_extended_cost(i).exists? ? b.update_extended_cost(i) : b.result_extended_cost(i)).value.strip,
-            restricted:           yesno2setclear((b.update_restricted(i).exists? ? b.update_restricted(i) : b.result_restricted(i)).value.strip),
-            assigned_to_trade_in: yesno2setclear((b.update_assigned_to_trade_in(i).exists? ? b.update_assigned_to_trade_in(i) : b.result_assigned_to_trade_in(i)).value.strip)
+            description:          (b.update_description(i).exists? ? b.update_description(i).value.strip : b.result_description(i)),
+            unit_cost:            (b.update_unit_cost(i).exists? ? b.update_unit_cost(i).value.strip : b.result_unit_cost(i)),
+            extended_cost:        b.update_extended_cost(i),
+            restricted:           yesno2setclear(b.update_restricted(i).exists? ? b.update_restricted(i).value.strip : (b.result_restricted(i).exists? ? b.result_restricted(i).text.strip : nil)),
+            assigned_to_trade_in: yesno2setclear(b.update_assigned_to_trade_in(i).exists? ? b.update_assigned_to_trade_in(i).value.strip : (b.result_assigned_to_trade_in(i).exists? ? b.result_assigned_to_trade_in(i).text.strip : nil))
           }
         when :readonly, :old
           pulled_item = {
-            type:                 b.result_type(i).selected_options.first.text.strip,
-            quantity:             b.result_quantity(i).value.strip,
-            uom:                  b.result_uom(i).value.strip,
-            catalog_number:       b.result_catalog_number(i).value.strip,
-            commodity_code:       b.result_commodity_code(i).value.strip,
-            description:          b.result_description(i).value.strip,
-            unit_cost:            b.result_unit_cost(i).value.strip,
-            extended_cost:        b.result_extended_cost(i).value.strip,
-            restricted:           yesno2setclear(b.result_restricted(i).value.strip),
-            assigned_to_trade_in: yesno2setclear(b.result_assigned_to_trade_in(i).value.strip)
+            type:                 b.result_type(i),
+            quantity:             b.result_quantity(i),
+            uom:                  b.result_uom(i),
+            catalog_number:       b.result_catalog_number(i),
+            commodity_code:       b.result_commodity_code(i),
+            description:          b.result_description(i),
+            unit_cost:            b.result_unit_cost(i),
+            extended_cost:        b.result_extended_cost(i),
+            restricted:           yesno2setclear(b.result_restricted(i)),
+            assigned_to_trade_in: yesno2setclear(b.result_assigned_to_trade_in(i))
           }
         else
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
       end
     end
-    pulled_item.compact
+    pulled_item.delete_if { |_, v| v.nil? }
   end
 
   # @param [Fixnum] i The line number to look for (zero-based)
