@@ -111,7 +111,7 @@ class RequisitionPage < KFSBasePage
 
   # == TRADE IN ==
   p_element(:added_percent) { |index=0,item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].accountLinePercent") }
-
+  p_element(:added_amount) { |index=0, item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].amount") }
 
 #FREIGHT
   #Freight uses account number with higher index number
