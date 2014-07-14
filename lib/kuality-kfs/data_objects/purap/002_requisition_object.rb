@@ -66,6 +66,16 @@ class RequisitionObject < KFSDataObject
     @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save
   end
 
+  def submit
+    super
+    @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save, but it might be available now
+  end
+
+  def reload
+    super
+    @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save, but it might be available now
+  end
+
   def add_vendor_to_req(vendor_num)
     on(RequisitionPage).suggested_vendor_search
     on VendorLookupPage do |page|
