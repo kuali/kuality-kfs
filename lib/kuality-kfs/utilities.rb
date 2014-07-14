@@ -122,7 +122,7 @@ module Utilities
   def get_account_of_type(type)
     case type
       when 'Unrestricted Account'
-        get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&closed=N&accountExpirationDate=NULL')['accountNumber'].sample
+        get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       else
         nil
     end
