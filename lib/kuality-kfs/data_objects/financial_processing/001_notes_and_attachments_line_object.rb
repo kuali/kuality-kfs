@@ -57,6 +57,7 @@ class NotesAndAttachmentsLineObject < DataFactory
   end
 
   def attach_file(filename)
+    on(KFSBasePage).note_text.fit 'adding a file'
     on(KFSBasePage).attach_notes_file.set($file_folder+filename)
     on(KFSBasePage).attach_notes_file.value.include?(filename).true?.should
   end
