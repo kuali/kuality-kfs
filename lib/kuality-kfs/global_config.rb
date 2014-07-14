@@ -170,4 +170,7 @@ module GlobalConfig
   def get_root_action_requests(document_number)
     workflow_document_service.getRootActionRequests(document_number)
   end
+  def get_principal_names_for_role(name_space, role_name)
+    role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalNames().to_a
+  end
 end
