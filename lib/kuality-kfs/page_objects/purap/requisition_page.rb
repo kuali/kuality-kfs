@@ -1,7 +1,6 @@
 class RequisitionPage < KFSBasePage
 
-
-  # REQUISITION DETAIL
+  # == REQUISITION DETAIL ==
   element(:document_overview) { |b| b.frm.div(id: 'tab-DocumentOverview-div') }
   element(:financial_document_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: 'KFS Detail Section') }
   element(:requisition_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: /^Detail Section$/m) }
@@ -96,62 +95,14 @@ class RequisitionPage < KFSBasePage
   element(:freight_project) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.projectCode') }
   element(:freight_org_ref_id) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.organizationReferenceId') }
   alias_method :freight_organization_reference_id, :freight_org_ref_id
-  element(:item_quantity) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemQuantity') }
-  element(:item_uom) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemUnitOfMeasureCode') }
-  alias_method :item_unit_of_measure, :item_uom
 
-  element(:item_catalog_number) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemCatalogNumber') }
-  alias_method :item_catalog,:item_catalog_number
-
-  element(:item_commodity_code) { |b| b.frm.text_field(name: 'newPurchasingItemLine.purchasingCommodityCode') }
-  element(:item_description) { |b| b.frm.textarea(name: 'newPurchasingItemLine.itemDescription') }
-  element(:item_unit_cost) { |b| b.frm.text_field(name: 'newPurchasingItemLine.itemUnitPrice') }
-  alias_method :unit_cost, :item_unit_cost
-
-  element(:item_restricted) { |b| b.frm.checkbox(name: 'newPurchasingItemLine.itemRestrictedIndicator') }
-  element(:item_assigned_to_trade_in) { |b| b.frm.checkbox(name: 'newPurchasingItemLine.itemAssignedToTradeInIndicator') }
-  alias_method :item_assigned, :item_assigned_to_trade_in
-
-  action(:item_add) { |b| b.frm.button(title: 'Add an Item').click }
-
-  action(:show_item_accounting_lines) { |b| b.frm.table(class: 'datatable', summary: 'Items Section').div(text: 'Accounting Lines').button(alt: 'show').click }
-#ITEM ACCOUNTING LINES
-  p_element(:item_account_number) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.accountNumber") }
-  p_element(:item_sub_account) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.subAccountNumber") }
-  p_element(:item_object) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.financialObjectCode") }
-  alias_method :item_object_code, :item_object
-
-  p_element(:item_sub_object) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.financialSubObjectCode") }
-  p_element(:item_project) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.projectCode") }
-  p_element(:item_org_ref_id) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.organizationReferenceId") }
-  p_element(:item_percent) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.accountLinePercent") }
-  p_element(:item_amount) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').text_field(name: "document.item[#{l}].newSourceLine.amount") }
-  action(:item_add_account_line) { |l=0, b| b.frm.table(class: 'datatable', summary: 'Items Section').button(name: "methodToCall.insertSourceLine.line#{l}.anchoraccountingSourceAnchor").click }
-  element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
-
+  #ITEM ACCOUNTING LINES
+  #Has own page object items_tab.rb
 
   # == TRADE IN ==
   p_element(:added_percent) { |index=0,item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].accountLinePercent") }
   p_element(:added_amount) { |index=0, item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].amount") }
 
-#FREIGHT
-  #Freight uses account number with higher index number
-  # element(:freight_description) { |b| b.frm.textarea(name: 'document.item[0].itemDescription') }
-  # element(:freight_cost) { |b| b.frm.text_field(name: 'document.item[0].itemUnitPrice') }
-  # element(:freight_chart) { |b| b.frm.select(name: 'document.item[1].newSourceLine.chartOfAccountsCode') }
-  # element(:freight_account_number) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.accountNumber') }
-  # element(:freight_sub_account) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.subAccountNumber') }
-  # element(:freight_object) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.financialObjectCode') }
-  # element(:freight_sub_object) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.financialSubObjectCode') }
-  # element(:freight_project) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.projectCode') }
-  # element(:freight_org_ref_id) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.organizationReferenceId') }
-  # alias_method :freight_organization_reference_id, :freight_org_ref_id
-  #
-  # element(:freight_percent) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.accountLinePercent') }
-  # element(:freight_amount) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.amount') }
-  # action(:freight_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line0.anchoraccountingSourceAnchor').click }
-
-#TRADE IN
   element(:trade_in_description) { |b| b.frm.textarea(name: 'document.item[1].itemDescription') }
   element(:trade_in_cost) { |b| b.frm.text_field(name: 'document.item[1].itemUnitPrice') }
 

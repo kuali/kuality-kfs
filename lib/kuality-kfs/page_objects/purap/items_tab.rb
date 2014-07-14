@@ -117,5 +117,7 @@ class ItemsTab < PageFactory
   element(:result_percent) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent.div").text.strip }
   element(:result_amount) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].amount.div").text.strip }
 
+  element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
+
 end
 
