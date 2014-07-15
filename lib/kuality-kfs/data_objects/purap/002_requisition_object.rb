@@ -48,7 +48,8 @@ class RequisitionObject < KFSDataObject
 
       @delivery_phone_number = @requestor_phone if @delivery_phone_number.nil?
       fill_out page, :description, :payment_request_positive_approval_required,
-                     :delivery_phone_number, :requestor_phone
+                     :delivery_instructions, :delivery_phone_number,
+                     :vendor_notes, :requestor_phone
     end
   end
 

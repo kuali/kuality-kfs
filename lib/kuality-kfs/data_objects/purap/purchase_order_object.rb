@@ -48,7 +48,6 @@ class PurchaseOrderObject < RequisitionObject
         page.po_id.fit           @purchase_order_number
         page.date_range.fit      'Today'
         sleep 2
-        pending
         page.go_button.click
       end
     elsif 'doc search'
