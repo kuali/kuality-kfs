@@ -1,21 +1,32 @@
 class RequisitionPage < KFSBasePage
 
+  # == REQUISITION DETAIL ==
+  element(:document_overview) { |b| b.frm.div(id: 'tab-DocumentOverview-div') }
+  element(:financial_document_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: 'KFS Detail Section') }
+  element(:requisition_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: /^Detail Section$/m) }
 
-  # REQUISITION DETAIL
-  action(:chart_org_search) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').button(title: 'Search ' ).click } #there is space after search
-  element(:payment_request_positive_approval_required) { |b| b.frm.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
+  action(:chart_org_search) { |b| b.requisition_detail_section.button(title: 'Search ' ).click } #there is space after search
+  element(:payment_request_positive_approval_required) { |b| b.requisition_detail_section.checkbox(name: 'document.paymentRequestPositiveApprovalIndicator') }
+  value(:result_payment_request_positive_approval_required) { |b| b.requisition_detail_section.rows[1].tds[1].text.strip }
   #value(:account_distribution_method) { |b| b.frm.table(class: 'datatable', summary: 'Detail Section').td(text: 'Proportional')}
 
   # == Delivery Tab ==
   element(:delivery_tab) { |b| b.frm.table(summary: 'Final Delivery Section') }
 
   value(:delivery_campus) { |b| b.delivery_tab.rows[0].tds[0].text.strip }
+  alias_method :result_delivery_campus, :delivery_campus
   value(:delivery_building) { |b| b.delivery_tab.rows[1].tds[0].text.strip }
+  alias_method :result_delivery_building, :delivery_building
   value(:delivery_address_1) { |b| b.delivery_tab.rows[2].tds[0].text.strip }
+  alias_method :result_delivery_address_1, :delivery_address_1
   value(:delivery_city) { |b| b.delivery_tab.rows[5].tds[0].text.strip }
+  alias_method :result_delivery_city, :delivery_city
   value(:delivery_state) { |b| b.delivery_tab.rows[6].tds[0].text.strip }
+  alias_method :result_delivery_state, :delivery_state
   value(:delivery_postal_code) { |b| b.delivery_tab.rows[7].tds[0].text.strip }
+  alias_method :result_delivery_postal_code, :delivery_postal_code
   value(:delivery_country) { |b| b.delivery_tab.rows[8].tds[0].text.strip }
+  alias_method :result_delivery_country, :delivery_country
 
   element(:delivery_to) { |b| b.delivery_tab.text_field(name: 'document.deliveryToName') }
   element(:delivery_phone_number) { |b| b.delivery_tab.text_field(name: 'document.deliveryToPhoneNumber') }
@@ -26,8 +37,17 @@ class RequisitionPage < KFSBasePage
   element(:delivery_date_required_reason) { |b| b.delivery_tab.select(name: 'document.deliveryRequiredDateReasonCode') }
   element(:delivery_instructions) { |b| b.delivery_tab.textarea(name: 'document.deliveryInstructionText') }
 
+  value(:result_delivery_to) { |b| b.delivery_tab.rows[0].tds[1].text.strip }
+  value(:result_delivery_phone_number) { |b| b.delivery_tab.rows[1].tds[1].text.strip }
+  value(:result_delivery_email) { |b| b.delivery_tab.rows[2].tds[1].text.strip }
+  value(:result_delivery_address_2) { |b| b.delivery_tab.rows[3].tds[0].text.strip }
+  value(:result_delivery_date_required) { |b| b.delivery_tab.rows[3].tds[1].text.strip }
+  value(:result_delivery_room) { |b| b.delivery_tab.rows[4].tds[0].text.strip }
+  value(:result_delivery_date_required_reason) { |b| b.delivery_tab.rows[4].tds[1].text.strip }
+  value(:result_delivery_instructions) { |b| b.delivery_tab.rows[5].tds[1].text.strip }
+
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
-  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
+  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).when_present.click }
 
   # == VENDOR ==
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
@@ -44,6 +64,7 @@ class RequisitionPage < KFSBasePage
 
   element(:vendor_postal_code) { |b| b.frm.text_field(name: 'document.vendorPostalCode') }
   alias_method :vendor_zipcode, :vendor_postal_code
+  value(:postal_code_value) { |b| b.frm.table(summary: 'Final Delivery Section').tr(index: 0, text: /Postal Code:/).td.text }
 
   element(:vendor_attention) { |b| b.frm.text_field(name: 'document.vendorAttentionName') }
   element(:vendor_customer_number) { |b| b.frm.text_field(name: 'document.vendorCustomerNumber') }
@@ -75,11 +96,13 @@ class RequisitionPage < KFSBasePage
   element(:freight_org_ref_id) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.organizationReferenceId') }
   alias_method :freight_organization_reference_id, :freight_org_ref_id
 
-  element(:freight_percent) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.accountLinePercent') }
-  element(:freight_amount) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.amount') }
-  action(:freight_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line0.anchoraccountingSourceAnchor').click }
+  #ITEM ACCOUNTING LINES
+  #Has own page object items_tab.rb
 
   # == TRADE IN ==
+  p_element(:added_percent) { |index=0,item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].accountLinePercent") }
+  p_element(:added_amount) { |index=0, item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].amount") }
+
   element(:trade_in_description) { |b| b.frm.textarea(name: 'document.item[1].itemDescription') }
   element(:trade_in_cost) { |b| b.frm.text_field(name: 'document.item[1].itemUnitPrice') }
 
@@ -173,6 +196,10 @@ class RequisitionPage < KFSBasePage
   value(:po_unapprove) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s[1].font.text }
   element(:view_related_doc) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s }
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
+
+  element(:purchase_order_amendment_item) {|b| b.h3(text: /Purchase Order Amendment - Doc #/).link(target: '_BLANK') }
+  action(:purchase_order_amendment) {|b| b.purchase_order_amendment_item.click; b.use_new_tab; b.close_parents }
+  value(:purchase_order_amendment_value) {|b| b.purchase_order_amendment_item.text }
 
 end
 

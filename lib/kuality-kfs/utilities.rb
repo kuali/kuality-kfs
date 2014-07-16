@@ -117,6 +117,69 @@ module Utilities
     end
   end
 
+  # @param [String] type Named type of Account to search for with the service
+  # @return [String] The Account Number of the requested type if found by the service, or nil if not found
+  def get_account_of_type(type)
+    case type
+      when 'Unrestricted Account'
+        get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+      else
+        nil
+    end
+  rescue RuntimeError => re
+    nil
+  end
+
+  # @param [String] type Named type of Account to search for with the service
+  # @return [String] The Account Number of the requested type if found by the service, or nil if not found
+  def get_object_type_of_type(type, cap_asset_allowed=false)
+    case type
+      when 'Expenditure', 'Passes requirements for Requisition'
+        object_consolidations = get_aft_parameter_values('REQS_OBJECT_CONSOLIDATIONS')
+        object_levels         = get_aft_parameter_values('REQS_OBJECT_LEVELS')
+        object_sub_types      = get_aft_parameter_values('REQS_OBJECT_SUB_TYPES')
+        object_types          = get_aft_parameter_values('REQS_OBJECT_TYPES')
+        valid_object_levels_by_object_type = get_aft_parameter_values_as_hash('REQS_VALID_OBJECT_LEVELS_BY_OBJECT_TYPE').inject({}) { |h, (k, v)| h[k.to_s] = v.split(','); h }
+        current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR') # '2015'
+
+        object_levels += %w(CAPA CAPC) unless cap_asset_allowed
+        levels = get_kuali_business_objects('KFS-COA', 'ObjectLevel', "universityFiscalYear=#{current_fiscal_year}")
+        object_codes = get_kuali_business_objects('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}")
+
+        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].delete_if do |oc_hash|
+          !(object_levels & oc_hash['financialObjectLevelCode']).empty? ||
+          !(object_sub_types & oc_hash['financialObjectSubTypeCode']).empty?
+        end # D
+
+        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].keep_if do |oc_hash|
+          !(object_types & oc_hash['financialObjectTypeCode']).empty? &&
+          (if valid_object_levels_by_object_type.keys.any? { |k| oc_hash['financialObjectTypeCode'].include? k }
+            valid_object_levels_by_object_type.values.any? { |valid_level|
+              (valid_level & oc_hash['financialObjectLevelCode']).empty?
+            }
+          else
+            true
+          end)
+        end # A
+
+        levels['org.kuali.kfs.coa.businessobject.ObjectLevel'].delete_if { |oc_hash|
+          !(object_consolidations & oc_hash['financialConsolidationObjectCode']).empty?
+        } # D
+
+        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].keep_if { |code|
+          levels['org.kuali.kfs.coa.businessobject.ObjectLevel'].any? do |level|
+            !(level['financialObjectLevelCode'] & code['financialObjectLevelCode']).empty?
+          end
+        } # D
+
+        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].sample['financialObjectCode']
+      else
+        nil
+    end
+  rescue RuntimeError => re
+    nil
+  end
+
   private
 
   def snakify(item)
