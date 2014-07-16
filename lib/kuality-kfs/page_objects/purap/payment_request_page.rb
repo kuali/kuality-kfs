@@ -17,15 +17,4 @@ class PaymentRequestPage < KFSBasePage
   element(:state_tax_pct) { |b| b.frm.text_field(id: 'document.taxStatePercent') }
   element(:postal_country_code) { |b| b.frm.select(id: 'document.taxCountryCode') }
 
-
-
-  action(:wait_for_payment_request) do |attempts=120, b|
-    while on(YesOrNoPage).yes_button.exists? == false && on(PaymentRequestPage).description.exists? == false && attempts > 0
-      # Wait a bit and check, may be having timing issues.
-      sleep 1
-      attempts -= 1
-    end
-    raise StandardError.new('ran out of time and Payment Request is not present') if on(PaymentRequestPage).description.exists? == false
-  end
-
 end
