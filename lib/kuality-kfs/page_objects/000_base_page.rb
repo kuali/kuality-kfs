@@ -150,7 +150,7 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
-      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
+      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).when_present.click }
 
       value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned

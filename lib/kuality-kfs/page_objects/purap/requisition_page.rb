@@ -1,7 +1,6 @@
 class RequisitionPage < KFSBasePage
 
-
-  # REQUISITION DETAIL
+  # == REQUISITION DETAIL ==
   element(:document_overview) { |b| b.frm.div(id: 'tab-DocumentOverview-div') }
   element(:financial_document_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: 'KFS Detail Section') }
   element(:requisition_detail_section) { |b| b.document_overview.table(class: 'datatable', summary: /^Detail Section$/m) }
@@ -48,7 +47,7 @@ class RequisitionPage < KFSBasePage
   value(:result_delivery_instructions) { |b| b.delivery_tab.rows[5].tds[1].text.strip }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
-  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).click }
+  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).when_present.click }
 
   # == VENDOR ==
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
@@ -65,6 +64,7 @@ class RequisitionPage < KFSBasePage
 
   element(:vendor_postal_code) { |b| b.frm.text_field(name: 'document.vendorPostalCode') }
   alias_method :vendor_zipcode, :vendor_postal_code
+  value(:postal_code_value) { |b| b.frm.table(summary: 'Final Delivery Section').tr(index: 0, text: /Postal Code:/).td.text }
 
   element(:vendor_attention) { |b| b.frm.text_field(name: 'document.vendorAttentionName') }
   element(:vendor_customer_number) { |b| b.frm.text_field(name: 'document.vendorCustomerNumber') }
@@ -96,11 +96,13 @@ class RequisitionPage < KFSBasePage
   element(:freight_org_ref_id) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.organizationReferenceId') }
   alias_method :freight_organization_reference_id, :freight_org_ref_id
 
-  element(:freight_percent) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.accountLinePercent') }
-  element(:freight_amount) { |b| b.frm.text_field(name: 'document.item[0].newSourceLine.amount') }
-  action(:freight_add) { |b| b.frm.button(name: 'methodToCall.insertSourceLine.line0.anchoraccountingSourceAnchor').click }
+  #ITEM ACCOUNTING LINES
+  #Has own page object items_tab.rb
 
   # == TRADE IN ==
+  p_element(:added_percent) { |index=0,item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].accountLinePercent") }
+  p_element(:added_amount) { |index=0, item_index=0, b| b.frm.text_field(name: "document.item[#{item_index}].sourceAccountingLine[#{index}].amount") }
+
   element(:trade_in_description) { |b| b.frm.textarea(name: 'document.item[1].itemDescription') }
   element(:trade_in_cost) { |b| b.frm.text_field(name: 'document.item[1].itemUnitPrice') }
 
@@ -194,6 +196,10 @@ class RequisitionPage < KFSBasePage
   value(:po_unapprove) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s[1].font.text }
   element(:view_related_doc) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').div.h3s }
   action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
+
+  element(:purchase_order_amendment_item) {|b| b.h3(text: /Purchase Order Amendment - Doc #/).link(target: '_BLANK') }
+  action(:purchase_order_amendment) {|b| b.purchase_order_amendment_item.click; b.use_new_tab; b.close_parents }
+  value(:purchase_order_amendment_value) {|b| b.purchase_order_amendment_item.text }
 
 end
 
