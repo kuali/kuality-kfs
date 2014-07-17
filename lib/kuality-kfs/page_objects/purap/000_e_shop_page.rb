@@ -13,4 +13,8 @@ class EShopPage < KFSBasePage
 
   element(:search_results) { |b| b.frm.table(class: 'SearchResults') }
 
+  element(:continue_to_eshop) { |b| b.continue_to_eshop_button.click }
+  element(:continue_to_eshop_button) { |b| b.frm.button(value: 'Continue') }
+
+  action(:eshop_home) { |b| b.frm.link(id: 'PHX_NAV_HomeChooser').click }
 end
