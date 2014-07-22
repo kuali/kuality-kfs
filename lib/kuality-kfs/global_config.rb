@@ -127,8 +127,11 @@ module GlobalConfig
     business_objects = get_kuali_business_objects(namespace_code, object_type, identifiers)
     if business_objects.values[0].nil?
       raise RuntimeError, 'get_kuali_business_objects returned no objects'
-    else
-      business_objects.values[0].sample
+    else if business_objects.keys[0].include?'businessobject'
+         business_objects.values[0].sample
+      else
+           business_objects
+      end
     end
   end
 
