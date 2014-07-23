@@ -23,6 +23,9 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
+  def permission_service
+    @@permission_service ||= ksb_client.getPermissionService()
+  end
   def workflow_document_service
     @@workflow_document_service ||= ksb_client.getWorkflowDocumentService()
   end
@@ -58,6 +61,9 @@ module GlobalConfig
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
   end
   # returns a list of principal IDs for a group
+  def get_permission_assignees_by_template(namespace_code, template_name, permission_details)
+    permission_service.getPermissionAssigneesByTemplate(namespace_code, template_name, permission_details).getPrincipalId()
+  end
   def get_group_member_principal_ids(group_id)
     group_service.getMemberPrincipalIds(group_id).getPrincipalId()
   end
@@ -103,6 +109,22 @@ module GlobalConfig
     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
     principal_names
   end
+#   def get_principals_assigned_by_pernission_template(namespace_code, template_name, permission_details)
+#     principal_names = Array.new
+#     get_permission_assignees_by_template()
+#     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
+#     puts principal_names
+#     principal_names
+#   end
+  def get_document_initiators(document_type)
+    permission_details = {'documentTypeName' => document_type}
+    initiators = get_permission_assignees_by_template('KFS-SYS', 'Document Initiator', permission_details)
+    puts initiators
+    puts initiators.methods
+    puts initiators.inspect
+    initiators
+  end
+
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
     # then login once directed to CUWA
