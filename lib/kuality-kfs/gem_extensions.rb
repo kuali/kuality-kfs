@@ -2,9 +2,9 @@ module Watir
   module Container
     def frm
       case
-        when iframe(id: 'iframeportlet').exist?
+        when iframe(id: 'iframeportlet').exists?
           iframe(id: 'iframeportlet')
-        when iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').exist?
+        when iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').exists?
           begin
             if iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet').exists?
               iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet')
@@ -14,7 +14,7 @@ module Watir
           rescue
             iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet')
           end
-        when iframe(id: /easyXDM_default\d+_provider/).exist?
+        when iframe(id: /easyXDM_default\d+_provider/).exists?
           iframe(id: /easyXDM_default\d+_provider/)
         else
           self

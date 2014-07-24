@@ -72,6 +72,18 @@ module GlobalConfig
     principalIds = role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId()
     principalIds.get(java.lang.Math.random() * principalIds.size())
   end
+  def get_random_principal_id_with_phone_number_for_role(name_space, role_name)
+    phone_number = nil
+    pid = nil
+    while phone_number.nil? || phone_number.empty?
+      pid = get_random_principal_id_for_role(name_space, role_name)
+      phone_number = identity_service.getEntityByPrincipalId(pid)
+                                     .getEntityTypeContactInfos().getEntityTypeContactInfo().get(0)
+                                     .getPhoneNumbers().getPhoneNumber().get(0)
+                                     .getPhoneNumber()
+    end
+    pid
+  end
   def get_principal_name_for_principal_id(principal_name)
     identity_service.getEntityByPrincipalId(principal_name).getPrincipals().getPrincipal().get(0).getPrincipalName()
   end
@@ -91,6 +103,15 @@ module GlobalConfig
        @@prinicpal_names[name_space][role_name]
     else
        @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
+    end
+  end
+  def get_random_principal_with_phone_name_for_role(name_space, role_name)
+    @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
+
+    if !@@prinicpal_names[name_space][role_name].nil?
+      @@prinicpal_names[name_space][role_name]
+    else
+      @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_with_phone_number_for_role(name_space, role_name))
     end
   end
   def get_principal_name_for_role(name_space, role_name)

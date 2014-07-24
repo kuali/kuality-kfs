@@ -59,6 +59,7 @@ class RequisitionObject < KFSDataObject
       edit_fields opts, page, :description, :payment_request_positive_approval_required,
                               :delivery_phone_number, :requestor_phone
     end
+    update_options(opts)
   end
   alias_method :edit, :update
 

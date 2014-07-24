@@ -1,4 +1,4 @@
-class EShopPage < KFSBasePage
+class EShopPage < BasePage
 
   element(:notification_bar) { |b| b.frm.div(class: 'NotificationBar').ul(class: 'NotificationContent') }
   action(:goto_cart) { |b| b.notification_bar.link(id: 'Phoenix_Nav_Cart_Invoker').click; b.notification_bar.div(id: 'Phoenix_Nav_Cart').link(id: 'PHX_NAV_CartPreviewViewCart_cart').click }

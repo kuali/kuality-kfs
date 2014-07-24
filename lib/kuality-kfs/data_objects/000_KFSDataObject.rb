@@ -37,7 +37,7 @@ class KFSDataObject < DataFactory
     post_create
 
     on page_class_for(document_object_of(self.class)) do |page|
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.alert.ok if page.alert.present? # Because, y'know, sometimes it doesn't actually come up...
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
     end
@@ -52,6 +52,12 @@ class KFSDataObject < DataFactory
 
     raise uoe
   end
+
+  def update(opts={})
+    on(KFSBasePage) { |p| edit_fields opts, p, :description }
+    update_options({description: opts[:description]})
+  end
+  alias_method :edit, :update
 
   def pre_create; end
 

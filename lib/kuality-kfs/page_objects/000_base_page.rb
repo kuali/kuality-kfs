@@ -48,8 +48,9 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
-      element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
+      element(:doc_title_element) { |b| b.frm.div(id: /^headerarea/).h1 }
+      value(:doc_title) { |b| b.doc_title_element.text }
+      element(:headerinfo_table) { |b| b.frm.div(id: /^headerarea/).table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
       value(:document_status) { |p| p.headerinfo_table[0][3].text }
