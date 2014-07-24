@@ -60,9 +60,15 @@ module GlobalConfig
   def get_aft_parameter_value(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
   end
-  # returns a list of principal IDs for a group
+  # returns a list of assignees for a group
   def get_permission_assignees_by_template(namespace_code, template_name, permission_details)
-    permission_service.getPermissionAssigneesByTemplate(namespace_code, template_name, permission_details).getPrincipalId()
+    key, value = permission_details.first
+    perm_details_list = StringMapEntryListType.new
+    perm_detail = StringMapEntryType.new
+    perm_detail.key = key.to_s
+    perm_detail.value = value.to_s
+    perm_details_list.entry.add(perm_detail)
+    permission_service.getPermissionAssigneesByTemplate(namespace_code, template_name, perm_details_list, StringMapEntryListType.new).assignee
   end
   def get_group_member_principal_ids(group_id)
     group_service.getMemberPrincipalIds(group_id).getPrincipalId()
@@ -109,20 +115,12 @@ module GlobalConfig
     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
     principal_names
   end
-#   def get_principals_assigned_by_pernission_template(namespace_code, template_name, permission_details)
-#     principal_names = Array.new
-#     get_permission_assignees_by_template()
-#     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
-#     puts principal_names
-#     principal_names
-#   end
-  def get_document_initiators(document_type)
+  def get_document_initiator(document_type)
     permission_details = {'documentTypeName' => document_type}
-    initiators = get_permission_assignees_by_template('KFS-SYS', 'Document Initiator', permission_details)
-    puts initiators
-    puts initiators.methods
-    puts initiators.inspect
-    initiators
+    assignees = get_permission_assignees_by_template('KR-SYS', 'Initiate Document', permission_details)
+    principal_id = assignees.to_a.sample.principalId
+    person = identity_service.getEntity(principal_id)
+    person.principals.principal.to_a.sample.principalName
   end
 
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
