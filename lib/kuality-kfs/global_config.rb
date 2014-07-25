@@ -122,7 +122,13 @@ module GlobalConfig
     person = identity_service.getEntity(principal_id)
     person.principals.principal.to_a.sample.principalName
   end
-
+  def get_document_blanket_approver(document_type)
+    permission_details = {'documentTypeName' => document_type}
+    assignees = get_permission_assignees_by_template('KR-WKFLW', 'Blanket Approve Document', permission_details)
+    principal_id = assignees.to_a.sample.principalId
+    person = identity_service.getEntity(principal_id)
+    person.principals.principal.to_a.sample.principalName
+  end
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
     # then login once directed to CUWA
