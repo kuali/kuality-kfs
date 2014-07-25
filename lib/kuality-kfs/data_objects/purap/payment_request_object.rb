@@ -2,7 +2,7 @@ class PaymentRequestObject < KFSDataObject
 
   include ProcessItemsAccountingLinesMixin
 
-  attr_accessor :payment_request_id,
+  attr_accessor :number,
                 # == Payment Request Detail ==
                 :account_distribution_method, :payment_request_positive_approval_required,
                 # == Vendor (Incomplete) ==
@@ -16,7 +16,9 @@ class PaymentRequestObject < KFSDataObject
                 :freight_extended_cost, :freight_description,
                 :misc_extended_cost, :misc_description,
                 :sh_extended_cost, :sh_description,
-                :close_po
+                :close_po,
+                # == Tax Tab ==
+                :income_class_code, :federal_tax_pct, :state_tax_pct, :postal_country_code
 
 
   def defaults
@@ -37,12 +39,26 @@ class PaymentRequestObject < KFSDataObject
                      :invoice_date, :invoice_number, :vendor_invoice_amount
       page.continue
     end
-    #on(YesOrNoPage) {|p| p.yes if p.yes_button.present? } # Sometimes it will ask for confirmation
-    on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation
-    @payment_request_id = on(PaymentRequestPage).preq_id
+    #on(YesOrNoPage) { |p| p.yes if p.yes_button.present? } # Sometimes it will ask for confirmation, currently timing out :(
+    #on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation, currently timing out :(
+    on PaymentRequestPage do |page| # Is there a special amount of framing necessary for a PREQ?
+      #sleep 300
+      #page.wait_until(60000, 'Payment Request page took too long to process!') { puts right_now[:samigo]; page.frm.div(id: /^headerarea/).h1.visible? }
+      @number = page.preq_id
+    end
+  end
+
+  # Fills out the Payment Request's tax tab. This should not be done during an edit,
+  # @param [Hash] opts Elements to update
+  def update_tax_tab(opts={})
+    on PaymentRequestPage do |page|
+      edit_fields opts, page, :income_class_code, :federal_tax_pct, :state_tax_pct, :postal_country_code
+    end
+    update_options(opts)
   end
 
   # Note: You'll need to update the subcollections (e.g. Items) separately.
+  # @param [Hash] opts Elements to update
   def update(opts={})
     super
     on PaymentRequestPage do |page|

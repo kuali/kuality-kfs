@@ -3,7 +3,7 @@ class ItemsTab < PageFactory
   include Utilities
   include GlobalConfig
 
-  element(:items_tab) { |b| b.frm.div(id: 'tab-Items-div') }
+  element(:items_tab) { |b| b.frm.div(id: /tab-.*Items-div/m) }
   element(:items_table) { |b| b.items_tab.table(summary: 'Items Section') }
   value(:current_items_count) { |b| b.items_tab.tds(class: 'tab-subhead', text: /Item \d+/m).to_a.length }
   action(:show_items_button) { |b| b.frm.button(id: 'tab-Items-imageToggle') }
@@ -19,6 +19,7 @@ class ItemsTab < PageFactory
 
   action(:add_item) { |b| b.items_tab.button(title: 'Add an Item').click }
   action(:delete_item) { |l=0, b| b.items_tab.button(name: "methodToCall.deleteItem.line#{l}").click }
+  action(:calculate_item) { | i=0, b| b.frm.button(name: /methodToCall.recalculateItemAccountsAmounts.line#{i}./).click }
 
   element(:show_item_accounting_lines_button) { |l=0, b| b.items_tab.div(text: 'Accounting Lines').button(id: "tab-AccountingLines#{5+(l*2)}-imageToggle") }
   element(:item_accounting_lines_section) { |l=0, b| b.show_item_accounting_lines_button(l).parent }

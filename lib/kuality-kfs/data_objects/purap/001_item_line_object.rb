@@ -83,6 +83,10 @@ class ItemLineObject < DataFactory
     on(ItemsTab).delete_item(@line_number)
   end
 
+  def calculate
+    on(ItemsTab).calculate_item(@line_number)
+  end
+
   def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
   end
