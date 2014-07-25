@@ -63,7 +63,7 @@ class VendorObject < KFSDataObject
     on VendorPage do |vp|
       pulled_vendor = {
         vendor_number: vp.old_vendor_number,
-        vendor_name:   vp.old_vendor_name,
+        vendor_name:   vp.old_vendor_name.empty? ? vp.old_vendor_last_name + ", " + vp.old_vendor_first_name : vp.old_vendor_name,
         vendor_last_name:  vp.old_vendor_last_name,
         vendor_first_name: vp.old_vendor_first_name,
         vendor_type: vp.old_vendor_type,
