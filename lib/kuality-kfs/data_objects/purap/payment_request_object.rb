@@ -1,5 +1,7 @@
 class PaymentRequestObject < KFSDataObject
 
+  DOC_INFO = { label: 'Payment Request', type_code: 'PREQ' }
+
   include ProcessItemsAccountingLinesMixin
 
   attr_accessor :number,
@@ -38,14 +40,14 @@ class PaymentRequestObject < KFSDataObject
       fill_out page, :purchase_order_number,
                      :invoice_date, :invoice_number, :vendor_invoice_amount
       page.continue
+      sleep 120 # This transition can take a long time. We'll sleep for 2 minutes, at least
     end
-    #on(YesOrNoPage) { |p| p.yes if p.yes_button.present? } # Sometimes it will ask for confirmation, currently timing out :(
-    #on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation, currently timing out :(
-    on PaymentRequestPage do |page| # Is there a special amount of framing necessary for a PREQ?
-      #sleep 300
-      #page.wait_until(60000, 'Payment Request page took too long to process!') { puts right_now[:samigo]; page.frm.div(id: /^headerarea/).h1.visible? }
-      @number = page.preq_id
-    end
+    on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation, currently timing out :(
+    @number = on(PaymentRequestPage).preq_id
+    # on PaymentRequestPage do |page| # Is there a special amount of framing necessary for a PREQ?
+    #   #page.wait_until(60000, 'Payment Request page took too long to process!') { puts right_now[:samigo]; page.frm.div(id: /^headerarea/).h1.visible? }
+    #   @number = page.preq_id
+    # end
   end
 
   # Fills out the Payment Request's tax tab. This should not be done during an edit,
@@ -62,16 +64,18 @@ class PaymentRequestObject < KFSDataObject
   def update(opts={})
     super
     on PaymentRequestPage do |page|
-      edit_fields opts, page, :account_distribution_method, :payment_request_positive_approval_required,
-                              :vendor_name, :vendor_number, :vendor_address_1, :vendor_address_2, :attention,
-                              :vendor_city, :vendor_state, :vendor_province, :vendor_postal_code, :vendor_country,
-                              :purchase_order_number, :pay_date, :bank_code,
-                              :invoice_date, :invoice_number, :vendor_invoice_amount,
-                              :payment_method_code,
-                              :freight_extended_cost, :freight_description,
-                              :misc_extended_cost, :misc_description,
-                              :sh_extended_cost, :sh_description,
-                              :close_po
+      edit_fields opts, page, :vendor_address_1, :pay_date
+                              # == Not yet implemented in PaymentRequestPage: ==
+                              # :account_distribution_method, :payment_request_positive_approval_required,
+                              # :vendor_name, :vendor_number, :vendor_address_2, :attention,
+                              # :vendor_city, :vendor_state, :vendor_province, :vendor_postal_code, :vendor_country,
+                              # :purchase_order_number, :bank_code,
+                              # :invoice_date, :invoice_number, :vendor_invoice_amount,
+                              # :payment_method_code,
+                              # :freight_extended_cost, :freight_description,
+                              # :misc_extended_cost, :misc_description,
+                              # :sh_extended_cost, :sh_description,
+                              # :close_po
     end
     update_options(opts)
   end

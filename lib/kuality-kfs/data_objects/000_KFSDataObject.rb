@@ -4,8 +4,9 @@ class KFSDataObject < DataFactory
   include Utilities
   include GlobalConfig
 
-  attr_accessor :document_id, :description, :press,
-                :notes_and_attachments_tab
+  attr_accessor :document_id, :description,
+                :initiator,
+                :press, :notes_and_attachments_tab
 
   # Hooks:
   def defaults
@@ -91,7 +92,10 @@ class KFSDataObject < DataFactory
   end
 
   def submit
-    on(KFSBasePage).submit
+    on KFSBasePage do |page|
+      @initiator = page.initiator
+      page.submit
+    end
   end
 
   def blanket_approve

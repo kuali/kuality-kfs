@@ -5,7 +5,8 @@ class ItemsTab < PageFactory
 
   element(:items_tab) { |b| b.frm.div(id: /tab-.*Items-div/m) }
   element(:items_table) { |b| b.items_tab.table(summary: 'Items Section') }
-  value(:current_items_count) { |b| b.items_tab.tds(class: 'tab-subhead', text: /Item \d+/m).to_a.length }
+  #value(:current_items_count) { |b| b.items_tab.tds(class: 'tab-subhead', text: /Item \d+/m).to_a.length }
+  value(:current_items_count) { |b| b.items_tab.tds(css: 'td.infoline[nowrap="nowrap"][rowspan="2"], td.infoline[nowrap="nowrap"][rowspan="3"]').to_a.length }
   action(:show_items_button) { |b| b.frm.button(id: 'tab-Items-imageToggle') }
   value(:items_tab_shown?) { |b| b.show_items_button.title.match(/close Items/m) }
   value(:items_tab_hidden?) { |b| !b.items_tab_shown? }
@@ -48,31 +49,83 @@ class ItemsTab < PageFactory
   element(:update_commodity_code) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].purchasingCommodityCode") }
   element(:update_description) { |l=0, b| b.items_tab.textarea(id: "document.item[#{l}].itemDescription") }
   element(:update_unit_cost) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].itemUnitPrice") }
-  element(:update_extended_cost) { |l=0, b| b.update_quantity(l).parent.parent.tds[8].text } # This value is read-only. It'd be nice to be able to get at it without giving the index.
+  element(:update_extended_cost) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].extendedPrice").exists? ? b.items_tab.text_field(id: "document.item[#{l}].extendedPrice") : b.items_table[result_line_index_for(l, b)][item_col_for(b, :uom)].parent.parent.tds[8] } # This value is read-only. It'd be nice to be able to get at it without giving the index.
+  element(:update_extended_price) { |l=0, b| b.items_tab.text_field(id: "document.item[#{l}].itemUnitPrice") }
   element(:update_restricted) { |l=0, b| b.items_tab.checkbox(id: "document.item[#{l}].itemRestrictedIndicator") }
   element(:update_assigned_to_trade_in) { |l=0, b| b.items_tab.checkbox(id: "document.item[#{l}].itemAssignedToTradeInIndicator") }
 
   # TODO: Finish the read-only section when we are ready to write an #absorb! method
   class << self
-    def result_line_index_for(l)
+    def result_line_index_for(l, b)
       # 3 Header lines, then
       # For every item:
       # 1 subheader line
       # 3 data lines, where the last two contain the Accounting Lines (1 header, 1 data)
-      4+(l*4)
+      header_lines = on_process_items?(b) ? 7 : 4
+      row_lines = on_process_items?(b) ? 3 : 2
+      header_lines+(l*row_lines)
+    end
+
+    def item_col_for(b, k)
+      opi = on_process_items?(b)
+      hl = opi ? 6 : 2 # Where's the header line?
+      case k
+        when :type
+          b.items_table.keyed_column_index(:item_type, hl)
+        when :quantity
+          b.items_table.keyed_column_index((opi ? :open_qty : :quantity), hl)
+        when :uom
+          b.items_table.keyed_column_index(:uom, hl)
+        when :catalog_number
+          b.items_table.keyed_column_index(:catalog, hl)
+        when :commodity_code
+          b.items_table.keyed_column_index(:commodity_code, hl)
+        when :description
+          b.items_table.keyed_column_index(:description, hl)
+        when :unit_cost
+          b.items_table.keyed_column_index(:unit_cost, hl)
+        when :po_unit_ext_price
+          b.items_table.keyed_column_index(:po_unit_ext_price, hl)
+        when :extended_cost
+          b.items_table.keyed_column_index(:extended_cost, hl)
+        when :restricted
+          b.items_table.keyed_column_index(:restricted, hl)
+        when :assigned_to_trade_in
+          b.items_table.keyed_column_index(:assigned_to_trade_in, hl)
+      end
+    end
+
+    def on_process_items?(b)
+      b.frm.div(id: /tab-ProcessItems-div/m).present?
     end
   end
 
-  value(:result_type) { |l=0, b| b.items_table[result_line_index_for(l)][1].text.strip }
-  value(:result_quantity) { |l=0, b| b.items_table[result_line_index_for(l)][2].text.strip }
-  value(:result_uom) { |l=0, b| b.items_table[result_line_index_for(l)][3].text.strip }
-  value(:result_catalog_number) { |l=0, b| b.items_table[result_line_index_for(l)][4].text.strip }
-  value(:result_commodity_code) { |l=0, b| b.items_table[result_line_index_for(l)][5].text.strip }
-  value(:result_description) { |l=0, b| b.items_table[result_line_index_for(l)][6].text.strip }
-  value(:result_unit_cost) { |l=0, b| b.items_table[result_line_index_for(l)][7].text.strip }
-  value(:result_extended_cost) { |l=0, b| b.items_table[result_line_index_for(l)][8].text.strip }
-  element(:result_restricted) { |l=0, b| b.items_table[result_line_index_for(l)][9] }
-  element(:result_assigned_to_trade_in) { |l=0, b| b.items_table[result_line_index_for(l)][10] }
+  value(:result_type) { |l=0, b|
+    !on_process_items?(b) && !item_col_for(b, :type).nil? &&
+    b.items_table[result_line_index_for(l, b)][1].present? ? b.items_table[result_line_index_for(l, b)][1].text.strip : ""
+  }
+  value(:result_quantity) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :quantity)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :quantity)].text.strip : "" }
+  value(:result_uom) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :uom)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :uom)].text.split(/\n/)[-1].strip : "" }
+  value(:result_catalog_number) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :catalog_number)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :catalog_number)].text.strip : "" }
+  value(:result_commodity_code) { |l=0, b|
+    !on_process_items?(b) && !item_col_for(b, :commodity_code).nil? &&
+    b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].text.strip : nil
+  }
+  value(:result_description) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :description)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :description)].text.strip : "" }
+  value(:result_unit_cost) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :unit_cost)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :unit_cost)].text.strip : "" }
+  value(:result_po_unit_ext_price) { |l=0, b|
+    on_process_items?(b) && !item_col_for(b, :po_unit_ext_price).nil? &&
+    b.items_table[result_line_index_for(l, b)][item_col_for(b, :po_unit_ext_price)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :po_unit_ext_price)].text.strip : nil
+  }
+  value(:result_extended_cost) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :extended_cost)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :extended_cost)].text.strip : "" }
+  value(:result_restricted) { |l=0, b|
+    !on_process_items?(b) && !item_col_for(b, :restricted).nil? &&
+    b.items_table[result_line_index_for(l, b)][item_col_for(b, :restricted)].exists? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :restricted)].text.strip : nil
+  }
+  value(:result_assigned_to_trade_in) { |l=0, b|
+    !on_process_items?(b) && !item_col_for(b, :restricted).nil? &&
+    b.items_table[result_line_index_for(l, b)][item_col_for(b, :assigned_to_trade_in)].text.strip
+  }
 
   #ITEM ACCOUNTING LINES
   action(:add_item_accounting_line) { |i=0, b| b.frm.button(name: "methodToCall.insertSourceLine.line#{i}.anchoraccountingSourceAnchor").click }
