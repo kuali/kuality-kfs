@@ -117,17 +117,23 @@ module GlobalConfig
   end
   def get_document_initiator(document_type)
     permission_details = {'documentTypeName' => document_type}
-    assignees = get_permission_assignees_by_template('KR-SYS', 'Initiate Document', permission_details)
-    principal_id = assignees.to_a.sample.principalId
+    assignees = get_permission_assignees_by_template('KR-SYS', 'Initiate Document', permission_details).to_a
+    principal_id = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample.principalId
     person = identity_service.getEntity(principal_id)
     person.principals.principal.to_a.sample.principalName
   end
   def get_document_blanket_approver(document_type)
     permission_details = {'documentTypeName' => document_type}
-    assignees = get_permission_assignees_by_template('KR-WKFLW', 'Blanket Approve Document', permission_details)
-    principal_id = assignees.to_a.sample.principalId
-    person = identity_service.getEntity(principal_id)
-    person.principals.principal.to_a.sample.principalName
+    assignees = get_permission_assignees_by_template('KR-WKFLW', 'Blanket Approve Document', permission_details).to_a
+    assignee = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample
+    if assignee.nil?
+      principal_name = get_principal_name_for_role('KFS-SYS', 'Manager').sample
+    else
+      principal_id = assignee.principalId
+      person = identity_service.getEntity(principal_id)
+      principal_name = person.principals.principal.to_a.sample.principalName
+    end
+    principal_name
   end
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
