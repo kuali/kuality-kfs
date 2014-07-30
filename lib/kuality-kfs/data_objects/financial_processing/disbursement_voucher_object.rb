@@ -34,6 +34,8 @@ class DisbursementVoucherObject < KFSDataObject
       fill_out page, :description, :organization_document_number, :explanation,
                      :contact_name, :phone_number, :email_address,
                      :foreign_draft_in_usd, :foreign_draft_in_foreign_currency, :currency_type
+      # fill contact phonenumber if this initiator does not have phone number
+      page.phone_number.fit "#{rand(100..999)}-#{rand(100..999)}-#{rand(1000..9999)}" if page.phone_number.value.empty?
     end
   end
 
