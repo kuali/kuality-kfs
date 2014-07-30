@@ -136,10 +136,8 @@ class ItemLineObjectCollection < LineObjectCollection
         pull_existing_items(i, target).merge(pull_extended_existing_items(i, target))
       }.each { |new_obj|
         # Update the stored lines
-        puts new_obj
         self << (make contained_class, new_obj)
         self.last.accounting_lines.update_from_page! target
-        puts "Added this item! #{self.last.inspect}"
       }
 
     end

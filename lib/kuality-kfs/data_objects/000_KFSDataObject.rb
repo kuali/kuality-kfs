@@ -80,25 +80,32 @@ class KFSDataObject < DataFactory
 
   def absorb!(target={})
     on KFSBasePage do |b|
+      description =  case target
+                       when :new
+                         b.description.value
+                       when :old
+                         b.readonly_description
+                     end
       update_options({
         document_id: b.document_id,
-        description: b.description.value
+        description: description,
+        initiator:   b.initiator
       })
     end
   end
 
   def save
+    update_data_from_header
     on(KFSBasePage).save
   end
 
   def submit
-    on KFSBasePage do |page|
-      @initiator = page.initiator
-      page.submit
-    end
+    update_data_from_header
+    on(KFSBasePage).submit
   end
 
   def blanket_approve
+    update_data_from_header
     on(KFSBasePage).blanket_approve
   end
 
@@ -138,6 +145,16 @@ class KFSDataObject < DataFactory
       search.search
       search.wait_for_search_results
       search.open_doc @document_id
+    end
+  end
+
+  private
+
+  # Grabs values, lest we haven't before (e.g. we used #make previously instead of #create)
+  def update_data_from_header
+    on KFSBasePage do |page|
+      @document_id = page.document_id
+      @initiator   = page.initiator
     end
   end
 

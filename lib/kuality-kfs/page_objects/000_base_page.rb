@@ -69,7 +69,9 @@ class BasePage < PageFactory
     end
 
     def description_field
+      element(:doc_overview_info) { |b| b.frm.table(class: 'datatable', summary: 'view/edit document overview information') }
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      value(:readonly_description) { |b| b.doc_overview_info.rows[0].tds[0].text.strip }
       element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
@@ -164,7 +166,7 @@ class BasePage < PageFactory
     end
 
     def general_ledger_pending_entries
-      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table(summary: 'view/edit pending entries') }
       action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
     end
 

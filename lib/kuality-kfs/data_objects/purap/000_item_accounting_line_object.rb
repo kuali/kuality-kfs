@@ -105,6 +105,7 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
 
   def update_from_page!(target=:new)
     on ItemsTab do |lines|
+      lines.show_item_accounting_lines unless lines.item_accounting_lines_shown?
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       (0..(lines.current_accounting_line_count(@parent.line_number) - 1)).to_a.collect!{ |i|

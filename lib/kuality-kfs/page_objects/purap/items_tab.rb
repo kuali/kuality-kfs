@@ -5,7 +5,6 @@ class ItemsTab < PageFactory
 
   element(:items_tab) { |b| b.frm.div(id: /tab-.*Items-div/m) }
   element(:items_table) { |b| b.items_tab.table(summary: 'Items Section') }
-  #value(:current_items_count) { |b| b.items_tab.tds(class: 'tab-subhead', text: /Item \d+/m).to_a.length }
   value(:current_items_count) { |b| b.items_tab.tds(css: 'td.infoline[nowrap="nowrap"][rowspan="2"], td.infoline[nowrap="nowrap"][rowspan="3"]').to_a.length }
   action(:show_items_button) { |b| b.frm.button(id: 'tab-Items-imageToggle') }
   value(:items_tab_shown?) { |b| b.show_items_button.title.match(/close Items/m) }
@@ -109,7 +108,7 @@ class ItemsTab < PageFactory
   value(:result_catalog_number) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :catalog_number)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :catalog_number)].text.strip : "" }
   value(:result_commodity_code) { |l=0, b|
     !on_process_items?(b) && !item_col_for(b, :commodity_code).nil? &&
-    b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].text.strip : nil
+    b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :commodity_code)].text.strip.split(/\n/)[0] : nil
   }
   value(:result_description) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :description)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :description)].text.strip : "" }
   value(:result_unit_cost) { |l=0, b| b.items_table[result_line_index_for(l, b)][item_col_for(b, :unit_cost)].present? ? b.items_table[result_line_index_for(l, b)][item_col_for(b, :unit_cost)].text.strip : "" }
@@ -134,8 +133,12 @@ class ItemsTab < PageFactory
     b.frm.button(name: "methodToCall.performBalanceInquiryForSourceLine.line:#{i}:#{l}.anchoraccountingSourceexistingLineLineAnchor#{l}").click
   }
   value(:current_accounting_line_count) { |i=0, b|
-    r = "document.item\\[#{i}\\].sourceAccountingLine\\[\\d\\+\\].chartOfAccountsCode"
-    b.frm.selects(name: /#{r}/m).length
+    r = "document.item\\[#{i}\\].sourceAccountingLine\\[\\d+\\].chartOfAccountsCode"
+    b.items_table.select(name: /#{r}/).present? ? b.frm.selects(name: /#{r}/m).length : b.readonly_current_accounting_line_count(i, b)
+  }
+  value(:readonly_current_accounting_line_count) { |i=0, b|
+    r = "document.item\\[#{i}\\].sourceAccountingLine\\[\\d+\\].chartOfAccountsCode.div"
+    b.items_table.spans(id: /#{r}/).length
   }
 
   element(:chart_code) { |i=0, b| b.frm.select(name: "document.item[#{i}].newSourceLine.chartOfAccountsCode") }
@@ -160,16 +163,16 @@ class ItemsTab < PageFactory
   element(:update_percent) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent") }
   element(:update_amount) { |i=0, l=0, b| b.frm.text_field(name: "document.item[#{i}].sourceAccountingLine[#{l}].amount") }
 
-  element(:result_chart_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode.div").text.strip }
-  element(:result_account_number) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber.div").text.strip }
-  element(:result_sub_account_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].subAccountNumber.div").text.strip }
-  element(:result_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialObjectCode.div").text.strip }
-  element(:result_sub_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialSubObjectCode.div").text.strip }
-  element(:result_project_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].projectCode.div").text.strip }
-  element(:result_organization_reference_id) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].organizationReferenceId.div").text.strip }
-  element(:result_line_description) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription.div").text.strip }
-  element(:result_percent) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent.div").text.strip }
-  element(:result_amount) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].amount.div").text.strip }
+  element(:result_chart_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].chartOfAccountsCode.div").text.strip : nil }
+  element(:result_account_number) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountNumber.div").text.strip : nil }
+  element(:result_sub_account_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].subAccountNumber.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].subAccountNumber.div").text.strip : nil}
+  element(:result_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialObjectCode.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialObjectCode.div").text.strip : nil }
+  element(:result_sub_object_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialSubObjectCode.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialSubObjectCode.div").text.strip : nil }
+  element(:result_project_code) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].projectCode.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].projectCode.div").text.strip : nil }
+  element(:result_organization_reference_id) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].organizationReferenceId.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].organizationReferenceId.div").text.strip : nil }
+  element(:result_line_description) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].financialDocumentLineDescription.div").text.strip : nil }
+  element(:result_percent) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].accountLinePercent.div").text.strip : nil }
+  element(:result_amount) { |i=0, l=0, b| b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].amount.div").present? ? b.frm.span(id: "document.item[#{i}].sourceAccountingLine[#{l}].amount.div").text.strip : nil }
 
   element(:balance_inquiry_button) { |b| b.frm.button(title: 'Perform Balance Inquiry for Source Accounting Line 1') }
 

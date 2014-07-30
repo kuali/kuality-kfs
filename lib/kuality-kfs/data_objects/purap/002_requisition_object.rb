@@ -78,6 +78,10 @@ class RequisitionObject < KFSDataObject
     @requisition_id = on(RequisitionPage).requisition_id # Requisition number is created only after a successful save, but it might be available now
   end
 
+  def calculate
+    on(RequisitionPage).calculate
+  end
+
   def add_vendor_to_req(vendor_num)
     on(RequisitionPage).suggested_vendor_search
     on VendorLookupPage do |page|
@@ -153,7 +157,7 @@ class RequisitionObject < KFSDataObject
               delivery_country:       b.result_delivery_country,
               delivery_to:            b.result_delivery_to,
               delivery_phone_number:  b.result_delivery_phone_number,
-              delivery_email:         b.result_delivery_email.value,
+              delivery_email:         b.result_delivery_email,
               delivery_date_required: b.result_delivery_date_required,
               delivery_date_required_reason: b.result_delivery_date_required_reason,
               delivery_instructions:  b.result_delivery_instructions

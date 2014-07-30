@@ -42,12 +42,10 @@ class PaymentRequestObject < KFSDataObject
       page.continue
       sleep 120 # This transition can take a long time. We'll sleep for 2 minutes, at least
     end
-    on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation, currently timing out :(
-    @number = on(PaymentRequestPage).preq_id
-    # on PaymentRequestPage do |page| # Is there a special amount of framing necessary for a PREQ?
-    #   #page.wait_until(60000, 'Payment Request page took too long to process!') { puts right_now[:samigo]; page.frm.div(id: /^headerarea/).h1.visible? }
-    #   @number = page.preq_id
-    # end
+    on(YesOrNoPage).yes_if_possible # Sometimes it will ask for confirmation
+    on PaymentRequestPage do |page|
+      @number      = page.preq_id
+    end
   end
 
   # Fills out the Payment Request's tax tab. This should not be done during an edit,
@@ -80,6 +78,15 @@ class PaymentRequestObject < KFSDataObject
     update_options(opts)
   end
   alias_method :edit, :update
+
+  def submit
+    @number = on(PaymentRequestPage).preq_id
+    super
+  end
+
+  def calculate
+    on(PaymentRequestPage).calculate
+  end
 
   include ItemLinesMixin
 
