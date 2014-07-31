@@ -81,11 +81,11 @@ class RequisitionObject < KFSDataObject
     i = 0
     # make sure building has zip code and room
     while building_code.empty? && i < 10
-      building_info = get_kuali_business_object('KFS-FP','Building','active=true&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
+      building_info = get_kuali_business_object('KFS-SYS','Building','active=true&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
       building_code = building_info['buildingCode'][0]
       if building_info['buildingAddressZipCode'][0] != 'null'
         begin
-          room_info = get_kuali_business_object('KFS-FP','Room',"buildingCode=#{building_code}")
+          room_info = get_kuali_business_object('KFS-SYS','Room',"buildingCode=#{building_code}")
         rescue
           # no room found
           building_code = ""
