@@ -172,7 +172,7 @@ module Utilities
           end
         } # D
 
-        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].sample['financialObjectCode']
+        object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].sample['financialObjectCode'][0]
       else
         nil
     end
