@@ -577,6 +577,18 @@
          <column name="PARM_DESC_TXT" value="Defaults for the Asset Global object"/>
          <column name="EVAL_OPRTR_CD" value="A"/>
        </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULT_REQS_INITIATOR"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="der9"/>
+         <column name="PARM_DESC_TXT" value="Default REQS initiator for automated functional testing"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
 
 	<modifySql dbms="mysql">
 		<replace replace="sys_guid()" with="uuid()" />
