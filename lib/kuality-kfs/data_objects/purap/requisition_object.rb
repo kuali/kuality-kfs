@@ -77,8 +77,31 @@ class RequisitionObject < KFSDataObject
   end
 
   def add_random_building_address
+    building_code = ""
+    i = 0
+    # make sure building has zip code and room
+    while building_code.empty? && i < 10
+      building_info = get_kuali_business_object('KFS-FP','Building','active=true&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
+      building_code = building_info['buildingCode'][0]
+      if building_info['buildingAddressZipCode'][0] != 'null'
+        begin
+          room_info = get_kuali_business_object('KFS-FP','Room',"buildingCode=#{building_code}")
+        rescue
+          # no room found
+          building_code = ""
+        end
+      else
+        building_code = ""
+      end
+      i += 1
+    end
+
     on(RequisitionPage).building_search
-    on(BuildingLookupPage).search_and_return_random
+    on BuildingLookupPage do |page|
+      page.building_code.fit building_code
+      page.search
+      page.return_random
+    end
     on(RequisitionPage).room_search
     on(RoomLookupPage).search_and_return_random
     update_options pull_delivery_tab(:new)
