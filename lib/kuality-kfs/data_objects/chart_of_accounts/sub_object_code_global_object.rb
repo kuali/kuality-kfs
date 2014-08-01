@@ -13,11 +13,11 @@ class SubObjectCodeGlobalObject < KFSDataObject
         description:                    random_alphanums(40, 'AFT'),
         new_chart_code:                 get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         organization_document_number:   get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
-        new_fiscal_year:                '2014',
+        new_fiscal_year:                get_aft_parameter_value('CURRENT_FISCAL_YEAR'),
         new_sub_object_code:            'tst',
         new_sub_object_code_name:       random_alphanums(20, 'AFT'),
         new_sub_object_code_short_name: random_alphanums(5, 'ATF'),
-        noc_fiscal_year:                '2014', #TODO replace with bootstrap data
+        noc_fiscal_year:                get_aft_parameter_value('CURRENT_FISCAL_YEAR'),
         noc_chart_code:                 get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
         noc_object_code:                '1000', #TODO replace with bootstrap data
         na_chart_code:                  get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
