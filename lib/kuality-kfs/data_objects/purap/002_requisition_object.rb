@@ -93,7 +93,7 @@ class RequisitionObject < KFSDataObject
   end
 
   def add_random_building_address
-    building_code = ""
+    building_code = ''
     i = 0
     # make sure building has zip code and room
     while building_code.empty? && i < 10
@@ -104,10 +104,10 @@ class RequisitionObject < KFSDataObject
           room_info = get_kuali_business_object('KFS-SYS','Room',"buildingCode=#{building_code}")
         rescue
           # no room found
-          building_code = ""
+          building_code = ''
         end
       else
-        building_code = ""
+        building_code = ''
       end
       i += 1
     end

@@ -91,7 +91,7 @@ class ItemLineObject < DataFactory
   end
 
   def calculate
-    on(ItemsTab) do |tab|
+    on ItemsTab do |tab|
       raise NoMethodError, 'Cannot calculate Items when on a Requisition!' unless ItemsTab::on_process_items?(tab)
       tab.calculate_item(@line_number)
       @extended_cost = tab.update_extended_cost(@line_number).value.strip
