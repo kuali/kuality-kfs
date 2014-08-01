@@ -52,13 +52,15 @@ class EShopCartObject < DataFactory
 
   def absorb!
     on EShopCartPage do |scp|
-      update_options({
-                       cart_name:        scp.cart_name.value.strip,
-                       cart_description: scp.cart_description.value.strip,
-                       business_purpose: (scp.add_note_link.exists? ? nil : scp.add_note_textarea.value.strip)
-                     })
-      absorb_items!
-      absorb_items_extensions!
+      if scp.cart_name.present?
+        update_options({
+                         cart_name:        scp.cart_name.value.strip,
+                         cart_description: scp.cart_description.value.strip,
+                         business_purpose: (scp.add_note_link.exists? ? nil : scp.add_note_textarea.value.strip)
+                       })
+        absorb_items!
+        absorb_items_extensions!
+      end
     end
   end
 
@@ -90,6 +92,18 @@ class EShopCartObject < DataFactory
       scp.cart_status_message.should == 'Cart was saved successfully'
       @business_purpose = note
     end
+  end
+
+  def clear_items_from(supplier)
+    view
+    on(EShopCartPage).delete_all_products_for_supplier(supplier)
+    @items.delete(supplier)
+  end
+
+  def clear_items
+    view
+    @items.keys.each {|supplier| on(EShopCartPage).delete_all_products_for_supplier(supplier) }
+    @items.clear
   end
 
   def view(in_e_shop=true)
