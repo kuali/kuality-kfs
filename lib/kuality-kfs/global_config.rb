@@ -219,9 +219,8 @@ module GlobalConfig
     get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
   end
   def fetch_random_capital_asset_object_code
-    # 'object' returned for 'objectcode' is different from other 'object'; ie, it has extra hash
-    current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR') # '2015'
-    object_code = get_kuali_business_objects('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")['org.kuali.kfs.coa.businessobject.ObjectCode'][0]
+    current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
+    object_code = get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")
     object_code['financialObjectCode'][0]
   end
   def fetch_random_capital_asset_number
