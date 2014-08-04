@@ -123,6 +123,8 @@ module Utilities
     case type
       when 'Unrestricted Account'
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+      when 'Endowed NonGrant'
+        get_kuali_business_object('KFS-COA','Account','accountTypeCode=EN&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       else
         nil
     end
@@ -173,6 +175,22 @@ module Utilities
         } # D
 
         object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].sample['financialObjectCode']
+      else
+        nil
+    end
+  rescue RuntimeError => re
+    nil
+  end
+  # This is simplified version of 'get_object_type_of_type'. For now, this is for PURAP.  Should re-factor to merge these 2 if possible.
+  def get_object_code_of_type(type)
+    current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
+    case type
+      when 'Operating Expense'
+        get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=OE&financialObjectTypeCode=EX&financialObjectLevelCode=SMAT")['financialObjectCode'][0]
+      when 'Capital Asset'
+        fetch_random_capital_asset_object_code
+      when 'Accounts Receivable Asset'
+        get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectTypeCode=AS&financialObjectLevelCode=AROT")['financialObjectCode'][0]
       else
         nil
     end

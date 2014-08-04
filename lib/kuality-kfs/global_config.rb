@@ -228,4 +228,9 @@ module GlobalConfig
     asset_obj = get_kuali_business_object('KFS-CAM','Asset','active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
     asset_obj['capitalAssetNumber'][0]
   end
+  def fetch_random_origination_code
+    origination_code = get_kuali_business_object('KFS-SYS','OriginationCode','active=true')
+    origination_code['financialSystemOriginationCode'][0]
+  end
+
 end
