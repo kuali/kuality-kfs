@@ -225,7 +225,5 @@ module GlobalConfig
   end
   def fetch_random_capital_asset_number
     # TODO : it took long time for asset search, so put several criteria to speed up the lookup
-    asset_obj = get_kuali_business_object('KFS-CAM','Asset','active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
-    asset_obj['capitalAssetNumber'][0]
-  end
+    get_kuali_business_object('KFS-CAM','Asset',"active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")['capitalAssetNumber'].sample  end
 end
