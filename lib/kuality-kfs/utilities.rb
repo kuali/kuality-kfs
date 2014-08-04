@@ -123,7 +123,8 @@ module Utilities
     case type
       when 'Unrestricted Account', 'NonGrant'
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
-      else
+      when 'Grant'
+        get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=CG*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample     else
         nil
     end
   rescue RuntimeError => re
