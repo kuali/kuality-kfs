@@ -241,7 +241,8 @@ module GlobalConfig
   end
   def fetch_random_capital_asset_object_code
     current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
-    object_code = get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")['financialObjectCode'].sample
+    chart_code = get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
+    get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE&chartOfAccountsCode=#{chart_code}")['financialObjectCode'][0]
   end
   def fetch_random_capital_asset_number
     # TODO : it took long time for asset search, so put several criteria to speed up the lookup
