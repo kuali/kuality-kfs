@@ -48,8 +48,9 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
-      element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
+      element(:doc_title_element) { |b| b.frm.div(id: /^headerarea/).h1 }
+      value(:doc_title) { |b| b.doc_title_element.text }
+      element(:headerinfo_table) { |b| b.frm.div(id: /^headerarea/).table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
       value(:document_status) { |p| p.headerinfo_table[0][3].text }
@@ -68,7 +69,9 @@ class BasePage < PageFactory
     end
 
     def description_field
+      element(:doc_overview_info) { |b| b.frm.table(class: 'datatable', summary: 'view/edit document overview information') }
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      value(:readonly_description) { |b| b.doc_overview_info.rows[0].tds[0].text.strip }
       element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
@@ -163,7 +166,7 @@ class BasePage < PageFactory
     end
 
     def general_ledger_pending_entries
-      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table(summary: 'view/edit pending entries') }
       action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
     end
 

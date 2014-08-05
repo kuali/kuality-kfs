@@ -1,6 +1,6 @@
 class PaymentRequestInitiationPage < KFSBasePage
 
-  element(:purchase_order) { |b| b.frm.text_field(name: 'document.purchaseOrderIdentifier') }
+  element(:purchase_order_number) { |b| b.frm.text_field(name: 'document.purchaseOrderIdentifier') }
   element(:invoice_number) { |b| b.frm.text_field(name: 'document.invoiceNumber') }
   element(:invoice_date) { |b| b.frm.text_field(name: 'document.invoiceDate') }
   element(:vendor_invoice_amount) { |b| b.frm.text_field(name: 'document.vendorInvoiceAmount') }

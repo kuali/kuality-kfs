@@ -8,11 +8,16 @@ class ContractManagerAssignmentPage < KFSBasePage
 
   # the index-1 is needed because it was filling in the wrong/next row
   action(:set_contract_manager) do |req_number, cm_number='10', b|
-    b.frm.table(summary: 'Assign A Contract Manager')
-         .rows
-         .each_with_index do |row, index|
-            b.contract_manager(index-1).set cm_number if row.a(text: req_number).exists?
-          end
+    catch :cm_set do
+      b.frm.table(summary: 'Assign A Contract Manager')
+           .rows
+           .each_with_index do |row, index|
+              if row.a(text: req_number).exists?
+                b.contract_manager(index-1).set cm_number
+                throw :cm_set
+              end
+           end
+    end
   end
   #NEEDS TO 'BREAK' loop after finding value,
 
