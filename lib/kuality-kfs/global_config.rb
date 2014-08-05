@@ -216,12 +216,11 @@ module GlobalConfig
     fetch_random_acount['accountNumber']
   end
   def fetch_random_acount
-    get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
+    get_kuali_business_object('KFS-COA','Account',"active=Y&accountExpirationDate=NULL&chartOfAccountsCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")
   end
   def fetch_random_capital_asset_object_code
     current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
-    object_code = get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")
-    object_code['financialObjectCode'][0]
+    object_code = get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")['financialObjectCode'].sample
   end
   def fetch_random_capital_asset_number
     # TODO : it took long time for asset search, so put several criteria to speed up the lookup
