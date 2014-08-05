@@ -84,6 +84,18 @@ module GlobalConfig
     principalIds = role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId()
     principalIds.get(java.lang.Math.random() * principalIds.size())
   end
+  def get_random_principal_id_with_phone_number_for_role(name_space, role_name)
+    phone_number = nil
+    pid = nil
+    while phone_number.nil? || phone_number.empty?
+      pid = get_random_principal_id_for_role(name_space, role_name)
+      phone_number = identity_service.getEntityByPrincipalId(pid)
+                                     .getEntityTypeContactInfos().getEntityTypeContactInfo().get(0)
+                                     .getPhoneNumbers().getPhoneNumber().get(0)
+                                     .getPhoneNumber()
+    end
+    pid
+  end
   def get_principal_name_for_principal_id(principal_name)
     identity_service.getEntityByPrincipalId(principal_name).getPrincipals().getPrincipal().get(0).getPrincipalName()
   end
@@ -103,6 +115,15 @@ module GlobalConfig
        @@prinicpal_names[name_space][role_name]
     else
        @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
+    end
+  end
+  def get_random_principal_with_phone_name_for_role(name_space, role_name)
+    @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
+
+    if !@@prinicpal_names[name_space][role_name].nil?
+      @@prinicpal_names[name_space][role_name]
+    else
+      @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_with_phone_number_for_role(name_space, role_name))
     end
   end
   def get_principal_name_for_role(name_space, role_name)
@@ -216,16 +237,22 @@ module GlobalConfig
     fetch_random_acount['accountNumber']
   end
   def fetch_random_acount
-    get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
+    get_kuali_business_object('KFS-COA','Account',"active=Y&accountExpirationDate=NULL&chartOfAccountsCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")
   end
   def fetch_random_capital_asset_object_code
     current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
-    object_code = get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE")
-    object_code['financialObjectCode'][0]
+    chart_code = get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
+    get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE&chartOfAccountsCode=#{chart_code}")['financialObjectCode'][0]
   end
   def fetch_random_capital_asset_number
     # TODO : it took long time for asset search, so put several criteria to speed up the lookup
-    asset_obj = get_kuali_business_object('KFS-CAM','Asset','active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode='+ get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
-    asset_obj['capitalAssetNumber'][0]
+    get_kuali_business_object('KFS-CAM','Asset',"active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")['capitalAssetNumber'].sample
   end
+  def get_principal_names_for_role(name_space, role_name)
+    role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalNames().to_a
+  end
+  def fetch_random_origination_code
+    get_kuali_business_object('KFS-SYS','OriginationCode','active=true')['financialSystemOriginationCode'].sample
+  end
+
 end

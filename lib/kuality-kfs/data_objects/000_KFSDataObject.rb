@@ -4,8 +4,9 @@ class KFSDataObject < DataFactory
   include Utilities
   include GlobalConfig
 
-  attr_accessor :document_id, :description, :press,
-                :notes_and_attachments_tab
+  attr_accessor :document_id, :description,
+                :initiator,
+                :press, :notes_and_attachments_tab
 
   # Hooks:
   def defaults
@@ -37,7 +38,7 @@ class KFSDataObject < DataFactory
     post_create
 
     on page_class_for(document_object_of(self.class)) do |page|
-      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
+      page.alert.ok if page.alert.present? # Because, y'know, sometimes it doesn't actually come up...
       @document_id = page.document_id
       page.send(@press) unless @press.nil?
     end
@@ -52,6 +53,12 @@ class KFSDataObject < DataFactory
 
     raise uoe
   end
+
+  def update(opts={})
+    on(KFSBasePage) { |p| edit_fields opts, p, :description }
+    update_options({description: opts[:description]})
+  end
+  alias_method :edit, :update
 
   def pre_create; end
 
@@ -73,22 +80,32 @@ class KFSDataObject < DataFactory
 
   def absorb!(target={})
     on KFSBasePage do |b|
+      description =  case target
+                       when :new
+                         b.description.value
+                       when :old
+                         b.readonly_description
+                     end
       update_options({
         document_id: b.document_id,
-        description: b.description.value
+        description: description,
+        initiator:   b.initiator
       })
     end
   end
 
   def save
+    update_data_from_header
     on(KFSBasePage).save
   end
 
   def submit
+    update_data_from_header
     on(KFSBasePage).submit
   end
 
   def blanket_approve
+    update_data_from_header
     on(KFSBasePage).blanket_approve
   end
 
@@ -128,6 +145,16 @@ class KFSDataObject < DataFactory
       search.search
       search.wait_for_search_results
       search.open_doc @document_id
+    end
+  end
+
+  private
+
+  # Grabs values, lest we haven't before (e.g. we used #make previously instead of #create)
+  def update_data_from_header
+    on KFSBasePage do |page|
+      @document_id = page.document_id
+      @initiator   = page.initiator
     end
   end
 

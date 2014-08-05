@@ -105,6 +105,7 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
 
   def update_from_page!(target=:new)
     on ItemsTab do |lines|
+      lines.show_item_accounting_lines unless lines.item_accounting_lines_shown?
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       (0..(lines.current_accounting_line_count(@parent.line_number) - 1)).to_a.collect!{ |i|
@@ -126,16 +127,16 @@ class ItemAccountingLineObjectCollection < LineObjectCollection
       case t
         when :new
           pulled_item = {
-            chart_code:                b.update_chart_code(@parent.line_number, al).selected_options.first.text.strip,
-            account_number:            b.update_account_number(@parent.line_number, al).value.strip,
-            sub_account_code:          b.update_sub_account_code(@parent.line_number, al).value.strip,
-            object_code:               b.update_object_code(@parent.line_number, al).value.strip,
-            sub_object_code:           b.update_sub_object_code(@parent.line_number, al).value.strip,
-            project_code:              b.update_project_code(@parent.line_number, al).value.strip,
-            organization_reference_id: b.update_organization_reference_id(@parent.line_number, al).value.strip,
-            line_description:          b.update_line_description(@parent.line_number, al).value.strip,
-            percent:                   b.update_percent(@parent.line_number, al).value.strip,
-            amount:                    b.update_amount(@parent.line_number, al).value.strip
+            chart_code:                (b.update_chart_code(@parent.line_number, al).present? ? b.update_chart_code(@parent.line_number, al).selected_options.first.text.strip : b.result_chart_code(@parent.line_number, al)),
+            account_number:            (b.update_account_number(@parent.line_number, al).present? ? b.update_account_number(@parent.line_number, al).value.strip : b.result_account_number(@parent.line_number, al)),
+            sub_account_code:          (b.update_sub_account_code(@parent.line_number, al).present? ? b.update_sub_account_code(@parent.line_number, al).value.strip : b.result_sub_account_code(@parent.line_number, al)),
+            object_code:               (b.update_object_code(@parent.line_number, al).present? ? b.update_object_code(@parent.line_number, al).value.strip : b.result_object_code(@parent.line_number, al)),
+            sub_object_code:           (b.update_sub_object_code(@parent.line_number, al).present? ? b.update_sub_object_code(@parent.line_number, al).value.strip : b.result_sub_object_code(@parent.line_number, al)),
+            project_code:              (b.update_project_code(@parent.line_number, al).present? ? b.update_project_code(@parent.line_number, al).value.strip : b.result_project_code(@parent.line_number, al)),
+            organization_reference_id: (b.update_organization_reference_id(@parent.line_number, al).present? ? b.update_organization_reference_id(@parent.line_number, al).value.strip : b.result_organization_reference_id(@parent.line_number, al)),
+            line_description:          (b.update_line_description(@parent.line_number, al).present? ? b.update_line_description(@parent.line_number, al).value.strip : b.result_line_description(@parent.line_number, al)),
+            percent:                   (b.update_percent(@parent.line_number, al).present? ? b.update_percent(@parent.line_number, al).value.strip : b.result_percent(@parent.line_number, al)),
+            amount:                    (b.update_amount(@parent.line_number, al).present? ? b.update_amount(@parent.line_number, al).value.strip : b.result_amount(@parent.line_number, al))
           }
         when :old
           pulled_item = {

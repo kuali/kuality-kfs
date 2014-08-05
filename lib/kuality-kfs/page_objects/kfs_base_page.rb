@@ -1,5 +1,8 @@
 class KFSBasePage < BasePage
 
+  expected_element :doc_title_element, 600000
+
+
   document_header_elements
   description_field
   global_buttons
