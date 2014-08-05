@@ -229,8 +229,7 @@ module GlobalConfig
     asset_obj['capitalAssetNumber'][0]
   end
   def fetch_random_origination_code
-    origination_code = get_kuali_business_object('KFS-SYS','OriginationCode','active=true')
-    origination_code['financialSystemOriginationCode'][0]
+    get_kuali_business_object('KFS-SYS','OriginationCode','active=true')['financialSystemOriginationCode'].sample
   end
 
 end
