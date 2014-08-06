@@ -201,7 +201,7 @@ module Utilities
     nil
   end
 
-  def get_commodity_of_type(type, sensitiveDataCode=ANIM)
+  def get_commodity_of_type(type, sensitiveDataCode='ANIM')
     case type
       when 'Sensitive'
         get_kuali_business_object('KFS-VND','CommodityCode',"sensitiveDataCode=#{sensitiveDataCode}&active=true")['purchasingCommodityCode'].sample
