@@ -80,5 +80,6 @@ class EShopCartPage < EShopPage
 
   element(:bulk_action_dropdown) { |b| b.shopping_cart.span(id: 'LineActions').select }
   element(:bulk_action_go) { |b| b.shopping_cart.span(id: 'LineActions').parent.button(class: 'ButtonReq', value: 'Go') }
+  value(:msg_container) { |b| b.shopping_cart.tds(class: 'ForegroundContainer').to_a.collect{ |l| l.text } }
 
 end

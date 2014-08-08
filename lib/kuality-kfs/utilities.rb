@@ -121,10 +121,12 @@ module Utilities
   # @return [String] The Account Number of the requested type if found by the service, or nil if not found
   def get_account_of_type(type)
     case type
-      when 'Unrestricted Account'
+      when 'Unrestricted Account', 'NonGrant'
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       when 'Endowed NonGrant'
         get_kuali_business_object('KFS-COA','Account','accountTypeCode=EN&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+      when 'Grant'
+        get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=CG*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       else
         nil
     end
