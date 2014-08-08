@@ -23,6 +23,9 @@ module GlobalConfig
   def parameter_service
     @@parameter_service ||= ksb_client.getParameterService()
   end
+  def permission_service
+    @@permission_service ||= ksb_client.getPermissionService()
+  end
   def workflow_document_service
     @@workflow_document_service ||= ksb_client.getWorkflowDocumentService()
   end
@@ -57,7 +60,16 @@ module GlobalConfig
   def get_aft_parameter_value(parameter_name)
     get_parameter_values('KFS-AFTEST', parameter_name)[0]
   end
-  # returns a list of principal IDs for a group
+  # returns a list of assignees for a group
+  def get_permission_assignees_by_template(namespace_code, template_name, permission_details)
+    key, value = permission_details.first
+    perm_details_list = StringMapEntryListType.new
+    perm_detail = StringMapEntryType.new
+    perm_detail.key = key.to_s
+    perm_detail.value = value.to_s
+    perm_details_list.entry.add(perm_detail)
+    permission_service.getPermissionAssigneesByTemplate(namespace_code, template_name, perm_details_list, StringMapEntryListType.new).assignee
+  end
   def get_group_member_principal_ids(group_id)
     group_service.getMemberPrincipalIds(group_id).getPrincipalId()
   end
@@ -71,6 +83,18 @@ module GlobalConfig
   def get_random_principal_id_for_role(name_space, role_name)
     principalIds = role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId()
     principalIds.get(java.lang.Math.random() * principalIds.size())
+  end
+  def get_random_principal_id_with_phone_number_for_role(name_space, role_name)
+    phone_number = nil
+    pid = nil
+    while phone_number.nil? || phone_number.empty?
+      pid = get_random_principal_id_for_role(name_space, role_name)
+      phone_number = identity_service.getEntityByPrincipalId(pid)
+                                     .getEntityTypeContactInfos().getEntityTypeContactInfo().get(0)
+                                     .getPhoneNumbers().getPhoneNumber().get(0)
+                                     .getPhoneNumber()
+    end
+    pid
   end
   def get_principal_name_for_principal_id(principal_name)
     identity_service.getEntityByPrincipalId(principal_name).getPrincipals().getPrincipal().get(0).getPrincipalName()
@@ -93,6 +117,15 @@ module GlobalConfig
        @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_for_role(name_space, role_name))
     end
   end
+  def get_random_principal_with_phone_name_for_role(name_space, role_name)
+    @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
+
+    if !@@prinicpal_names[name_space][role_name].nil?
+      @@prinicpal_names[name_space][role_name]
+    else
+      @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_with_phone_number_for_role(name_space, role_name))
+    end
+  end
   def get_principal_name_for_role(name_space, role_name)
     principal_names = Array.new
     role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalId().each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
@@ -102,6 +135,26 @@ module GlobalConfig
     principal_names = Array.new
     get_group_member_principal_ids(group_id).each {|id| principal_names.push(get_principal_name_for_principal_id(id))}
     principal_names
+  end
+  def get_document_initiator(document_type)
+    permission_details = {'documentTypeName' => document_type}
+    assignees = get_permission_assignees_by_template('KR-SYS', 'Initiate Document', permission_details).to_a
+    principal_id = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample.principalId
+    person = identity_service.getEntity(principal_id)
+    person.principals.principal.to_a.sample.principalName
+  end
+  def get_document_blanket_approver(document_type)
+    permission_details = {'documentTypeName' => document_type}
+    assignees = get_permission_assignees_by_template('KR-WKFLW', 'Blanket Approve Document', permission_details).to_a
+    assignee = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample
+    if assignee.nil?
+      principal_name = get_principal_name_for_role('KFS-SYS', 'Manager').sample
+    else
+      principal_id = assignee.principalId
+      person = identity_service.getEntity(principal_id)
+      principal_name = person.principals.principal.to_a.sample.principalName
+    end
+    principal_name
   end
   def get_kuali_business_objects(namespace_code, object_type, identifiers)
     # Create new mechanize agent and hit the main page
@@ -184,6 +237,22 @@ module GlobalConfig
     fetch_random_acount['accountNumber']
   end
   def fetch_random_acount
-    get_kuali_business_object('KFS-COA','Account','active=Y&accountExpirationDate=NULL&chartOfAccountsCode=' + get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE))
+    get_kuali_business_object('KFS-COA','Account',"active=Y&accountExpirationDate=NULL&chartOfAccountsCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")
   end
+  def fetch_random_capital_asset_object_code
+    current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR')
+    chart_code = get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
+    get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=CM&financialObjectTypeCode=EE&chartOfAccountsCode=#{chart_code}")['financialObjectCode'][0]
+  end
+  def fetch_random_capital_asset_number
+    # TODO : it took long time for asset search, so put several criteria to speed up the lookup
+    get_kuali_business_object('KFS-CAM','Asset',"active=true&capitalAssetTypeCode=A&inventoryStatusCode=A&conditionCode=E&campusCode=#{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}")['capitalAssetNumber'].sample
+  end
+  def get_principal_names_for_role(name_space, role_name)
+    role_service.getRoleMemberPrincipalIds(name_space, role_name, StringMapEntryListType.new).getPrincipalNames().to_a
+  end
+  def fetch_random_origination_code
+    get_kuali_business_object('KFS-SYS','OriginationCode','active=true')['financialSystemOriginationCode'].sample
+  end
+
 end

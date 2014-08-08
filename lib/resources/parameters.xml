@@ -417,7 +417,7 @@
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="fiscal_year=2014;reports_to_object_code=A000;object_type_code=ES;level_code=BADJ;object_sub_type_code=OE;cg_reporting_code=06SM;budget_aggregation_code=L"/>
+      <column name="VAL" value="reports_to_object_code=A000;object_type_code=ES;level_code=BADJ;object_sub_type_code=OE;cg_reporting_code=06SM;budget_aggregation_code=L"/>
       <column name="PARM_DESC_TXT" value="Defaults for the Object Code object"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
@@ -429,7 +429,7 @@
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
       <column name="VER_NBR" value="1"/>
       <column name="PARM_TYP_CD" value="VALID"/>
-      <column name="VAL" value="noc_fiscal_year=2014;noc_object_code=1000"/>
+      <column name="VAL" value="noc_object_code=1000"/>
       <column name="PARM_DESC_TXT" value="Defaults for the Sub Account Code object"/>
       <column name="EVAL_OPRTR_CD" value="A"/>
     </insert>
@@ -575,6 +575,18 @@
          <column name="PARM_TYP_CD" value="VALID"/>
          <column name="VAL" value="asset_type_code=019;asset_campus=IT"/>
          <column name="PARM_DESC_TXT" value="Defaults for the Asset Global object"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULT_REQS_INITIATOR"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="der9"/>
+         <column name="PARM_DESC_TXT" value="Default REQS initiator for automated functional testing"/>
          <column name="EVAL_OPRTR_CD" value="A"/>
        </insert>
 

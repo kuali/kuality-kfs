@@ -2,9 +2,9 @@ module Watir
   module Container
     def frm
       case
-        when iframe(id: 'iframeportlet').exist?
+        when iframe(id: 'iframeportlet').exists?
           iframe(id: 'iframeportlet')
-        when iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').exist?
+        when iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').exists?
           begin
             if iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet').exists?
               iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet').iframe(id: 'iframeportlet')
@@ -14,7 +14,7 @@ module Watir
           rescue
             iframe(id: /easyXDM_default\d+_provider/).iframe(id: 'iframeportlet')
           end
-        when iframe(id: /easyXDM_default\d+_provider/).exist?
+        when iframe(id: /easyXDM_default\d+_provider/).exists?
           iframe(id: /easyXDM_default\d+_provider/)
         else
           self
@@ -50,25 +50,25 @@ module Watir
   class Table
 
     # @return [TableRow] The first row of the Table. Hence, this may or may not be what you really want. It usually is, though.
-    def header_row
-      self[0]
+    def header_row(actual_row=0)
+      self[actual_row]
     end
 
     # @return [Array] An array of associative keys matching the text of the Table#header_row.
-    def header_keys
-      header_row.cells.collect { |x|
+    def header_keys(actual_row=0)
+      header_row(actual_row).cells.collect { |x|
         if x.text.empty?
           :checkboxes if x.checkbox.exists?
         else
-          snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').gsub(/_[_]+_/, '_').to_sym
+          snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').gsub(/[_]*$/, '').gsub(/_[_]+_/, '_').to_sym
         end
       }
     end
 
     # @param [Symbol] key The key in the Table#header_row associated with the desired column.
     # @return [Fixnum] The index into the Table#header_row where the column first appears. May not work as desired if key is duplicated in the header row.
-    def keyed_column_index(key)
-      header_keys.index(key)
+    def keyed_column_index(key, actual_row=0)
+      header_keys(actual_row).index(key)
     end
 
     # @param [Fixnum] columnnumber The column to select

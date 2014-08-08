@@ -43,8 +43,8 @@ class RequisitionPage < KFSBasePage
   value(:result_delivery_address_2) { |b| b.delivery_tab.rows[3].tds[0].text.strip }
   value(:result_delivery_date_required) { |b| b.delivery_tab.rows[3].tds[1].text.strip }
   value(:result_delivery_room) { |b| b.delivery_tab.rows[4].tds[0].text.strip }
-  value(:result_delivery_date_required_reason) { |b| b.delivery_tab.rows[4].tds[1].text.strip }
-  value(:result_delivery_instructions) { |b| b.delivery_tab.rows[5].tds[1].text.strip }
+  value(:result_delivery_date_required_reason) { |b| b.delivery_tab.rows[4].tds[1].text.include?('Room') ? '' : b.delivery_tab.rows[4].tds[1].text.strip }
+  value(:result_delivery_instructions) { |b| b.delivery_tab.rows[5].tds[1].text.include?('City') ? '' : b.delivery_tab.rows[5].tds[1].text.strip }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
   action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).when_present.click }
