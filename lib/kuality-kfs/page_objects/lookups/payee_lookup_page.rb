@@ -1,7 +1,6 @@
 class PayeeLookup < Lookups
 
   active_radios
-  error_messages
   document_header_elements
   alias_method :person_first_name, :first_name
   alias_method :person_last_name, :last_name
