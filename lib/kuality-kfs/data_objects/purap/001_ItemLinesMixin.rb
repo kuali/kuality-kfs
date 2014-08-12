@@ -37,6 +37,7 @@ module ItemLinesMixin
       # @param [Hash] il All the variable values for the item to be added to the collection
       def add_item_line(il)
         @items.add il.merge( { line_number: @items.length } )
+        @items[@items.length - 1].quantity = @items[@items.length - 1].quantity.gsub(/,/,'') unless @items[@items.length - 1].quantity.nil?
       end
 
       # Import from any remaining initial lines.
