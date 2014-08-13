@@ -65,12 +65,15 @@ class EShopCartObject < DataFactory
   end
 
   def absorb_items!
+    # Some user may have cart but no items. so use scp.msg_container.include?'Requisition has no line items' to check
     on EShopCartPage do |scp|
-      @items.clear
-      scp.suppliers.each do |supplier|
-        @items[supplier] = collection('ProductLineObject')
-        @items[supplier].supplier_name = supplier
-        @items[supplier].update_from_page!
+      unless  scp.msg_container.include?'Requisition has no line items'
+        @items.clear
+        scp.suppliers.each do |supplier|
+          @items[supplier] = collection('ProductLineObject')
+          @items[supplier].supplier_name = supplier
+          @items[supplier].update_from_page!
+        end
       end
     end
   end

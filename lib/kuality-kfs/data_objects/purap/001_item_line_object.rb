@@ -181,6 +181,7 @@ class ItemLineObjectCollection < LineObjectCollection
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"
       end
     end
+    pulled_item[:quantity] = pulled_item[:quantity].gsub(/,/,'') unless pulled_item[:quantity].nil?
     pulled_item.delete_if { |_, v| v.nil? }
   end
 
