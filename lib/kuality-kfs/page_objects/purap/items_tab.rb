@@ -67,7 +67,15 @@ class ItemsTab < PageFactory
 
     def item_col_for(b, k)
       opi = on_process_items?(b)
-      hl = opi ? 6 : 2 # Where's the header line?
+      # Where's the header line?
+      hl = case
+             when opi
+               6
+             when req_from_eshop?(b)
+               2
+             else
+               1
+           end
       case k
         when :type
           b.items_table.keyed_column_index(:item_type, hl)
@@ -96,6 +104,10 @@ class ItemsTab < PageFactory
 
     def on_process_items?(b)
       b.frm.div(id: /tab-ProcessItems-div/m).present?
+    end
+
+    def req_from_eshop?(b)
+      b.frm.div(id: /^headerarea/).h1.text.include?('Requisition') && !b.type.present?
     end
   end
 
