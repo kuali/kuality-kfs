@@ -2,7 +2,7 @@ class NonCheckDisbursementObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Non-Check Disbursement Document', type_code: 'ND' }
+  DOC_INFO = { label: 'Non-Check Disbursement Document', type_code: 'ND', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation, :bank_code
 

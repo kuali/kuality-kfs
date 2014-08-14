@@ -1,7 +1,7 @@
 class SalaryExpenseTransferObject < KFSDataObject
 
 
-  DOC_INFO = { label: 'Salary Expense Transfer Document', type_code: 'ST' }
+  DOC_INFO = { label: 'Salary Expense Transfer Document', type_code: 'ST', transactional?: true }
 
   attr_accessor :employee_id
 

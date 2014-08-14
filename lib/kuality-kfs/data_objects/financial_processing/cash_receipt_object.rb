@@ -4,7 +4,7 @@ class CashReceiptObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Cash Receipt Document', type_code: 'CR' }
+  DOC_INFO = { label: 'Cash Receipt Document', type_code: 'CR', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation
 
