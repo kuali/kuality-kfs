@@ -47,6 +47,8 @@ class PurchaseOrderBasePage <  KFSBasePage
       alias_method :vendor_zipcode, :vendor_postal_code
       element(:vendor_country) { |b| b.select(name: 'document.vendorCountryCode') }
       action(:vendor_search) { |b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.vnd.businessobject.VendorDetail!!\)/m).click }
+      element(:vendor_section) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section') }
+      value(:result_vendor_choice) { |b| b.vendor_section.rows[7].tds[1].text.strip }
 
       #VENDOR INFO
       element(:vendor_choice) { |b| b.select(name: 'document.purchaseOrderVendorChoiceCode') }
