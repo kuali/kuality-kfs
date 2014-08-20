@@ -580,6 +580,30 @@
        <insert tableName="KRCR_PARM_T">
          <column name="NMSPC_CD" value="KFS-AFTEST"/>
          <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="TEST_ST_ACCOUNT_TYPES_RATES_ACCESS_SECURITY"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="initiator=ceh19;employee=2569631;to_account_different_types=5032020;to_account_different_rates=5088700;user_outside_organization=dw68;user_inside_organization=rlo4"/>
+         <column name="PARM_DESC_TXT" value="The specific data values required for Scenario: Salary Expense Transfer test between account types, between rates, and for labor access security"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="TEST_ST_PRIVILEGED_CROSS_DIVISIONAL_OBJECT_EDIT"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="employee=1013939;to_account_different_types=7543814;labor_object_code=5370"/>
+         <column name="PARM_DESC_TXT" value="The specific data values required for Scenario: Submit a salary transfer edoc between account types, edit the object code, verify pending entries, and submit successfully"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
          <column name="PARM_NM" value="DEFAULTS_FOR_PURCHASE_ORDER_AMENDMENT"/>
          <column name="APPL_ID" value="KFS"/>
          <column name="OBJ_ID" valueNumeric="sys_guid()"/>

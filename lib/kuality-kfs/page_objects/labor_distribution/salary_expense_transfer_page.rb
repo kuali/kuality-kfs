@@ -42,7 +42,7 @@ class SalaryExpenseTransferPage < FinancialProcessingPage
     .elements(id: /document.#{t}AccountingLine(.*?)chartOfAccountsCode/).length # Should show up fairly consistently
   end
 
-  accounting_lines   #nkk4 create SalaryExpenseTransferAccountingLine page that subclasses AccountingLine page. then only neeed to define additioanl elelments in SalaryExpenseTransferAccoutingLinesObject subclass
+  accounting_lines
   labor_ledger_pending_entries
 
 end

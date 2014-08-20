@@ -7,8 +7,9 @@ class SalaryExpenseTransferObject < KFSDataObject
   DOC_INFO = { label: 'Salary Expense Transfer Document', type_code: 'ST' }
 
   attr_accessor :fiscal_year, :employee_id,
-                :actuals_balance_type, :labor_balance_type, :debit_code, :credit_code, :period_unassigned,
-                :remembered_employee_id
+                :remembered_employee_id,
+                # constants used for verifying LLPE entries, values in KFS Parameters table
+                :actuals_balance_type, :labor_balance_type, :debit_code, :credit_code, :period_unassigned
 
   def defaults
     # We'll merge the default_items so that our class defaults override it
@@ -36,7 +37,7 @@ class SalaryExpenseTransferObject < KFSDataObject
     end
   end
 
-  def pull_specified_accounting_line(type, row, page)   #nkk4 move to the mixin for the accounting lines
+  def pull_specified_accounting_line(type, row, page)
 
     if type == :source
       chart_code = page.chart_code_value type, row
@@ -56,7 +57,15 @@ class SalaryExpenseTransferObject < KFSDataObject
       chart_code = page.st_chart_code type, row
       account_number = page.st_account_number type, row
       sub_account_code = page.st_sub_account_code type, row
-      object_code = page.st_object_code type, row
+
+      # Object code may or may not be editable on the page.
+      # Different page objects are used depending on the page data which affects editability so try both if the first one fails.
+      begin
+        object_code = page.st_object_code type, row    #editable
+      rescue
+        object_code = page.object_code_value type, row  #non-editable
+      end
+
       sub_object_code = page.st_sub_object_code type, row
       project_code = page.st_project_code type; row
       organization_reference_id = page.st_organization_reference_id type, row
