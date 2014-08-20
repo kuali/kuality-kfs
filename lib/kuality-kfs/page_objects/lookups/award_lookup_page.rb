@@ -23,5 +23,6 @@ class AwardLookupPage < Lookups
   element(:project_director_principal_name) { |b| b.frm.text_field(name: 'lookupPerson.principalName') }
   element(:organization_code) { |b| b.frm.text_field(name: 'awardOrganizations.organization.organizationCode') }
   element(:award_account_number) { |b| b.frm.text_field(name: 'awardAccounts.account.accountNumber') }
+  element(:view_award_links) { |b| b.results_table.links(text: 'View Award') }
 
 end

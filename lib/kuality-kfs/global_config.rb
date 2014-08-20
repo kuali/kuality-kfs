@@ -254,5 +254,8 @@ module GlobalConfig
   def fetch_random_origination_code
     get_kuali_business_object('KFS-SYS','OriginationCode','active=true')['financialSystemOriginationCode'].sample
   end
+  def fetch_random_department_organization_code
+    get_kuali_business_object('KFS-SYS','Organization','organizationTypeCode=D&organizationCode=01**&active=true')['organizationCode'].sample
+  end
 
 end

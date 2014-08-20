@@ -127,6 +127,8 @@ module Utilities
         get_kuali_business_object('KFS-COA','Account','accountTypeCode=EN&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       when 'Grant'
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=CG*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+      when 'Endowed Grant'
+        get_kuali_business_object('KFS-COA','Account','accountTypeCode=EN&organizationCode=01**&subFundGroupCode=CG*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       else
         nil
     end
