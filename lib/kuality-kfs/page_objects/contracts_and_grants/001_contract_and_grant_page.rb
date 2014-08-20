@@ -67,7 +67,7 @@ class ContractAndGrantPage < KFSBasePage
     def subcontractor_lines
       element(:cg_new_subcontractor_number) { |t,b| b.frm.text_field(name: "document.newMaintainableObject.add.#{t}Subcontractors.subcontractorNumber") }
       element(:cg_new_subcontractor_description) { |t,b| b.frm.text_field(name: "document.newMaintainableObject.add.#{t}Subcontractors.#{t}SubcontractorDescription") }
-      element(:cg_new_subcontractor_amount) { |t,b| b.frm.text_field(name: "document.newMaintainableObject.add.#{t}Subcontractors.subcontractorAmount") }
+      element(:cg_new_subcontractor_amount) { |t,b| b.frm.text_field(name: "document.newMaintainableObject.add.#{t}Subcontractors.#{t}SubcontractorAmount") }
       element(:cg_new_subcontractor_active_indicator) { |t,b| b.frm.checkbox(name: "document.newMaintainableObject.add.#{t}Subcontractors.active") }
       action(:cg_add_new_subcontractor) { |t,b| b.frm.button(id: /^methodToCall\.addLine\.#{t}Subcontractors/).click }
       action(:cg_delete_subcontractor) { |t,i=0, b| b.frm.button(id: "methodToCall.deleteLine.#{t}Subcontractors.(!!.line#{i}").click }
@@ -77,11 +77,11 @@ class ContractAndGrantPage < KFSBasePage
         b.cg_subcontractor_tab.span(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].subcontractorNumber.div")
       }
       action(:cg_update_subcontractor_description) { |t,i=0, b| b.cg_subcontractor_tab.text_field(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].#{t}SubcontractorDescription") }
-      action(:cg_update_subcontractor_amount) { |t,i=0, b| b.cg_subcontractor_tab.text_field(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].subcontractorAmount") }
+      action(:cg_update_subcontractor_amount) { |t,i=0, b| b.cg_subcontractor_tab.text_field(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].#{t}SubcontractorAmount") }
       action(:cg_update_subcontractor_active_indicator) { |t,i=0, b| b.cg_subcontractor_tab.text_field(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].active") }
       value(:cg_old_subcontractor_number) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.oldMaintainableObject.#{t}Subcontractors[#{i}].subcontractorNumber.div").text.strip }
       value(:cg_old_subcontractor_description) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.oldMaintainableObject.#{t}Subcontractors[#{i}].#{t}SubcontractorDescription.div").text.strip }
-      value(:cg_old_subcontractor_amount) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.oldMaintainableObject.#{t}Subcontractors[#{i}].subcontractorAmount.div").text.strip }
+      value(:cg_old_subcontractor_amount) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.oldMaintainableObject.#{t}Subcontractors[#{i}].#{t}SubcontractorAmount.div").text.strip }
       value(:cg_old_subcontractor_active_indicator) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.oldMaintainableObject.#{t}Subcontractors[#{i}].active.div").text.strip }
       action(:cg_result_subcontractor_number) { |t,i=0, b| b.cg_subcontractor_tab.span(id: "document.newMaintainableObject.#{t}Subcontractors[#{i}].subcontractorNumber.div").text.strip }
       alias_method :subcontractor_tab,:cg_subcontractor_tab
