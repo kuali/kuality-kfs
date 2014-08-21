@@ -30,6 +30,8 @@ class AwardAccountLineObject < DataFactory
 
   def edit(opts={})
     on AwardPage do |vp|
+      raise ArgumentError, 'Chart Code cannot be updated!' unless opts[:chart_code].nil?
+      raise ArgumentError, 'Account Number cannot be updated!' unless opts[:account_number].nil?
       vp.update_account_project_director_principal_name(@line_number).fit   opts[:principal_name]
       vp.update_account_active_indicator(@line_number).fit                  opts[:active]
     end

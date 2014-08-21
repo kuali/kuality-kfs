@@ -31,6 +31,7 @@ class SubcontractorLineObject < DataFactory
 
   def edit(opts={})
     on page_class_for (on(KFSBasePage).doc_title) do |cgp|
+      raise ArgumentError, 'Subcontractor Number cannot be updated!' unless opts[:subcontractor_number].nil?
       cgp.update_subcontractor_description(@line_number).fit      opts[:subcontractor_description]
       cgp.update_subcontractor_amount(@line_number).fit           opts[:subcontractor_amount]
       cgp.update_subcontractor_active_indicator(@line_number).fit opts[:active]

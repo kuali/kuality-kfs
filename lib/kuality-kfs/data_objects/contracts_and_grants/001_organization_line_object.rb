@@ -31,6 +31,8 @@ class OrganizationLineObject < DataFactory
 
   def edit(opts={})
     on page_class_for (on(KFSBasePage).doc_title) do |cgp|
+      raise ArgumentError, 'Chart Code cannot be updated!' unless opts[:chart_code].nil?
+      raise ArgumentError, 'Organization Code cannot be updated!' unless opts[:organization_code].nil?
       cgp.update_organization_primary(@line_number).fit           opts[:primary]
       cgp.update_organization_active_indicator(@line_number).fit  opts[:active]
     end
