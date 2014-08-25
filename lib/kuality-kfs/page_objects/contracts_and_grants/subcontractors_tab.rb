@@ -8,7 +8,7 @@ class SubcontractorsTab < PageFactory
   element(:new_subcontractor_amount) { |b| b.frm.text_field(name: /document.newMaintainableObject.add.(proposal|award)Subcontractors.(proposal|award)SubcontractorAmount/) }
   element(:new_subcontractor_active_indicator) { |b| b.frm.checkbox(name: /document.newMaintainableObject.add.(proposal|award)Subcontractors.active/) }
   action(:add_new_subcontractor) { |b| b.frm.button(id: /^methodToCall\.addLine\.(proposal|award)Subcontractors/).click }
-  action(:delete_subcontractor) { |i=0, b| b.frm.button(id: /methodToCall.deleteLine.(proposal|award)Subcontractors.(!!.line#{i}/).click }
+  action(:delete_subcontractor) { |i=0, b| b.frm.button(id: /methodToCall.deleteLine.(proposal|award)Subcontractors.\(!!.line#{i}/).click }
   element(:subcontractor_tab) { |b| b.frm.div(id: 'tab-Subcontractors-div') }
   value(:current_subcontractor_count) { |b| b.subcontractor_tab.spans(class: 'left', text: /Subcontractor [(]/m).length }
   action(:update_subcontractor_number) { | i=0, b|

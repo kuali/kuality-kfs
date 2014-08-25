@@ -66,12 +66,11 @@ class OrganizationLineObjectCollection < LineObjectCollection
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       unless lines.current_organization_count.zero?
-        (0..(tab.current_items_count - 1)).to_a.collect!{ |i|
-          pull_existing_items(i, target).merge(pull_extended_existing_items(i, target))
+        (0..(lines.current_organization_count - 1)).to_a.collect!{ |i|
+          pull_existing_organization(i, target).merge(pull_extended_existing_organization(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
-          self.last.accounting_lines.update_from_page! target
         }
       end
 

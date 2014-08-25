@@ -65,7 +65,6 @@ class AwardAccountLineObjectCollection < LineObjectCollection
     on AwardPage do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
-      lines.expand_all
       unless lines.current_account_count.zero?
         (0..(lines.current_account_count - 1)).to_a.collect!{ |i|
           pull_existing_award_account(i, target).merge(pull_extended_existing_award_account(i, target))

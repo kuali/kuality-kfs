@@ -65,7 +65,6 @@ class ProjectDirectorLineObjectCollection < LineObjectCollection
     on ProjectDirectorsTab do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
-      lines.expand_all
       unless lines.current_project_director_count.zero?
         (0..(lines.current_project_director_count - 1)).to_a.collect!{ |i|
           pull_existing_project_director(i, target).merge(pull_extended_existing_project_director(i, target))

@@ -9,7 +9,7 @@ class OrganizationsTab < PageFactory
   element(:new_organization_active_indicator) { |b| b.frm.checkbox(name: /document.newMaintainableObject.add.(proposal|award)Organizations.active/) }
   action(:add_new_organization) { |b| b.frm.button(id: /^methodToCall\.addLine\.(proposal|award)Organizations/).click }
 
-  action(:delete_organization) { |i=0, b| b.frm.button(id: /methodToCall.deleteLine.(proposal|award)Organizations.(!!.line#{i}/).click }
+  action(:delete_organization) { |i=0, b| b.frm.button(id: /methodToCall.deleteLine.(proposal|award)Organizations.\(!!.line#{i}/).click }
   element(:organization_tab) { |b| b.frm.div(id: 'tab-Organizations-div') }
   value(:current_organization_count) { |b| b.organization_tab.spans(class: 'left', text: /Organization [(]/m).length }
   action(:update_organization_chart_code) { | i=0, b|
@@ -26,5 +26,5 @@ class OrganizationsTab < PageFactory
   action(:old_organization_active_indicator) { |i=0, b| b.organization_tab.span(id: /document.oldMaintainableObject.(proposal|award)Organizations\[#{i}\].active.div/).text.strip }
   action(:result_organization_code) { |i=0, b| b.organization_tab.span(id: /document.newMaintainableObject.(proposal|award)Organizations\[#{i}\].organizationCode.div/).text.strip }
   action(:result_organization_chart_code) { |i=0, b| b.organization_tab.span(id: /document.newMaintainableObject.(proposal|award)Organizations\[#{i}\].chartOfAccountsCode.div/).text.strip }
-
+  value(:organization_errors) { |b| b.organization_tab.div(class: 'left-errmsg-tab').div.divs.collect{ |div| div.text }  }
 end
