@@ -16,31 +16,34 @@ class OrganizationLineObject < DataFactory
   end
 
   def create
-    # For now, this only supports Vendor. We'll need to refactor appropriately
-    # if any other object needs this collection.
-    puts 'header ', on(KFSBasePage).doc_title
-    on page_class_for (on(KFSBasePage).doc_title) do |pp|
-      pp.new_organization_chart_code.fit       @chart_code
-      pp.new_organization_code.fit             @organization_code
-      pp.new_organization_primary.fit          @primary
-      pp.new_organization_active_indicator.fit @active
-      fill_out_extended_attributes
-      pp.add_new_organization
+     on OrganizationsTab do |tab|
+       tab.new_organization_chart_code.fit       @chart_code
+       tab.new_organization_code.fit             @organization_code
+       tab.new_organization_primary.fit          @primary
+       tab.new_organization_active_indicator.fit @active
+       fill_out_extended_attributes
+       tab.add_new_organization
     end
   end
 
   def edit(opts={})
-    on page_class_for (on(KFSBasePage).doc_title) do |cgp|
+    edit_attributes(opts)
+    edit_extended_attributes(opts)
+    update_options(opts)
+  end
+
+  def edit_attributes(opts = {})
+    on OrganizationsTab do |tab|
       raise ArgumentError, 'Chart Code cannot be updated!' unless opts[:chart_code].nil?
       raise ArgumentError, 'Organization Code cannot be updated!' unless opts[:organization_code].nil?
-      cgp.update_organization_primary(@line_number).fit           opts[:primary]
-      cgp.update_organization_active_indicator(@line_number).fit  opts[:active]
+      tab.update_organization_primary(@line_number).fit           opts[:primary]
+      tab.update_organization_active_indicator(@line_number).fit  opts[:active]
     end
     update_options(opts)
   end
 
   def delete
-    on(page_class_for(on(KFSBasePage).doc_title)).delete_organization @line_number
+    on(OrganizationsTab).delete_organization @line_number
   end
 
   def fill_out_extended_attributes
@@ -59,16 +62,16 @@ class OrganizationLineObjectCollection < LineObjectCollection
   contains OrganizationLineObject
 
   def update_from_page!(target=:new)
-    on page_class_for (on(KFSBasePage).doc_title) do |lines|
+    on OrganizationsTab do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
-      lines.expand_all
       unless lines.current_organization_count.zero?
-        (0..(lines.current_organization_count - 1)).to_a.collect!{ |i|
-          pull_existing_organization(i, target).merge(pull_extended_existing_organization(i, target))
+        (0..(tab.current_items_count - 1)).to_a.collect!{ |i|
+          pull_existing_items(i, target).merge(pull_extended_existing_items(i, target))
         }.each { |new_obj|
           # Update the stored lines
           self << (make contained_class, new_obj)
+          self.last.accounting_lines.update_from_page! target
         }
       end
 
@@ -81,26 +84,27 @@ class OrganizationLineObjectCollection < LineObjectCollection
   def pull_existing_organization(i=0, target=:new)
     pulled_organization = Hash.new
 
-    on page_class_for (on(KFSBasePage).doc_title) do |cgp|
+    on OrganizationsTab do |tab|
       case target
         when :old
           pulled_organization = {
-              chart_code:           cgp.old_organization_chart_code(i),
-              organization_code:    cgp.old_organization_code(i),
-              primary:              yesno2setclear(cgp.old_organization_primary(i)),
-              active:               yesno2setclear(cgp.old_organization_active_indicator(i))
+              chart_code:           tab.old_organization_chart_code(i),
+              organization_code:    tab.old_organization_code(i),
+              primary:              yesno2setclear(tab.old_organization_primary(i)),
+              active:               yesno2setclear(tab.old_organization_active_indicator(i))
           }
         when :new
           pulled_organization = {
-              chart_code:           cgp.update_organization_chart_code(i).text.strip,
-              organization_code:    cgp.update_organization_code(i).text.strip,
-              primary:              yesno2setclear(cgp.update_organization_primary(i).value),
-              active:               yesno2setclear(cgp.update_organization_active_indicator(i).value)
+              chart_code:           tab.update_organization_chart_code(i).text.strip,
+              organization_code:    tab.update_organization_code(i).text.strip,
+              primary:              yesno2setclear(tab.update_organization_primary(i).value),
+              active:               yesno2setclear(tab.update_organization_active_indicator(i).value)
           }
       end
     end
 
     pulled_organization
+    pulled_organization.delete_if { |_, v| v.nil? }
   end
 
   # @param [Fixnum] i The line number to look for (zero-based)

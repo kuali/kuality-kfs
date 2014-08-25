@@ -16,24 +16,28 @@ class AwardAccountLineObject < DataFactory
   end
 
   def create
-    # For now, this only supports Vendor. We'll need to refactor appropriately
-    # if any other object needs this collection.
-    on AwardPage do |pp|
-      pp.new_account_chart_code.fit                             @chart_code
-      pp.new_account_number.fit                                 @account_number
-      pp.new_account_project_director_principal_name.fit        @principal_name
-      pp.new_account_active_indicator.fit                       @active
+    on AwardPage do |ap|
+      ap.new_account_chart_code.fit                             @chart_code
+      ap.new_account_number.fit                                 @account_number
+      ap.new_account_project_director_principal_name.fit        @principal_name
+      ap.new_account_active_indicator.fit                       @active
       fill_out_extended_attributes
-      pp.add_new_account
+      ap.add_new_account
     end
   end
 
   def edit(opts={})
-    on AwardPage do |vp|
+    edit_attributes(opts)
+    edit_extended_attributes(opts)
+    update_options(opts)
+  end
+
+  def edit_attributes(opts = {})
+    on AwardPage do |ap|
       raise ArgumentError, 'Chart Code cannot be updated!' unless opts[:chart_code].nil?
       raise ArgumentError, 'Account Number cannot be updated!' unless opts[:account_number].nil?
-      vp.update_account_project_director_principal_name(@line_number).fit   opts[:principal_name]
-      vp.update_account_active_indicator(@line_number).fit                  opts[:active]
+      ap.update_account_project_director_principal_name(@line_number).fit   opts[:principal_name]
+      ap.update_account_active_indicator(@line_number).fit                  opts[:active]
     end
     update_options(opts)
   end
@@ -80,21 +84,21 @@ class AwardAccountLineObjectCollection < LineObjectCollection
   def pull_existing_award_account(i=0, target=:new)
     pulled_award_account = Hash.new
 
-    on AwardPage do |vp|
+    on AwardPage do |ap|
       case target
         when :old
           pulled_award_account = {
-              chart_code:           vp.old_account_chart_code(i),
-              account_number:       vp.old_account_number(i),
-              principal_name:       vp.old_account_project_director_principal_name(i),
-              active:               yesno2setclear(vp.old_account_active_indicator(i))
+              chart_code:           ap.old_account_chart_code(i),
+              account_number:       ap.old_account_number(i),
+              principal_name:       ap.old_account_project_director_principal_name(i),
+              active:               yesno2setclear(ap.old_account_active_indicator(i))
           }
         when :new
           pulled_award_account = {
-              chart_code:           vp.update_account_chart_code(i).text.strip,
-              account_number:       vp.update_account_number(i).text.strip,
-              principal_name:       vp.update_account_project_director_principal_name(i).value.strip,
-              active:               yesno2setclear(vp.update_account_active_indicator(i).value)
+              chart_code:           ap.update_account_chart_code(i).text.strip,
+              account_number:       ap.update_account_number(i).text.strip,
+              principal_name:       ap.update_account_project_director_principal_name(i).value.strip,
+              active:               yesno2setclear(ap.update_account_active_indicator(i).value)
           }
       end
     end

@@ -16,30 +16,34 @@ class ProjectDirectorLineObject < DataFactory
   end
 
   def create
-    # For now, this only supports Vendor. We'll need to refactor appropriately
-    # if any other object needs this collection.
-    on page_class_for (on(KFSBasePage).doc_title) do |pp|
-      pp.new_project_director_principal_name.fit         @principal_name
-      pp.new_project_director_primary.fit                @primary
-      pp.new_project_director_title.fit                  @title
-      pp.new_project_director_active_indicator.fit       @active
-      fill_out_extended_attributes
-      pp.add_new_project_director
+     on ProjectDirectorsTab do |tab|
+       tab.new_project_director_principal_name.fit         @principal_name
+       tab.new_project_director_primary.fit                @primary
+       tab.new_project_director_title.fit                  @title
+       tab.new_project_director_active_indicator.fit       @active
+       fill_out_extended_attributes
+       tab.add_new_project_director
     end
   end
 
   def edit(opts={})
-    on page_class_for (on(KFSBasePage).doc_title) do |vp|
-      vp.update_project_director_principal_name(@line_number).fit    opts[:principal_name]
-      vp.update_project_director_primary(@line_number).fit           opts[:primary]
-      vp.update_project_director_title(@line_number).fit             opts[:title]
-      vp.update_project_director_active_indicator(@line_number).fit  opts[:active]
+    edit_attributes(opts)
+    edit_extended_attributes(opts)
+    update_options(opts)
+  end
+
+  def edit_attributes(opts = {})
+    on ProjectDirectorsTab do |tab|
+      tab.update_project_director_principal_name(@line_number).fit    opts[:principal_name]
+      tab.update_project_director_primary(@line_number).fit           opts[:primary]
+      tab.update_project_director_title(@line_number).fit             opts[:title]
+      tabupdate_project_director_active_indicator(@line_number).fit  opts[:active]
     end
     update_options(opts)
   end
 
   def delete
-    on(page_class_for (on(KFSBasePage).doc_title)).delete_project_director @line_number
+    on(ProjectDirectorsTab).delete_project_director @line_number
   end
 
   def fill_out_extended_attributes
@@ -58,7 +62,7 @@ class ProjectDirectorLineObjectCollection < LineObjectCollection
   contains ProjectDirectorLineObject
 
   def update_from_page!(target=:new)
-    on page_class_for (on(KFSBasePage).doc_title) do |lines|
+    on ProjectDirectorsTab do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
@@ -80,21 +84,21 @@ class ProjectDirectorLineObjectCollection < LineObjectCollection
   def pull_existing_project_director(i=0, target=:new)
     pulled_project_director = Hash.new
 
-    on page_class_for (on(KFSBasePage).doc_title) do |vp|
+    on ProjectDirectorsTab do |tab|
       case target
         when :old
           pulled_project_director = {
-              principal_name:       vp.old_project_director_principal_name(i),
-              title:                vp.old_project_director_title(i),
-              primary:              yesno2setclear(vp.old_project_director_primary_indicator(i)),
-              active:               yesno2setclear(vp.old_project_director_active_indicator(i))
+              principal_name:       tab.old_project_director_principal_name(i),
+              title:                tab.old_project_director_title(i),
+              primary:              yesno2setclear(tab.old_project_director_primary_indicator(i)),
+              active:               yesno2setclear(tab.old_project_director_active_indicator(i))
           }
         when :new
           pulled_project_director = {
-              principal_name:       vp.update_project_director_principal_name(i).selected_options.first.text,
-              title:                vp.update_project_director_title(i),
-              primary:              yesno2setclear(vp.update_project_director_primary_indicator(i).value),
-              active:               yesno2setclear(vp.update_project_director_active_indicator(i).value)
+              principal_name:       tab.update_project_director_principal_name(i).selected_options.first.text,
+              title:                tab.update_project_director_title(i),
+              primary:              yesno2setclear(tab.update_project_director_primary_indicator(i).value),
+              active:               yesno2setclear(tab.update_project_director_active_indicator(i).value)
           }
       end
     end

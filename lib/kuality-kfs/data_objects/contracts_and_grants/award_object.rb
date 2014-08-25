@@ -101,6 +101,45 @@ class AwardObject < KFSDataObject
     Hash.new
   end
 
+  def update(opts={})
+    puts 'award edit', opts
+    on AwardPage do |page|
+      edit_fields opts, page, :agency_number, :status, :project_title, :start_date, :stop_date, :direct_cost_amount, :indirect_cost_amount,
+                  :entry_date, :award_type, :purpose_code,:grant_number, :grant_description
+    end
+    update_options(opts)
+  end
+  alias_method :edit, :update
 
+  def pick_proposal(proposal)
+
+    on(AwardPage).proposal_search
+    on ProposalLookupPage do |page|
+      page.proposal_number.fit proposal.proposal_number
+      page.search
+      page.return_value_links.first.click
+      page.use_new_tab
+      page.close_parents
+    end
+    @proposal_number = on(AwardPage).proposal_number
+
+  end
+
+  def view_via(mode=:doc_search)
+    case mode
+      when :doc_search
+        view
+      when :inquiry
+        visit(MainPage).award
+        on AwardLookupPage do |alp|
+          alp.proposal_number.fit @proposal_number
+          alp.grant_number.fit    @grant_number
+          alp.search
+          alp.view_award_random # There should either be one or none, right?
+        end
+      else
+        raise ArgumentError, "Unknown view mode (#{mode}) requested!"
+    end
+  end
 end
 

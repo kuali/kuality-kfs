@@ -24,5 +24,6 @@ class AwardLookupPage < Lookups
   element(:organization_code) { |b| b.frm.text_field(name: 'awardOrganizations.organization.organizationCode') }
   element(:award_account_number) { |b| b.frm.text_field(name: 'awardAccounts.account.accountNumber') }
   element(:view_award_links) { |b| b.results_table.links(text: 'View Award') }
+  action(:view_award_random) { |b| b.view_award_links[rand(b.view_award_links.length)].click; b.use_new_tab; b.close_parents }
 
 end

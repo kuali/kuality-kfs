@@ -16,31 +16,35 @@ class SubcontractorLineObject < DataFactory
   end
 
   def create
-    # For now, this only supports Vendor. We'll need to refactor appropriately
-    # if any other object needs this collection.
-    puts 'header ', on(KFSBasePage).doc_title
-    on page_class_for (on(KFSBasePage).doc_title) do |pp|
-      pp.new_subcontractor_number.fit           @subcontractor_number
-      pp.new_subcontractor_description.fit      @subcontractor_description
-      pp.new_subcontractor_amount.fit           @subcontractor_amount
-      pp.new_subcontractor_active_indicator.fit @active
+    on SubcontractorsTab do |tab|
+      tab.new_subcontractor_number.fit           @subcontractor_number
+      tab.new_subcontractor_description.fit      @subcontractor_description
+      tab.new_subcontractor_amount.fit           @subcontractor_amount
+      tab.new_subcontractor_active_indicator.fit @active
       fill_out_extended_attributes
-      pp.add_new_subcontractor
+      tab.add_new_subcontractor
     end
   end
 
   def edit(opts={})
-    on page_class_for (on(KFSBasePage).doc_title) do |cgp|
-      raise ArgumentError, 'Subcontractor Number cannot be updated!' unless opts[:subcontractor_number].nil?
-      cgp.update_subcontractor_description(@line_number).fit      opts[:subcontractor_description]
-      cgp.update_subcontractor_amount(@line_number).fit           opts[:subcontractor_amount]
-      cgp.update_subcontractor_active_indicator(@line_number).fit opts[:active]
-    end
+    edit_attributes(opts)
+    edit_extended_attributes(opts)
     update_options(opts)
   end
 
+  def edit_attributes(opts = {})
+    on SubcontractorsTab do |tab|
+      raise ArgumentError, 'Subcontractor Number cannot be updated!' unless opts[:subcontractor_number].nil?
+      tab.update_subcontractor_description(@line_number).fit      opts[:subcontractor_description]
+      tab.update_subcontractor_amount(@line_number).fit           opts[:subcontractor_amount]
+      tab.update_subcontractor_active_indicator(@line_number).fit opts[:active]
+    end
+    update_options(tab)
+  end
+
+
   def delete
-    on(page_class_for(on(KFSBasePage).doc_title)).delete_subcontractor @line_number
+    on(SubcontractorsTab).delete_subcontractor @line_number
   end
 
   def fill_out_extended_attributes
@@ -59,7 +63,7 @@ class SubcontractorLineObjectCollection < LineObjectCollection
   contains SubcontractorLineObject
 
   def update_from_page!(target=:new)
-    on page_class_for (on(KFSBasePage).doc_title) do |lines|
+    on SubcontractorsTab do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
       lines.expand_all
@@ -81,21 +85,21 @@ class SubcontractorLineObjectCollection < LineObjectCollection
   def pull_existing_subcontractor(i=0, target=:new)
     pulled_subcontractor = Hash.new
 
-    on page_class_for (on(KFSBasePage).doc_title) do |cgp|
+    on SubcontractorsTab do |tab|
       case target
         when :old
           pulled_subcontractor = {
-              subcontractor_number:           cgp.old_subcontractor_number(i),
-              subcontractor_description:      cgp.old_subcontractor_description(i),
-              subcontractor_amount:           cgp.old_subcontractor_amount,
-              active:                         yesno2setclear(cgp.old_subcontractor_active_indicator(i))
+              subcontractor_number:           tab.old_subcontractor_number(i),
+              subcontractor_description:      tab.old_subcontractor_description(i),
+              subcontractor_amount:           tab.old_subcontractor_amount,
+              active:                         yesno2setclear(tab.old_subcontractor_active_indicator(i))
           }
         when :new
           pulled_subcontractor = {
-              subcontractor_number:           cgp.update_subcontractor_number(i).text.strip,
-              subcontractor_description:      cgp.update_subcontractor_description(i).value.strip,
-              subcontractor_amount:           cgp.update_subcontractor_amount.value.strip,
-              active:                         yesno2setclear(cgp.update_subcontractor_active_indicator(i).value.strip)
+              subcontractor_number:           tab.update_subcontractor_number(i).text.strip,
+              subcontractor_description:      tab.update_subcontractor_description(i).value.strip,
+              subcontractor_amount:           tab.update_subcontractor_amount.value.strip,
+              active:                         yesno2setclear(tab.update_subcontractor_active_indicator(i).value.strip)
           }
       end
     end
