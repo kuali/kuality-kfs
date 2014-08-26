@@ -6,7 +6,7 @@ And /^I (#{BasePage::available_buttons}) a[n]? (.*) document$/ do |button, docum
     visit(MainPage).send(doc_object)
   end
 
-  set(doc_object, (create object_klass, press: button.gsub(' ', '_')))
+  set(doc_object, (create object_klass, press: snake_case(button)))
   sleep 10 if (button == 'blanket_approve') || (button == 'approve')
 end
 

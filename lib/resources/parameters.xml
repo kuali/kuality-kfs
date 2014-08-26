@@ -74,6 +74,18 @@
     <insert tableName="KRCR_PARM_T">
       <column name="NMSPC_CD" value="KFS-AFTEST"/>
       <column name="CMPNT_CD" value="All"/>
+      <column name="PARM_NM" value="DFAULT_SUB_ACCOUNT_TYPE_CODE"/>
+      <column name="APPL_ID" value="KFS"/>
+      <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+      <column name="VER_NBR" value="1"/>
+      <column name="PARM_TYP_CD" value="VALID"/>
+      <column name="VAL" value="CS"/>
+      <column name="PARM_DESC_TXT" value="Default sub account type code for automated functional testing"/>
+      <column name="EVAL_OPRTR_CD" value="A"/>
+    </insert>
+    <insert tableName="KRCR_PARM_T">
+      <column name="NMSPC_CD" value="KFS-AFTEST"/>
+      <column name="CMPNT_CD" value="All"/>
       <column name="PARM_NM" value="DEFAULT_FISCAL_OFFICER"/>
       <column name="APPL_ID" value="KFS"/>
       <column name="OBJ_ID" valueNumeric="sys_guid()"/>
