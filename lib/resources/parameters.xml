@@ -645,7 +645,7 @@
          <column name="OBJ_ID" valueNumeric="sys_guid()"/>
          <column name="VER_NBR" value="1"/>
          <column name="PARM_TYP_CD" value="VALID"/>
-         <column name="VAL" value="award_type = N - New"/>
+         <column name="VAL" value="award_type=N - New"/>
          <column name="PARM_DESC_TXT" value="Defaults for the Proposal"/>
          <column name="EVAL_OPRTR_CD" value="A"/>
        </insert>
@@ -657,7 +657,7 @@
          <column name="OBJ_ID" valueNumeric="sys_guid()"/>
          <column name="VER_NBR" value="1"/>
          <column name="PARM_TYP_CD" value="VALID"/>
-         <column name="VAL" value="award_type = N - New"/>
+         <column name="VAL" value="award_type=N - New"/>
          <column name="PARM_DESC_TXT" value="Defaults for the Award"/>
          <column name="EVAL_OPRTR_CD" value="A"/>
        </insert>
