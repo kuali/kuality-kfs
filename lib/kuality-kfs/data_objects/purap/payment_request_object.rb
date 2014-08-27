@@ -1,6 +1,6 @@
 class PaymentRequestObject < KFSDataObject
 
-  DOC_INFO = { label: 'Payment Request', type_code: 'PREQ' }
+  DOC_INFO = { label: 'Payment Request', type_code: 'PREQ', transactional?: true }
 
   include ProcessItemsAccountingLinesMixin
 
