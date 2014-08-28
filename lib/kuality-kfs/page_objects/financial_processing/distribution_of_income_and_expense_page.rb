@@ -5,7 +5,6 @@ class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
   ad_hoc_recipients
 
-
   accounting_lines_for_capitalization
 
   create_capital_assets
