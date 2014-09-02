@@ -100,7 +100,7 @@ And /^I close the Account$/ do
   on AccountPage do |page|
     page.description.fit                 "Closing Account #{@account.number}"
     page.continuation_account_number.fit random_continuation_account_number
-    page.continuation_chart_code.fit     'IT - Ithaca Campus' #TODO config
+    page.continuation_chart_code.fit     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME)
     page.account_expiration_date.fit     page.effective_date.value
     page.closed.set
   end

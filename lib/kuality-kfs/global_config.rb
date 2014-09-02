@@ -139,9 +139,13 @@ module GlobalConfig
   def get_document_initiator(document_type)
     permission_details = {'documentTypeName' => document_type}
     assignees = get_permission_assignees_by_template('KR-SYS', 'Initiate Document', permission_details).to_a
-    principal_id = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample.principalId
-    person = identity_service.getEntity(principal_id)
-    person.principals.principal.to_a.sample.principalName
+    if assignees.any?
+      principal_id = assignees.delete_if{ |assignee| assignee.principalId == '2'}.sample.principalId
+      person = identity_service.getEntity(principal_id)
+      person.principals.principal.to_a.sample.principalName
+    else
+      get_principal_name_for_role('KFS-SYS', 'Manager').sample
+    end
   end
   def get_document_blanket_approver(document_type)
     permission_details = {'documentTypeName' => document_type}

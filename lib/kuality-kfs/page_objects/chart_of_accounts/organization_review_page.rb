@@ -1,4 +1,4 @@
-class OrganizationReviewRolePage < KFSBasePage
+class OrganizationReviewPage < KFSBasePage
 
   element(:chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
   element(:organization_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.organizationCode') }
