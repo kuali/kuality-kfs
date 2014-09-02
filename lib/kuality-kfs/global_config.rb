@@ -258,4 +258,31 @@ module GlobalConfig
     get_kuali_business_object('KFS-SYS','Organization','organizationTypeCode=D&organizationCode=01**&active=true')['organizationCode'].sample
   end
 
+  def get_random_principal_without_favorite_account_for_role(name_space, role_name)
+    @@prinicpal_names ||= Hash.new{|hash, key| hash[key] = Hash.new}
+
+    if !@@prinicpal_names[name_space][role_name].nil?
+      @@prinicpal_names[name_space][role_name]
+    else
+      @@prinicpal_names[name_space][role_name] = get_principal_name_for_principal_id(get_random_principal_id_without_favorite_Account_for_role(name_space, role_name))
+    end
+  end
+  def get_random_principal_id_without_favorite_Account_for_role(name_space, role_name)
+    pid = nil
+    user_profile_exists = true
+    i = 0
+    while pid.nil? && user_profile_exists && i < 20
+      pid = get_random_principal_id_for_role(name_space, role_name)
+        begin
+          user_profile = get_kuali_business_object('KFS-SYS','UserProcurementProfile',"principalId=#{pid}")
+        rescue
+          # no user profile
+          user_profile_exists = false
+        end
+      i += 1
+    end
+    puts "eshop user ",pid, ' number of tries ',i
+    pid.nil? ? get_random_principal_id_for_role(name_space, role_name) : pid
+  end
+
 end
