@@ -1,11 +1,5 @@
-When /^I access Object Code Lookup$/ do
-  visit(MainPage).object_code
-end
-
 Then /^the Object Code Lookup page should appear$/ do
-  on ObjectCodeLookupPage do |page|
-    page.chart_code.should exist
-  end
+  on(ObjectCodeLookupPage).chart_code.should exist
 end
 
 When /^I lookup an Object Code with Chart Code of (.*) and Sub Type Code of (.*)$/ do |chart_code, sub_type_code|

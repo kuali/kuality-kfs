@@ -1,10 +1,8 @@
 When /^I start a General Error Correction document$/ do
-  visit(MainPage).general_error_correction
   @general_error_correction = create GeneralErrorCorrectionObject
 end
 
 When /^I start an empty General Error Correction document$/ do
-  visit(MainPage).general_error_correction
   @general_error_correction = create GeneralErrorCorrectionObject
 end
 
