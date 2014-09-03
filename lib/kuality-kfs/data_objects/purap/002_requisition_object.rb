@@ -57,7 +57,7 @@ class RequisitionObject < KFSDataObject
   def update(opts={})
     on RequisitionPage do |page|
       edit_fields opts, page, :description, :payment_request_positive_approval_required,
-                              :delivery_phone_number, :requestor_phone
+                              :delivery_phone_number, :requestor_phone, :vendor_notes, :delivery_instructions
     end
     update_options(opts)
   end
