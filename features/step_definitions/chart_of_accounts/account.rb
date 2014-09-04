@@ -161,3 +161,12 @@ And /^I use these Accounts:$/ do |table|
     end
   end
 end
+
+And /^I clone a random Account with name, chart code, and description changes$/ do
+  step "I clone Account nil with the following changes:",
+       table(%Q{
+       | Name        | #{random_alphanums(15, 'AFT')}                                      |
+       | Chart Code  | #{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)} |
+       | Description | #{random_alphanums(40, 'AFT')}                                      |
+       })
+end
