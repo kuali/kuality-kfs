@@ -16,13 +16,13 @@ end
 
 And /^I am logged in as the FO of the Account$/ do
   sleep(1)
-  step 'I am logged in as "' + @account.accountFiscalOfficerUser.principalName + '"'
-  @user_id = 'fiscal_officer_principal_name'
+  step "I am logged in as \"#{@account.accountFiscalOfficerUser.principalName}\""
+  @user_id = @account.accountFiscalOfficerUser.principalNam
 end
 
 And /^I am logged in as the FO of the Sub-Account$/ do
   sleep(1)
-  account_info = get_kuali_business_object('KFS-COA','Account','accountNumber=' + @sub_account.account_number)
+  account_info = get_kuali_business_object('KFS-COA','Account',"accountNumber=#{@sub_account.account_number}")
   fiscal_officer_principal_name = account_info['accountFiscalOfficerUser.principalName'][0]
   step "I am logged in as \"#{fiscal_officer_principal_name}\""
   @user_id = fiscal_officer_principal_name
@@ -30,9 +30,11 @@ end
 
 And /^The Sub-Account document should be in my action list$/ do
   sleep(5)
-  on(ActionList).view_as(@user_id)
-  on(ActionList).last if on(ActionList).last_link.exists?
-  on(ActionList).result_item(@sub_account.document_id).should exist
+  on ActionList do |page|
+    page.view_as(@user_id)
+    page.last if on(ActionList).last_link.exists?
+    page.result_item(@sub_account.document_id).should exist
+  end
 end
 
 And /^I (#{SubAccountPage::available_buttons}) a Sub-Account with an adhoc approver$/ do |button|
@@ -59,7 +61,7 @@ And /^I (#{SubAccountPage::available_buttons}) a Sub-Account with an adhoc appro
 
   options = {
       account_number:                      account_number,
-      cost_sharing_chart_of_accounts_code: 'IT - Ithaca Campus',
+      cost_sharing_chart_of_accounts_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
       cost_share_account_number:           account_number,
       sub_account_type_code:               'CS',
       cost_sharing_account_number:         account_number,

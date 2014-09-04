@@ -76,10 +76,8 @@ When /^I Lookup the Object Code (.*)$/ do |the_object_code|
   end
 end
 
-Then /^The Lookup should display the Reports to Object Code$/ do
-  on ObjectCodePage do |page|
-    page.reports_to_object_code.value.should == @object_code.reports_to_object_code
-  end
+Then /^The Object Code Lookup should display the Reports to Object Code$/ do
+  on(ObjectCodePage).reports_to_object_code.value.should == @object_code.reports_to_object_code
 end
 
 And /^I update the Financial Object Code Description/ do

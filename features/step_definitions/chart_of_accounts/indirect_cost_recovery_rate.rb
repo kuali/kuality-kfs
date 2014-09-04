@@ -1,7 +1,5 @@
 When /^I lookup a Rate ID using an alpha\-numeric value in the Indirect Cost Recovery Rate table$/ do
-  on MaintenancePage do |page|
-    visit(MaintenancePage).indirect_cost_recovery_rate
-  end
+  visit(MaintenancePage).indirect_cost_recovery_rate
 
   on IndirectCostRecoveryRateLookupPage do |page|
    page.rate_id.set 'EC1'
