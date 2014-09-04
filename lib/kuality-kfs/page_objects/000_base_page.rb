@@ -166,6 +166,9 @@ class BasePage < PageFactory
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
       action(:process) { |match, p| p.item_row(match).link(text: 'process').click ; p.use_new_tab; p.close_parents}
+
+      element(:find_item_in_table) { |item_name, b| b.results_table.link(text: item_name) }
+      element(:get_table_row_count) { |b| b.results_table.rows.length }
     end
 
     def general_ledger_pending_entries

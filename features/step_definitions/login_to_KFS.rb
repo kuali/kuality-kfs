@@ -44,6 +44,10 @@ Given /^I am logged in as a KFS Cash Manager$/ do
   visit(BackdoorLoginPage).login_as(get_random_principal_name_for_role('KFS-FP', 'Cash Manager'))
 end
 
+Given /^I am logged in as a KFS Contracts & Grants Manager$/ do
+  visit(BackdoorLoginPage).login_as(get_random_principal_name_for_role('KFS-SYS', 'Contracts & Grants Manager'))
+end
+
 Given /^I am logged in as a KFS Contracts & Grants Processor$/ do
   visit(BackdoorLoginPage).login_as(get_random_principal_name_for_role('KFS-SYS', 'Contracts & Grants Processor'))
 end
@@ -194,4 +198,3 @@ end
 Given /^I am logged in as an e\-SHOP Plus User without a favorite account$/ do
   visit(BackdoorLoginPage).login_as(get_random_principal_without_favorite_account_for_role('KFS-PURAP', 'eShop Plus User(cu)'))
 end
-

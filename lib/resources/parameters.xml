@@ -616,6 +616,18 @@
        <insert tableName="KRCR_PARM_T">
          <column name="NMSPC_CD" value="KFS-AFTEST"/>
          <column name="CMPNT_CD" value="All"/>
+         <column name="PARM_NM" value="DEFAULT_CONTRACT_GRANT_LEVEL_CODE"/>
+         <column name="APPL_ID" value="KFS"/>
+         <column name="OBJ_ID" valueNumeric="sys_guid()"/>
+         <column name="VER_NBR" value="1"/>
+         <column name="PARM_TYP_CD" value="VALID"/>
+         <column name="VAL" value="CGRT"/>
+         <column name="PARM_DESC_TXT" value="Default Contracts and Grants Object Level Code"/>
+         <column name="EVAL_OPRTR_CD" value="A"/>
+       </insert>
+       <insert tableName="KRCR_PARM_T">
+         <column name="NMSPC_CD" value="KFS-AFTEST"/>
+         <column name="CMPNT_CD" value="All"/>
          <column name="PARM_NM" value="DEFAULTS_FOR_PURCHASE_ORDER_AMENDMENT"/>
          <column name="APPL_ID" value="KFS"/>
          <column name="OBJ_ID" valueNumeric="sys_guid()"/>
