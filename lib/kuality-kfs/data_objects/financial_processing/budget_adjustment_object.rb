@@ -4,7 +4,7 @@ class BudgetAdjustmentObject < KFSDataObject
 
   attr_accessor  :fdd_year, :cb_start_amount, :bb_start_amount
 
-  DOC_INFO = { label: 'Budget Adjustment', type_code: 'BA' }
+  DOC_INFO = { label: 'Budget Adjustment', type_code: 'BA', transactional?: true }
 
   def default_accounting_lines(opts={})
     super(opts).merge(

@@ -1,6 +1,6 @@
 class RequisitionObject < KFSDataObject
 
-  DOC_INFO = { label: 'Requisition', type_code: 'REQ' }
+  DOC_INFO = { label: 'Requisition', type_code: 'REQS', transactional?: true }
 
   attr_accessor :payment_request_positive_approval_required, :requisition_id,
                 # == Delivery Tab (Somewhat Incomplete) ==
@@ -57,7 +57,7 @@ class RequisitionObject < KFSDataObject
   def update(opts={})
     on RequisitionPage do |page|
       edit_fields opts, page, :description, :payment_request_positive_approval_required,
-                              :delivery_phone_number, :requestor_phone
+                              :delivery_phone_number, :requestor_phone, :vendor_notes, :delivery_instructions
     end
     update_options(opts)
   end

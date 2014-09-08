@@ -6,7 +6,7 @@ class DisbursementVoucherObject < KFSDataObject
   alias :add_target_line :add_source_line
   alias :import_target_lines :import_source_lines
 
-  DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV' }
+  DOC_INFO = { label: 'Disbursement Voucher Document', type_code: 'DV', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation,
                 :contact_name, :phone_number, :email_address,

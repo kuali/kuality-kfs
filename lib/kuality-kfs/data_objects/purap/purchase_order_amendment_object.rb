@@ -1,6 +1,6 @@
 class PurchaseOrderAmendmentObject < KFSDataObject
 
-  DOC_INFO = { label: 'Purchase Order Amendment', type_code: 'POA' }
+  DOC_INFO = { label: 'Purchase Order Amendment', type_code: 'POA', transactional?: true }
 
   attr_reader :item_quantitiy, :item_catalog_number, :item_description,
               :item_unit_cost, :item_uom, :attachment_file_name, :item_object_code

@@ -1,4 +1,4 @@
-class OrganizationReviewRoleObject < KFSDataObject
+class OrganizationReviewObject < KFSDataObject
 
   attr_accessor :chart_code, :organization_code, :doc_type, :review_types,
                 :from_amount, :to_amount, :accounting_line_override_code, :principal_name,
@@ -23,7 +23,7 @@ class OrganizationReviewRoleObject < KFSDataObject
   def build
     visit(MainPage).organization_review
     on(OrganizationReviewLookupPage).create
-    on OrganizationReviewRolePage do |page|
+    on OrganizationReviewPage do |page|
       page.expand_all
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
@@ -36,14 +36,14 @@ class OrganizationReviewRoleObject < KFSDataObject
       search.search
       search.return_random
     end
-    on(OrganizationReviewRolePage).document_type_search
+    on(OrganizationReviewPage).document_type_search
     on DocumentTypeLookupPage do |search|
       search.name.fit 'KFST'
       search.search
       search.return_random
     end
-    @document_id = on(OrganizationReviewRolePage).document_id
-    # We need to do this last step to let @browser know that we're back on the OrganizationReviewRolePage. This object is weird.
+    @document_id = on(OrganizationReviewPage).document_id
+    # We need to do this last step to let @browser know that we're back on the OrganizationReviewPage. This object is weird.
   end
 
 end

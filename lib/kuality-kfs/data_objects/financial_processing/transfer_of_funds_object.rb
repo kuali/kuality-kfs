@@ -2,7 +2,7 @@ class TransferOfFundsObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Transfer Of Funds Document', type_code: 'TF' }
+  DOC_INFO = { label: 'Transfer Of Funds Document', type_code: 'TF', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation
 

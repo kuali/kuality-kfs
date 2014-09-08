@@ -158,16 +158,27 @@ class BasePage < PageFactory
       value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned
 
+      value(:no_results_found) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /There were no results found/m }
+      alias_method :no_results_found?, :no_results_found
+
       #action(:find_header_index) { |text_match, b| b.frm.results_table.ths.each { |t| puts t.text.to_s + 'la la la la la' + i.to_s; i += 1  }
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
       action(:process) { |match, p| p.item_row(match).link(text: 'process').click ; p.use_new_tab; p.close_parents}
+
+      element(:find_item_in_table) { |item_name, b| b.results_table.link(text: item_name) }
+      element(:get_table_row_count) { |b| b.results_table.rows.length }
     end
 
     def general_ledger_pending_entries
       element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table(summary: 'view/edit pending entries') }
       action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+    end
+
+    def labor_ledger_pending_entries
+      element(:llpe_results_table) { |b| b.frm.div(id:'tab-LaborLedgerPendingEntries-div').table }
+      action(:show_llpe) { |b| b.frm.button(title: 'open Labor Ledger Pending Entries').when_present.click }
     end
 
     def notes_and_attachments

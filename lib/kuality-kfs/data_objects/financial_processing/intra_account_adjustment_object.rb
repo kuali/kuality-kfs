@@ -2,7 +2,7 @@ class IntraAccountAdjustmentObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Intra Account Adjustment Document', type_code: 'IAA' }
+  DOC_INFO = { label: 'Intra Account Adjustment Document', type_code: 'IAA', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation
 
