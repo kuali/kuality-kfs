@@ -155,7 +155,7 @@ And /^I calculate and verify the GLPE with amount (.*)$/ do |amount|
   end
 end
 
-And(/^the (.*) Doc Status is (.*)/) do |document, doc_status|
+And /^the (.*) Doc Status is (.*)/ do |document, doc_status|
   on(KFSBasePage).app_doc_status.should == doc_status
 end
 

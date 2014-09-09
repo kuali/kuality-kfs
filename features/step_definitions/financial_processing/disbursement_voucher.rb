@@ -347,7 +347,7 @@ And /^I select a vendor payee to the (.*) document$/ do |document|
   end
 end
 
-And /^I add a random payee the Disbursement Voucher$/ do
+And /^I add a random payee to the Disbursement Voucher$/ do
   on (PaymentInformationTab) do |tab|
     tab.payee_search
     on PayeeLookup do |plookup|
@@ -416,7 +416,6 @@ Then /^I should get error for Accounting Line (\d+)$/ do |line_number|
   account_number = on(AccountingLine).result_source_account_number(line_idx)
   chart_code = on(AccountingLine).result_source_chart_code(line_idx)
 
-  puts 'acct error', account_number,chart_code,@new_approver
   step "I should get these error messages:",
        table("
       | Existing accounting lines may not be updated to use Chart Code #{chart_code} by user #{@new_approver}.          |
