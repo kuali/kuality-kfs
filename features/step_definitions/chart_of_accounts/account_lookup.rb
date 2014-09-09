@@ -3,7 +3,7 @@ When /^I access Account Lookup$/ do
 end
 
 Then /^the Account Lookup page should appear$/ do
-  on(AccountLookupPage).page.chart_code.should exist
+  on(AccountLookupPage).chart_code.should exist
 end
 
 When /^I search for all accounts$/ do

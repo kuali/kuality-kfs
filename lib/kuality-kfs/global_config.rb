@@ -275,7 +275,7 @@ module GlobalConfig
     pid = nil
     user_profile_exists = true
     i = 0
-    while pid.nil? && user_profile_exists && i < 20
+    while user_profile_exists && i < 20
       pid = get_random_principal_id_for_role(name_space, role_name)
         begin
           user_profile = get_kuali_business_object('KFS-SYS','UserProcurementProfile',"principalId=#{pid}")
