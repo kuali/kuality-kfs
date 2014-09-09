@@ -170,3 +170,60 @@ And /^I clone a random Account with name, chart code, and description changes$/ 
        | Description | #{random_alphanums(40, 'AFT')}                                      |
        })
 end
+
+And /^I edit an Account with a random Sub-Fund Group Code$/ do
+  account_number = get_kuali_business_object('KFS-COA','Account','subFundGroupCode=*&extension.programCode=*&closed=N&extension.appropriationAccountNumber=*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+  visit(MainPage).account
+  on AccountLookupPage do |page|
+    page.account_number.fit account_number
+    page.search
+    page.edit_random
+  end
+end
+
+When /^I enter an invalid (.*)$/  do |field_name|
+  case field_name
+    when 'Sub-Fund Program Code'
+      step "I enter a Sub-Fund Program Code of #{random_alphanums(4, 'XX').upcase}"
+    when 'Major Reporting Category Code'
+      step "I enter #{random_alphanums(6, 'XX').upcase} as an invalid Major Reporting Category Code"
+    when 'Appropriation Account Number'
+      step "I enter #{random_alphanums(6, 'XX').upcase} as an invalid Appropriation Account Number"
+    when 'Labor Benefit Rate Code'
+      step "I enter #{random_alphanums(1, 'X').upcase} as an invalid Labor Benefit Rate Category Code"
+  end
+end
+
+
+Then /^I should get (invalid|an invalid) (.*) errors?$/ do |invalid_ind, error_field|
+  on AccountPage do |page|
+    case error_field
+      when 'Sub-Fund Program Code'
+        page.errors.should include "Sub-Fund Program Code #{page.subfund_program_code.value} is not associated with Sub-Fund Group Code #{page.sub_fund_group_code.value}."
+      when 'Major Reporting Category Code'
+        page.errors.should include "Major Reporting Category Code (#{page.major_reporting_category_code.value}) does not exist."
+      when 'Appropriation Account Number'
+        page.errors.should include "Appropriation Account Number #{page.appropriation_account_number.value} is not associated with Sub-Fund Group Code #{page.sub_fund_group_code.value}."
+      when 'Labor Benefit Rate Code'
+        page.errors.should include "Invalid Labor Benefit Rate Code"
+        page.errors.should include "The specified Labor Benefit Rate Category Code #{page.labor_benefit_rate_category_code.value} does not exist."
+    end
+  end
+end
+
+
+And /^I enter (Sub Fund Program Code|Sub Fund Program Code and Appropriation Account Number) that (is|are) associated with a random Sub Fund Group Code$/ do |codes, is_are|
+  account = get_kuali_business_object('KFS-COA','Account','subFundGroupCode=*&extension.programCode=*&closed=N&extension.appropriationAccountNumber=*&active=Y&accountExpirationDate=NULL')
+  on AccountPage do |page|
+    page.sub_fund_group_code.set account['subFundGroup.codeAndDescription'].sample.split('-')[0].strip
+    page.subfund_program_code.set account['extension.programCode'].sample
+    unless codes == 'Sub Fund Program Code'
+      page.appropriation_account_number.set account['extension.appropriationAccountNumber'].sample
+    end
+  end
+end
+
+And /^I enter Appropriation Account Number that is not associated with the Sub Fund Group Code$/  do
+  # the account# is not used as its own appropriation account#
+  on(AccountPage).appropriation_account_number.set on(AccountPage).original_account_number
+end
