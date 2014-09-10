@@ -27,7 +27,7 @@ And /^I add a file attachment to the Notes and Attachment Tab of the (.*) docume
   document_object_for(document).notes_and_attachments_tab
                                .add file:          'vendor_attachment_test.png',
                                     immediate_add: false
-  on(page_class_for(document)).attach_notes_file.value.include?(filename).should be_true
+  on(page_class_for(document)).attach_notes_file.value.include?(filename).should be true
 end
 
 And /^I add note '(.*)' to the (.*) document$/ do |note_text, document|
