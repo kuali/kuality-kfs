@@ -196,6 +196,8 @@ module Utilities
         fetch_random_capital_asset_object_code
       when 'Accounts Receivable Asset'
         get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectTypeCode=AS&financialObjectLevelCode=AROT&chartOfAccountsCode=#{chart_code}")['financialObjectCode'][0]
+      when 'Income-Cash'
+        get_kuali_business_object('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&financialObjectSubTypeCode=ID&financialObjectTypeCode=IN&financialObjectLevelCode=IDRV&chartOfAccountsCode=#{chart_code}")['financialObjectCode'][0]
       else
         nil
     end
