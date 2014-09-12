@@ -11,7 +11,7 @@ Then /^the (.*) document accounting lines equal the General Ledger entries$/ do 
   visit(MainPage).general_ledger_entry
   on GeneralLedgerEntryLookupPage do |page|
     # We're assuming that Fiscal Year and Fiscal Period default to today's values
-    page.doc_nuaccounting_line_file_import.rbmber.fit        doc_object.document_id
+    page.doc_number.fit        doc_object.document_id
     page.balance_type_code.fit ''
     page.pending_entry_approved_indicator_all
     page.search
