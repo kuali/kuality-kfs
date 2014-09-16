@@ -9,6 +9,9 @@ end
 
 And /^I add a (From|To|Source|Target) Accounting Line to the (.*) document with Amount (\w+)$/ do |type, document, amount|
   account_number =  get_account_of_type('Endowed NonGrant')
+  if document.eql?('Service Billing') && type.eql?('Source')
+    account_number = @sb_account
+  end
   case document
     when 'Internal Billing'
       object_code = get_object_code_of_type('Income-Cash')
@@ -27,3 +30,20 @@ And /^I add a (From|To|Source|Target) Accounting Line to the (.*) document with 
 end
 
 
+And /^I lookup a Service Bill Processor as initiator and an associated account as source account$/ do
+  step 'I am logged in as a KR Technical Administrator'
+  visit(AdministrationPage).role
+  on RoleLookup do |lookup|
+    lookup.id.fit      '13'
+    lookup.search
+    lookup.edit_random # There can only be one!
+  end
+  # puts on(RolePage).frm.div(id: 'tab-Assignees-div').tables[2].rows.length
+  on RolePage do |page|
+    random_row = rand(2..page.member_table.rows.length - 1)
+    puts page.member_table[random_row][4].text,page.member_table[random_row][8].text
+    @sb_account = page.member_table[random_row][8].text
+    step "I am logged in as \"#{page.member_table[random_row][4].text}\""
+  end
+
+end
