@@ -3,10 +3,10 @@ class DisbursementVoucherPage < FinancialProcessingPage
   accounting_lines
   ad_hoc_recipients
 
-  element(:foreign_draft_in) { |v, b| b.frm.radio(name: 'document.dvWireTransfer.disbursementVoucherForeignCurrencyTypeCode', value: v) }
+  element(:foreign_draft_in) { |v, b| b.frm.radio(name: 'document.wireTransfer.foreignCurrencyTypeCode', value: v) }
   element(:foreign_draft_in_usd) { |b| b.foreign_draft_in('C') }
   element(:foreign_draft_in_foreign_currency) { |b| b.foreign_draft_in('F') }
-  element(:currency_type) { |b| b.frm.text_field(id: 'document.dvWireTransfer.disbursementVoucherForeignCurrencyTypeName') }
+  element(:currency_type) { |b| b.frm.text_field(id: 'document.wireTransfer.foreignCurrencyTypeName') }
 
   element(:contact_name) { |b| b.frm.text_field(id: 'document.disbVchrContactPersonName') }
   element(:phone_number) { |b| b.frm.text_field(id: 'document.disbVchrContactPhoneNumber') }

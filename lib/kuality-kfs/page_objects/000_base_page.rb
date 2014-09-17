@@ -48,8 +48,9 @@ class BasePage < PageFactory
     end
 
     def document_header_elements
-      value(:doc_title) { |b| b.frm.div(id: /^headerarea/).h1.text }
-      element(:headerinfo_table) { |b| b.frm.div(id: 'headerarea').table(class: 'headerinfo') }
+      element(:doc_title_element) { |b| b.frm.div(id: /^headerarea/).h1 }
+      value(:doc_title) { |b| b.doc_title_element.text }
+      element(:headerinfo_table) { |b| b.frm.div(id: /^headerarea/).table(class: 'headerinfo') }
       value(:document_id) { |p| p.headerinfo_table[0][1].text }
       alias_method :doc_nbr, :document_id
       value(:document_status) { |p| p.headerinfo_table[0][3].text }
@@ -68,7 +69,9 @@ class BasePage < PageFactory
     end
 
     def description_field
+      element(:doc_overview_info) { |b| b.frm.table(class: 'datatable', summary: 'view/edit document overview information') }
       element(:description) { |b| b.frm.text_field(name: 'document.documentHeader.documentDescription') }
+      value(:readonly_description) { |b| b.doc_overview_info.rows[0].tds[0].text.strip }
       element(:explanation) { |b| b.frm.textarea(name: 'document.documentHeader.explanation') }
       element(:organization_document_number) { |b| b.frm.text_field(name: 'document.documentHeader.organizationDocumentNumber') }
     end
@@ -138,6 +141,8 @@ class BasePage < PageFactory
       action(:return_random_row) { |b| b.results_table[rand(b.results_table.to_a.length - 1) + 1] }
       element(:return_value_links) { |b| b.results_table.links(text: 'return value') }
 
+      action(:search_and_return_random) { |b| b.search; b.return_random }
+
       action(:select_all_rows_from_this_page) { |b| b.frm.img(title: 'Select all rows from this page').click }
       action(:return_selected_results) { |b| b.frm.button(title: 'Return selected results').click }
 
@@ -148,21 +153,32 @@ class BasePage < PageFactory
 
       action(:select_this_link_without_frm) { |match, b| b.table(id: 'row').link(text: match).when_present.click }
 
-      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).click }
+      action(:sort_results_by) { |title_text, b| b.results_table.link(text: title_text).when_present.click }
 
       value(:no_result_table_returned) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /No values match this search/m }
       alias_method :no_result_table_returned?, :no_result_table_returned
+
+      value(:no_results_found) { |b| b.frm.divs(id: 'lookup')[0].parent.text.match /There were no results found/m }
+      alias_method :no_results_found?, :no_results_found
 
       #action(:find_header_index) { |text_match, b| b.frm.results_table.ths.each { |t| puts t.text.to_s + 'la la la la la' + i.to_s; i += 1  }
       value(:get_cell_value_by_index) { |index_number, b| b.results_table.td(index: index_number).text }
       
       action(:search_then) {|action, b| b.search; action.each_pair{|a, o| o.nil? ? b.send(a) : b.send(a, o)} }
       action(:process) { |match, p| p.item_row(match).link(text: 'process').click ; p.use_new_tab; p.close_parents}
+
+      element(:find_item_in_table) { |item_name, b| b.results_table.link(text: item_name) }
+      element(:get_table_row_count) { |b| b.results_table.rows.length }
     end
 
     def general_ledger_pending_entries
-      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table }
+      element(:glpe_results_table) { |b| b.frm.div(id:'tab-GeneralLedgerPendingEntries-div').table(summary: 'view/edit pending entries') }
       action(:show_glpe) { |b| b.frm.button(title: 'open General Ledger Pending Entries').when_present.click }
+    end
+
+    def labor_ledger_pending_entries
+      element(:llpe_results_table) { |b| b.frm.div(id:'tab-LaborLedgerPendingEntries-div').table }
+      action(:show_llpe) { |b| b.frm.button(title: 'open Labor Ledger Pending Entries').when_present.click }
     end
 
     def notes_and_attachments

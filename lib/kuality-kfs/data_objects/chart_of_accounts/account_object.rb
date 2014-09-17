@@ -37,8 +37,6 @@ class AccountObject < KFSDataObject
         expense_guideline_text:            'expense guideline text',
         income_guideline_txt:              'incomde guideline text',
         purpose_text:                      'purpose text',
-        income_stream_financial_cost_code: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
-        income_stream_account_number:      get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
         labor_benefit_rate_cat_code:       'CC',    #TODO replace with bootstrap data
         account_expiration_date:           '',
         press:                             :save
@@ -53,6 +51,7 @@ class AccountObject < KFSDataObject
     on AccountPage do |page|
       page.expand_all
       page.type_code.fit @type_code
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up... It happened here too.
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :chart_code, :number, :name, :organization_code, :campus_code,

@@ -47,6 +47,8 @@ class PurchaseOrderBasePage <  KFSBasePage
       alias_method :vendor_zipcode, :vendor_postal_code
       element(:vendor_country) { |b| b.select(name: 'document.vendorCountryCode') }
       action(:vendor_search) { |b| b.frm.button(name: /methodToCall.performLookup.\(!!org.kuali.kfs.vnd.businessobject.VendorDetail!!\)/m).click }
+      element(:vendor_section) { |b| b.frm.table(class: 'datatable', summary: 'Vendor Section') }
+      value(:result_vendor_choice) { |b| b.vendor_section.rows[7].tds[1].text.strip }
 
       #VENDOR INFO
       element(:vendor_choice) { |b| b.select(name: 'document.purchaseOrderVendorChoiceCode') }
@@ -150,7 +152,7 @@ class PurchaseOrderBasePage <  KFSBasePage
       alias_method :show_view_related_documents, :show_related_documents
       action(:show_purchase_order) { |b| b.frm.div(id: 'tab-ViewRelatedDocuments-div').button(alt: 'show').click }
 
-      value(:purchase_order_number) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').text }
+      value(:purchase_order_number) { |b| b.div(class: 'headerbox').table(class: 'headerinfo', summary: 'document header: general information').rows[2].tds[0].text }
       action(:purchase_order_number_link) { |b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK').click; b.use_new_tab; b.close_parents }
       action(:open_purchase_order_number) { |po_num, b| b.div(id: 'tab-ViewRelatedDocuments-div').a(target: '_BLANK', text: po_num).click; b.use_new_tab; b.close_parents }
 

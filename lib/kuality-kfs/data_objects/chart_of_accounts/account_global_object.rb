@@ -14,7 +14,7 @@ class AccountGlobalObject < KFSDataObject
     defaults = {
         description:                            random_alphanums(20, 'AFT'),
         new_chart_code:                         get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE),
-        new_number:                             get_aft_parameter_value(ParameterConstants::DEFAULT_ACCOUNT_NUMBER),
+        new_number:                             fetch_random_account_number,
         supervisor_principal_name:              get_aft_parameter_value(ParameterConstants::DEFAULT_SUPERVISOR),
         manager_principal_name:                 get_aft_parameter_value(ParameterConstants::DEFAULT_MANAGER),
         organization_code:                      get_aft_parameter_value(ParameterConstants::DEFAULT_ORGANIZATION_CODE),
