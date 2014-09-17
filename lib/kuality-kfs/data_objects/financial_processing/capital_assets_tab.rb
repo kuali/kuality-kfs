@@ -3,7 +3,11 @@ class CapitalAssetsTab < PageFactory
   include Utilities
   include GlobalConfig
 
+  action(:use_new_tab) { |b| b.windows.last.use }
+  action(:close_parents) { |b| b.windows[0..-2].each{ |w| w.close} }
+
   # CA accounting lines
+  action(:generate_accounting_lines_for_capitalization) { |b| b.frm.button(name: "methodToCall.generateAccountingLinesForCapitalization").click }
   element(:accounting_lines_for_capitalization_select) { |i=0, b| b.frm.checkbox(id: "document.capitalAccountingLines[#{i}].selectLine") }
   element(:distribution_method) { |b| b.frm.select(id: "capitalAccountingLine.distributionCode") }
   action(:modify_asset) { |b| b.frm.button(name: 'methodToCall.modifyAsset').click; b.use_new_tab; b.close_parents }

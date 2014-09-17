@@ -12,7 +12,6 @@ class CapitalAssetLocationLineObject < DataFactory
   end
 
   def initialize(browser, opts={})
-    puts 'asset loc line init'
     @browser = browser
     defaults = { campus: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE) }
     set_options(defaults.merge(opts))

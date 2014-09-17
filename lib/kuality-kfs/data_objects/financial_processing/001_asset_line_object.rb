@@ -76,7 +76,6 @@ class CapitalAssetLineObjectCollection < LineObjectCollection
     on CapitalAssetsTab do |lines|
       clear # Drop any cached lines. More reliable than sorting out an array merge.
 
-      lines.expand_all
       unless lines.current_asset_count.zero?
         (0..(lines.current_asset_count - 1)).to_a.collect!{ |i|
           pull_existing_asset(i, target).merge(pull_extended_existing_asset(i, target))
