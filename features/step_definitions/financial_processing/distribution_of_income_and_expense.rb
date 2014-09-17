@@ -59,6 +59,15 @@ And /^I distribute a new Capital Asset amount$/ do
   end
 end
 
+And /^I distribute the modify Capital Asset amount$/ do
+  on CapitalAssetsTab do |tab|
+    @asset_account_number = tab.asset_account_number
+    tab.line_amount.fit tab.remain_asset_amount
+    tab.number.fit @asset_number
+    tab.redistribute_modify_amount
+  end
+end
+
 And /^I lookup a Capital Asset from GL transaction to process$/ do
   visit(MainPage).capital_asset_builder_gl_transactions
   on GeneralLedgerPendingEntryLookupPage do |page|
