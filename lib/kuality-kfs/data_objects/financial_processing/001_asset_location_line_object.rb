@@ -1,11 +1,11 @@
-class AssetLocationLineObject < DataFactory
+class CapitalAssetLocationLineObject < DataFactory
 
   include GlobalConfig
 
   attr_accessor   :line_number,
                   :parent,
-                  :tag_number, :capital_asset_campus, :capital_asset_building,
-                  :capital_asset_room
+                  :tag_number, :campus, :building,
+                  :room
 
   def defaults
     Hash.new
@@ -14,9 +14,7 @@ class AssetLocationLineObject < DataFactory
   def initialize(browser, opts={})
     puts 'asset loc line init'
     @browser = browser
-    defaults = { capital_asset_campus: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE) }
-    #set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_ASSETS))
-    #            .merge(opts))
+    defaults = { campus: get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE) }
     set_options(defaults.merge(opts))
   end
 
@@ -25,19 +23,9 @@ class AssetLocationLineObject < DataFactory
   def post_create; end
 
   def create
-    puts 'asset loc line create'
     pre_create
     build
     fill_out_extended_attributes
-    if on(CapitalAssetsTab).asset_detail_tables.length > 1
-      on CapitalAssetsTab do |tab|
-        tab.tag_number(@parent.parent.line_number).fit               @tag_number
-        tab.capital_asset_campus(@parent.parent.line_number).fit     @capital_asset_campus
-        tab.capital_asset_building(@parent.parent.line_number).fit   @capital_asset_building
-        tab.capital_asset_room(@parent.parent.line_number).fit       @capital_asset_room
-        fill_out_extended_attributes
-      end
-    end
     post_create
   end
 
@@ -49,19 +37,19 @@ class AssetLocationLineObject < DataFactory
 
   def build
     do_mappings_fill({
-                         tag_number:                @tag_number,
-                         capital_asset_campus:      @capital_asset_campus,
-                         capital_asset_building:    @capital_asset_building,
-                         capital_asset_room:        @capital_asset_room
+                         tag_number:  @tag_number,
+                         campus:      @campus,
+                         building:    @building,
+                         room:        @room
                      })
   end
 
   def edit_attributes(opts = {})
     do_mappings_fill({
-                         tag_number:                      opts[:tag_number],
-                         capital_asset_campus:            opts[:capital_asset_campus],
-                         capital_asset_building:          opts[:capital_asset_building],
-                         capital_asset_room:              opts[:capital_asset_room]
+                         tag_number:        opts[:tag_number],
+                         campus:            opts[:campus],
+                         building:          opts[:building],
+                         room:              opts[:oom]
                      })
   end
 
@@ -95,9 +83,9 @@ class AssetLocationLineObject < DataFactory
 
 end
 
-class AssetLocationLineObjectCollection < LineObjectCollection
+class CapitalAssetLocationLineObjectCollection < LineObjectCollection
 
-  contains AssetLocationLineObject
+  contains CapitalAssetLocationLineObject
 
   attr_accessor :parent
 
@@ -125,17 +113,17 @@ class AssetLocationLineObjectCollection < LineObjectCollection
       case t
         when :new
           pulled_item = {
-              tag_number:                      b.tag_number(i).value.strip,
-              capital_asset_campus:            b.capital_asset_campus(i).selected_options.first.text.strip,
-              capital_asset_building:          b.capital_asset_building(i).value.strip,
-              capital_asset_room:              b.capital_asset_room(i).value.strip
+              tag_number:        b.tag_number(i).value.strip,
+              campus:            b.campus(i).selected_options.first.text.strip,
+              building:          b.building(i).value.strip,
+              room:              b.room(i).value.strip
           }
         when :old
           pulled_item = {
-              tag_number:                b.old_tag_number(i),
-              capital_asset_campus:      b.old_capital_asset_campus(i),
-              capital_asset_building:    b.old_capital_asset_building(i),
-              capital_asset_room:        b.old_capital_asset_room(i)
+              tag_number:  b.old_tag_number(i),
+              campus:      b.old_campus(i),
+              building:    b.old_building(i),
+              room:        b.old_room(i)
           }
         else
           raise ArgumentError, "The provided target (#{t.inspect}) is not supported yet!"

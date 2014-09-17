@@ -1,4 +1,4 @@
-module AssetLinesMixin
+module CapitalAssetLinesMixin
 
   attr_accessor :assets, :initial_assets
 
@@ -6,8 +6,8 @@ module AssetLinesMixin
     # This just makes it so we don't have to be so repetitive. It can certainly be
     # overridden in a subclass if you don't want to chuck things in via opts.
     {
-        assets:         collection('AssetLineObject'),
-        initial_assets: [ Hash.new ] # Just throw in one Address with the default values, unless told otherwise
+        assets:         collection('CapitalAssetLineObject'),
+        initial_assets: [ Hash.new ]
     }.merge(opts)
   end
 

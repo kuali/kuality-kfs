@@ -1,20 +1,17 @@
-class AssetLineObject < DataFactory
+class CapitalAssetLineObject < DataFactory
 
   include DateFactory
   include StringFactory
   include GlobalConfig
 
-  attr_accessor   :line_number, :capital_asset_manufacturer, :capital_asset_description,
-                  :capital_asset_line_amount, :insert_tag, :capital_asset_qty, :capital_asset_type
+  attr_accessor   :line_number, :manufacturer, :description,
+                  :line_amount, :insert_tag, :qty, :type
 
   def defaults
-    default_asset_location_lines.merge({
-                                           capital_asset_type: '019'
-                                       })
+    default_asset_location_lines.merge({ type: '019'})
   end
 
   def initialize(browser, opts={})
-    puts 'asset line init'
     @browser = browser
 
     #defaults = { capital_asset_type: '019' }
@@ -27,14 +24,13 @@ class AssetLineObject < DataFactory
     # For now, this only supports DI. We'll need to refactor appropriately
     # if any other object needs this collection.
     # asset line is different the normal Kuali collection.  There is no 'new' line to add.
-    puts 'asset line create'
     if on(CapitalAssetsTab).asset_tables.length > 1
       on CapitalAssetsTab do |tab|
-        tab.capital_asset_qty.fit             @capital_asset_qty
-        tab.capital_asset_line_amount.fit     @capital_asset_line_amount
-        tab.capital_asset_type.fit            @capital_asset_type
-        tab.capital_asset_manufacturer.fit    @capital_asset_manufacturer
-        tab.capital_asset_description.fit     @capital_asset_description
+        tab.qty.fit             @qty
+        tab.line_amount.fit     @line_amount
+        tab.type.fit            @type
+        tab.manufacturer.fit    @manufacturer
+        tab.description.fit     @description
         fill_out_extended_attributes
       end
     end
@@ -42,11 +38,11 @@ class AssetLineObject < DataFactory
 
   def edit(opts={})
     on CapitalAssetsTab do |tab|
-      tab.capital_asset_qty(@line_number).fit           opts[:capital_asset_qty]
-      tab.capital_asset_line_amount(@line_number).fit   opts[:capital_asset_line_amount]
-      tab.capital_asset_type(@line_number).fit          opts[:capital_asset_type]
-      tab.capital_asset_manufacturer(@line_number).fit  opts[:capital_asset_manufacturer]
-      tab.capital_asset_description(@line_number).fit   opts[:capital_asset_description]
+      tab.qty(@line_number).fit           opts[:qty]
+      tab.line_amount(@line_number).fit   opts[:line_amount]
+      tab.type(@line_number).fit          opts[:type]
+      tab.manufacturer(@line_number).fit  opts[:manufacturer]
+      tab.description(@line_number).fit   opts[:description]
     end
     update_options(opts)
   end
@@ -68,13 +64,13 @@ class AssetLineObject < DataFactory
     # Override this method if you have site-specific extended attributes.
   end
   alias_method :edit_extended_attributes, :update_extended_attributes
-  include AssetLocationLinesMixin
+  include CapitalAssetLocationLinesMixin
 
 end
 
-class AssetLineObjectCollection < LineObjectCollection
+class CapitalAssetLineObjectCollection < LineObjectCollection
 
-  contains AssetLineObject
+  contains CapitalAssetLineObject
 
   def update_from_page!(target=:new)
     on CapitalAssetsTab do |lines|
@@ -103,19 +99,19 @@ class AssetLineObjectCollection < LineObjectCollection
       case target
         when :old
           pulled_asset = {
-              capital_asset_qty:           tab.old_capital_asset_qty(i),
-              capital_asset_type:          tab.old_capital_asset_type(i),
-              capital_asset_manufacturer:  tab.old_capital_asset_manufacturer(i),
-              capital_asset_line_amount:   tab.old_capital_asset_line_amount(i),
-              capital_asset_description:   tab.old_capital_asset_description(i)
+              qty:           tab.old_qty(i),
+              type:          tab.old_type(i),
+              manufacturer:  tab.old_manufacturer(i),
+              line_amount:   tab.old_line_amount(i),
+              description:   tab.old_description(i)
           }
         when :new
           pulled_asset = {
-              capital_asset_qty:           tab.capital_asset_qty(i),
-              capital_asset_type:          tab.capital_asset_type(i),
-              capital_asset_manufacturer:  tab.capital_asset_manufacturer(i),
-              capital_asset_line_amount:   tab.capital_asset_line_amount(i),
-              capital_asset_description:   tab.capital_asset_description(i)
+              qty:           tab.qty(i),
+              type:          tab.type(i),
+              manufacturer:  tab.manufacturer(i),
+              line_amount:   tab.line_amount(i),
+              description:   tab.description(i)
           }
       end
     end

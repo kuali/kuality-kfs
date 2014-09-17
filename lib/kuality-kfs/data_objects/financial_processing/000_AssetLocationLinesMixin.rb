@@ -1,4 +1,4 @@
-module AssetLocationLinesMixin
+module CapitalAssetLocationLinesMixin
 
   # Include this mixin at the bottom of your class definition for best results.
   # Otherwise, the methods it extends may not be defined when the mixin is evaluated.
@@ -13,7 +13,7 @@ module AssetLocationLinesMixin
         # This just makes it so we don't have to be so repetitive. It can certainly be
         # overridden in a subclass if you don't want to chuck things in via opts.
         {
-            asset_location_lines: collection('AssetLocationLineObject'),
+            asset_location_lines: collection('CapitalAssetLocationLineObject'),
             initial_lines:    []
         }.merge(opts)
       end

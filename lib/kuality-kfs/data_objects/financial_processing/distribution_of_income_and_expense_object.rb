@@ -1,7 +1,7 @@
 class DistributionOfIncomeAndExpenseObject < KFSDataObject
 
   include AccountingLinesMixin
-  include AssetLinesMixin
+  include CapitalAssetLinesMixin
 
   DOC_INFO = { label: 'Distribution Of Income And Expense Document', type_code: 'DI' }
 
