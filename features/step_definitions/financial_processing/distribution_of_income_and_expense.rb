@@ -68,6 +68,16 @@ And /^I distribute the modify Capital Asset amount$/ do
   end
 end
 
+And /^I build a Capital Asset from the General Ledger$/ do
+  steps %Q{
+    Given I Login as an Asset Processor
+    And   I lookup a Capital Asset from GL transaction to process
+    And   I create asset from General Ledger Processing
+    And   I submit the Asset Global document
+    Then  the Asset Global document goes to FINAL
+   }
+end
+
 And /^I lookup a Capital Asset from GL transaction to process$/ do
   visit(MainPage).capital_asset_builder_gl_transactions
   on GeneralLedgerPendingEntryLookupPage do |page|
