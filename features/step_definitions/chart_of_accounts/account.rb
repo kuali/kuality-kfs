@@ -227,3 +227,13 @@ And /^I enter Appropriation Account Number that is not associated with the Sub F
   # the account# is not used as its own appropriation account#
   on(AccountPage).appropriation_account_number.set on(AccountPage).original_account_number
 end
+
+And /^I create an Account and leave blank for the fields of Guidelines and Purpose tab$/ do
+  blank_fields = {
+      expense_guideline_text:     '',
+      income_guideline_txt: '',
+      purpose_text:         '',
+      press:  nil
+  }
+  @account = create AccountObject, blank_fields
+end
