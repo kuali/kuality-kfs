@@ -157,8 +157,13 @@ Then /^I format and process the check with PDP$/ do
   # format checks
   step 'I Login as a PDP Format Disbursement Processor'
   step 'I format Disbursement'
+  unless on(KFSBasePage).doc_title.strip.eql?('Format Disbursements')
+    # only if there are payments to process
+     step 'I select continue on Format Disbursement Summary'
+  end
 
   # generate output files batch jobs
+  step 'I am logged in as a KFS Operations'
   step 'I generate the ACH XML File'
   step 'I generate the Check XML File'
   step 'I generate the Cancelled Check XML File'
@@ -168,7 +173,6 @@ Then /^I format and process the check with PDP$/ do
   step 'I populate the ACH Bank Table'
   step 'I clear out PDP Temporary Tables'
 end
-
 
 And /^I format Disbursement$/ do
   visit(MaintenancePage).format_checks_ach
@@ -184,8 +188,24 @@ end
 
 And /^I select continue on Format Disbursement Summary$/ do
   on(FormatDisbursementSummaryPage).continue_format
-  # this will take a while
-  sleep 60
+  sleep 10
+  # this will take a while.  Loop to make sure the format process is complete.
+  # If it is not complete, the it will display error message.  Once it is complete, then the 'pay date' field will be displayed
+  x = 0
+  format_done = false
+  while !format_done && x < 20
+    begin
+      visit(MaintenancePage).format_checks_ach
+      on FormatDisbursementPage do |page|
+        if page.payment_date.exists?
+          format_done = true
+        end
+      end
+    rescue
+      sleep 10
+      x += 1
+    end
+  end
 end
 
 Then /^the (.*) document routes to the correct individuals based on the org review levels$/ do |document|
@@ -499,4 +519,13 @@ And /^I add these Accounting Lines to Item \#(\d+) on the (.*) document:$/ do |i
     new_line.delete_if { |k, v| v.nil? }
     document_object_for(document).items[il].add_accounting_line new_line
   end
+end
+
+And /^the Commodity Reviewer is in the routing log for (.*) document$/ do |document|
+  reqs_animal_reviewers = get_principal_name_for_group('3000083')
+  (@commodity_review_users & reqs_animal_reviewers).length.should >= 1
+end
+
+And /^the Commodity Reviewer is not in the routing log for (.*) document$/ do |document|
+  @commodity_review_users.length.should == 0
 end
