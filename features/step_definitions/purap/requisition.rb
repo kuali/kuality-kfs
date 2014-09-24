@@ -494,3 +494,12 @@ And /^I create the Requisition document with following specifications:$/ do |tab
        })
 
 end
+
+And /^I change the item type to (Qty|No Qty) on Item Tab$/ do |item_type|
+  case item_type
+    when 'No Qty'
+      unit_price = @requisition.items.first.quantity.to_f * @requisition.items.first.unit_cost.to_f
+      @requisition.items.first.edit type: 'No Qty', quantity: '', uom: '', unit_cost: unit_price
+  end
+
+end
