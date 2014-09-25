@@ -3,7 +3,8 @@ class ObjectCodePage < KFSBasePage
   element(:fiscal_year) { |b| b.frm.text_field(name: 'document.newMaintainableObject.universityFiscalYear') }
   element(:new_chart_code) { |b| b.frm.select(name: 'document.newMaintainableObject.chartOfAccountsCode') }
 
-  element(:object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCode') }
+  element(:object_code) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCode') } #editable text field
+  value(:object_code_value) { |b| b.frm.span(id: "document.newMaintainableObject.financialObjectCode.div") } #non-editable text displayed for value
   element(:object_code_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeName') }
   element(:object_code_short_name) { |b| b.frm.text_field(name: 'document.newMaintainableObject.financialObjectCodeShortName') }
 

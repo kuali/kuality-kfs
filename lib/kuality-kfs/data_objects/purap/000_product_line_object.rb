@@ -32,8 +32,8 @@ class ProductLineObject < DataFactory
       @size                 = line[:size_packaging][:size]
       @packaging            = line[:size_packaging][:packaging]
       @unit_price           = line[:unit_price].to_f.round(2)
-      @quantity             = line[:quantity][:value].to_i
-      @extended_price       = line[:ext_price][:value].to_f.round(2)
+      @quantity             = line[:quantity][:value].gsub(/,/,'').to_i
+      @extended_price       = line[:ext_price][:value].gsub(/,/,'').to_f.round(2)
       @extended_price_unit  = line[:ext_price][:unit].to_i
     end
 
@@ -88,7 +88,7 @@ class ProductLineObjectCollection < LineObjectCollection
         }
 
         @supplier_subtotal = self.map{ |item| item.extended_price }.reduce(:+)
-        @supplier_subtotal.should == lines.supplier_subtotal_for(@supplier_name)[:value].to_f.round(2)
+        @supplier_subtotal.should == lines.supplier_subtotal_for(@supplier_name)[:value].gsub(/,/,'').to_f.round(2)
       end
 
     end

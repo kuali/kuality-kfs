@@ -29,5 +29,4 @@ class ObjectCodeLookupPage < Lookups
   element(:active_indicator_no) { |b| b.frm.radio(id: 'activeNo') }
   element(:active_indicator_both) { |b| b.frm.radio(id: 'activeBoth') }
 
-  element(:find_item_in_table) { |item_name, b| b.results_table.link(text: item_name) }
 end

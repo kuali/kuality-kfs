@@ -1,5 +1,4 @@
 class DocumentSearch < Lookups
-
   page_url "#{$base_url}portal.do?channelTitle=Document%20Search&channelUrl=#{$base_rice_url}kew/DocumentSearch.do"
 
   element(:document_type) { |b| b.frm.text_field(name: 'documentTypeName') }

@@ -52,23 +52,28 @@ class EShopCartObject < DataFactory
 
   def absorb!
     on EShopCartPage do |scp|
-      update_options({
-                       cart_name:        scp.cart_name.value.strip,
-                       cart_description: scp.cart_description.value.strip,
-                       business_purpose: (scp.add_note_link.exists? ? nil : scp.add_note_textarea.value.strip)
-                     })
-      absorb_items!
-      absorb_items_extensions!
+      if scp.cart_name.present?
+        update_options({
+                         cart_name:        scp.cart_name.value.strip,
+                         cart_description: scp.cart_description.value.strip,
+                         business_purpose: (scp.add_note_link.exists? ? nil : scp.add_note_textarea.value.strip)
+                       })
+        absorb_items!
+        absorb_items_extensions!
+      end
     end
   end
 
   def absorb_items!
+    # Some user may have cart but no items. so use scp.msg_container.include?'Requisition has no line items' to check
     on EShopCartPage do |scp|
-      @items.clear
-      scp.suppliers.each do |supplier|
-        @items[supplier] = collection('ProductLineObject')
-        @items[supplier].supplier_name = supplier
-        @items[supplier].update_from_page!
+      unless  scp.msg_container.include?'Requisition has no line items'
+        @items.clear
+        scp.suppliers.each do |supplier|
+          @items[supplier] = collection('ProductLineObject')
+          @items[supplier].supplier_name = supplier
+          @items[supplier].update_from_page!
+        end
       end
     end
   end
@@ -90,6 +95,18 @@ class EShopCartObject < DataFactory
       scp.cart_status_message.should == 'Cart was saved successfully'
       @business_purpose = note
     end
+  end
+
+  def clear_items_from(supplier)
+    view
+    on(EShopCartPage).delete_all_products_for_supplier(supplier)
+    @items.delete(supplier)
+  end
+
+  def clear_items
+    view
+    @items.keys.each {|supplier| on(EShopCartPage).delete_all_products_for_supplier(supplier) }
+    @items.clear
   end
 
   def view(in_e_shop=true)

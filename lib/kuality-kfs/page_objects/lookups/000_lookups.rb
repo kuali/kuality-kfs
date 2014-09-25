@@ -2,6 +2,7 @@ class Lookups < BasePage
 
   tiny_buttons
   search_results_table
+  error_messages
 
   element(:last_name) { |b| b.frm.text_field(id: 'lastName') }
   element(:first_name) { |b| b.frm.text_field(id: 'firstName') }

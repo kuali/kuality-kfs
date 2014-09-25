@@ -63,12 +63,23 @@ class EShopCartPage < EShopPage
   }
 
   action(:delete_product) { |s, i, b|
-    b.line_items_for(s)[i].checkbox(name: /^LineCheckbox/m).set
+    b.select_product(s, i)
     b.bulk_action_dropdown.pick! 'Remove Selected Items'
     b.bulk_action_go.click
   }
 
+  action(:delete_all_products_for_supplier) { |s, b|
+    (0..(b.current_product_count(s)-1)).to_a.each { |i| b.select_product(s, i) }
+    b.bulk_action_dropdown.pick! 'Remove Selected Items'
+    b.bulk_action_go.click
+  }
+
+  action(:select_product) { |s, i, b|
+    b.line_items_for(s)[i].checkbox(name: /^LineCheckbox/m).set
+  }
+
   element(:bulk_action_dropdown) { |b| b.shopping_cart.span(id: 'LineActions').select }
   element(:bulk_action_go) { |b| b.shopping_cart.span(id: 'LineActions').parent.button(class: 'ButtonReq', value: 'Go') }
+  value(:msg_container) { |b| b.shopping_cart.tds(class: 'ForegroundContainer').to_a.collect{ |l| l.text } }
 
 end

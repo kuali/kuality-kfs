@@ -205,6 +205,7 @@ class FinancialProcessingPage < KFSBasePage
 
 
     def  accounting_lines_for_capitalization
+      action(:generate_accounting_lines_for_capitalization) { |b| b.frm.button(name: "methodToCall.generateAccountingLinesForCapitalization").click }
       element(:accounting_lines_for_capitalization_select) { |i=0, b| b.frm.checkbox(id: "document.capitalAccountingLines[#{i}].selectLine") }
       element(:distribution_method) { |b| b.frm.select(id: "capitalAccountingLine.distributionCode") }
       action(:modify_asset) { |b| b.frm.button(name: 'methodToCall.modifyAsset').click }

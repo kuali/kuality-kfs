@@ -21,6 +21,7 @@ class RolePage < BasePage
   element(:assignee_id) { |b| b.frm.text_field(name: 'member.memberId') }
   element(:assignee_unit_number) { |b| b.frm.text_field(id: /^member/, title: '* Unit Number') }
   action(:add_assignee) { |b| b.frm.button(name: 'methodToCall.addMember.anchorAssignees').click }
+  element(:member_table) { |b| b.frm.div(id: 'tab-Assignees-div').tables[2] }
 
   element(:delegation_type_code) { |b| b.frm.select(name: 'delegationMember.memberTypeCode') }
   element(:delegation_id) { |b| b.frm.text_field(name: 'delegationMember.memberId') }

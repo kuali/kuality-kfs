@@ -2,7 +2,7 @@ class CreditCardReceiptObject < KFSDataObject
 
   include AccountingLinesMixin
 
-  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR' }
+  DOC_INFO = { label: 'Credit Card Receipt Document', type_code: 'CCR', transactional?: true }
 
   attr_accessor :organization_document_number, :explanation,
                 :credit_card_receipts
