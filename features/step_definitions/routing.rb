@@ -125,8 +125,8 @@ And /^the (.*) document does not route to the Financial Officer$/ do  |document|
   on(page_class_for(document)).app_doc_status.should_not include 'Fiscal Officer'
 end
 
-And /^I capture the Requisition document id number$/ do
+And /^I capture the (.*) document id number$/ do |document|
   on page_class_for(document) do |page|
-    @requisition_id = page.requisition_id if @requisition_id.nil? && page.header_title.includes?('Requisition #:')
+    @requisition_id = page.requisition_id if @requisition_id.nil? && page.header_title.include?('Requisition #:')
   end
 end

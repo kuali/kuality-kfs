@@ -21,7 +21,7 @@ And /^I submit my e\-SHOP cart$/ do
   # We're assuming you're already on the e-SHOP cart page here.
   @eshop_cart.submit
   #sometimes this page is blank because test is moving too fast
-  on(RequisitionPage).description.wait_until_present(60)
+  # on(RequisitionPage).description.wait_until_present(60)
 
   on RequisitionPage do |page|
     # Surprise! This should kick you out to a Requisition document.
@@ -96,14 +96,6 @@ Given /^I initiate an e\-SHOP order$/ do
   step 'the document should have no errors'
   step 'I reload the Requisition document'
   step 'Payment Request Positive Approval Required is required'
-end
-
-And /^I search for an e\-SHOP item with a Sensitive Commodity Code$/ do
-  on EShopCatalogPage do |page|
-    page.choose_hosted_supplier                         'PerkinElmer Life and Analytical Sciences'
-    page.hosted_supplier_item_search_box('PerkinElmer Life and Analytical Sciences').fit 'Iodine'
-    page.hosted_supplier_item_search                    'PerkinElmer Life and Analytical Sciences'
-  end
 end
 
 And /^I add over \$(.*) worth of e\-SHOP items to my cart$/ do |amount|

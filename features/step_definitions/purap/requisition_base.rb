@@ -96,8 +96,8 @@ And /^I extract the Requisition document to SciQuest$/ do
   step 'I view the Purchase Order document via e-SHOP'
   step 'the Document Status displayed \'Completed\''
   #TODO:: need to move this validation should not be in base function as not all docs have attachments.
-  step 'the Delivery Instructions displayed equals what came from the PO'
-  step 'the Attachments for Supplier came from the PO'
+  #step 'the Delivery Instructions displayed equals what came from the PO'
+  #step 'the Attachments for Supplier came from the PO'
 
 end
 
@@ -130,27 +130,30 @@ And /^I assign Contract Manager and approve Purchase Order Document to FINAL$/ d
 
 end
 
-When /^I (initiate|submit) a Payment Request document$/ do |action|
+When /^I initiate a Payment Request document$/ do
+  step 'I submit a Payment Request document to ENROUTE'
+  step 'I route the Payment Request document to final'
+  step 'the Payment Request Doc Status is Department-Approved'
+  step 'the Payment Request document\'s GLPE tab shows the Requisition document submissions'
+
+
+end
+
+
+When /^I submit a Payment Request document to ENROUTE$/ do
   step 'I login as a Accounts Payable Processor to create a PREQ'
   step 'I fill out the PREQ initiation page and continue'
   step 'I change the Remit To Address'
   step 'I enter the Qty Invoiced and calculate'
   step 'I enter a Pay Date'
   step 'I attach an Invoice Image to the Payment Request document'
-  step 'I calculate PREQ'
+  step 'I calculate the Payment Request document'
   step 'I submit the Payment Request document'
   #If current amount does not match starting amount there is a question page
   step 'I select yes to the question if present'
   step 'the Payment Request document goes to ENROUTE'
 
-  case action
-    when 'submit'
-      warn 'Just submitting Payment Request not taking to final'
-    when 'initiate'
-      step 'I route the Payment Request document to final'
-      step 'the Payment Request Doc Status is Department-Approved'
-      step 'the Payment Request document\'s GLPE tab shows the Requisition document submissions'
-  end
+  warn 'Just submitting Payment Request not taking to final'
 
 end
 
@@ -522,6 +525,7 @@ And /^I add these Accounting Lines to Item \#(\d+) on the (.*) document:$/ do |i
         percent:                   supplied_line[:percent],
         amount:                    supplied_line[:amount].nil? ? on(ItemsTab).result_extended_cost(il) : supplied_line[:amount]
     }
+    # TODO : objectcode is problematic. need further investigation
     new_line.delete_if { |k, v| v.nil? }
     document_object_for(document).items[il].add_accounting_line new_line
   end
