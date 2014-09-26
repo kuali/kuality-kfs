@@ -26,7 +26,7 @@ And /^I submit my e\-SHOP cart$/ do
   on RequisitionPage do |page|
     # Surprise! This should kick you out to a Requisition document.
     page.doc_title.strip.should == 'Requisition'
-    if page.delivery_phone_number.value.empty? || page.delivery_phone_number.value == 'null'
+    if page.delivery_phone_number.value.strip.empty? || page.delivery_phone_number.value == 'null'
       page.delivery_phone_number.fit random_phone_number
     end
   end
