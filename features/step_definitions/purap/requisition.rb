@@ -46,7 +46,9 @@ end
 
 And /^I view the (.*) document on my action list$/ do |document|
   visit(MainPage).action_list
+  sleep 3
   on ActionList do |page|
+    page.close_parents
     #sort the date
     # if previous user already clicked this sort, then action list for next user will be sorted with 'Date created'.  So, add this 'unless' check
     page.sort_results_by('Date Created') unless page.result_item(document_object_for(document).document_id).exists?
