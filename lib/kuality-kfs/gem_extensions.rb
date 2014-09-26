@@ -16,6 +16,8 @@ module Watir
           end
         when iframe(id: /easyXDM_default\d+_provider/).exists?
           iframe(id: /easyXDM_default\d+_provider/)
+        when iframe(id: /iframe_\d+/).exists?
+          iframe(id: /iframe_\d+/)
         else
           self
       end

@@ -8,8 +8,9 @@ end
 
 Then /^the Vendor document should be in my action list$/ do
   visit(MainPage).action_list
-
+  sleep 3
   on ActionList do |page|
+    page.close_parents
     page.sort_results_by('Id')
     page.sort_results_by('Id')
     page.result_item(@vendor.document_id).should exist
