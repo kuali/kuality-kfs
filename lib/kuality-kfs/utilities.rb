@@ -149,8 +149,9 @@ module Utilities
         current_fiscal_year   = get_aft_parameter_value('CURRENT_FISCAL_YEAR') # '2015'
 
         object_levels += %w(CAPA CAPC) unless cap_asset_allowed
+        chart_code = get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
         levels = get_kuali_business_objects('KFS-COA', 'ObjectLevel', "universityFiscalYear=#{current_fiscal_year}")
-        object_codes = get_kuali_business_objects('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}")
+        object_codes = get_kuali_business_objects('KFS-COA', 'ObjectCode', "universityFiscalYear=#{current_fiscal_year}&chartOfAccountsCode=#{chart_code}")
 
         object_codes['org.kuali.kfs.coa.businessobject.ObjectCode'].delete_if do |oc_hash|
           !(object_levels & oc_hash['financialObjectLevelCode']).empty? ||
