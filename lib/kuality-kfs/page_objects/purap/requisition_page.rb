@@ -47,7 +47,8 @@ class RequisitionPage < KFSBasePage
   value(:result_delivery_instructions) { |b| b.delivery_tab.rows[5].tds[1].text.include?('City') ? '' : b.delivery_tab.rows[5].tds[1].text.strip }
 
   action(:building_search) { |b| b.frm.button(name: /deliveryBuildingCode/).click }
-  action(:room_search) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/).when_present.click }
+  action(:room_search) { |b| b.room_search_button.when_present.click }
+  element(:room_search_button) { |b| b.frm.button(name: /deliveryBuildingRoomNumber/) }
 
   # == VENDOR ==
   element(:vendor_name) { |b| b.frm.text_field(name: 'document.vendorName') }
@@ -202,4 +203,3 @@ class RequisitionPage < KFSBasePage
   value(:purchase_order_amendment_value) {|b| b.purchase_order_amendment_item.text }
 
 end
-

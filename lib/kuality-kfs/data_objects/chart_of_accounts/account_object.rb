@@ -51,6 +51,7 @@ class AccountObject < KFSDataObject
     on AccountPage do |page|
       page.expand_all
       page.type_code.fit @type_code
+      page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up... It happened here too.
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
       fill_out page, :description, :chart_code, :number, :name, :organization_code, :campus_code,

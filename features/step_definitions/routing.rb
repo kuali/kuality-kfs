@@ -116,3 +116,17 @@ And /^I verify that the following (Pending|Future) Action approvals are requeste
 
 end
 
+And /^the POA Routes to the FO$/ do
+  @fo_users.length.should >= 1
+end
+
+
+And /^the (.*) document does not route to the Financial Officer$/ do  |document|
+  on(page_class_for(document)).app_doc_status.should_not include 'Fiscal Officer'
+end
+
+And /^I capture the (.*) document id number$/ do |document|
+  on page_class_for(document) do |page|
+    @requisition_id = page.requisition_id if @requisition_id.nil? && page.header_title.include?('Requisition #:')
+  end
+end

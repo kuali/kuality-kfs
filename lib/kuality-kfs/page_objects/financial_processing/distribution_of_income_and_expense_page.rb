@@ -5,11 +5,12 @@ class DistributionOfIncomeAndExpensePage < FinancialProcessingPage
 
   ad_hoc_recipients
 
-  accounting_lines_for_capitalization
 
-  create_capital_assets
-
-  #modify_capital_assests
+  #accounting_lines_for_capitalization
+  #
+  #create_capital_assets
+  #
+  #modify_capital_assets
 
 end
 #DistributionOfIncomeAndExpensePage = DistributionIncomeExpensePage

@@ -19,14 +19,14 @@ end
 
 Then /^my cursor is on the (.*) button$/ do |button|
   puts @browser.frm.input(title: button).focused?
-  @browser.frm.input(title: button).focused?.should be_true
+  @browser.frm.input(title: button).focused?.should be true
 end
 
 Then /^my cursor is on the (.*) field$/ do |title|
   puts @browser.frm.input(id: 'attachmentFile').focused?
   case title
   when 'Attach File'
-    @browser.frm.input(id: 'attachmentFile').focused?.should be_true
+    @browser.frm.input(id: 'attachmentFile').focused?.should be true
   else
     pending "The action for #{title} has not yet been defined for this step."
   end

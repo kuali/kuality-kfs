@@ -7,7 +7,7 @@ And /^I (#{BasePage::available_buttons}) a[n]? (.*) document$/ do |button, docum
   end
 
   set(doc_object, (create object_klass, press: snake_case(button)))
-  sleep 10 if (button == 'blanket_approve') || (button == 'approve')
+  sleep 10 if (button == 'blanket approve') || (button == 'approve')
 end
 
 And /^I copy a random (.*) document with (.*) status/ do |document, doc_status|
@@ -139,4 +139,10 @@ end
 
 And /^I calculate the (.*) document$/ do |document|
   document_object_for(document).calculate
+end
+
+And /^I select yes to the question if present$/ do
+  on YesOrNoPage do |page|
+    page.yes if page.yes_button.present?
+  end
 end

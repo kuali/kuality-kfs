@@ -1,6 +1,7 @@
 class DistributionOfIncomeAndExpenseObject < KFSDataObject
 
   include AccountingLinesMixin
+  include CapitalAssetLinesMixin
 
   DOC_INFO = { label: 'Distribution Of Income And Expense Document', type_code: 'DI', transactional?: true }
 
@@ -9,7 +10,7 @@ class DistributionOfIncomeAndExpenseObject < KFSDataObject
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines)
+    defaults = { description: random_alphanums(40, 'AFT') }.merge!(default_accounting_lines).merge!(default_assets)
 
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_DISTRIBUTION_OF_INCOME_AND_EXPENSE)).merge(opts))
   end

@@ -17,4 +17,11 @@ class EShopCatalogPage < EShopPage
   element(:hosted_supplier_item_search_box) { |s, b| b.hosted_supplier_item_search_popup(s).text_field(id: "HostedSearchBox_#{b.hosted_supplier_id(s)}_so") }
   action(:hosted_supplier_item_search) { |s, b| b.hosted_supplier_item_search_popup(s).input(id: "HostedSearchBox_#{b.hosted_supplier_id(s)}_so_button").click }
 
+ #Used for general supplier Hosted or Showcased Services where a popup search field appears
+ #Need to provide supply title due to multiple hidden popups dealing with search.
+  action(:choose_supplier) { |supplier_title, b| b.supplier_img(supplier_title).click }
+  element(:supplier_img) { |supplier_title, b| b.frm.img(title: supplier_title) }
+  element(:supplier_search_box) { |supplier_title, b| b.supplier_img(supplier_title).parent.text_field(name: /^HostedSearchBox_/) }
+  action(:supplier_search) { |supplier_title, b| b.supplier_img(supplier_title).parent.button(id: /^HostedSearchBox_/, value: 'Search' ).click }
+
 end
