@@ -62,7 +62,7 @@ module Watir
         if x.text.empty?
           :checkboxes if x.checkbox.exists?
         else
-          snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').gsub(/[_]*$/, '').gsub(/_[_]+_/, '_').to_sym
+          snake_case(x.text.strip).to_s.gsub(/^[_]*/, '').gsub(/[_]*$/, '').gsub(/_[_]+_/, '_').gsub(/:/,'').to_sym
         end
       }
     end
