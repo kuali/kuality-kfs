@@ -1,10 +1,8 @@
-class PurchaseOrderAmendmentObject < KFSDataObject
+class PurchaseOrderAmendmentObject < PurchaseOrderObject
 
   DOC_INFO = { label: 'Purchase Order Amendment', type_code: 'POA', transactional?: true }
   include ProcessItemsAccountingLinesMixin
 
-  attr_reader :item_quantitiy, :item_catalog_number, :item_description,
-              :item_unit_cost, :item_uom, :attachment_file_name, :item_object_code
 
   def defaults
     # We'll merge the default_items so that our class defaults (specifically @initial_item_lines) override it
@@ -12,9 +10,7 @@ class PurchaseOrderAmendmentObject < KFSDataObject
     .merge({
                # == Items (See ItemLinesMixin) ==
                description:    random_alphanums(40, 'AFT'),
-               initial_item_lines: [Hash.new],
-               attachment_file_name:       'happy_path_reqs.png'
-           })
+            })
   end
 
   def initialize(browser, opts={})
