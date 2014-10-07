@@ -21,7 +21,7 @@ class ItemsTab < PageFactory
   action(:delete_item) { |l=0, b| b.items_tab.button(name: "methodToCall.deleteItem.line#{l}").click }
   action(:calculate_item) { | i=0, b| b.frm.button(name: /methodToCall.recalculateItemAccountsAmounts.line#{i}./).click }
 
-  element(:show_item_accounting_lines_button) { |l=0, b| b.frm.button(id: "tab-AccountingLines5-imageToggle").exists?  ? b.frm.button(id: "tab-AccountingLines#{5+(l*2)}-imageToggle") : b.frm.button(id: "tab-AccountingLines#{6+(l*2)}-imageToggle") }
+  element(:show_item_accounting_lines_button) { |l=0, b| b.items_tab.div(text: 'Accounting Lines').button(id: "tab-AccountingLines5-imageToggle").exists?  ? b.items_tab.div(text: 'Accounting Lines').button(id: "tab-AccountingLines#{5+(l*2)}-imageToggle") : b.items_tab.div(text: 'Accounting Lines').button(id: "tab-AccountingLines#{6+(l*2)}-imageToggle") }
   element(:item_accounting_lines_section) { |l=0, b| b.show_item_accounting_lines_button(l).parent }
   value(:item_accounting_lines_shown?) { |l=0, b| b.show_item_accounting_lines_button(l).alt.match('hide') }
   value(:item_accounting_lines_hidden?) { |l=0, b| !b.item_accounting_lines_shown?(l) }
