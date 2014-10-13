@@ -54,7 +54,10 @@ class AccountObject < KFSDataObject
       page.type_code.fit @type_code # Gotta do this first or we get a modal
       page.description.focus
       page.alert.ok if page.alert.exists? # Because, y'know, sometimes it doesn't actually come up...
-      fill_out page, *(self.class.attributes -
+      fill_out page, *((self.class.superclass.attributes -
+                        self.class.superclass.read_only_attributes -
+                        self.class.notes_and_attachments_tab_mixin_attributes) +
+                       self.class.attributes -
                        self.class.read_only_attributes -
                        self.class.icra_mixin_attributes) # We don't have any special attribute sections, so we should be able to throw them all in.
     end
@@ -64,7 +67,10 @@ class AccountObject < KFSDataObject
     super # Edit anything editable in KFSDataObject
 
     # Because AccountObject::attributes we're not doing anything fancy, we can just do this:
-    on(AccountPage) { |p| edit_fields opts, p, *(self.class.attributes -
+    on(AccountPage) { |p| edit_fields opts, p, *((self.class.superclass.attributes -
+                                                  self.class.superclass.read_only_attributes -
+                                                  self.class.notes_and_attachments_tab_mixin_attributes) +
+                                                 self.class.attributes -
                                                  self.class.read_only_attributes -
                                                  self.class.icra_mixin_attributes) }
     # This does mean that you can't update stuff from the ICRA Mixin via #edit, though.
