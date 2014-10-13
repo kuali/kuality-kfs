@@ -130,3 +130,29 @@ And /^I capture the (.*) document id number$/ do |document|
     @requisition_id = page.requisition_id if @requisition_id.nil? && page.header_title.include?('Requisition #:')
   end
 end
+
+And /^the (.*) document's route log is:$/ do |document, desired_route_log|
+  # desired_route_log.hashes.keys => [:Role, :Action]
+
+  on page_class_for(document) do |page|
+    page.show_route_log_button.wait_until_present
+    page.show_route_log unless page.route_log_shown?
+
+    page.show_pending_action_requests unless page.pending_action_requests_shown?
+    page.pnd_act_req_table_action.visible?.should
+
+    page.show_future_action_requests unless page.future_action_requests_shown?
+    page.future_actions_table.visible?.should
+
+
+    # Note: This expects you to list out the full log from start to some end point.
+    #       You cannot skip any interim entries, though you could probably skip
+    #       entries at the end of the list.
+    route_log = page.route_log_hash
+    desired_route_log.hashes.each_with_index do |row, i|
+      route_log[:annotation][i].should match /#{row[:Role]}/
+      route_log[:action][i].should match /#{row[:Action]}/
+    end
+
+  end
+end

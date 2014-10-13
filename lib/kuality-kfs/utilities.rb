@@ -41,7 +41,7 @@ module Utilities
   end
 
   def page_class_for(document)
-    Kernel.const_get("#{snake_case(document).to_s.split('_').map(&:capitalize).join('')}Page")
+    Kernel.const_get("#{snake_case(document).to_s.gsub(/[oO]bject/, '').split('_').map(&:capitalize).join('')}Page")
   end
 
   def random_percentage
@@ -95,9 +95,9 @@ module Utilities
 
   def yesno2setclear(value)
     case value.to_s.upcase
-      when 'YES', 'ON'
+      when 'YES', 'ON', 'TRUE'
         :set
-      when 'NO', 'OFF'
+      when 'NO', 'OFF', 'FALSE'
         :clear
       else
         nil
@@ -125,6 +125,17 @@ module Utilities
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       when 'Endowed NonGrant'
         get_kuali_business_object('KFS-COA','Account','accountTypeCode=EN&subFundGroupCode=GNDEPT&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+      when 'Contracts & Grants with ICR'
+        orgs_with_reviewers = %w(36 34 03 04 01 05) # TODO: Find a way to define this through the service or some such
+        kbos = get_kuali_business_objects('KFS-COA',
+                                          'Account',
+                                          'fundGroupCode=CG' <<
+                                          '&financialIcrSeriesIdentifier=RE1' <<
+                                          '&acctIndirectCostRcvyTypeCd=22' <<
+                                          '&active=Y')['org.kuali.kfs.coa.businessobject.Account']
+        kbos.reject! { |acct| acct['accountCfdaNumber'].empty? }
+        kbos.reject! { |acct| !orgs_with_reviewers.any?{|org| org[0..1] == acct['organization.codeAndDescription'][0].split('-')[0][0..1] } }
+        kbos.sample['accountNumber'][0]
       when 'Grant'
         get_kuali_business_object('KFS-COA','Account','organizationCode=01**&subFundGroupCode=CG*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
       when 'Endowed Grant'
@@ -132,7 +143,12 @@ module Utilities
       else
         nil
     end
+  rescue NoMethodError => nme
+    # when 'Contracts & Grants with ICR' case occasionally returns no results, which causes the CFDA#-based filtering to raise a NoMethodError.
+    raise ArgumentError,
+          "Could not find any non-expired accounts of the supplied type (#{type})!" if nme.message == 'undefined method `reject!\' for nil:NilClass'
   rescue RuntimeError => re
+    # In other cases, get_kuali_business_object will raise a RuntimeError if no results are found.
     nil
   end
 

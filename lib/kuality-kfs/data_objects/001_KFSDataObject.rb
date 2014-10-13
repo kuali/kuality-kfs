@@ -6,14 +6,59 @@ class KFSDataObject < DataFactory
 
   attr_accessor :document_id, :description,
                 :initiator,
-                :press, :notes_and_attachments_tab
+                :press #, :notes_and_attachments_tab
 
   # Hooks:
+  class << self
+    # Attributes that are required for a successful save/submit.
+    # @return [Array] List of Symbols for attributes that are required
+    def required_attributes
+      [:description]
+    end
+
+    # Attributes that don't copy over to a new document's fields during a copy.
+    # @return [Array] List of Symbols for attributes that aren't copied to the new side of a copy
+    def uncopied_attributes
+      [:description, :initiator, :document_id]
+    end
+
+    # Attributes that always appear to be read-only on the page and thus would not
+    # be good candidates for #fill_out or #edit_fields
+    # @return [Array] List of Symbols for attributes that are immutable on the page
+    def read_only_attributes
+      [:initiator, :document_id, :press]
+    end
+  end
+
+  # Overloaded equality operator. Useful for equality while copying a document, this compares based
+  # on attribute values that should be carried over during a copy.
+  def ==(other_acct)
+    if other_acct.is_a? self.class
+      self.class
+          .attributes
+          .reject{ |a| self.class.uncopied_attributes.include?(a) }
+          .all?{ |attr| self.instance_variable_get("@#{attr}") == other_acct.instance_variable_get("@#{attr}") }
+    else
+      false
+    end
+  end
+
+  # Overloaded equality operator. Useful for strict equality, this compares based on all attribute values.
+  def eql?(other_acct)
+    if other_acct.is_a? self.class
+      self.class
+          .attributes
+          .all?{ |attr| self.instance_variable_get("@#{attr}") == other_acct.instance_variable_get("@#{attr}") }
+    else
+      false
+    end
+  end
+
   def defaults
     {
-      description:               random_alphanums(37, 'AFT'),
-      notes_and_attachments_tab: collection('NotesAndAttachmentsLineObject')
-    }
+      description:               random_alphanums(37, 'AFT') #,
+      #notes_and_attachments_tab: collection('NotesAndAttachmentsLineObject')
+    }.merge(default_notes_and_attachments)
   end
 
   def extended_defaults
@@ -160,4 +205,5 @@ class KFSDataObject < DataFactory
     end
   end
 
+  include NotesAndAttachmentsTabMixin
 end

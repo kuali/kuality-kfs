@@ -35,15 +35,6 @@ Then /^the Account Maintenance Document has no errors$/  do
   on(AccountPage).document_status.should == 'ENROUTE'
 end
 
-Then /^an error in the (.*) tab should say "(.*)"$/ do |tab, error|
-  hash = {'Account Maintenance' => :account_maintenance_errors}
-
-  on AccountPage do |page|
-    page.send(hash[tab]).should include error
-  end
-
-end
-
 And /^I edit an Account with a Sub-Fund Group Code of (.*)/ do |sub_fund_group_code|
   visit(MainPage).account
   on AccountLookupPage do |page|
@@ -127,12 +118,6 @@ end
 
 And /^I enter a Continuation Account Number that equals the Account Number$/ do
   on(AccountPage) { |page| page.continuation_account_number.fit page.original_account_number }
-end
-
-Then /^an empty error should appear$/ do
-  on AccountPage do |page|
-    page.error_message_of('').should exist
-  end
 end
 
 And /^I clone a random Account with the following changes:$/ do |table|
