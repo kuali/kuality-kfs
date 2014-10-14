@@ -9,6 +9,7 @@ class AccountObject < KFSDataObject
                 :fo_principal_name, :supervisor_principal_name, :manager_principal_name,
                 :budget_record_level_code, :sufficient_funds_code,
                 :income_stream_financial_cost_code, :income_stream_account_number,
+                :continuation_account_number, :continuation_chart_code,
                 # == Guidelines and Purpose tab ==
                 :expense_guideline_text, :income_guideline_text, :purpose_text,
                 # == Contracts and Grants tab ==

@@ -76,25 +76,26 @@ And /^I enter Sub Fund Program Code of (.*)/  do |subfund_program_code|
 end
 
 And /^I close the Account$/ do
+  random_continuation_account_number = @account.number
   visit(MainPage).account
-
-  # First, let's get a random continuation account
-  random_continuation_account_number = on(AccountLookupPage).get_random_account_number
-  # Now, let's try to close that account
   on AccountLookupPage do |page|
+    # First, let's get a random continuation account
+    begin
+      random_continuation_account_number = page.get_random_account_number
+    end while random_continuation_account_number == @account.number
+
+    # Now, let's try to close that account
     page.chart_code.fit     @account.chart_code
     page.account_number.fit @account.number
     page.closed_no.set # There's no point in doing this if the account is already closed. Probably want an error, if a search with this setting fails.
     page.search
     page.edit_random # should only select the guy we want, after all
   end
-  on AccountPage do |page|
-    page.description.fit                 "Closing Account #{@account.number}"
-    page.continuation_account_number.fit random_continuation_account_number
-    page.continuation_chart_code.fit     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME)
-    page.account_expiration_date.fit     page.effective_date.value
-    page.closed.set
-  end
+  @account.edit description:                 "Closing Account #{@account.number}",
+                continuation_account_number: random_continuation_account_number,
+                continuation_chart_code:     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE_WITH_NAME),
+                account_expiration_date:     on(AccountPage).effective_date.value,
+                closed:                      :set
 end
 
 And /^I edit the Account$/ do
@@ -117,47 +118,32 @@ And /^I enter a Continuation Chart Of Accounts Code that equals the Chart of Acc
 end
 
 And /^I enter a Continuation Account Number that equals the Account Number$/ do
-  on(AccountPage) { |page| page.continuation_account_number.fit page.original_account_number }
+  #on(AccountPage) { |page| page.continuation_account_number.fit page.original_account_number }
+  @account.edit continuation_account_number: on(AccountPage).account_number_old # TODO: It may be more reliable to pull this from the webservice
 end
 
 And /^I clone a random Account with the following changes:$/ do |table|
-  step "I clone Account nil with the following changes:", table
+  step 'I clone Account nil with the following changes:', table
 end
 
 And /^I extend the Expiration Date of the Account document (\d+) days$/ do |days|
-  on(AccountPage).account_expiration_date.fit (@account.account_expiration_date + days.to_i).strftime('%m/%d/%Y')
-end
-
-And /^I use these Accounts:$/ do |table|
-  existing_accounts = table.raw.flatten
-
-  visit(MainPage).account
-  on AccountLookupPage do |page|
-    existing_accounts.each do |account_number|
-      page.chart_code.fit     get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)
-      page.account_number.fit account_number
-      page.search
-
-      # We're only really interested in these parts
-      @account = make AccountObject
-      @account.number = page.results_table[1][page.column_index(:account_number)].text
-      @account.chart_code = page.results_table[1][page.column_index(:chart_code)].text
-      @accounts = @accounts.nil? ? [@account] : @accounts + [@account]
-    end
-  end
+  #on(AccountPage).account_expiration_date.fit (@account.account_expiration_date + days.to_i).strftime('%m/%d/%Y')
+  @account.edit account_expiration_date: (@account.account_expiration_date + days.to_i).strftime('%m/%d/%Y')
 end
 
 And /^I clone a random Account with name, chart code, and description changes$/ do
-  step "I clone Account nil with the following changes:",
+  step 'I clone Account nil with the following changes:',
        table(%Q{
-       | Name        | #{random_alphanums(15, 'AFT')}                                      |
-       | Chart Code  | #{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)} |
-       | Description | #{random_alphanums(40, 'AFT')}                                      |
+         | Name        | #{random_alphanums(15, 'AFT')}                                      |
+         | Chart Code  | #{get_aft_parameter_value(ParameterConstants::DEFAULT_CHART_CODE)}  |
+         | Description | #{random_alphanums(40, 'AFT')}                                      |
        })
 end
 
 And /^I edit an Account with a random Sub-Fund Group Code$/ do
-  account_number = get_kuali_business_object('KFS-COA','Account','subFundGroupCode=*&extension.programCode=*&closed=N&extension.appropriationAccountNumber=*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
+  account_number = get_kuali_business_object('KFS-COA',
+                                             'Account',
+                                             'subFundGroupCode=*&extension.programCode=*&closed=N&extension.appropriationAccountNumber=*&active=Y&accountExpirationDate=NULL')['accountNumber'].sample
   visit(MainPage).account
   on AccountLookupPage do |page|
     page.account_number.fit account_number
@@ -190,7 +176,7 @@ Then /^I should get (invalid|an invalid) (.*) errors?$/ do |invalid_ind, error_f
       when 'Appropriation Account Number'
         page.errors.should include "Appropriation Account Number #{page.appropriation_account_number.value} is not associated with Sub-Fund Group Code #{page.sub_fund_group_code.value}."
       when 'Labor Benefit Rate Code'
-        page.errors.should include "Invalid Labor Benefit Rate Code"
+        page.errors.should include 'Invalid Labor Benefit Rate Code'
         page.errors.should include "The specified Labor Benefit Rate Category Code #{page.labor_benefit_rate_category_code.value} does not exist."
     end
   end
@@ -210,7 +196,7 @@ end
 
 And /^I enter Appropriation Account Number that is not associated with the Sub Fund Group Code$/  do
   # the account# is not used as its own appropriation account#
-  on(AccountPage).appropriation_account_number.set on(AccountPage).original_account_number
+  @account.edit appropriation_account_number: on(AccountPage).account_number_old # TODO: It may be more reliable to pull this from the webservice
 end
 
 And /^I create an Account and leave blank for the fields of Guidelines and Purpose tab$/ do
