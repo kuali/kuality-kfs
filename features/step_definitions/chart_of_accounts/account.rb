@@ -200,11 +200,8 @@ And /^I enter Appropriation Account Number that is not associated with the Sub F
 end
 
 And /^I create an Account and leave blank for the fields of Guidelines and Purpose tab$/ do
-  blank_fields = {
-      expense_guideline_text:     '',
-      income_guideline_txt: '',
-      purpose_text:         '',
-      press:  nil
-  }
-  @account = create AccountObject, blank_fields
+  @account = create AccountObject, expense_guideline_text: '',
+                                   income_guideline_text:  '',
+                                   purpose_text:           '',
+                                   press:                  nil
 end

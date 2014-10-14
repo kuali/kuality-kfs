@@ -33,7 +33,7 @@ module Utilities
   end
 
   def document_object_of(klass)
-    klass.to_s.gsub(/(?<=[a-z])(?=[A-Z])/, ' ').gsub(/Object$/, '')
+    klass.to_s.gsub(/(?<=[a-z])(?=[A-Z])/, ' ').sub(/(.*) (Object)$/, '\1')
   end
 
   def object_class_for(document)
@@ -41,7 +41,7 @@ module Utilities
   end
 
   def page_class_for(document)
-    Kernel.const_get("#{snake_case(document).to_s.gsub(/[oO]bject/, '').split('_').map(&:capitalize).join('')}Page")
+    Kernel.const_get("#{snake_case(document).to_s.sub(/[oO]bject$/, '').split('_').map(&:capitalize).join('')}Page")
   end
 
   def random_percentage
