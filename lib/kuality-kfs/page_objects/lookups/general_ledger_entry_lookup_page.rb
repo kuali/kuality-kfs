@@ -46,4 +46,12 @@ class GeneralLedgerEntryLookupPage < Lookups
   action(:search_reference_origin_code) { |b| b.frm.button(title: 'Search Reference Origin Code').click }
   action(:search_fiscal_period) { |b| b.frm.button(title: 'Search Fiscal Period').click }
 
+  action(:find_gl_entries_by_account) do |account, b|
+    #want all defaults that are loaded for page left
+    # (i.e. fiscal year=current, balance type code=AC, fiscal period=current, and pending entry approved indicator)=No
+    b.chart_code.fit      account.chart_code
+    b.account_number.fit  account.number
+    b.search
+  end
+
 end

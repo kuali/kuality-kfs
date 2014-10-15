@@ -285,8 +285,28 @@ module GlobalConfig
         end
       i += 1
     end
-    puts "eshop user ",pid, ' number of tries ',i
     pid.nil? ? get_random_principal_id_for_role(name_space, role_name) : pid
   end
 
+  def get_current_user
+    unless @logged_in_users_list.nil? || @logged_in_users_list.empty?
+      return @logged_in_users_list.last
+    else
+      return nil
+    end
+  end
+
+  def set_current_user (user)
+    unless @logged_in_users_list.nil?
+      @logged_in_users_list.push user
+    else
+      @logged_in_users_list = Array.new
+      @logged_in_users_list.push user
+    end
+  end
+
+  def perform_backdoor_login(user)
+    visit(BackdoorLoginPage).login_as(user)
+    set_current_user(user)
+  end
 end
