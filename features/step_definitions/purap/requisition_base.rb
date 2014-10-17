@@ -269,11 +269,14 @@ end
 And /^I amend the Purchase Order$/ do
   on(PurchaseOrderPage).amend_po
   on AmendPOReasonPage do |page|
+    page.alert.ok if page.alert.exists? # click 'special handling' will have a pop up
     page.reason.fit random_alphanums(40, 'AFT-amendreason')
     page.amend
   end
   sleep 3
-  @purchase_order_amendment = create PurchaseOrderAmendmentObject
+  @purchase_order_amendment = make PurchaseOrderAmendmentObject
+  @purchase_order_amendment.absorb! :new
+  @purchase_order_amendment.notes_and_attachments_tab.add file: 'happy_path_reqs.png'
 end
 
 When /^I initiate a Purchase Order Amendment document$/ do
@@ -289,9 +292,7 @@ end
 When /^I (initiate|submit) a Purchase Order Amendment document with the following:$/ do |action, table|
   arguments = table.rows_hash
 
-  step "I am logged in as \"#{@requisition.initiator}\""
-  step 'I view the Purchase Order document'
-  step 'I amend the Purchase Order'
+  step 'I create a Purchase Order Amendment document'
 
   if !arguments['Item Quantity'].nil? && arguments['Item Quantity'].to_f > 0
     @poa_item_amount = arguments['Item Quantity'].to_f * arguments['Item Cost'].to_f
@@ -538,4 +539,20 @@ end
 
 And /^the Commodity Reviewer is not in the routing log for (.*) document$/ do |document|
   @commodity_review_users.length.should == 0
+end
+
+And /^I add an Accounting Line to Item \#(\d+) on the Purchase Order Amendment document with (\d+) percent$/ do |il, percent|
+  account_number = get_account_of_type('Grant')
+  object_code = get_object_code_of_type('Operating Expense')
+  step "I add these Accounting Lines to Item ##{il} on the Purchase Order Amendment document:",
+       table(%Q{
+      | Chart Code | Account Number       | Object Code     | Percent    |
+      | Default    | #{account_number}    | #{object_code}  | #{percent} |
+       })
+end
+
+When /^I create a Purchase Order Amendment document$/ do
+  step "I am logged in as \"#{@requisition.initiator}\""
+  step 'I view the Purchase Order document'
+  step 'I amend the Purchase Order'
 end

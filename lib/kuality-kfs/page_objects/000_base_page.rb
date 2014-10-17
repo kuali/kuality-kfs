@@ -272,13 +272,28 @@ class BasePage < PageFactory
 
       value(:action_requests) { |b| (b.pnd_act_req_table.rows.collect{ |row| row[1].text}).reject{ |action| action==''} }
       element(:show_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=true&showNotes=false/m) }
+      element(:future_action_requests_shown?) { |b| b.hide_future_action_requests_button.present? }
+      element(:future_action_requests_hidden?) { |b| b.show_future_action_requests_button.present? }
       action(:show_future_action_requests) { |b| b.show_future_action_requests_button.click }
       element(:hide_future_action_requests_button) { |b| b.route_log_iframe.link(href: /showFuture=false&showNotes=false/m) }
       action(:hide_future_action_requests) { |b| b.hide_future_action_requests_button.click }
-      element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table }
+      element(:future_actions_table) { |b| b.route_log_iframe.div(id: 'tab-FutureActionRequests-div').table.table }
       value(:requested_action_for) { |name, b| b.future_actions_table.tr(text: /#{name}/).td(index: 2).text }
       action(:show_multiple) { |b| b.pnd_act_req_table[1][0].a.image(title: 'show').click }
       action(:multiple_link_first_approver){ |b| b.pnd_act_req_table[2].table.table[1][2].a.click}
+
+      value(:pnd_act_req_table_col_to_a) { |c, b| pat = b.pnd_act_req_table; pata = pat.to_a; pata[1..pata.length].collect {|row| row[pat.keyed_column_index(c)].strip } }
+      value(:ftr_act_req_table_col_to_a) { |c, b| fat = b.future_actions_table; fata = fat.to_a; fata[1..fata.length].collect {|row| row[fat.keyed_column_index(c)].strip } }
+      value(:required_actions_table_col_to_a) { |c, b| b.pnd_act_req_table_col_to_a(c) + b.ftr_act_req_table_col_to_a(c) }
+      value(:route_log_hash) { |b| {
+          # Each of these pairs should contain an identically-ordered list
+          # representing that column of the route log. Each column should be of
+          # equal length.
+          annotation:   b.required_actions_table_col_to_a(:annotation),
+          time_date:    b.required_actions_table_col_to_a(:time_date),
+          requested_of: b.required_actions_table_col_to_a(:requested_of),
+          action:       b.required_actions_table_col_to_a(:action)
+      } }
 
       value(:new_user) do |b|
         new_user = ''

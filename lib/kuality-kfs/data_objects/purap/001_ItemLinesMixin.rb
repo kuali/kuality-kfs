@@ -64,7 +64,6 @@ module ItemLinesMixin
       def update_line_objects_from_page!(target=:new)
         @initial_item_lines.clear # We'll dump the initial lines because this is typically used for #absorb!.
         @items.update_from_page!(target)
-        super_update_line_objects_from_page!(target)
       end
 
     end

@@ -213,3 +213,17 @@ And /^the General Ledger Pending entries match the accounting lines on the (.*) 
     (page.glpe_results_table.rows.length-1).should == (num_encum_source_d + num_encum_source_c + num_disencum_target_d + num_disencum_target_c)
   end
 end
+
+And /^I add these accounting lines to the (.*) document:$/ do |document, table|
+  updates = table.hashes.collect{ |h| h.snake_case_key }
+  updates.each do |update|
+    update[:account_number] = case update[:account_number]
+                                when 'Just Created'
+                                  @account.number
+                                else
+                                  get_account_of_type update[:account_number]
+                              end
+    update[:type] = AccountingLineObject::get_type_conversion(update[:type])
+    document_object_for(document).add_line update[:type], update
+  end
+end

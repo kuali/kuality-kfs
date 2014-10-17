@@ -22,7 +22,7 @@ class PurchaseOrderObject < RequisitionObject
     set_options(defaults.merge(get_aft_parameter_values_as_hash(ParameterConstants::DEFAULTS_FOR_PURCHASE_ORDER)).merge(opts))
   end
 
-  # TODO: PurchaseOrderObject#create
+  # TODO: 003PurchaseOrderObject#create
   # TODO: PurchaseOrderObject#edit
   # TODO: PurchaseOrderObject#absorb!
 
