@@ -20,7 +20,7 @@ class IndirectCostRecoveryLineObject < DataFactory
   end
 
   # @return [Hash] Hash that can be used for serialization
-  def to_update
+  def to_hash
     Hash[self.class.attributes.zip(self.class.attributes.collect { |attr| (self.send(attr)) })]
   end
 
@@ -34,27 +34,26 @@ class IndirectCostRecoveryLineObject < DataFactory
 
   def edit(opts={})
     on IndirectCostRecoveryAccountsTab do |icr_tab|
-      icr_tab.update_chart_of_accounts_code(@line_number).pick! opts[:chart_of_accounts_code] unless opts[:chart_of_accounts_code].nil?
-      icr_tab.update_account_number(@line_number).fit           opts[:account_number] unless opts[:account_number].nil?
-      icr_tab.update_account_line_percent(@line_number).fit     opts[:account_line_percent] unless opts[:account_line_percent].nil?
-      icr_tab.update_active_indicator(@line_number).fit         opts[:active_indicator] unless opts[:active_indicator].nil?
+      icr_tab.chart_of_accounts_code(@line_number).pick! opts[:chart_of_accounts_code] unless opts[:chart_of_accounts_code].nil?
+      icr_tab.account_number(@line_number).fit           opts[:account_number] unless opts[:account_number].nil?
+      icr_tab.account_line_percent(@line_number).fit     opts[:account_line_percent] unless opts[:account_line_percent].nil?
+      icr_tab.active_indicator(@line_number).fit         opts[:active_indicator] unless opts[:active_indicator].nil?
     end
     update_options(opts)
-    update_extended_attributes(opts)
+    edit_extended_attributes(opts)
   end
 
   def delete
-    on(IndirectCostRecoveryAccountsTab).delete_icr_account
+    on(IndirectCostRecoveryAccountsTab).delete_icr_account(@line_number)
   end
 
   def fill_out_extended_attributes
     # Override this method if you have site-specific extended attributes.
   end
 
-  def update_extended_attributes(opts = {})
+  def edit_extended_attributes(opts = {})
     # Override this method if you have site-specific extended attributes.
   end
-  alias_method :edit_extended_attributes, :update_extended_attributes
 
 end
 
@@ -63,10 +62,10 @@ class IndirectCostRecoveryLineObjectCollection < LineObjectCollection
   contains IndirectCostRecoveryLineObject
 
 
-  # @return [Array] Ordered Array of Hashes that can be used for serialization
-  def to_update
+  # @return [Hash] Hash of ordered Arrays of Hashes that can be used for serialization
+  def to_hash
     {
-        icr_accounts: collect { |icra| icra.to_update }
+      icr_accounts: collect { |icra| icra.to_hash }
     }
   end
 
@@ -108,13 +107,13 @@ class IndirectCostRecoveryLineObjectCollection < LineObjectCollection
 
     on IndirectCostRecoveryAccountsTab do |icr_tab|
       case target
-        when :old, :new
+        when :old, :new, :readonly
           # How fancy is this!?!
           pulled_icr_account = {
-            chart_of_accounts_code: icr_tab.send("#{target}_chart_of_accounts_code", i),
-            account_number:         icr_tab.send("#{target}_account_number", i),
-            account_line_percent:   icr_tab.send("#{target}_account_line_percent", i),
-            active_indicator:       icr_tab.send("#{target}_active_indicator", i),
+            chart_of_accounts_code: icr_tab.send("chart_of_accounts_code_#{target}", i),
+            account_number:         icr_tab.send("account_number_#{target}", i),
+            account_line_percent:   icr_tab.send("account_line_percent_#{target}", i),
+            active_indicator:       icr_tab.send("active_indicator_#{target}", i),
           }
         else
           raise ArgumentError, "IndirectCostRecoveryLineObject does not know how to pull the provided ICR Account type (#{target})!"

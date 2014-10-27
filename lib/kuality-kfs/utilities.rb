@@ -132,7 +132,8 @@ module Utilities
                                           'fundGroupCode=CG' <<
                                           '&financialIcrSeriesIdentifier=RE1' <<
                                           '&acctIndirectCostRcvyTypeCd=22' <<
-                                          '&active=Y')['org.kuali.kfs.coa.businessobject.Account']
+                                          '&active=Y' <<
+                                          '&accountExpirationDate=NULL')['org.kuali.kfs.coa.businessobject.Account']
         kbos.reject! { |acct| acct['accountCfdaNumber'].empty? }
         kbos.reject! { |acct| !orgs_with_reviewers.any?{|org| org[0..1] == acct['organization.codeAndDescription'][0].split('-')[0][0..1] } }
         kbos.sample['accountNumber'][0]
