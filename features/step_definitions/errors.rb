@@ -32,3 +32,12 @@ end
 And /^I should get an Authorization Exception Report error$/ do
   $current_page.frm.div(id: 'headerarea').h1.text.rstrip.should == 'Authorization Exception Report'
 end
+
+Then /^an empty error should appear$/ do
+  $current_page.error_message_of('').should exist
+end
+
+Then /^an error in the (.*) tab should say "(.*)"$/ do |tab, error|
+  hash = {'Account Maintenance' => :account_maintenance_errors}
+  $current_page.send(hash[tab]).should include error
+end

@@ -79,6 +79,14 @@ module Watir
       (0..(self.trs.length-1)).collect{ |i| self[i][columnnumber] }
     end
 
+    def to_a
+      trs[0..(trs.length - 1)].collect{ |row|
+        row.cells
+           .collect{ |col| col.text }
+           .reject{ |col| col.empty? }
+      }.reject{ |row| row.empty? }
+    end
+
     # @return [TableRow] The first row in the table.
     def first
       self.trs.first
@@ -125,6 +133,38 @@ class Array
   end
 end
 
+class String
+
+  # Compares against another string, ignoring spaces, tabs, and newlines.
+  # @param [String] other The String to compare against. Could be another type of object, so long as it supplies #gsub
+  # @return [TrueClass] Result of #eql? if the mentioned characters were removed from both objects in the comparison.
+  def eql_ignoring_whitespace?(other)
+    gsub(/[ \n\t]*/, '').eql?(other.gsub(/[ \n\t]*/, ''))
+  end
+
+end
+
+class Hash
+  def rekey(h)
+    dup.rekey! h
+  end
+
+  def rekey!(h)
+    h.each { |k, newk| store(newk, delete(k)) if has_key? k }
+    self
+  end
+
+  def snake_case_key!
+    key_update = Hash[keys.zip(collect{ |k, _| snake_case(k) })]
+    rekey! key_update
+  end
+
+  def snake_case_key
+    key_update = Hash[keys.zip(collect{ |k, _| snake_case(k) })]
+    rekey key_update
+  end
+end
+
 class Object
   # Convenience shorthand method for comparing against false, similar to #nil?
   def false?
@@ -139,6 +179,39 @@ class Object
   # Convenience shorthand method for comparing against :set, similar to #nil?
   def set?
     self == :set
+  end
+end
+
+class Class
+  alias_method :attr_reader_without_tracking, :attr_reader
+  def attr_reader(*names)
+    attr_readers.concat(names)
+    attr_reader_without_tracking(*names)
+  end
+
+  def attr_readers
+    @attr_readers ||= [ ]
+  end
+
+  alias_method :attr_writer_without_tracking, :attr_writer
+  def attr_writer(*names)
+    attr_writers.concat(names)
+    attr_writer_without_tracking(*names)
+  end
+
+  def attr_writers
+    @attr_writers ||= [ ]
+  end
+
+  alias_method :attr_accessor_without_tracking, :attr_accessor
+  def attr_accessor(*names)
+    attr_readers.concat(names)
+    attr_writers.concat(names)
+    attr_accessor_without_tracking(*names)
+  end
+
+  def attributes
+    @attr_readers & @attr_writers
   end
 end
 

@@ -40,7 +40,7 @@ When /^I (#{BasePage::available_buttons}) the (.*) document$/ do |button, docume
   button.gsub!(' ', '_')
   document_object_for(document).send(button)
   on(YesOrNoPage).yes if button == 'cancel'
-  sleep 10 if (button == 'blanket approve' || button == 'approve' || 'submit')
+  sleep 20 if (button == 'blanket approve' || button == 'approve' || 'submit')
 
   @requisition_id = on(RequisitionPage).requisition_id if document == 'Requisition' && button == 'submit'
 end
@@ -76,7 +76,7 @@ When /^I (#{BasePage::available_buttons}) the (.*) document and deny any questio
 end
 
 Then /^the (.*) document goes to (PROCESSED|ENROUTE|FINAL|INITIATED|SAVED)$/ do |document, doc_status|
-  sleep 10
+  sleep 20
   document_object_for(document).view
   on(page_class_for(document)).document_status.should == doc_status
 end
