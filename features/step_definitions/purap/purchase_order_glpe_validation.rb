@@ -1,4 +1,4 @@
-Then /^On the Purchase Order the GLPE displays "(.*?)"$/ do |glpe_msg|
+Then /^on the Purchase Order the GLPE displays "(.*?)"$/ do |glpe_msg|
   visit(MainPage).purchase_orders
   on DocumentSearch do |page|
     page.document_type.fit ''
@@ -21,7 +21,9 @@ end
 
 And /^I cancel the Purchase Order on the Requisition$/ do
   visit(MainPage).doc_search
+  sleep 3
   on DocumentSearch do |page|
+    page.close_parents
     page.document_id.fit @requisition.document_id
     page.search
     page.open_item(@requisition.document_id)

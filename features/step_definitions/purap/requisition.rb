@@ -189,7 +189,7 @@ end
 And /^the Purchase Order document status is '(.*)'$/  do  |status|
   on PurchaseOrderPage do |page|
     sleep 5
-    page.reload
+    page.reload unless status == 'CANCELED'
     page.document_status.should == status
   end
 end
